@@ -7,6 +7,8 @@ defmodule Demo.Trades do
   alias Demo.Repo
 
   alias Demo.Trades.Transaction
+  alias Demo.Accounts
+  alias Demo.Accounts.User
 
   @topic inspect(__MODULE__)
 
@@ -141,7 +143,7 @@ defmodule Demo.Trades do
            user
            |> User.changeset_update_transactions(transactions)
            |> Repo.update() do
-      {:ok, Accounts.get_user(user.id)}
+      {:ok, Accounts.get_user!(user.id)}
     else
       error ->
         error

@@ -27,6 +27,8 @@ defmodule Demo.Accounts do
       [%User{}, ...]
 
   """
+  def list_users, do: Repo.all(User)
+
   def list_users(current_page, per_page) do
     Repo.all(
       from u in User,
@@ -50,8 +52,27 @@ defmodule Demo.Accounts do
       ** (Ecto.NoResultsError)
 
   """
+  def get_user(id), do: Repo.get(User, id)
+
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_by(params), do: Repo.get_by(User, params)
+
+  def authenticate_by_username_and_pass(username, given_pass) do
+    user = get_user_by(username: username)
+
+    cond do
+      user && Pbkdf2.verify_pass(given_pass, user.password_hash) ->
+        {:ok, user}
+
+      user ->
+        {:error, :unauthorized}
+
+      true ->
+        Pbkdf2.no_user_verify()
+        {:error, :not_found}
+    end
+  end
   @doc """
   Creates a user.
 
@@ -66,7 +87,9 @@ defmodule Demo.Accounts do
   """
   def create_user(attrs \\ %{}) do
     %User{}
-    |> User.changeset(attrs)
+    # |> User.changeset(attrs)
+    # |> IO.inspect
+    |> User.registration_changeset(attrs)
     |> Repo.insert()
     |> notify_subscribers([:user, :created])
   end
@@ -120,6 +143,17 @@ defmodule Demo.Accounts do
   def change_user(user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def change_registration(%User{} = user, params) do
+    User.registration_changeset(user, params)
+  end
+
+  def register_user(attrs \\ %{}) do
+    %User{}
+    |> User.registration_changeset(attrs)
+    |> Repo.insert()
+  end
+
 
   defp notify_subscribers({:ok, result}, event) do
     Phoenix.PubSub.broadcast(Demo.PubSub, @topic, {__MODULE__, event, result})

@@ -11,32 +11,24 @@ defmodule DemoWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :put_root_layout, {DemoWeb.LayoutView, :root}
+    plug DemoWeb.Auth
   end
 
   pipeline :bare do
     plug :put_root_layout, {DemoWeb.LayoutView, :bare}
   end
 
-  pipeline :game do
-    plug :put_root_layout, {DemoWeb.LayoutView, :game}
-  end
-
   scope "/", DemoWeb do
     pipe_through :browser
 
     get "/", PageController, :index
+    resources "/users", UserController, only: [:index, :show, :new, :create]
+    resources "/sessions", SessionController, only: [:new, :create, :delete]
 
-    # live "/thermostat", ThermostatLive
-    # live "/search", SearchLive
-    # live "/clock", ClockLive
-    # live "/image", ImageLive
-    # live "/pacman", PacmanLive
-    # live "/rainbow", RainbowLive
-    # live "/top", TopLive
     live "/presence_users/:name", UserLive.PresenceIndex
 
     live "/users/page/:page", UserLive.Index
-    live "/users", UserLive.Index
+    live "/users/all", UserLive.Index
     live "/users-scroll", UserLive.IndexManualScroll
     live "/users-auto-scroll", UserLive.IndexAutoScroll
 
@@ -49,16 +41,11 @@ defmodule DemoWeb.Router do
     live_dashboard "/dashboard", metrics: DemoWeb.Telemetry
   end
 
-  scope "/", DemoWeb do
-    pipe_through [:browser, :game]
 
-    live "/snake", SnakeLive
-  end
+  # scope "/", DemoWeb do
+  #   pipe_through [:browser, :bare]
 
-  scope "/", DemoWeb do
-    pipe_through [:browser, :bare]
-
-    live "/users-live-layout", UserLive.IndexNav
-    live "/users-live-layout/page/:page", UserLive.IndexNav
-  end
+  #   live "/users-live-layout", UserLive.IndexNav
+  #   live "/users-live-layout/page/:page", UserLive.IndexNav
+  # end
 end
