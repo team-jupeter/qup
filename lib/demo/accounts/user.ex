@@ -7,6 +7,7 @@ defmodule Demo.Accounts.User do
   @required_fields [:name, :username, :email, :phone_number]
 
   schema "users" do
+    # add user_type
     field :name, :string
     field :username, :string
     field :email, :string
