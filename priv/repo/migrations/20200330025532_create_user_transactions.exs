@@ -1,10 +1,10 @@
-defmodule Demo.Repo.Migrations.AddTableUserTransaction do
+defmodule Demo.Repo.Migrations.CreateUserTransactions do
   use Ecto.Migration
 
   def change do
     create table(:user_transaction, primary_key: false) do
-      add(:transaction_id, references(:transaction, on_delete: :delete_all), primary_key: true)
-      add(:user_id, references(:user, on_delete: :delete_all), primary_key: true)
+      add(:transaction_id, references(:transactions, on_delete: :delete_all), primary_key: true)
+      add(:user_id, references(:users, on_delete: :delete_all), primary_key: true)
       timestamps()
     end
 
@@ -16,5 +16,3 @@ defmodule Demo.Repo.Migrations.AddTableUserTransaction do
     )
   end
 end
-
-ecto.gen.schema

@@ -22,19 +22,32 @@ defmodule DemoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/users", UserController, only: [:index, :show, :new, :create]
+    # resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
 
     live "/presence_users/:name", UserLive.PresenceIndex
 
     live "/users/page/:page", UserLive.Index
-    live "/users/all", UserLive.Index
+    live "/users", UserLive.Index
     live "/users-scroll", UserLive.IndexManualScroll
     live "/users-auto-scroll", UserLive.IndexAutoScroll
-
     live "/users/new", UserLive.New
     live "/users/:id", UserLive.Show
     live "/users/:id/edit", UserLive.Edit
+ 
+    live "/trade/page/:page", Trade.Index
+    live "/trade", Trade.Index
+    live "/trade-auto-scroll", Trade.IndexAutoScroll
+    live "/trade/new", Trade.New
+    live "/trade/:id", Trade.Show
+    live "/trade/:id/edit", Trade.Edit
+
+    # live "/aviation/page/:page", Aviation.Index
+    # live "/aviation", Aviation.Index
+    # live "/aviation-auto-scroll", Aviation.IndexAutoScroll
+    # live "/aviation/new", Aviation.New
+    # live "/aviation/:id", Aviation.Show
+    # live "/aviation/:id/edit", Aviation.Edit
 
     # If enabling the LiveDashboard in prod,
     # put it behind proper authentication.

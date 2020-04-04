@@ -1,4 +1,4 @@
-defmodule DemoWeb.UserLive.PresenceIndex do
+defmodule DemoWeb.Aviation.PresenceIndex do
   use Phoenix.LiveView
 
   alias Demo.Accounts
@@ -15,7 +15,7 @@ defmodule DemoWeb.UserLive.PresenceIndex do
   def render(assigns), do: UserView.render("index.html", assigns)
 
   defp fetch(socket) do
-    assign(socket, %{ 
+    assign(socket, %{
       users: Accounts.list_users(1, 10),
       online_users: DemoWeb.Presence.list("users"),
       page: 0

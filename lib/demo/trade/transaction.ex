@@ -1,4 +1,4 @@
-defmodule Demo.Trades.Transaction do
+defmodule Demo.Trade.Transaction do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.Accounts.User
@@ -8,7 +8,6 @@ defmodule Demo.Trades.Transaction do
     field :price, :string
     field :product, :string
     field :seller, :string
-    field :where, :string
 
     # belongs_to  :user, User
 

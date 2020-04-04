@@ -17,7 +17,7 @@ defmodule DemoWeb.SessionController do
         conn
         |> put_flash(:error, "Invalid username/password combination")
         |> render("new.html")
-    end
+    end 
   end
 
   def delete(conn, _) do

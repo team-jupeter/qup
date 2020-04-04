@@ -1,7 +1,7 @@
 defmodule Demo.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
-
+  alias Demo.Trade.Transaction
   # alias Demo.Trades.Transaction
 
   @required_fields [:name, :username, :email, :phone_number]
@@ -17,12 +17,12 @@ defmodule Demo.Accounts.User do
 
     timestamps()
 
-    # many_to_many(
-    #   :transactions,
-    #   Transaction,
-    #   join_through: "user_transaction",
-    #   on_replace: :delete
-    # )
+    many_to_many(
+      :transactions,
+      Transaction,
+      join_through: "user_transaction",
+      on_replace: :delete
+    )
   end
 
   def registration_changeset(user, params) do

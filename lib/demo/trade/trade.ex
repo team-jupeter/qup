@@ -1,18 +1,18 @@
-defmodule Demo.Trades do
-  @moduledoc """
-  The Trades context.
-  """
+defmodule Demo.Trade do
+
+##
 
   import Ecto.Query, warn: false
   alias Demo.Repo
 
-  alias Demo.Trades.Transaction
+  alias Demo.Trade.Transaction
   alias Demo.Accounts
   alias Demo.Accounts.User
 
   @topic inspect(__MODULE__)
 
   def subscribe do
+    # IO.inspect @topic
     Phoenix.PubSub.subscribe(Demo.PubSub, @topic)
   end
 
@@ -149,5 +149,5 @@ defmodule Demo.Trades do
         error
     end
   end
-
 end
+

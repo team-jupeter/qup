@@ -49,7 +49,8 @@ defmodule Demo.Mixfile do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:nimble_strftime, ">= 0.0.0"},
-      {:pbkdf2_elixir, "~> 1.0"}
+      {:pbkdf2_elixir, "~> 1.0"},
+      {:phoenix_pubsub_redis, "~> 2.1.0"},
     ]
   end
 

@@ -8,7 +8,14 @@ defmodule Demo.Application do
       Demo.Repo,
       DemoWeb.Telemetry,
       DemoWeb.Endpoint,
-      DemoWeb.Presence
+      DemoWeb.Presence,
+      %{
+        id: Phoenix.PubSub.Redis,
+        start: {Phoenix.PubSub.Redis, :start_link, [:aviation, [
+          pool_size: 1,
+          node_name: "name"
+        ]]}
+      },
     ]
 
     opts = [strategy: :one_for_one, name: Demo.Supervisor]

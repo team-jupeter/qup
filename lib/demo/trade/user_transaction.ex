@@ -1,4 +1,4 @@
-defmodule Demo.Trades.UserTransaction do
+defmodule Demo.Trade.UserTransaction do
   @moduledoc """
   UserTransaction module
   """
@@ -7,7 +7,7 @@ defmodule Demo.Trades.UserTransaction do
   import Ecto.Changeset
 
   alias Demo.Accounts.User
-  alias Demo.Trades.Transaction
+  alias Demo.Trade.Transaction
 
   @already_exists "ALREADY_EXISTS"
 
@@ -32,5 +32,5 @@ defmodule Demo.Trades.UserTransaction do
     )
   end
 
-  
+
 end

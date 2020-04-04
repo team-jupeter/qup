@@ -1,14 +1,14 @@
-defmodule DemoWeb.UserLive.Index do
+defmodule DemoWeb.Trade.Index do
   use Phoenix.LiveView
 
-  alias Demo.Accounts
-  alias DemoWeb.UserView
+  alias Demo.Trade
+  alias DemoWeb.TradeView
   alias DemoWeb.Router.Helpers, as: Routes
 
-  def render(assigns), do: UserView.render("index.html", assigns)
+  def render(assigns), do: TradeView.render("index.html", assigns)
 
   def mount(_params, _session, socket) do
-    
+
     {:ok, assign(socket, page: 1, per_page: 5)}
   end
 
@@ -19,11 +19,11 @@ defmodule DemoWeb.UserLive.Index do
 
   defp fetch(socket) do
     %{page: page, per_page: per_page} = socket.assigns
-    users = Accounts.list_users(page, per_page)
-    assign(socket, users: users, page_title: "Listing Users – Page #{page}")
+    transactions = Trade.list_transactions(page, per_page)
+    assign(socket, transactions: transactions, page_title: "Listing transactions – Page #{page}")
   end
 
-  def handle_info({Accounts, [:user | _], _}, socket) do
+  def handle_info({Trade, [:transaction | _], _}, socket) do
     {:noreply, fetch(socket)}
   end
 
@@ -35,9 +35,9 @@ defmodule DemoWeb.UserLive.Index do
   end
   def handle_event("keydown", _, socket), do: {:noreply, socket}
 
-  def handle_event("delete_user", %{"id" => id}, socket) do
-    user = Accounts.get_user!(id)
-    {:ok, _user} = Accounts.delete_user(user)
+  def handle_event("delete_transaction", %{"id" => id}, socket) do
+    transaction = Trade.get_transaction!(id)
+    {:ok, _transaction} = Trade.delete_transaction(transaction)
 
     {:noreply, socket}
   end

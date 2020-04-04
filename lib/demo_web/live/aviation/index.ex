@@ -1,14 +1,14 @@
-defmodule DemoWeb.UserLive.Index do
+defmodule DemoWeb.Aviation.Index do
   use Phoenix.LiveView
 
   alias Demo.Accounts
-  alias DemoWeb.UserView
+  alias DemoWeb.AviationView
   alias DemoWeb.Router.Helpers, as: Routes
 
-  def render(assigns), do: UserView.render("index.html", assigns)
+  def render(assigns), do: AviationView.render("index.html", assigns)
 
   def mount(_params, _session, socket) do
-    
+
     {:ok, assign(socket, page: 1, per_page: 5)}
   end
 

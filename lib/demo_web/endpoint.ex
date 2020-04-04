@@ -3,7 +3,7 @@ defmodule DemoWeb.Endpoint do
 
   @session_options [
     store: :cookie,
-    key: "_demo_key",
+    key: "_demo_key", 
     signing_salt: "3YGvy8FF"
   ]
 
