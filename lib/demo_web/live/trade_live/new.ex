@@ -1,12 +1,15 @@
-defmodule DemoWeb.Trade.New do
+defmodule DemoWeb.TradeLive.New do
   use Phoenix.LiveView
 
-  alias DemoWeb.Trade
+  alias DemoWeb.TradeLive
   alias DemoWeb.Router.Helpers, as: Routes
   alias Demo.Trade
   alias Demo.Trade.Transaction
 
   def mount(_params, _session, socket) do
+    IO.puts "Transaction.mount"
+    IO.inspect socket
+
     changeset = Trade.change_transaction(%Transaction{})
     {:ok, assign(socket, changeset: changeset)}
   end
@@ -23,6 +26,10 @@ defmodule DemoWeb.Trade.New do
   end
 
   def handle_event("save", %{"transaction" => transaction_params}, socket) do
+    IO.puts "save called"
+    IO.inspect transaction_params
+    IO.inspect socket
+
     case Trade.create_transaction(transaction_params) do
       {:ok, transaction} ->
         {:noreply,

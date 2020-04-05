@@ -9,8 +9,11 @@ defmodule Demo.Application do
       DemoWeb.Telemetry,
       DemoWeb.Endpoint,
       DemoWeb.Presence,
+      
+      # start: {Phoenix.PubSub.PG2, :start_link, [:aviation, []]}
       %{
         id: Phoenix.PubSub.Redis,
+
         start: {Phoenix.PubSub.Redis, :start_link, [:aviation, [
           pool_size: 1,
           node_name: "name"

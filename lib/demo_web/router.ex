@@ -34,20 +34,19 @@ defmodule DemoWeb.Router do
     live "/users/new", UserLive.New
     live "/users/:id", UserLive.Show
     live "/users/:id/edit", UserLive.Edit
- 
-    live "/trade/page/:page", Trade.Index
-    live "/trade", Trade.Index
-    live "/trade-auto-scroll", Trade.IndexAutoScroll
-    live "/trade/new", Trade.New
-    live "/trade/:id", Trade.Show
-    live "/trade/:id/edit", Trade.Edit
 
-    # live "/aviation/page/:page", Aviation.Index
-    # live "/aviation", Aviation.Index
-    # live "/aviation-auto-scroll", Aviation.IndexAutoScroll
-    # live "/aviation/new", Aviation.New
-    # live "/aviation/:id", Aviation.Show
-    # live "/aviation/:id/edit", Aviation.Edit
+    live "/trades/page/:page", TradeLive.Index
+    live "/trades", TradeLive.Index
+    live "/trades-auto-scroll", TradeLive.IndexAutoScroll
+    live "/trades/new", TradeLive.New
+    live "/trades/:id", TradeLive.Show
+
+    live "/aviation/page/:page", Aviation.Index
+    live "/aviation", Aviation.Index
+    live "/aviation-auto-scroll", Aviation.IndexAutoScroll
+    live "/aviation/new", Aviation.New
+    live "/aviation/:id", Aviation.Show
+    live "/aviation/:id/edit", Aviation.Edit
 
     # If enabling the LiveDashboard in prod,
     # put it behind proper authentication.

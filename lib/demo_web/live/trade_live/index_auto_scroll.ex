@@ -41,7 +41,7 @@ defmodule DemoWeb.Trade.Row do
   end
 end
 
-defmodule DemoWeb.Trade.IndexAutoScroll do
+defmodule DemoWeb.TradeLive.IndexAutoScroll do
   use Phoenix.LiveView
 
   alias DemoWeb.Trade.Row

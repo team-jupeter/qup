@@ -15,6 +15,7 @@ defmodule Demo.Accounts.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
+    field :balance, :integer
 
     timestamps()
 

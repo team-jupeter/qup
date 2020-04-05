@@ -1,4 +1,4 @@
-defmodule DemoWeb.Trade.Index do
+defmodule DemoWeb.TradeLive.Index do
   use Phoenix.LiveView
 
   alias Demo.Trade
@@ -35,12 +35,12 @@ defmodule DemoWeb.Trade.Index do
   end
   def handle_event("keydown", _, socket), do: {:noreply, socket}
 
-  def handle_event("delete_transaction", %{"id" => id}, socket) do
-    transaction = Trade.get_transaction!(id)
-    {:ok, _transaction} = Trade.delete_transaction(transaction)
+  # def handle_event("delete_transaction", %{"id" => id}, socket) do
+  #   transaction = Trade.get_transaction!(id)
+  #   {:ok, _transaction} = Trade.delete_transaction(transaction)
 
-    {:noreply, socket}
-  end
+  #   {:noreply, socket}
+  # end
 
   defp go_page(socket, page) when page > 0 do
     push_patch(socket, to: Routes.live_path(socket, __MODULE__, page))

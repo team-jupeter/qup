@@ -8,6 +8,7 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add(:email, :string)
       add(:phone_number, :string)
       add(:password_hash, :string)
+      add(:balance, :integer)
 
       timestamps()
     end

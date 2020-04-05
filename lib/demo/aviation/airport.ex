@@ -2,8 +2,8 @@
 defmodule Demo.Airport do
   use GenServer
   # Interface or Client
-  @pubsub_name :aviation # pubsub process pid
-  @pubsub_topic "traffic"
+  # @pubsub_name :aviation # pubsub process pid
+  # @pubsub_topic "traffic"
 
   def start_link() do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
@@ -17,7 +17,8 @@ defmodule Demo.Airport do
 
   # end
   def init(_) do
-    Phoenix.PubSub.subscribe(@pubsub_name, @pubsub_topic)
+    # IO.inspect @pubsub_name # :aviation
+    Phoenix.PubSub.subscribe(:aviation, "traffic")
     {:ok, %{}}
   end
 
