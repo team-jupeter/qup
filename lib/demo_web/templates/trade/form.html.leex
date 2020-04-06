@@ -1,8 +1,5 @@
 <%= f = form_for @changeset, "#", [phx_change: :validate, phx_submit: :save, phx_hook: "SavedForm"] %>
 
-  <%= label f, :product %>
-  <%= text_input f, :product %>
-  <%= error_tag f, :product %>
 
   <%= label f, :price %>
   <%= text_input f, :price %>
@@ -16,6 +13,10 @@
   <%= text_input f, :seller %>
   <%= error_tag f, :seller %>
 
+  <%= label f, :product %>
+  <%= text_input f, :product %>
+  <%= error_tag f, :product %>
+  
   <%= label f, :where %>
   <%= text_input f, :where %>
   <%= error_tag f, :where %>

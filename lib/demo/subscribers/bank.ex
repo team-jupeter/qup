@@ -3,11 +3,12 @@ defmodule Demo.Bank do
   alias Demo.Repo
 
   alias Demo.Accounts.User
-  alias Demo.Trade.Transaction
+  # alias Demo.Trade.Transaction
 
   @topic inspect(__MODULE__)
 
   def subscribe(transaction_id) do
+    Phoenix.PubSub.subscribe(Demo.PubSub, @topic)
     Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{transaction_id}")
   end
 

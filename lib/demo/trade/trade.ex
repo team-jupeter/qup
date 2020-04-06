@@ -5,7 +5,7 @@ defmodule Demo.Trade do
   import Ecto.Query, warn: false
   alias Demo.Repo
 
-  alias Demo.Trade
+  # alias Demo.Trade
   alias Demo.Trade.Transaction
   # alias Demo.Accounts
   # alias Demo.Accounts.User

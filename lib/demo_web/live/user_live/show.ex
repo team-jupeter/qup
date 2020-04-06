@@ -1,6 +1,6 @@
 defmodule DemoWeb.UserLive.Show do
   use Phoenix.LiveView
-  use Phoenix.HTML 
+  use Phoenix.HTML
 
   alias DemoWeb.UserLive
   alias DemoWeb.Router.Helpers, as: Routes
@@ -11,10 +11,10 @@ defmodule DemoWeb.UserLive.Show do
     ~L"""
     <h2>Show User</h2>
     <ul>
+      <li><b>Type:</b> <%= @user.type %></li>
       <li><b>Name:</b> <%= @user.name %></li>
-      <li><b>Username:</b> <%= @user.username %></li>
       <li><b>Email:</b> <%= @user.email %></li>
-      <li><b>Phone:</b> <%= @user.phone_number %></li>
+      <li><b>Balance:</b> <%= @user.balance %></li>
     </ul>
     <span><%= link "Edit", to: Routes.live_path(@socket, UserLive.Edit, @user) %></span>
     <span><%= link "Back", to: Routes.live_path(@socket, UserLive.Index) %></span>
@@ -22,8 +22,8 @@ defmodule DemoWeb.UserLive.Show do
   end
 
   def mount(_params, _session, socket) do
-    IO.inspect "socket"
-    IO.inspect socket
+    # IO.inspect "socket"
+    # IO.inspect socket
     {:ok, socket}
   end
 
@@ -33,6 +33,7 @@ defmodule DemoWeb.UserLive.Show do
   end
 
   defp fetch(%Socket{assigns: %{id: id}} = socket) do
+    IO.inspect Accounts.get_user!(id)
     assign(socket, user: Accounts.get_user!(id))
   end
 

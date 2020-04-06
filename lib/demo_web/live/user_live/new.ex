@@ -9,9 +9,9 @@ defmodule DemoWeb.UserLive.New do
   def mount(_params, _session, socket) do
     changeset = Accounts.change_user(%User{})
     {:ok, assign(socket, changeset: changeset)}
-  end 
+  end
 
-  def render(assigns), do: Phoenix.View.render(DemoWeb.UserView, "new.html", assigns)
+  def render(assigns), do: Phoenix.View.render(DemoWeb.UserLiveView, "new.html", assigns)
 
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset =

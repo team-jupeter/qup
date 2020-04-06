@@ -18,7 +18,7 @@ defmodule DemoWeb.UserLive.Edit do
      })}
   end
 
-  def render(assigns), do: DemoWeb.UserView.render("edit.html", assigns)
+  def render(assigns), do: DemoWeb.UserLiveView.render("edit.html", assigns)
 
   def handle_event("validate", %{"user" => params}, socket) do
     changeset =

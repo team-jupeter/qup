@@ -3,10 +3,10 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
 
   def change do
     create table(:transactions) do
+      add :product, :string
+      add :price, :string
       add :buyer, :string
       add :seller, :string
-      add :price, :string
-      add :product, :string
       add :where, :string
 
       add :buyer_id, references(:users)

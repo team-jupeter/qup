@@ -2,7 +2,7 @@
 
 <%= form_for @conn, Routes.session_path(@conn, :create), [as: :session], fn f -> %>
   <div>
-    <%= text_input f, :username, placeholder: "Username" %>
+    <%= text_input f, :email, placeholder: "Email" %>
   </div>
   <div> 
     <%= password_input f, :password, placeholder: "Password" %>

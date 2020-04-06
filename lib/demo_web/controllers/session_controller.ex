@@ -5,8 +5,9 @@ defmodule DemoWeb.SessionController do
     render(conn, "new.html")
   end
 
-  def create(conn, %{"session" => %{"username" => username, "password" => pass}}) do
-    case Demo.Accounts.authenticate_by_username_and_pass(username, pass) do
+  def create(conn, %{"session" => %{"email" => email, "password" => pass}}) do
+    # IO.inspect conn
+    case Demo.Accounts.authenticate_by_email_and_pass(email, pass) do
       {:ok, user} ->
         conn
         |> DemoWeb.Auth.login(user)
@@ -15,12 +16,13 @@ defmodule DemoWeb.SessionController do
 
       {:error, _reason} ->
         conn
-        |> put_flash(:error, "Invalid username/password combination")
+        |> put_flash(:error, "Invalid email/password combination")
         |> render("new.html")
-    end 
+    end
   end
 
   def delete(conn, _) do
+    # IO.inspect conn
     conn
     |> DemoWeb.Auth.logout()
     |> redirect(to: Routes.page_path(conn, :index))

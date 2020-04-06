@@ -7,6 +7,7 @@ defmodule Demo.Accounts do
   alias Demo.Repo
 
   alias Demo.Accounts.User
+  alias Demo.Trade.Transaction
 
   @topic inspect(__MODULE__)
 
@@ -58,8 +59,8 @@ defmodule Demo.Accounts do
 
   def get_user_by(params), do: Repo.get_by(User, params)
 
-  def authenticate_by_username_and_pass(username, given_pass) do
-    user = get_user_by(username: username)
+  def authenticate_by_email_and_pass(email, given_pass) do
+    user = get_user_by(email: email)
 
     cond do
       user && Pbkdf2.verify_pass(given_pass, user.password_hash) ->
@@ -73,6 +74,7 @@ defmodule Demo.Accounts do
         {:error, :not_found}
     end
   end
+
   @doc """
   Creates a user.
 
@@ -126,6 +128,8 @@ defmodule Demo.Accounts do
 
   """
   def delete_user(%User{} = user) do
+    # IO.puts "delete_user"
+    # IO.inspect user
     user
     |> Repo.delete()
     |> notify_subscribers([:user, :deleted])
@@ -154,8 +158,27 @@ defmodule Demo.Accounts do
     |> Repo.insert()
   end
 
+  def upsert_user_transactions(user, transaction_ids) when is_list(transaction_ids) do
+    transactions =
+      Transaction
+      |> where([transaction], transaction.id in ^transaction_ids)
+      |> Repo.all()
+
+    with {:ok, _struct} <-
+           user
+           |> User.changeset_update_transactions(transactions)
+           |> Repo.update() do
+      {:ok, get_user(user.id)}
+    else
+      error ->
+        error
+    end
+  end
 
   defp notify_subscribers({:ok, result}, event) do
+    # IO.puts "notify_subscribers"
+    # IO.inspect result
+    # IO.inspect event
     Phoenix.PubSub.broadcast(Demo.PubSub, @topic, {__MODULE__, event, result})
     Phoenix.PubSub.broadcast(Demo.PubSub, @topic <> "#{result.id}", {__MODULE__, event, result})
     {:ok, result}

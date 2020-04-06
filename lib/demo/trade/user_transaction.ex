@@ -12,7 +12,7 @@ defmodule Demo.Trade.UserTransaction do
   @already_exists "ALREADY_EXISTS"
 
   @primary_key false
-  schema "user_transaction" do
+  schema "user_transactions" do
     belongs_to(:user, User, primary_key: true)
     belongs_to(:transaction, Transaction, primary_key: true)
 

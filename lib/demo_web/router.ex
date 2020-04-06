@@ -22,18 +22,18 @@ defmodule DemoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    # resources "/users", UserController, only: [:index, :show, :new, :create]
+    resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
 
     live "/presence_users/:name", UserLive.PresenceIndex
 
-    live "/users/page/:page", UserLive.Index
-    live "/users", UserLive.Index
-    live "/users-scroll", UserLive.IndexManualScroll
-    live "/users-auto-scroll", UserLive.IndexAutoScroll
-    live "/users/new", UserLive.New
-    live "/users/:id", UserLive.Show
-    live "/users/:id/edit", UserLive.Edit
+    live "/users-live/page/:page", UserLive.Index
+    live "/users-live", UserLive.Index
+    live "/users-live-scroll", UserLive.IndexManualScroll
+    live "/users-live-auto-scroll", UserLive.IndexAutoScroll
+    live "/users-live/new", UserLive.New
+    live "/users-live/:id", UserLive.Show
+    live "/users-live/:id/edit", UserLive.Edit
 
     live "/trades/page/:page", TradeLive.Index
     live "/trades", TradeLive.Index

@@ -3,7 +3,7 @@
     <tr>
       <th>Username</th>
       <th>Email</th>
-      <th>Phone #</th>
+      <th>Bank Balance #</th>
 
       <th></th>
     </tr>
@@ -13,7 +13,7 @@
     <tr>
       <td><%= user.username %></td>
       <td><%= user.email %></td>
-      <td><%= user.phone_number %></td>
+      <td><%= user.balance %></td>
 
       <td>
         <%= link "Show", to: Routes.live_path(@socket, UserLive.Show, user) %>

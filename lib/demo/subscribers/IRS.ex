@@ -7,8 +7,9 @@ defmodule Demo.IRS do
 
   @topic inspect(__MODULE__)
 
-  def subscribe(user_id) do
-    Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{user_id}")
+  def subscribe(transaction_id) do
+    Phoenix.PubSub.subscribe(Demo.PubSub, @topic)
+    Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{transaction_id}")
   end
 
   def update_user(%User{} = user, attrs) do

@@ -2,7 +2,7 @@ defmodule Demo.Repo.Migrations.CreateUserTransactions do
   use Ecto.Migration
 
   def change do
-    create table(:user_transaction, primary_key: false) do
+    create table(:user_transactions, primary_key: false) do
       add(:transaction_id, references(:transactions, on_delete: :delete_all), primary_key: true)
       add(:user_id, references(:users, on_delete: :delete_all), primary_key: true)
       timestamps()

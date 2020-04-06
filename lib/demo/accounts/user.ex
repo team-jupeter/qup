@@ -2,16 +2,14 @@ defmodule Demo.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.Trade.Transaction
-  # alias Demo.Trades.Transaction
 
-  @required_fields [:name, :username, :email, :phone_number]
+  @required_fields [:name, :email, :email, :phone_number]
 
   schema "users" do
     # add user_type
+    field :type, :string
     field :name, :string
-    field :username, :string
     field :email, :string
-    field :phone_number, :string
     field :password, :string, virtual: true
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
@@ -48,22 +46,22 @@ defmodule Demo.Accounts.User do
 
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :username])
-    |> validate_required([:name, :username])
-    |> validate_length(:username, min: 1, max: 20)
+    |> cast(attrs, [:type, :name, :email, :balance])
+    |> validate_required([:name, :email])
+    |> validate_format(:email, ~r/@/)
   end
   # @phone ~r/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/
 
   # @doc false
   # def changeset(user, attrs) do
   #   user
-  #   |> cast(attrs, [:username, :email, :phone_number, :password])
-    # |> validate_required([:username, :email, :phone_number])
+  #   |> cast(attrs, [:email, :email, :phone_number, :password])
+    # |> validate_required([:email, :email, :phone_number])
     # |> validate_confirmation(:password)
-    # |> validate_format(:username, ~r/^[a-zA-Z0-9_]*$/,
+    # |> validate_format(:email, ~r/^[a-zA-Z0-9_]*$/,
     #   message: "only letters, numbers, and underscores please"
     # )
-    # |> validate_length(:username, max: 12)
+    # |> validate_length(:email, max: 12)
     # |> validate_format(:email, ~r/.+@.+/, message: "must be a valid email address")
     # |> validate_format(:phone_number, @phone, message: "must be a valid number")
     # |> unique_constraint(:email)
