@@ -12,6 +12,8 @@ defmodule Demo.Trade do
 
   @topic inspect(__MODULE__)
 
+
+
   def subscribe do
     # IO.inspect @topic
     Phoenix.PubSub.subscribe(Demo.PubSub, @topic)
@@ -20,6 +22,10 @@ defmodule Demo.Trade do
   def subscribe(transaction_id) do
     Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{transaction_id}")
   end
+  # def subscribe(transaction_id, listener) do
+
+  #   Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{transaction_id}")
+  # end
 
 
   def list_transactions(current_page, per_page) do
@@ -36,7 +42,7 @@ defmodule Demo.Trade do
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
   def create_transaction(attrs \\ %{}) do
-    IO.puts "create_transaction"
+    IO.puts "Demo.Trade.create_transaction"
     IO.puts "attrs"
     IO.inspect attrs
 
@@ -52,6 +58,9 @@ defmodule Demo.Trade do
   end
 
   defp notify_subscribers({:ok, result}, event) do
+    IO.puts "Demo.Trade.notify_subscribers"
+    IO.inspect result
+
     Phoenix.PubSub.broadcast(Demo.PubSub, @topic, {__MODULE__, event, result})
     Phoenix.PubSub.broadcast(Demo.PubSub, @topic <> "#{result.id}", {__MODULE__, event, result})
     {:ok, result}

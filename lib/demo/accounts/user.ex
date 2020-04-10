@@ -9,18 +9,24 @@ defmodule Demo.Accounts.User do
     # add user_type
     field :type, :string
     field :name, :string
-    field :email, :string
+    field :email, :string # unique id of a human being
     field :password, :string, virtual: true
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
     field :balance, :integer
 
-    timestamps()
+    field :fingerprint, :string
+    field :face, :string
+    field :weight, :string
+    field :height, :string
 
+    timestamps()
+    
+    has_one :passengers, Demo.Airport.Passenger
     many_to_many(
       :transactions,
       Transaction,
-      join_through: "user_transaction",
+      join_through: "user_transactions",
       on_replace: :delete
     )
   end

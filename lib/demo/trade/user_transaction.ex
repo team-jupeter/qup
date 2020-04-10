@@ -18,7 +18,7 @@ defmodule Demo.Trade.UserTransaction do
 
     timestamps()
   end
-
+ 
   @required_fields ~w(user_id transaction_id)a
   def changeset(user_transaction, params \\ %{}) do
     user_transaction

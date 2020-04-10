@@ -9,6 +9,11 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add(:password_hash, :string)
       add(:balance, :integer)
 
+      add :fingerprint, :boolean
+      add :face, :boolean
+      add :weight, :boolean
+      add :height, :boolean
+
       timestamps()
     end
 

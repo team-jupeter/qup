@@ -3,6 +3,8 @@
 <table phx-keydown-window="keydown" phx-throttle="500">
   <thead>
     <tr>
+      <th>ID</th>
+      <th>Type</th>
       <th>Username</th>
       <th>Email</th>
       <th>Bank Balance</th>
@@ -13,6 +15,8 @@
   <tbody>
 <%= for user <- @users do %>
     <tr>
+      <td><%= user.id %></td>
+      <td><%= user.type %></td>
       <td><%= user.name %></td>
       <td><%= user.email %></td>
       <td><%= user.balance %></td>

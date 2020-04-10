@@ -53,7 +53,6 @@ defmodule DemoWeb.Router do
     live_dashboard "/dashboard", metrics: DemoWeb.Telemetry
   end
 
-
   # scope "/", DemoWeb do
   #   pipe_through [:browser, :bare]
 

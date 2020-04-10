@@ -19,7 +19,7 @@ defmodule Demo.Trade.Transaction do
     many_to_many(
       :users,
       User,
-      join_through: "user_transaction",
+      join_through: "user_transactions",
       on_replace: :delete
     )
 

@@ -9,28 +9,29 @@
 
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+# user_list = ["jupeter", "superman", "batman", "xman", "joker"]
 
-for i <- 1..10 do
-  {:ok, _} =
-    Demo.Accounts.create_user(%{
-      type: "Human",
-      name: "Jupeter#{i}",
-      email: "jupeter#{i}@jejudo.kr",
-      password: "password",
-      balance: 100 * i,
-    })
-end
+# for i <- user_list do
+#   {:ok, _} =
+#     Demo.Accounts.create_user(%{
+#       type: "Human",
+#       name: "#{i}",
+#       email: "#{i}@jejudo.kr",
+#       password: "password",
+#       balance: Enum.random(1_000..10_000),
+#     })
+# end
 
-for i <- 1..10 do
-  {:ok, _} =
-    Demo.Trade.create_transaction(%{
-      product: "product#{i}",
-      price: "#{i * 10}",
-      buyer: "buyer #{i}",
-      seller: "seller #{i}",
-      where: "dummy place",
-      buyer_id: "Jupeter#{i}",
-      seller_id: "Superman#{10 - i}",
-    })
-end
+# for i <- user_list do
+#   {:ok, _} =
+#     Demo.Trade.create_transaction(%{
+#       product: "product#{i}",
+#       price: 1000,
+#       buyer: "#{i}",
+#       seller: "#{i+1}",
+#       where: "dummy place",
+#       buyer_id: "Jupeter#{i}",
+#       seller_id: "Superman#{10 - i}",
+#     })
+# end
 

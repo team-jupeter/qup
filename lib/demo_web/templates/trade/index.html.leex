@@ -8,7 +8,6 @@
       <th>Seller</th>
       <th>Buyer</th>
       <th>Where</th>
-      <th>Balance</th>
 
       <th></th>
     </tr>
@@ -21,10 +20,9 @@
       <td><%= transaction.seller %></td>
       <td><%= transaction.buyer %></td>
       <td><%= transaction.where %></td>
-      <td><%= transaction.balance %></td>
 
       <td>
-        <%= link "Show", to: Routes.live_path(@socket, Trade.Show, transaction) %>
+        <%= link "Show", to: Routes.live_path(@socket, TradeLive.Show, transaction) %>
       </td>
     </tr>
 <% end %>

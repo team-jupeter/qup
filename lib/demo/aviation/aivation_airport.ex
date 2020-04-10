@@ -1,5 +1,5 @@
 # PubSub 1
-defmodule Demo.Airport do
+defmodule Demo.Aviation.Airport do
   use GenServer
   # Interface or Client
   # @pubsub_name :aviation # pubsub process pid

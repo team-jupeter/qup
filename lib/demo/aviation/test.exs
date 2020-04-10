@@ -1,32 +1,36 @@
 iex -S mix
-Demo.Airport.start_link()
-Demo.Airport.get()
+alias Demo.Aviation
+alias Demo.Aviation.Airport
 
-Demo.Aviation.arrive("Jeju_airport", "Asiana", 214)
-Demo.Aviation.arrive("Gwangju_airport", "KAL", 114)
-Demo.Airport.get()
-Demo.Aviation.depart("Gwangju_airport", "Air_Busan", 114)
-Demo.Airport.get()
+
+Airport.start_link()
+Airport.get()
+
+Aviation.arrive("Jeju_airport", "Asiana", 214)
+Aviation.arrive("Gwangju_airport", "KAL", 114)
+Airport.get()
+Aviation.depart("Gwangju_airport", "Air_Busan", 114)
+Airport.get()
 
 
 # Terminal 1
 
 $ iex --sname incheon_airport@localhost -S mix
-Demo.Airport.start_link()
-Demo.Airport.get()
+Airport.start_link()
+Airport.get()
 
 
 
 # Terminal 2
 
 $ iex --sname jeju_airport@localhost -S mix
-Demo.Airport.start_link()
-Demo.Airport.get()
+Airport.start_link()
+Airport.get()
 Node.connect(:incheon_airport@localhost)
 
-Demo.Airport.start_link()
-Demo.Airport.get()
-Demo.Aviation.arrive("Gwangju_airport", "KAL", 100)
+Airport.start_link()
+Airport.get()
+Aviation.arrive("Gwangju_airport", "KAL", 100)
 
 
 # Terminal 1
