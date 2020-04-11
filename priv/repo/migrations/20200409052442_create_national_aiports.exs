@@ -9,6 +9,6 @@ defmodule Demo.Repo.Migrations.NationalAiport do
       add :nation_id, references(:nations)
     end
 
-    create unique_index(:national_airports, [:airport_id])
+    create unique_index(:national_airports, [:nation_id])
   end
 end

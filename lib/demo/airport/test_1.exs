@@ -22,14 +22,12 @@ korea = %Nation{name: "South Korea"}
 korea = Repo.insert!(korea)
 
 korea_airports_corporation = %NationalAirport{name: "Korea Airports Corporation"}
-# korea_airports_corporation = Repo.insert!(korea_airports_corporation)
 
 korea_airports_corporation = Ecto.build_assoc(korea, :national_airport, korea_airports_corporation)
 korea_airports_corporation = Ecto.build_assoc(airport, :national_airport, korea_airports_corporation)
 Repo.insert!(korea_airports_corporation)
 
 
-# many to many
 airline = %Airline{name: "Asiana"}
 airline = Repo.insert!(airline)
 
@@ -44,3 +42,12 @@ Repo.update!(airport_airlines_changeset)
 
 changeset = airport_changeset |> Ecto.Changeset.put_assoc(:airlines, [%{name: "Asiana Airlines"}])
 Repo.update!(changeset)
+
+# ## Query
+# Repo.get(Airport, 1)
+# Repo.get_by(Airport, name: "Incheon Airport")
+# Repo.get_by(Airport, tagline: "Something about airports ...")
+
+# import Ecto.Query
+# query = from(Airport)
+# Repo.all(query)
