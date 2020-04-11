@@ -1,3 +1,4 @@
+# 아시아나, 대한항공, 에어부산, 제주항공, 에어아시아....
 defmodule Demo.Airport.Airline do
   use Ecto.Schema
 

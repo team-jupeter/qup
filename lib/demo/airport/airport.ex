@@ -1,3 +1,4 @@
+# 인천공항, 제주공항, 간사이공항, 수두공항...
 defmodule Demo.Airport do
   use Ecto.Schema
 

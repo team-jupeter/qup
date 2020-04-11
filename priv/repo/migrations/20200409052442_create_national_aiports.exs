@@ -1,4 +1,4 @@
-defmodule Demo.Repo.Migrations.NationalAiports do
+defmodule Demo.Repo.Migrations.NationalAiport do
   use Ecto.Migration
 
   def change do
@@ -6,7 +6,7 @@ defmodule Demo.Repo.Migrations.NationalAiports do
       add :name, :string
 
       add :airport_id, references(:airports)
-      # add :nation_id, references(:nations)
+      add :nation_id, references(:nations)
     end
 
     create unique_index(:national_airports, [:airport_id])

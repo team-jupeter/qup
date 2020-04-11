@@ -13,6 +13,7 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add :face, :boolean
       add :weight, :boolean
       add :height, :boolean
+      add :user_id, references(:users)
 
       timestamps()
     end

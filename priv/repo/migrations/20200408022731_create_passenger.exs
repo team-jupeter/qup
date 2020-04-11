@@ -27,9 +27,9 @@ defmodule Demo.Repo.Migrations.CreatePassenger do
       add :check_height, :boolean, default: false
       # add :check_interpol, :boolean, default: false
 
-      # add :user_id, references(:users)
       add :airport_id, references(:airports)
-
+      add :user_id, references(:users)
+      
       timestamps()
     end
   end

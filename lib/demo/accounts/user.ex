@@ -15,14 +15,15 @@ defmodule Demo.Accounts.User do
     field :password_confirmation, :string, virtual: true
     field :balance, :integer
 
+    # The values below will be updated everytime they are measured.
     field :fingerprint, :string
     field :face, :string
     field :weight, :string
     field :height, :string
 
     timestamps()
-    
-    has_one :passengers, Demo.Airport.Passenger
+
+    has_one :passenger, Demo.Airport.Passenger
     many_to_many(
       :transactions,
       Transaction,

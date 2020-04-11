@@ -30,7 +30,7 @@ defmodule Demo.Airport.Passenger do
     # field :check_interpol, :boolean, default: false
 
     belongs_to :airport, Demo.Airport
-    # has_one :users, Demo.Accounts.User
+    belongs_to :user, Demo.Accounts.User
 
     timestamps()
 
@@ -50,46 +50,46 @@ defmodule Demo.Airport.Passenger do
     # |> validate_format(:boarding_time)
   end
 
-  # @scanned_bio_data [:scanned_fingerprint, :scanned_face, :scanned_weight, :scanned_height]
-  # def scanned_changeset(passsenger, attrs) do
-  #   passsenger
-  #   |> cast(attrs, @scanned_bio_data)
-  #   |> validate_bio_data(@scanned_bio_data)
-  #   |> validate_interpol()
-  # end
+  @scanned_bio_data [:scanned_fingerprint, :scanned_face, :scanned_weight, :scanned_height]
+  def scanned_changeset(passsenger, attrs) do
+    passsenger
+    |> cast(attrs, @scanned_bio_data)
+    |> validate_bio_data(@scanned_bio_data)
+    |> validate_interpol()
+  end
 
-  # def validate_bio_data(passenger, @scanned_bio_data) do
-  #   for i <- @scanned_bio_data do
-  #     if i == "last_" <> "#{i}" do
-  #       i = "last_" <> "#{i}"
-  #       passenger.check_ <> "#{i}"
-  #     else
-  #       # add_error(changeset, passenger.check_ <> "#{i}", "does not match")
-  #     end
-  #   end
-  # end
-  # def validate_interpol(changeset) do
-  #   # write interpol process
-  #   changeset
-  # end
+  def validate_bio_data(passenger, @scanned_bio_data) do
+    for i <- @scanned_bio_data do
+      if i == "last_" <> "#{i}" do
+        i = "last_" <> "#{i}"
+        passenger.check_ <> "#{i}"
+      else
+        # add_error(changeset, passenger.check_ <> "#{i}", "does not match")
+      end
+    end
+  end
+  def validate_interpol(changeset) do
+    # write interpol process
+    changeset
+  end
 
 
 
   # @phone ~r/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/
 
-  # @doc false
+  @doc false
   # def changeset(user, attrs) do
   #   user
   #   |> cast(attrs, [:email, :email, :phone_number, :password])
-    # |> validate_required([:email, :email, :phone_number])
-    # |> validate_confirmation(:password)
-    # |> validate_format(:email, ~r/^[a-zA-Z0-9_]*$/,
-    #   message: "only letters, numbers, and underscores please"
-    # )
-    # |> validate_length(:email, max: 12)
-    # |> validate_format(:email, ~r/.+@.+/, message: "must be a valid email address")
-    # |> validate_format(:phone_number, @phone, message: "must be a valid number")
-    # |> unique_constraint(:email)
+  #   |> validate_required([:email, :email, :phone_number])
+  #   |> validate_confirmation(:password)
+  #   |> validate_format(:email, ~r/^[a-zA-Z0-9_]*$/,
+  #     message: "only letters, numbers, and underscores please"
+  #   )
+  #   |> validate_length(:email, max: 12)
+  #   |> validate_format(:email, ~r/.+@.+/, message: "must be a valid email address")
+  #   |> validate_format(:phone_number, @phone, message: "must be a valid number")
+  #   |> unique_constraint(:email)
   # end
 
 
