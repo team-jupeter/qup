@@ -8,6 +8,7 @@ defmodule Demo.Products.Product do
 
     belongs_to :user, Demo.Accounts.User
     belongs_to :trade, Demo.Trades.Trade
+    belongs_to :seller, Demo.Trades.Seller
 
     timestamps()
   end

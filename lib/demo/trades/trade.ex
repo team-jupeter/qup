@@ -11,6 +11,7 @@ defmodule Demo.Trades.Trade do
     has_one :product, Demo.Products.Product
     has_one :buyer, Demo.Trades.Buyer
     has_one :seller, Demo.Trades.Seller
+
     many_to_many(
       :users,
       User,
@@ -20,6 +21,7 @@ defmodule Demo.Trades.Trade do
 
     timestamps()
   end
+  
   def trade_changeset(user, params) do
     user
     |> changeset(params)

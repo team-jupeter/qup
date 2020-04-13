@@ -1,6 +1,6 @@
 alias Demo.Repo
-alias Demo.Airport
-alias Demo.Airport.{Airline, Passenger, NationalAirport}
+alias Demo.Airports
+alias Demo.Airports.{Airport, Airline, Passenger, NationalAirport}
 alias Demo.Accounts.User
 alias Demo.Nation
 

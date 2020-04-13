@@ -6,6 +6,7 @@ defmodule Demo.Trades.Buyer do
     field :name, :string
 
     belongs_to :user, Demo.Accounts.User
+    belongs_to :trade, Demo.Trades.Trade
 
     timestamps()
   end
