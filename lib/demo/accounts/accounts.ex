@@ -7,7 +7,7 @@ defmodule Demo.Accounts do
   alias Demo.Repo
 
   alias Demo.Accounts.User
-  alias Demo.Trade.Transaction
+  alias Demo.Trades.Trade
 
   @topic inspect(__MODULE__)
 
@@ -158,15 +158,15 @@ defmodule Demo.Accounts do
     |> Repo.insert()
   end
 
-  def upsert_user_transactions(user, transaction_ids) when is_list(transaction_ids) do
-    transactions =
-      Transaction
-      |> where([transaction], transaction.id in ^transaction_ids)
+  def upsert_user_trades(user, trade_ids) when is_list(trade_ids) do
+    trades =
+      Trade
+      |> where([trade], trade.id in ^trade_ids)
       |> Repo.all()
 
     with {:ok, _struct} <-
            user
-           |> User.changeset_update_transactions(transactions)
+           |> User.changeset_update_trades(trades)
            |> Repo.update() do
       {:ok, get_user(user.id)}
     else

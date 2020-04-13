@@ -1,4 +1,4 @@
-<h2>Listing Transactions, page <%= @page %></h2>
+<h2>Listing Trades, page <%= @page %></h2>
 
 <table phx-keydown-window="keydown" phx-throttle="500">
   <thead>
@@ -13,16 +13,16 @@
     </tr>
   </thead>
   <tbody>
-<%= for transaction <- @transactions do %>
+<%= for trade <- @trades do %>
     <tr>
-      <td><%= transaction.product %></td>
-      <td><%= transaction.price %></td>
-      <td><%= transaction.seller %></td>
-      <td><%= transaction.buyer %></td>
-      <td><%= transaction.where %></td>
+      <td><%= trade.product %></td>
+      <td><%= trade.price %></td>
+      <td><%= trade.seller %></td>
+      <td><%= trade.buyer %></td>
+      <td><%= trade.where %></td>
 
       <td>
-        <%= link "Show", to: Routes.live_path(@socket, TradeLive.Show, transaction) %>
+        <%= link "Show", to: Routes.live_path(@socket, TradeLive.Show, trade) %>
       </td>
     </tr>
 <% end %>
@@ -37,4 +37,4 @@
 <% end %>
 <span><%= live_patch "next", to: Routes.live_path(@socket, TradeLive.Index, @page + 1) %></span>
 <br/>
-<span><%= live_redirect "New Transaction (live)", to: Routes.live_path(@socket, TradeLive.New) %></span>
+<span><%= live_redirect "New Trade (live)", to: Routes.live_path(@socket, TradeLive.New) %></span>

@@ -1,7 +1,7 @@
 defmodule Demo.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Demo.Trade.Transaction
+  alias Demo.Trades.Trade
 
   @required_fields [:name, :email, :email, :phone_number]
 
@@ -10,9 +10,12 @@ defmodule Demo.Accounts.User do
     field :type, :string
     field :name, :string
     field :email, :string # unique id of a human being
+
     field :password, :string, virtual: true
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
+
+
     field :balance, :integer
 
     # The values below will be updated everytime they are measured.
@@ -23,11 +26,17 @@ defmodule Demo.Accounts.User do
 
     timestamps()
 
-    has_one :passenger, Demo.Airport.Passenger
+    has_many :buyers, Demo.Trades.Buyer
+    has_many :sellers, Demo.Trades.Seller
+    has_one :passenger, Demo.Airports.Passenger
+    belongs_to :bank, Demo.Banks.Bank
+    belongs_to :tax, Demo.Taxes.Tax
+    belongs_to :nation, Demo.Nation
+
     many_to_many(
-      :transactions,
-      Transaction,
-      join_through: "user_transactions",
+      :trades,
+      Trade,
+      join_through: "users_trades",
       on_replace: :delete
     )
   end
@@ -75,11 +84,11 @@ defmodule Demo.Accounts.User do
   # end
 
 
-  def changeset_update_transactions(user, transactions) do
+  def changeset_update_trades(user, trades) do
     user
     |> cast(%{}, @required_fields)
-    # associate transactions to the user
-    |> put_assoc(:transactions, transactions)
+    # associate trades to the user
+    |> put_assoc(:trades, trades)
   end
 
 end

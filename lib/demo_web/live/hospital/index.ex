@@ -1,7 +1,7 @@
 defmodule DemoWeb.Hospital.Index do
   use Phoenix.LiveView
 
-  alias Demo.Trade
+  alias Demo.Trades
   alias DemoWeb.TradeView
   alias DemoWeb.Router.Helpers, as: Routes
 
@@ -19,11 +19,11 @@ defmodule DemoWeb.Hospital.Index do
 
   defp fetch(socket) do
     %{page: page, per_page: per_page} = socket.assigns
-    transactions = Trade.list_transactions(page, per_page)
-    assign(socket, transactions: transactions, page_title: "Listing transactions – Page #{page}")
+    trades = Trades.list_trades(page, per_page)
+    assign(socket, trades: trades, page_title: "Listing trades – Page #{page}")
   end
 
-  def handle_info({Trade, [:transaction | _], _}, socket) do
+  def handle_info({Trade, [:trade | _], _}, socket) do
     {:noreply, fetch(socket)}
   end
 
@@ -35,9 +35,9 @@ defmodule DemoWeb.Hospital.Index do
   end
   def handle_event("keydown", _, socket), do: {:noreply, socket}
 
-  # def handle_event("delete_transaction", %{"id" => id}, socket) do
-  #   transaction = Trade.get_transaction!(id)
-  #   {:ok, _transaction} = Trade.delete_transaction(transaction)
+  # def handle_event("delete_trade", %{"id" => id}, socket) do
+  #   trade = Trade.get_trade!(id)
+  #   {:ok, _trade} = Trade.delete_trade(trade)
 
   #   {:noreply, socket}
   # end

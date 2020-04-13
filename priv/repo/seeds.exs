@@ -24,7 +24,7 @@
 
 # for i <- user_list do
 #   {:ok, _} =
-#     Demo.Trade.create_transaction(%{
+#     Demo.Trades.create_trade(%{
 #       product: "product#{i}",
 #       price: 1000,
 #       buyer: "#{i}",
