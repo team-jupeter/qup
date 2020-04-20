@@ -35,11 +35,15 @@ defmodule DemoWeb.Router do
     live "/users-live/:id", UserLive.Show
     live "/users-live/:id/edit", UserLive.Edit
 
-    live "/trades/page/:page", TradeLive.Index
-    live "/trades", TradeLive.Index
-    live "/trades-auto-scroll", TradeLive.IndexAutoScroll
-    live "/trades/new", TradeLive.New
-    live "/trades/:id", TradeLive.Show
+    live "/trades-live/page/:page", TradeLive.Index
+    live "/trades-live", TradeLive.Index
+    live "/trades-live-scroll", TradeLive.IndexManualScroll
+    live "/trades-live-auto-scroll", TradeLive.IndexAutoScroll
+    live "/trades-live/new", TradeLive.New
+    live "/trades-live/:id", TradeLive.Show
+    live "/trades-live/:id/edit", TradeLive.Edit
+
+
 
     live "/aviation/page/:page", Aviation.Index
     live "/aviation", Aviation.Index

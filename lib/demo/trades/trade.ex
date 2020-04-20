@@ -4,14 +4,12 @@ defmodule Demo.Trades.Trade do
   alias Demo.Accounts.User
 
   schema "trades" do
-    field :password, :string
-    field :price, :string
+    field :dummy_product, :string
+    field :dummy_buyer, :string
+    field :dummy_seller, :string
 
-
-    has_one :product, Demo.Products.Product
-    has_one :buyer, Demo.Trades.Buyer
-    has_one :seller, Demo.Trades.Seller
-
+    has_many :products, Demo.Products.Product
+    belongs_to :unit_supul, Demo.Supuls.UnitSupul
     many_to_many(
       :users,
       User,
@@ -21,30 +19,16 @@ defmodule Demo.Trades.Trade do
 
     timestamps()
   end
-  
-  def trade_changeset(user, params) do
-    user
-    |> changeset(params)
-    |> cast(params, [:password])
-    |> validate_required([:password])
-    |> validate_length(:password, min: 2, max: 100)
-    |> put_pass_hash()
+
+  def trade_changeset(trade, attrs) do
+    trade
+    |> cast(attrs, [:dummy_product, :dummy_buyer, :dummy_seller])
+    |> validate_required([:dummy_product])
   end
 
-  defp put_pass_hash(changeset) do
-    case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
-        put_change(changeset, :password_hash, Pbkdf2.hash_pwd_salt(pass))
-
-      _ ->
-        changeset
-    end
-  end
-  @doc false
   def changeset(trade, attrs) do
     trade
-    |> cast(attrs, [:price])
-    |> validate_required([:buyer, :seller, :price, :product])
-    |> validate_required(["Asina", "KAL", "JAL", "Dungfang", "Fedex"])
+    |> cast(attrs, [:dummy_product, :dummy_buyer, :dummy_seller])
+    |> validate_required([:dummy_product])
   end
 end

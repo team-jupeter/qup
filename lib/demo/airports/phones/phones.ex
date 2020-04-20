@@ -1,4 +1,4 @@
-defmodule Demo.Phones do
+defmodule Demo.Airports.Phones do
   @moduledoc """
   The Sphones context.
   """
@@ -6,7 +6,7 @@ defmodule Demo.Phones do
   import Ecto.Query, warn: false
   alias Demo.Repo
 
-  alias Demo.Phones.Phone
+  alias Demo.Airports.Phones.Phone
 
   @doc """
   Returns the list of sphones.

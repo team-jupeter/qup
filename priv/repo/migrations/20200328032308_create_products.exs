@@ -3,12 +3,16 @@ defmodule Demo.Repo.Migrations.CreateProducts do
 
   def change do
     create table(:products) do
-      add :name, :string
+      add :state, :string
       add :category, :string
+      add :name, :string
+      add :base_price, :integer
+      add :discount, :integer
+      add :ownership_history, :string
+      add :remark, :string
 
-      add :user_id, references(:users)
       add :trade_id, references(:trades)
-      add :seller_id, references(:sellers)
+      add :user_id, references(:users)
 
       timestamps()
     end

@@ -1,6 +1,7 @@
 alias Demo.Repo
-alias Demo.Airport
-alias Demo.Airport.{Airline, Passenger, NationalAirport}
+alias Demo.Airports
+alias Demo.Airports.{Airport, Airline, Passenger, NationalAirport, Phones}
+alias Demo.Airports.Phones.Phone
 alias Demo.Accounts.User
 alias Demo.Nation
 
@@ -8,6 +9,7 @@ user2 = %User{name: "User Superman"}
 user3 = %User{name: "User Batman"}
 user4 = %User{name: "User Xman"}
 user5 = %User{name: "User Joker"}
+
 user_2 = Repo.insert!(user2)
 user_3 = Repo.insert!(user3)
 user_4 = Repo.insert!(user4)
@@ -17,53 +19,85 @@ passenger2 = %Passenger{name: "Passenger Superman"}
 passenger3 = %Passenger{name: "Passenger Batman"}
 passenger4 = %Passenger{name: "Passenger Xman"}
 passenger5 = %Passenger{name: "Passenger Joker"}
-passenger_2 = Ecto.build_assoc(user_2, :passenger, passenger2)
-passenger_3 = Ecto.build_assoc(user_3, :passenger, passenger3)
-passenger_4 = Ecto.build_assoc(user_4, :passenger, passenger4)
-passenger_5 = Ecto.build_assoc(user_5, :passenger, passenger5)
 
 airport2 = %Airport{name: "Jeju Airport", tagline: "Something about airports ..."}
 airport3 = %Airport{name: "New York Airport", tagline: "US airport ..."}
 airport4 = %Airport{name: "Narita Airport", tagline: "A Japanese airport ..."}
 airport5 = %Airport{name: "Daxing Airport", tagline: "The biggest airport ..."}
+
 airport_2 = Repo.insert!(airport2)
 airport_3 = Repo.insert!(airport3)
 airport_4 = Repo.insert!(airport4)
 airport_5 = Repo.insert!(airport5)
 
+passenger_2 = Ecto.build_assoc(user_2, :passenger, passenger2)
+passenger_3 = Ecto.build_assoc(user_3, :passenger, passenger3)
+passenger_4 = Ecto.build_assoc(user_4, :passenger, passenger4)
+passenger_5 = Ecto.build_assoc(user_5, :passenger, passenger5)
+
 passenger_2 = Ecto.build_assoc(airport_2, :passengers, passenger_2)
 passenger_3 = Ecto.build_assoc(airport_3, :passengers, passenger_3)
 passenger_4 = Ecto.build_assoc(airport_4, :passengers, passenger_4)
 passenger_5 = Ecto.build_assoc(airport_5, :passengers, passenger_5)
+
 Repo.insert!(passenger_2)
 Repo.insert!(passenger_3)
 Repo.insert!(passenger_4)
 Repo.insert!(passenger_5)
 
+####
+
+korea = %Nation{name: "Korea"}
 china = %Nation{name: "China"}
 japan = %Nation{name: "Japan"}
 usa = %Nation{name: "United States"}
+
+korea = Repo.insert!(korea)
 china = Repo.insert!(china)
 japan = Repo.insert!(japan)
 usa = Repo.insert!(usa)
 
+korea_airports_corporation = %NationalAirport{name: "Korea Airports Corporation"}
 china_airports_corporation = %NationalAirport{name: "China Airports Corporation"}
 japan_airports_corporation = %NationalAirport{name: "Japan Airports Corporation"}
 usa_airports_corporation = %NationalAirport{name: "USA Airports Corporation"}
 
+korea_airports_corporation = Ecto.build_assoc(korea, :national_airport, korea_airports_corporation)
 china_airports_corporation = Ecto.build_assoc(china, :national_airport, china_airports_corporation)
-china_airports_corporation = Ecto.build_assoc(airport, :national_airport, china_airports_corporation)
-
 japan_airports_corporation = Ecto.build_assoc(japan, :national_airport, japan_airports_corporation)
-japan_airports_corporation = Ecto.build_assoc(airport, :national_airport, japan_airports_corporation)
-
 usa_airports_corporation = Ecto.build_assoc(usa, :national_airport, usa_airports_corporation)
-usa_airports_corporation = Ecto.build_assoc(airport, :national_airport, usa_airports_corporation)
 
-Repo.insert!(china_airports_corporation)
-Repo.insert!(japan_airports_corporation)
-Repo.insert!(usa_airports_corporation)
+korea_airports_corporation = Repo.insert!(korea_airports_corporation)
+china_airports_corporation = Repo.insert!(china_airports_corporation)
+japan_airports_corporation = Repo.insert!(japan_airports_corporation)
+usa_airports_corporation = Repo.insert!(usa_airports_corporation)
 
+
+airport6 = %Airport{name: "Ultra 1 Airport", tagline: "Something about airports ..."}
+airport7 = %Airport{name: "Ultra 2 Airport", tagline: "US airport ..."}
+airport8 = %Airport{name: "Ultra 3 Airport", tagline: "A Japanese airport ..."}
+airport9 = %Airport{name: "Ultra 4 Airport", tagline: "The biggest airport ..."}
+airport10 = %Airport{name: "Ultra 5 Airport", tagline: "The biggest airport ..."}
+airport11 = %Airport{name: "Ultra 11 Airport", tagline: "The biggest airport ..."}
+
+airport_6 = Ecto.build_assoc(korea_airports_corporation, :airports, airport6)
+airport_7 = Ecto.build_assoc(china_airports_corporation, :airports, airport7)
+airport_8 = Ecto.build_assoc(japan_airports_corporation, :airports, airport8)
+airport_9 = Ecto.build_assoc(usa_airports_corporation, :airports, airport9)
+# airport_10 = Ecto.build_assoc(usa_airports_corporation, :airports, airport9)
+airport_11 = Ecto.build_assoc(usa_airports_corporation, :airports, airport11)
+
+Repo.insert! airport_6
+Repo.insert! airport_7
+Repo.insert! airport_8
+Repo.insert! airport_9
+Repo.insert! airport_10
+Repo.insert! airport_11
+
+Repo.preload(korea_airports_corporation, [:nation, :airports])
+Repo.preload(chian_airports_corporation, [:nation, :airports])
+Repo.preload(japan_airports_corporation, [:nation, :airports])
+Repo.preload(usa_airports_corporation, [:nation, :airports])
 
 # many to many
 airline2 = %Airline{name: "KAL"}
@@ -89,8 +123,8 @@ airport_changeset_5 = Ecto.Changeset.change(airport_5)
 
 airport_airlines_changeset_2 = airport_changeset_2 |> Ecto.Changeset.put_assoc(:airlines, [airline_2, airline_3, airline_4])
 airport_airlines_changeset_3 = airport_changeset_3 |> Ecto.Changeset.put_assoc(:airlines, [airline_3])
-airport_airlines_changeset_4 = airport_changeset_4 |> Ecto.Changeset.put_assoc(:airlines, [airline, airline_2])
-airport_airlines_changeset_5 = airport_changeset_5 |> Ecto.Changeset.put_assoc(:airlines, [airline, airline_2, airline_3, airline_4, airline_5])
+airport_airlines_changeset_4 = airport_changeset_4 |> Ecto.Changeset.put_assoc(:airlines, [airline_2, airline_5])
+airport_airlines_changeset_5 = airport_changeset_5 |> Ecto.Changeset.put_assoc(:airlines, [airline_2, airline_3, airline_4, airline_5])
 
 
 Repo.update!(airport_airlines_changeset_2)

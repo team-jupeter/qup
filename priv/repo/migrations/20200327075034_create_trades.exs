@@ -3,14 +3,14 @@ defmodule Demo.Repo.Migrations.CreateTrades do
 
   def change do
     create table(:trades) do
-      add :price, :string
-      add :password, :string
+      add :dummy_product, :string
+      add :dummy_buyer, :string
+      add :dummy_seller, :string
 
-      # add :buyer_id, references(:users)
-      # add :seller_id, references(:users)
+      add :unit_supul_id, references(:unit_supuls)
 
       timestamps()
     end
-    # create unique_index :trades, [:buyer_id, :seller_id]
+    # create unique_index :trades, [:product_id]
   end
 end

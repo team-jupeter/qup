@@ -3,20 +3,27 @@ defmodule Demo.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add(:type, :string)
-      add(:name, :string)
-      add(:email, :string)
-      add(:password_hash, :string)
-      add(:balance, :integer)
+      add :uid, :integer
+      add :type, :string
+      add :name, :string
+      add :email, :string
+      add :nationality, :string
+      add :password_hash, :string
+      add :balance, :integer
 
-      add :fingerprint, :boolean
-      add :face, :boolean
-      add :weight, :boolean
-      add :height, :boolean
+      add :fingerprint, :integer
+      add :face, :integer
+      add :weight, :integer
+      add :height, :integer
 
-      # add :bank_id, references(:banks)
+      add :buyer, :boolean
+      add :seller, :boolean
+      add :birth_date, :date
+
       add :tax_id, references(:taxes)
-      add :nation_id, references(:nations)
+      add :bank_id, references(:banks)
+      add :unit_supul_id, references(:unit_supuls)
+      add :team_id, references(:teams)
 
       timestamps()
     end

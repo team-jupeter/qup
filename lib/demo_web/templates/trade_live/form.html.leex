@@ -1,0 +1,20 @@
+<%= f = form_for @changeset, "#", [phx_change: :validate, phx_submit: :save, phx_hook: "SavedForm"] %>
+
+
+  <%= label f, :dummy_product %>
+  <%= text_input f, :dummy_product %>
+  <%= error_tag f, :dummy_product %>
+
+  <%= label f, :dummy_buyer %>
+  <%= text_input f, :dummy_buyer %>
+  <%= error_tag f, :dummy_buyer %>
+
+  <%= label f, :dummy_seller %>
+  <%= text_input f, :dummy_seller %>
+  <%= error_tag f, :dummy_seller %>
+
+
+  <div>
+    <%= submit "Save", phx_disable_with: "Saving..." %>
+  </div>
+</form>

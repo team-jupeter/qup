@@ -1,14 +1,13 @@
-defmodule DemoWeb.Hospital.Index do
-  use Phoenix.LiveView
+defmodule DemoWeb.TradeLive.IndexNav do
+  use Phoenix.LiveView, layout: {DemoWeb.LayoutView, "live.html"}
 
-  alias Demo.Trades
-  alias DemoWeb.TradeView
+  alias Demo.Accounts
+  alias DemoWeb.TradeLiveView
   alias DemoWeb.Router.Helpers, as: Routes
 
-  def render(assigns), do: TradeView.render("index.html", assigns)
+  def render(assigns), do: TradeLiveView.render("index_nav.html", assigns)
 
   def mount(_params, _session, socket) do
-
     {:ok, assign(socket, page: 1, per_page: 5)}
   end
 
@@ -19,11 +18,11 @@ defmodule DemoWeb.Hospital.Index do
 
   defp fetch(socket) do
     %{page: page, per_page: per_page} = socket.assigns
-    trades = Trades.list_trades(page, per_page)
-    assign(socket, trades: trades, page_title: "Listing trades – Page #{page}")
+    users = Accounts.list_users(page, per_page)
+    assign(socket, users: users, page_title: "Listing Users – Page #{page}")
   end
 
-  def handle_info({Trade, [:trade | _], _}, socket) do
+  def handle_info({Accounts, [:user | _], _}, socket) do
     {:noreply, fetch(socket)}
   end
 
@@ -35,12 +34,12 @@ defmodule DemoWeb.Hospital.Index do
   end
   def handle_event("keydown", _, socket), do: {:noreply, socket}
 
-  # def handle_event("delete_trade", %{"id" => id}, socket) do
-  #   trade = Trade.get_trade!(id)
-  #   {:ok, _trade} = Trade.delete_trade(trade)
+  def handle_event("delete_user", %{"id" => id}, socket) do
+    user = Accounts.get_user!(id)
+    {:ok, _user} = Accounts.delete_user(user)
 
-  #   {:noreply, socket}
-  # end
+    {:noreply, socket}
+  end
 
   defp go_page(socket, page) when page > 0 do
     push_patch(socket, to: Routes.live_path(socket, __MODULE__, page))

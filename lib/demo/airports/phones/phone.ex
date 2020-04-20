@@ -1,19 +1,18 @@
-defmodule Demo.Trades.Buyer do
+defmodule Demo.Airports.Phones.Phone do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "buyers" do
+  schema "phones" do
     field :name, :string
 
-    belongs_to :user, Demo.Accounts.User
-    belongs_to :trade, Demo.Trades.Trade
+    belongs_to :airport, Demo.Airports.Airport
 
     timestamps()
   end
 
   @doc false
-  def changeset(buyer, attrs) do
-    buyer
+  def changeset(phone, attrs) do
+    phone
     |> cast(attrs, [:name])
     |> validate_required([:name])
   end

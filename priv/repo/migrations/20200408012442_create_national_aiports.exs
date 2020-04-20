@@ -5,10 +5,9 @@ defmodule Demo.Repo.Migrations.NationalAiport do
     create table(:national_airports) do
       add :name, :string
 
-      add :airport_id, references(:airports)
       add :nation_id, references(:nations)
     end
 
-    create unique_index(:national_airports, [:nation_id])
+    # create unique_index(:national_airports, [:nation_id])
   end
 end

@@ -6,7 +6,7 @@ defmodule Demo.Repo.Migrations.CreateAirports do
       add :name, :string
       add :tagline, :string
 
-      # add :national_aiports_id, references(:national_airports)
+      add :national_airport_id, references(:national_airports)
     end
   end
-end 
+end

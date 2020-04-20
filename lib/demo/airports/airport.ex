@@ -7,8 +7,8 @@ defmodule Demo.Airports.Airport do
     field :tagline, :string
 
     has_many :passengers, Demo.Airports.Passenger
-    has_many :phones, Demo.Airport.Phone
-    has_one :national_airport, Demo.Airport.NationalAirport
-    many_to_many :airlines, Demo.Airport.Airline, join_through: "airports_airlines"
+    has_many :phones, Demo.Airports.Phones.Phone
+    belongs_to :national_airport, Demo.Airports.NationalAirport
+    many_to_many :airlines, Demo.Airports.Airline, join_through: "airports_airlines"
   end
 end

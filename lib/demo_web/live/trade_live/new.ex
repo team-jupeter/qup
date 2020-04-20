@@ -1,21 +1,28 @@
+
+
 defmodule DemoWeb.TradeLive.New do
   use Phoenix.LiveView
 
   alias DemoWeb.TradeLive
   alias DemoWeb.Router.Helpers, as: Routes
-  # alias Demo.Trades
   alias Demo.Trades
   alias Demo.Trades.Trade
 
   def mount(_params, _session, socket) do
-    IO.puts("Trades.mount")
-    IO.inspect(socket)
-
     changeset = Trades.change_trade(%Trade{})
+
+    IO.puts "DemoWeb.TradeLive.New.mount"
+    IO.inspect changeset
+
+    IO.puts "socket"
+    IO.inspect socket
+
     {:ok, assign(socket, changeset: changeset)}
   end
 
-  def render(assigns), do: Phoenix.View.render(DemoWeb.TradeView, "new.html", assigns)
+  def render(assigns) do
+    Phoenix.View.render(DemoWeb.TradeLiveView, "new.html", assigns)
+  end
 
   def handle_event("validate", %{"trade" => trade_params}, socket) do
     changeset =
@@ -23,13 +30,19 @@ defmodule DemoWeb.TradeLive.New do
       |> Demo.Trades.change_trade(trade_params)
       |> Map.put(:action, :insert)
 
+    IO.puts "TradeLive.New.handle_event validate"
+    IO.inspect changeset
+
+    IO.puts "socket"
+    IO.inspect socket
+
     {:noreply, assign(socket, changeset: changeset)}
   end
 
   def handle_event("save", %{"trade" => trade_params}, socket) do
-    IO.puts("save called")
-    IO.inspect(trade_params)
-    IO.inspect(socket)
+    IO.puts "TradeLive.New.handle_event save"
+    IO.inspect trade_params
+    IO.inspect socket
 
     case Trades.create_trade(trade_params) do
       {:ok, trade} ->

@@ -27,7 +27,7 @@ defmodule DemoWeb.UserController do
     # IO.inspect conn
     render(conn, "new.html", changeset: changeset)
   end
-
+ 
   def create(conn, %{"user" => user_params}) do
     case Accounts.register_user(user_params) do
       {:ok, user} ->

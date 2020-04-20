@@ -1,49 +1,134 @@
+defmodule DemoWeb.TradeLive.Row do
+  use Phoenix.LiveComponent
+
+  defmodule Product do
+    use Phoenix.LiveComponent
+
+    def mount(socket) do
+      IO.inspect socket
+
+      {:ok, socket}
+    end
+
+    def render(assigns) do
+      ~L"""
+      <span id="<%= @id %>" phx-click="click" phx-target="#<%= @id %>" phx-hook="Test">
+        Product: <%= @product_id %>
+      </span>
+      """
+    end
+  end
+
+  defmodule Buyer do
+    use Phoenix.LiveComponent
+
+    def mount(socket) do
+      {:ok, socket}
+    end
+
+    def render(assigns) do
+      ~L"""
+      <span id="<%= @id %>" phx-click="click" phx-target="#<%= @id %>" phx-hook="Test">
+        Buyer: <%= @buyer_id %>
+      </span>
+      """
+    end
+  end
+  defmodule Seller do
+    use Phoenix.LiveComponent
+
+    def mount(socket) do
+      {:ok, socket}
+    end
+
+    def render(assigns) do
+      ~L"""
+      <span id="<%= @id %>" phx-click="click" phx-target="#<%= @id %>" phx-hook="Test">
+        Seller: <%= @seller_id %>
+      </span>
+      """
+    end
+  end
+
+  def mount(socket) do
+    IO.puts "Row.mount"
+    IO.inspect socket
+
+    {:ok, assign(socket, product_id: 1, buyer_id: 2, seller_id: 3)}
+  end
+
+  def render(assigns) do
+    IO.puts "Row.render"
+    IO.inspect assigns
+
+    ~L"""
+    <tr class="trade-row" id="<%= @id %>" phx-click="click" phx-target="#<%= @id %>">
+      <td><%= @trade.id %></td>
+      <td><%= @trade.dummy_product %></td>
+      <td><%= @trade.dummy_buyer %></td>
+      <td><%= @trade.dummy_seller %></td>
+      <td>
+        <%= live_component @socket, Product, id: "product-#{@id}", product: @trade.product_id %>
+      </td>
+      <td>
+        <%= live_component @socket, Buyer, id: "buyer-#{@id}", buyer: @trade.buyer_id %>
+      </td>
+      <td>
+        <%= live_component @socket, Seller, id: "seller-#{@id}", seller_id: @trade.seller_id %>
+      </td>
+    </tr>
+    """
+  end
+
+  # def handle_event("click", _, socket) do
+  #   {:noreply, update(socket, :count, &(&1 + 1))}
+  # end
+end
+
 defmodule DemoWeb.TradeLive.Index do
   use Phoenix.LiveView
 
-  alias Demo.Trades
-  alias DemoWeb.TradeView
-  alias DemoWeb.Router.Helpers, as: Routes
+  alias DemoWeb.TradeLive.Row
 
-  def render(assigns), do: TradeView.render("index.html", assigns)
+  def render(assigns) do
+    IO.puts "render"
+    IO.inspect assigns
+
+    ~L"""
+    <table>
+      <tbody id="trades"
+             phx-update="append"
+             phx-hook="InfiniteScroll"
+             data-page="<%= @page %>">
+        <%= for trade <- @trades do %>
+          <%= live_component @socket, Row, id: "trade-#{trade.id}", trade: trade %>
+        <% end %>
+      </tbody>
+    </table>
+    """
+  end
 
   def mount(_params, _session, socket) do
+    IO.puts "index.mount"
+    IO.inspect socket
 
-    {:ok, assign(socket, page: 1, per_page: 5)}
+    if connected?(socket), do: Demo.Trades.subscribe()
+
+    {:ok,
+     socket
+     |> assign(page: 1, per_page: 10)
+     |> fetch(), temporary_assigns: [trades: []]}
   end
 
-  def handle_params(params, _url, socket) do
-    {page, ""} = Integer.parse(params["page"] || "1")
-    {:noreply, socket |> assign(page: page) |> fetch()}
+  defp fetch(%{assigns: %{page: page, per_page: per}} = socket) do
+    assign(socket, trades: Demo.Trades.list_trades(page, per))
   end
 
-  defp fetch(socket) do
-    %{page: page, per_page: per_page} = socket.assigns
-    trades = Trades.list_trades(page, per_page)
-    assign(socket, trades: trades, page_title: "Listing trades – Page #{page}")
-  end
-
-  def handle_info({Trade, [:trade | _], _}, socket) do
+  def handle_info({Trades, [:trade | _], _}, socket) do
     {:noreply, fetch(socket)}
   end
 
-  def handle_event("keydown", %{"code" => "ArrowLeft"}, socket) do
-    {:noreply, go_page(socket, socket.assigns.page - 1)}
+  def handle_event("load-more", _, %{assigns: assigns} = socket) do
+    {:noreply, socket |> assign(page: assigns.page + 1) |> fetch()}
   end
-  def handle_event("keydown", %{"code" => "ArrowRight"}, socket) do
-    {:noreply, go_page(socket, socket.assigns.page + 1)}
-  end
-  def handle_event("keydown", _, socket), do: {:noreply, socket}
-
-  # def handle_event("delete_trade", %{"id" => id}, socket) do
-  #   trade = Trade.get_trade!(id)
-  #   {:ok, _trade} = Trade.delete_trade(trade)
-
-  #   {:noreply, socket}
-  # end
-
-  defp go_page(socket, page) when page > 0 do
-    push_patch(socket, to: Routes.live_path(socket, __MODULE__, page))
-  end
-  defp go_page(socket, _page), do: socket
 end

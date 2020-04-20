@@ -7,10 +7,11 @@ defmodule Demo.Accounts.User do
 
   schema "users" do
     # add user_type
+    field :uid, :integer
     field :type, :string
     field :name, :string
     field :email, :string # unique id of a human being
-
+    field :nationality, :string
     field :password, :string, virtual: true
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
@@ -24,14 +25,17 @@ defmodule Demo.Accounts.User do
     field :weight, :string
     field :height, :string
 
+    field :buyer, :boolean
+    field :seller, :boolean
+    field :birth_date, :date
+
     timestamps()
 
-    has_many :buyers, Demo.Trades.Buyer
-    has_many :sellers, Demo.Trades.Seller
     has_one :passenger, Demo.Airports.Passenger
-    belongs_to :bank, Demo.Banks.Bank
     belongs_to :tax, Demo.Taxes.Tax
-    belongs_to :nation, Demo.Nation
+    belongs_to :bank, Demo.Banks.Bank
+    belongs_to :unit_supul, Demo.Supuls.UnitSupul
+    belongs_to :team, Demo.Companies.Team
 
     many_to_many(
       :trades,
@@ -62,7 +66,7 @@ defmodule Demo.Accounts.User do
 
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:type, :name, :email, :balance])
+    |> cast(attrs, [:type, :name, :email, :nationality, :balance])
     |> validate_required([:name, :email])
     |> validate_format(:email, ~r/@/)
   end

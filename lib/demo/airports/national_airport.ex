@@ -7,7 +7,7 @@ defmodule Demo.Airports.NationalAirport do
     field :name, :string
 
     # belongs_to :nation, Demo.Nation
-    belongs_to :airport, Demo.Airports.Airport
+    has_many :airports, Demo.Airports.Airport
     belongs_to :nation, Demo.Nation
   end
 end
