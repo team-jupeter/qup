@@ -1,5 +1,5 @@
 defmodule DemoWeb.AviationView do
   use DemoWeb, :view
 
-  alias DemoWeb.Aviation
+  # alias DemoWeb.Aviation
 end

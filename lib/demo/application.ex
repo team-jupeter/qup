@@ -9,7 +9,7 @@ defmodule Demo.Application do
       DemoWeb.Telemetry,
       DemoWeb.Endpoint,
       DemoWeb.Presence,
-      
+
       # start: {Phoenix.PubSub.PG2, :start_link, [:aviation, []]}
       %{
         id: Phoenix.PubSub.Redis,
@@ -19,6 +19,10 @@ defmodule Demo.Application do
           node_name: "name"
         ]]}
       },
+
+      # {Demo.Stages.Producer, 0},
+      # {Demo.Stages.ProducerConsumer, []},
+      # {Demo.Stages.Consumer, []}
     ]
 
     opts = [strategy: :one_for_one, name: Demo.Supervisor]

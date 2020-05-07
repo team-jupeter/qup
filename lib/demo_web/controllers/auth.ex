@@ -7,7 +7,7 @@ defmodule DemoWeb.Auth do
     # IO.puts "call"
     # IO.inspect conn
     user_id = get_session(conn, :user_id)
-    user = user_id && Demo.Accounts.get_user(user_id)
+    user = user_id && Demo.Users.get_user(user_id)
     # a = assign(conn, :current_user, user)
     # IO.inspect a
     assign(conn, :current_user, user)

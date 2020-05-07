@@ -3,11 +3,11 @@ defmodule DemoWeb.Aviation.New do
 
   # alias DemoWeb.Aviation
   alias DemoWeb.Router.Helpers, as: Routes
-  alias Demo.Accounts
-  alias Demo.Accounts.User
+  alias Demo.Users
+  alias Demo.Users.User
 
   def mount(_params, _session, socket) do
-    changeset = Accounts.change_user(%User{})
+    changeset = Users.change_user(%User{})
     {:ok, assign(socket, changeset: changeset)}
   end
 
@@ -16,14 +16,14 @@ defmodule DemoWeb.Aviation.New do
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset =
       %User{}
-      |> Demo.Accounts.change_user(user_params)
+      |> Demo.Users.change_user(user_params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
   def handle_event("save", %{"user" => user_params}, socket) do
-    case Accounts.create_user(user_params) do
+    case Users.create_user(user_params) do
       {:ok, user} ->
         {:noreply,
          socket

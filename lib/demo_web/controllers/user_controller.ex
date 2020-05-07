@@ -1,35 +1,35 @@
 defmodule DemoWeb.UserController do
   use DemoWeb, :controller
 
-  alias Demo.Accounts
-  alias Demo.Accounts.User
+  alias Demo.Users
+  alias Demo.Users.User
 
   plug :authenticate when action in [:index, :show]
 
 
   def index(conn, _params) do
     # IO.inspect conn
-    users = Accounts.list_users()
+    users = Users.list_users()
     # IO.inspect conn
     render(conn, "index.html", users: users)
   end
 
   def show(conn, %{"id" => id}) do
     # IO.inspect conn
-    user = Accounts.get_user(id)
+    user = Users.get_user(id)
     # IO.inspect conn
     render(conn, "show.html", user: user)
   end
 
   def new(conn, _params) do
     # IO.inspect conn
-    changeset = Accounts.change_user(%User{})
+    changeset = Users.change_user(%User{})
     # IO.inspect conn
     render(conn, "new.html", changeset: changeset)
   end
- 
+
   def create(conn, %{"user" => user_params}) do
-    case Accounts.register_user(user_params) do
+    case Users.register_user(user_params) do
       {:ok, user} ->
         conn
         |> DemoWeb.Auth.login(user)

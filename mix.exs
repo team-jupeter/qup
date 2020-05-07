@@ -51,6 +51,7 @@ defmodule Demo.Mixfile do
       {:nimble_strftime, ">= 0.0.0"},
       {:pbkdf2_elixir, "~> 1.0"},
       {:phoenix_pubsub_redis, "~> 2.1.0"},
+      {:gen_stage, "~> 1.0.0"},
     ]
   end
 

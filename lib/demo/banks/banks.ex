@@ -3,6 +3,7 @@ defmodule Demo.Banks do
   The Banks context.
   """
 
+  #? context
   import Ecto.Query, warn: false
   alias Demo.Repo
 

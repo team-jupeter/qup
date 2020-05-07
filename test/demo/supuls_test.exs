@@ -62,66 +62,66 @@ defmodule Demo.SupulsTest do
     end
   end
 
-  describe "unit_supuls" do
+  describe "supuls" do
     alias Demo.Supuls.UnitSupul
 
     @valid_attrs %{geographical_area: "some geographical_area", name: "some name", nationality: "some nationality"}
     @update_attrs %{geographical_area: "some updated geographical_area", name: "some updated name", nationality: "some updated nationality"}
     @invalid_attrs %{geographical_area: nil, name: nil, nationality: nil}
 
-    def unit_supul_fixture(attrs \\ %{}) do
-      {:ok, unit_supul} =
+    def supul_fixture(attrs \\ %{}) do
+      {:ok, supul} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> Supuls.create_unit_supul()
+        |> Supuls.create_supul()
 
-      unit_supul
+      supul
     end
 
-    test "list_unit_supuls/0 returns all unit_supuls" do
-      unit_supul = unit_supul_fixture()
-      assert Supuls.list_unit_supuls() == [unit_supul]
+    test "list_supuls/0 returns all supuls" do
+      supul = supul_fixture()
+      assert Supuls.list_supuls() == [supul]
     end
 
-    test "get_unit_supul!/1 returns the unit_supul with given id" do
-      unit_supul = unit_supul_fixture()
-      assert Supuls.get_unit_supul!(unit_supul.id) == unit_supul
+    test "get_supul!/1 returns the supul with given id" do
+      supul = supul_fixture()
+      assert Supuls.get_supul!(supul.id) == supul
     end
 
-    test "create_unit_supul/1 with valid data creates a unit_supul" do
-      assert {:ok, %UnitSupul{} = unit_supul} = Supuls.create_unit_supul(@valid_attrs)
-      assert unit_supul.geographical_area == "some geographical_area"
-      assert unit_supul.name == "some name"
-      assert unit_supul.nationality == "some nationality"
+    test "create_supul/1 with valid data creates a supul" do
+      assert {:ok, %UnitSupul{} = supul} = Supuls.create_supul(@valid_attrs)
+      assert supul.geographical_area == "some geographical_area"
+      assert supul.name == "some name"
+      assert supul.nationality == "some nationality"
     end
 
-    test "create_unit_supul/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Supuls.create_unit_supul(@invalid_attrs)
+    test "create_supul/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Supuls.create_supul(@invalid_attrs)
     end
 
-    test "update_unit_supul/2 with valid data updates the unit_supul" do
-      unit_supul = unit_supul_fixture()
-      assert {:ok, %UnitSupul{} = unit_supul} = Supuls.update_unit_supul(unit_supul, @update_attrs)
-      assert unit_supul.geographical_area == "some updated geographical_area"
-      assert unit_supul.name == "some updated name"
-      assert unit_supul.nationality == "some updated nationality"
+    test "update_supul/2 with valid data updates the supul" do
+      supul = supul_fixture()
+      assert {:ok, %UnitSupul{} = supul} = Supuls.update_supul(supul, @update_attrs)
+      assert supul.geographical_area == "some updated geographical_area"
+      assert supul.name == "some updated name"
+      assert supul.nationality == "some updated nationality"
     end
 
-    test "update_unit_supul/2 with invalid data returns error changeset" do
-      unit_supul = unit_supul_fixture()
-      assert {:error, %Ecto.Changeset{}} = Supuls.update_unit_supul(unit_supul, @invalid_attrs)
-      assert unit_supul == Supuls.get_unit_supul!(unit_supul.id)
+    test "update_supul/2 with invalid data returns error changeset" do
+      supul = supul_fixture()
+      assert {:error, %Ecto.Changeset{}} = Supuls.update_supul(supul, @invalid_attrs)
+      assert supul == Supuls.get_supul!(supul.id)
     end
 
-    test "delete_unit_supul/1 deletes the unit_supul" do
-      unit_supul = unit_supul_fixture()
-      assert {:ok, %UnitSupul{}} = Supuls.delete_unit_supul(unit_supul)
-      assert_raise Ecto.NoResultsError, fn -> Supuls.get_unit_supul!(unit_supul.id) end
+    test "delete_supul/1 deletes the supul" do
+      supul = supul_fixture()
+      assert {:ok, %UnitSupul{}} = Supuls.delete_supul(supul)
+      assert_raise Ecto.NoResultsError, fn -> Supuls.get_supul!(supul.id) end
     end
 
-    test "change_unit_supul/1 returns a unit_supul changeset" do
-      unit_supul = unit_supul_fixture()
-      assert %Ecto.Changeset{} = Supuls.change_unit_supul(unit_supul)
+    test "change_supul/1 returns a supul changeset" do
+      supul = supul_fixture()
+      assert %Ecto.Changeset{} = Supuls.change_supul(supul)
     end
   end
 

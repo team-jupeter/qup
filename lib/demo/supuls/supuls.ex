@@ -1,104 +1,39 @@
 defmodule Demo.Supuls do
-  @moduledoc """
-  The Supuls context.
-  """
 
   import Ecto.Query, warn: false
   alias Demo.Repo
 
-  alias Demo.Supuls.UnitSupul
+  alias Demo.Supuls.Supul
 
-  @doc """
-  Returns the list of unit_supuls.
 
-  ## Examples
-
-      iex> list_unit_supuls()
-      [%UnitSupul{}, ...]
-
-  """
-  def list_unit_supuls do
-    Repo.all(UnitSupul)
+  def list_supuls do
+    Repo.all(Supul)
   end
 
-  @doc """
-  Gets a single unit_supul.
 
-  Raises `Ecto.NoResultsError` if the Unit supul does not exist.
+  def get_supul!(id), do: Repo.get!(Supul, id)
 
-  ## Examples
 
-      iex> get_unit_supul!(123)
-      %UnitSupul{}
-
-      iex> get_unit_supul!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_unit_supul!(id), do: Repo.get!(UnitSupul, id)
-
-  @doc """
-  Creates a unit_supul.
-
-  ## Examples
-
-      iex> create_unit_supul(%{field: value})
-      {:ok, %UnitSupul{}}
-
-      iex> create_unit_supul(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_unit_supul(attrs \\ %{}) do
-    %UnitSupul{}
-    |> UnitSupul.changeset(attrs)
+  def create_supul(attrs \\ %{}) do
+    %Supul{}
+    |> Supul.changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a unit_supul.
 
-  ## Examples
-
-      iex> update_unit_supul(unit_supul, %{field: new_value})
-      {:ok, %UnitSupul{}}
-
-      iex> update_unit_supul(unit_supul, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_unit_supul(%UnitSupul{} = unit_supul, attrs) do
-    unit_supul
-    |> UnitSupul.changeset(attrs)
+  def update_supul(%Supul{} = supul, attrs) do
+    supul
+    |> Supul.changeset(attrs)
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a unit_supul.
 
-  ## Examples
-
-      iex> delete_unit_supul(unit_supul)
-      {:ok, %UnitSupul{}}
-
-      iex> delete_unit_supul(unit_supul)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_unit_supul(%UnitSupul{} = unit_supul) do
-    Repo.delete(unit_supul)
+  def delete_supul(%Supul{} = supul) do
+    Repo.delete(supul)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking unit_supul changes.
 
-  ## Examples
-
-      iex> change_unit_supul(unit_supul)
-      %Ecto.Changeset{source: %UnitSupul{}}
-
-  """
-  def change_unit_supul(%UnitSupul{} = unit_supul) do
-    UnitSupul.changeset(unit_supul, %{})
+  def change_supul(%Supul{} = supul) do
+    Supul.changeset(supul, %{})
   end
 end

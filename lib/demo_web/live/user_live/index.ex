@@ -1,7 +1,7 @@
 # defmodule DemoWeb.UserLive.Index do
 #   use Phoenix.LiveView
 
-#   alias Demo.Accounts
+#   alias Demo.Users
 #   alias DemoWeb.UserLiveView
 #   alias DemoWeb.Router.Helpers, as: Routes
 
@@ -9,7 +9,7 @@
 
 #   def mount(_params, _session, socket) do
 
-#     if connected?(socket), do: Demo.Accounts.subscribe()
+#     if connected?(socket), do: Demo.Users.subscribe()
 #     {:ok, assign(socket, page: 1, per_page: 5)}
 #   end
 
@@ -20,11 +20,11 @@
 
 #   defp fetch(socket) do
 #     %{page: page, per_page: per_page} = socket.assigns
-#     users = Accounts.list_users(page, per_page)
+#     users = Users.list_users(page, per_page)
 #     assign(socket, users: users, page_title: "Listing Users – Page #{page}")
 #   end
 
-#   def handle_info({Accounts, [:user | _], _}, socket) do
+#   def handle_info({Users, [:user | _], _}, socket) do
 #     {:noreply, fetch(socket)}
 #   end
 
@@ -39,8 +39,8 @@
 #   def handle_event("delete_user", %{"id" => id}, socket) do
 #     # IO.puts "delete_user"
 
-#     user = Accounts.get_user!(id)
-#     {:ok, _user} = Accounts.delete_user(user)
+#     user = Users.get_user!(id)
+#     {:ok, _user} = Users.delete_user(user)
 
 #     {:noreply, socket}
 #   end
@@ -277,7 +277,7 @@ defmodule DemoWeb.UserLive.Index do
     IO.puts "index.mount"
     IO.inspect socket
 
-    if connected?(socket), do: Demo.Accounts.subscribe()
+    if connected?(socket), do: Demo.Users.subscribe()
 
     {:ok,
      socket
@@ -286,10 +286,10 @@ defmodule DemoWeb.UserLive.Index do
   end
 
   defp fetch(%{assigns: %{page: page, per_page: per}} = socket) do
-    assign(socket, users: Demo.Accounts.list_users(page, per))
+    assign(socket, users: Demo.Users.list_users(page, per))
   end
 
-  def handle_info({Accounts, [:user | _], _}, socket) do
+  def handle_info({Users, [:user | _], _}, socket) do
     {:noreply, fetch(socket)}
   end
 

@@ -1,5 +1,5 @@
-defmodule DemoWeb.TradeLiveView do
+defmodule DemoWeb.InvoiceLiveView do
   use DemoWeb, :view
 
-  alias DemoWeb.TradeLive
+  alias DemoWeb.InvoiceLive
 end

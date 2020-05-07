@@ -2,6 +2,7 @@ defmodule Demo.Polices.Police do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:id, :binary_id, autogenerate: true}
   schema "polices" do
     field :name, :string
     field :nationality, :string
