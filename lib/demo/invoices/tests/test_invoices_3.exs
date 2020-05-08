@@ -6,7 +6,7 @@ alias Demo.Entities.Entity
 alias Demo.Users.User
 alias Demo.Nations.Nation
 
-#? entity belongs to both user and nation for double checking nationality of seller and buyer.
+#? entity belongs to user and, users belong to nation for double checking nationality of seller and buyer.
 #? nation =>(has_many) user =>
 #? nation =>(has_many)          entity <=>(many_to_many) seller, buyer
 nation1 = Nation.changeset(%Nation{}, %{name: "South Korea"})
@@ -24,10 +24,10 @@ trump = Repo.insert!(trump)
 user_ids = Enum.map(Repo.all(User), fn(user)-> user.id end)
 {honggildong_id, trump_id} = {Enum.at(user_ids, 0), Enum.at(user_ids, 1) }
 
-entity1 = Entity.changeset(%Entity{}, %{nation_id: korea_id, email: "test1@gmail.com"})
+entity1 = Entity.changeset(%Entity{}, %{nation_id: korea_id, email: "honggildong@82345.kr"})
 hong_entity = Repo.insert!(entity1)
-entity2 = Entity.changeset(%Entity{}, %{nation_id: usa_id, email: "test2@gmail.com"})
-trump_entity = Repo.insert!(entity2)
+entity2 = Entity.changeset(%Entity{}, %{nation_id: usa_id, email: "donaldtrump10@023357.us"})
+delta_airlines = Repo.insert!(entity2)
 
 
 
@@ -44,38 +44,7 @@ item_ids = Enum.map(Repo.all(Item), fn(item)-> item.id end)
 
 # inv_items = [%{item_id: id1, price: 12.5, quantity: 2}, %{item_id: id2, price: 16, quantity: 3}]
 inv_items = [%{item_id: id1, quantity: 2}, %{item_id: id2, quantity: 3}]
-
-inv_item = %InvoiceItem{item_id: id1, quantity: 2}
-Repo.insert!(inv_item)
-#? how to change "Trump" to trump?
-{:ok, inv} = Invoice.create(%{buyer: trump, invoice_items: inv_items})
-
-
-
-
-superman = User.changeset(%User{}, %{name: "Superman", email: "superman@2355.kr"})
-batman = User.changeset(%User{}, %{name: "Batman", email: "batman@2355.kr"})
-
-superman = Ecto.build_assoc(korea, :users, superman)
-
-
-nation_ids = Enum.map(Repo.all(Nation), fn(nation)-> nation.id end)
-{nation_id1, nation_id2} = {Enum.at(nation_ids, 0), Enum.at(nation_ids, 1) }
-
-superman = %User{nation_id: id1, name: "Superman", email: "superman@2355.kr"}
-batman = %{nation_id: id2, name: "Batman", email: "batman@2355.kr"}
-
-
-# {:ok, superman} = Repo.insert(user1)
-# superman_cs = change(superman)
-# Repo.update(superman_cs, nation_id: korea_id)
-# Repo.update(Ecto.Changeset.change(superman, nation_id: korea_id))
-
-
-entry1 = Entry.changeset(%Entry{}, )
-# inv_items = [%{item_id: id1, price: 12.5, quantity: 2}, %{item_id: id2, price: 16, quantity: 3}]
-inv_items = [%{item_id: id1, quantity: 2}, %{item_id: id2, quantity: 3}]
- {:ok, inv} = Invoice.create(%{buyer: "Superman", invoice_items: inv_items})
+ {:ok, inv} = Invoice.create(%{buyer: hong_entity, seller: delta_airlines, invoice_items: inv_items})
 
 Repo.all(Invoice)
 Repo.all(Invoice) |> Repo.preload(:invoice_items)

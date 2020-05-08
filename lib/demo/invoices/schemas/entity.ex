@@ -35,7 +35,7 @@ defmodule Demo.Entities.Entity do
       on_replace: :delete
     )
 
-    timestamps()
+    timestamps() #? inserted_at, updated_at
   end
 
   @fields [:nation_id, :email]
