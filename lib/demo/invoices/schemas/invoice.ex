@@ -2,8 +2,10 @@ defmodule Demo.Invoices.Invoice do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
+  alias Ecto.Changeset
   alias Demo.Repo
   alias Demo.Invoices.{Item, Invoice, InvoiceItem}
+  alias Demo.Entities.Entity
   # alias Demo.Entities.Entity
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -32,15 +34,21 @@ defmodule Demo.Invoices.Invoice do
   end
 
 
-  @fields [:buyer, :amount, :balance]
+  @fields [:amount, :balance]
 
   def changeset(data, params \\ %{}) do
     # IO.puts "changeset"
+    IO.inspect "params"
+    IO.inspect params
     data
     # |> IO.inspect
     |> cast(params, @fields)
+    |> cast_embed(:buyer)
+    |> IO.inspect
+    |> cast_embed(:seller)
+    |> IO.inspect
     # |> IO.inspect
-    |> validate_required([:buyer])
+    # |> validate_required([:buyer])
   end
 
   def create(params) do

@@ -19,7 +19,7 @@ defmodule Demo.Entities.Entity do
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
-    belongs_to :tax_authority, Demo.Taxes.TaxAuthority, type: :binary_id
+    belongs_to :tax_authority, Demo.TaxAuthorities.TaxAuthority, type: :binary_id
 
     many_to_many(
       :invoices,

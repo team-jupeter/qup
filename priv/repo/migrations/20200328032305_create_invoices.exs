@@ -4,11 +4,13 @@ defmodule Demo.Repo.Migrations.CreateInvoices do
   def change do
     create table(:invoices, primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :seller, :text
-      add :buyer, :text
+
       add :amount, :decimal, precision: 12, scale: 2
       add :balance, :decimal, precision: 12, scale: 2
 
+      #? embedded fields
+      add(:seller, :jsonb)
+      add(:buyer, :jsonb)
 
       timestamps()
     end

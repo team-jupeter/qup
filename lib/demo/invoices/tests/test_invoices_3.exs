@@ -29,6 +29,8 @@ hong_entity = Repo.insert!(entity1)
 entity2 = Entity.changeset(%Entity{}, %{nation_id: usa_id, email: "donaldtrump10@023357.us"})
 delta_airlines = Repo.insert!(entity2)
 
+entity_ids = Enum.map(Repo.all(Entity), fn(entity)-> entity.id end)
+{h_entity_id, d_entity_id} = {Enum.at(entity_ids, 0), Enum.at(entity_ids, 1) }
 
 
 #? item => invoice_item => invoice
@@ -44,7 +46,15 @@ item_ids = Enum.map(Repo.all(Item), fn(item)-> item.id end)
 
 # inv_items = [%{item_id: id1, price: 12.5, quantity: 2}, %{item_id: id2, price: 16, quantity: 3}]
 inv_items = [%{item_id: id1, quantity: 2}, %{item_id: id2, quantity: 3}]
- {:ok, inv} = Invoice.create(%{buyer: hong_entity, seller: delta_airlines, invoice_items: inv_items})
+
+params = %{
+  "buyer" => %{"entity_id" => h_entity_id},
+  "seller" => %{"entity_id" => d_entity_id},
+  "invoice_items" => inv_items
+}
+
+# {:ok, inv} = Invoice.create(%{buyer: h_entity_id, seller: d_entity_id, invoice_items: inv_items})
+{:ok, inv} = Invoice.create(params)
 
 Repo.all(Invoice)
 Repo.all(Invoice) |> Repo.preload(:invoice_items)

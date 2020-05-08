@@ -3,12 +3,12 @@ defmodule Demo.Invoices.SellerEmbed do
   use Ecto.Schema
 
   embedded_schema do
-    field(:uid)
+    field :entity_id
   end
 
   def changeset(seller_embed, params) do
     seller_embed
-    |> cast(params, [:uid])
-    |> validate_required([:uid])
+    |> cast(params, [:entity_id])
+    |> validate_required([:entity_id])
   end
 end

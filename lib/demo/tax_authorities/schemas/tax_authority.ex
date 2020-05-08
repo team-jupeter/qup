@@ -1,4 +1,4 @@
-defmodule Demo.Taxes.TaxAuthority do
+defmodule Demo.TaxAuthorities.TaxAuthority do
   use Ecto.Schema
   import Ecto.Changeset
 
