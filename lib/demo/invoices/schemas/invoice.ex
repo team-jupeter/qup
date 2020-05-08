@@ -12,8 +12,8 @@ defmodule Demo.Invoices.Invoice do
   schema "invoices" do
     field :start_at, :date
     field :end_at, :date
-    field :amount, :decimal, precision: 12, scale: 2
-    field :balance, :decimal, precision: 12, scale: 2
+    field :total, :decimal, precision: 12, scale: 2
+    field :tax, :decimal, precision: 5, scale: 2
 
     has_many :invoice_items, InvoiceItem, on_delete: :delete_all
 
@@ -70,6 +70,7 @@ defmodule Demo.Invoices.Invoice do
     IO.inspect "items"
     IO.inspect items
 
+    IO.puts "return invoice_items"
     Enum.map(items, fn(item)-> InvoiceItem.changeset(%InvoiceItem{}, item) end)
   end
 

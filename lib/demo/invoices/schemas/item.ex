@@ -12,6 +12,7 @@ defmodule Demo.Invoices.Item do
     field :gpc_code, :string
     field :name, :string
     field :price, :decimal, precision: 12, scale: 2
+    field :tax_rate, :integer, precision: 5, scale: 2
 
     has_many :invoice_items, InvoiceItem
 

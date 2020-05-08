@@ -2,12 +2,11 @@ defmodule Demo.Invoices.InvoiceItem do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key {:id, :binary_id, autogenerate: true}
   schema "invoice_items" do
-    field :gpc_code, :string
+    field :name, :string
     field :quantity, :decimal, precision: 12, scale: 2
-    field :tax, :decimal, precision: 12, scale: 2
     field :price, :decimal, precision: 12, scale: 2
+    field :tax, :decimal, precision: 5, scale: 2
     field :subtotal, :decimal, precision: 12, scale: 2
 
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
