@@ -14,7 +14,7 @@ defmodule Demo.Repo.Migrations.CreateEntities do
 
       add :nation_id, references(:nations, type: :uuid)
       add :supul_id, references(:supuls, type: :uuid)
-      add :tax_authority_id, references(:tax_authorities, type: :uuid)
+      add :taxation_id, references(:taxations, type: :uuid)
       add :bank_id, references(:banks, type: :uuid)
       add :invoice_id, references(:invoices, type: :uuid)
 

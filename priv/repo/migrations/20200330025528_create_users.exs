@@ -11,6 +11,7 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add :password_hash, :string
 
       add :nation_id, references(:nations, type: :uuid, null: false)
+      add :entity_id, references(:entities, type: :uuid, null: false)
 
       timestamps()
     end

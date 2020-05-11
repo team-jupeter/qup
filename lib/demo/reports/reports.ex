@@ -3,33 +3,33 @@ defmodule Demo.Reports do
   import Ecto.Query, warn: false
   alias Demo.Repo
 
-  alias Demo.Reports.Report
+  alias Demo.Reports.FinancialReport
 
 
   def list_reports do
-    Repo.all(Report)
+    Repo.all(FinancialReport)
   end
 
 
-  def get_report!(id), do: Repo.get!(Report, id)
+  def get_report!(id), do: Repo.get!(FinancialReport, id)
 
 
   def create_report(attrs \\ %{}) do
-    %Report{}
-    |> Report.changeset(attrs)
+    %FinancialReport{}
+    |> FinancialReport.changeset(attrs)
     |> Repo.insert()
   end
 
 
-  def update_report(%Report{} = report, attrs) do
-    report
-    |> Report.changeset(attrs)
+  def update_report(%FinancialReport{} = financial_report, attrs) do
+    financial_report
+    |> FinancialReport.changeset(attrs)
     |> Repo.update()
   end
 
 
-  def delete_report(%Report{} = report) do
-    Repo.delete(report)
+  def delete_report(%FinancialReport{} = financial_report) do
+    Repo.delete(financial_report)
   end
 
   @doc """
@@ -41,7 +41,7 @@ defmodule Demo.Reports do
       %Ecto.Changeset{source: %Report{}}
 
   """
-  def change_report(%Report{} = report) do
-    Report.changeset(report, %{})
+  def change_report(%FinancialReport{} = financial_report) do
+    FinancialReport.changeset(financial_report, %{})
   end
 end

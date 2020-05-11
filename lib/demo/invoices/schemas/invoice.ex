@@ -2,11 +2,8 @@ defmodule Demo.Invoices.Invoice do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
-  alias Ecto.Changeset
   alias Demo.Repo
   alias Demo.Invoices.{Item, Invoice, InvoiceItem}
-  alias Demo.Entities.Entity
-  # alias Demo.Entities.Entity
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "invoices" do
@@ -16,6 +13,7 @@ defmodule Demo.Invoices.Invoice do
     field :tax, :decimal, precision: 5, scale: 2
 
     has_many :invoice_items, InvoiceItem, on_delete: :delete_all
+    has_one :trade, Demo.Invoices.Invoice
 
     embeds_one :buyer, Demo.Invoices.BuyerEmbed, on_replace: :update
     embeds_one :seller, Demo.Invoices.SellerEmbed, on_replace: :update
@@ -34,7 +32,7 @@ defmodule Demo.Invoices.Invoice do
   end
 
 
-  @fields [:amount, :balance]
+  @fields [:total, :start_at, :end_at, :tax]
 
   def changeset(data, params \\ %{}) do
     # IO.puts "changeset"
@@ -47,8 +45,7 @@ defmodule Demo.Invoices.Invoice do
     |> IO.inspect
     |> cast_embed(:seller)
     |> IO.inspect
-    # |> IO.inspect
-    # |> validate_required([:buyer])
+
   end
 
   def create(params) do
@@ -56,7 +53,6 @@ defmodule Demo.Invoices.Invoice do
     changeset(%Invoice{}, params)
     |> validate_item_count(params)
     |> put_assoc(:invoice_items, get_items(params))
-    # |> put_assoc(:entities, Entity.changeset(params[:buyer]))
     |> IO.inspect
     |> Repo.insert
   end
@@ -111,5 +107,4 @@ defmodule Demo.Invoices.Invoice do
       cs
     end
   end
-
 end

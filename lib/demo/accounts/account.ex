@@ -4,13 +4,11 @@ defmodule Demo.Accounts.Account do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "accounts" do
-    field :email, :string
     field :balance, :decimal, default: Decimal.new(0)
     field :locked, :boolean, default: false
 
-    belongs_to :supul, Demo.Supuls.Supul
-    belongs_to :entity, Demo.Entities.Entity
-
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+    belongs_to :report, Demo.Reports.Report, type: :binary_id
 
     timestamps()
   end

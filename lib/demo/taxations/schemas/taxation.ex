@@ -1,21 +1,20 @@
-defmodule Demo.TaxAuthorities.TaxAuthority do
+defmodule Demo.Taxations.Taxation do
   use Ecto.Schema
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
-  schema "tax_authorities" do
+  schema "taxations" do
     field :name, :string
-    field :nationality, :string
 
     has_many :entities, Demo.Entities.Entity
-    belongs_to :nation, Demo.Nations.Nation
+    belongs_to :nation, Demo.Nations.Nation, type: :binary_id
 
     timestamps()
   end
 
   @doc false
-  def changeset(tax_authority, attrs) do
-    tax_authority
+  def changeset(taxation, attrs) do
+    taxation
     |> cast(attrs, [:name, :nationality])
     |> validate_required([:name, :nationality])
   end

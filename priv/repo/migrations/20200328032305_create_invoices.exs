@@ -9,6 +9,7 @@ defmodule Demo.Repo.Migrations.CreateInvoices do
       add :total, :decimal, precision: 12, scale: 2
       add :tax, :decimal, precision: 5, scale: 2
 
+
       #? embedded
       add(:seller, :jsonb)
       add(:buyer, :jsonb)

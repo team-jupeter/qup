@@ -19,7 +19,7 @@ defmodule Demo.Entities.Entity do
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
-    belongs_to :tax_authority, Demo.TaxAuthorities.TaxAuthority, type: :binary_id
+    belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
 
     many_to_many(
       :invoices,
@@ -38,7 +38,7 @@ defmodule Demo.Entities.Entity do
     timestamps() #? inserted_at, updated_at
   end
 
-  @fields [:nation_id, :email]
+  @fields [:nation_id, :email, :supul_id, :taxation_id]
 
   def changeset(account, attrs \\ %{}) do
     account

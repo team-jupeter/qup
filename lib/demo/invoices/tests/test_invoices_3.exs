@@ -1,14 +1,15 @@
 import Ecto.Query
 import Ecto.Changeset
 alias Demo.Repo
-alias Demo.Invoices.{Item, Invoice, InvoiceItem}
-alias Demo.Entities.Entity
-alias Demo.Users.User
-alias Demo.Nations.Nation
+
 
 #? entity belongs to user and, users belong to nation for double checking nationality of seller and buyer.
 #? nation =>(has_many) user =>
 #? nation =>(has_many)          entity <=>(many_to_many) seller, buyer
+
+#? init 194 nations
+alias Demo.Nations.Nation
+
 nation1 = Nation.changeset(%Nation{}, %{name: "South Korea"})
 korea = Repo.insert!(nation1)
 nation2 = Nation.changeset(%Nation{}, %{name: "USA"})
@@ -17,23 +18,102 @@ usa = Repo.insert!(nation2)
 nation_ids = Enum.map(Repo.all(Nation), fn(nation)-> nation.id end)
 {korea_id, usa_id} = {Enum.at(nation_ids, 0), Enum.at(nation_ids, 1) }
 
-[honggildong, trump] = [%User{nation_id: korea_id, name: "Hong Gildong"}, %User{nation_id: usa_id, name: "Donald Trump"}]
-honggildong = Repo.insert!(honggildong)
+#? init supuls. For example, Korea will have about 4,000 supuls.
+alias Demo.Supuls.Supul
+
+hankyung_supul = %Supul{name: "Hankyung_County", nation_id: korea_id, supul_code: 52070104} |> Repo.insert!
+orange_supul = %Supul{name: "Orange_County", nation_id: usa_id, supul_code: 02171124} |> Repo.insert!
+
+supul_ids = Enum.map(Repo.all(Supul), fn(supul)-> supul.id end)
+{hankyung_supul_id, orange_supul_id} = {Enum.at(supul_ids, 0), Enum.at(supul_ids, 1)}
+
+#? init users
+#? A user belongs to a nation, and a natural human.
+#? A user should have at least one entity, a legal human, which will represent all the economic activities of the user.
+alias Demo.Users.User
+
+[gildong, chunhyang, trump] = [%User{nation_id: korea_id, name: "Mr.Hong"}, %User{nation_id: korea_id, name: "Ms.Sung"},%User{nation_id: usa_id, name: "Donald Trump"}]
+mr_hong = Repo.insert!(gildong)
+ms_sung = Repo.insert!(chunhyang)
 trump = Repo.insert!(trump)
 
 user_ids = Enum.map(Repo.all(User), fn(user)-> user.id end)
-{honggildong_id, trump_id} = {Enum.at(user_ids, 0), Enum.at(user_ids, 1) }
+{hong_id, sung_id, trump_id} = {Enum.at(user_ids, 0), Enum.at(user_ids, 1), Enum.at(user_ids, 2)}
 
-entity1 = Entity.changeset(%Entity{}, %{nation_id: korea_id, email: "honggildong@82345.kr"})
-hong_entity = Repo.insert!(entity1)
-entity2 = Entity.changeset(%Entity{}, %{nation_id: usa_id, email: "donaldtrump10@023357.us"})
-delta_airlines = Repo.insert!(entity2)
+#? init health_reports
+#? its a report for naturnal person, user.
+#? Every health report will be signed by a hospital which is approved by the nation in which the user belongs to.
+#? Any authority such as airports may confirm the health status of passengers.
+#? We need a standard protocol on health report to entrust each other among all the nations.
+alias Demo.Reports.HealthReport
+
+[gildong_health, chunhyang_health, trump_health] =
+  [
+    %HealthReport{user_id: hong_id, infection: false},
+    %HealthReport{user_id: sung_id, infection: false},
+    %HealthReport{user_id: trump_id, infection: false}
+  ]
+
+mr_hong_health = Repo.insert!(gildong_health)
+ms_sung_health = Repo.insert!(chunhyang_health)
+trump_health = Repo.insert!(trump_health)
+
+
+#? init taxations
+#? We need a standard protocal to treat trades among people with different nationalities.
+#? Normally people have used cash_basis accounting principles.
+#? We will use a brand_new real_time acccounting principle.
+alias Demo.Taxations.Taxation
+
+korea_taxation = %Taxation{name: "Korea Tax Service", nation_id: korea_id} |> Repo.insert!
+usa_taxation = %Taxation{name: "US Internal Revenue Service", nation_id: usa_id} |> Repo.insert!
+
+taxation_ids = Enum.map(Repo.all(Taxation), fn(taxation)-> taxation.id end)
+{korea_taxation_id, usa_taxation_id} = {Enum.at(taxation_ids, 0), Enum.at(taxation_ids, 1)}
+
+#? init entities
+#? An entity is a economic representation of at least one user.
+#? An entity is similar to current legal humans.
+#? the relationship between entities and usera are many_to_many
+#? every entity belongs to a nation.
+#? every entity belongs to a supul.
+
+alias Demo.Entities.Entity
+
+hong_sung_entity = Entity.changeset(%Entity{}, %{nation_id: korea_id, email: "hong_sung@82345.kr", supul_id: hankyung_supul_id, taxation_id: korea_taxation_id}) |> Repo.insert!
+delta_entity = Entity.changeset(%Entity{}, %{nation_id: usa_id, email: "delta@023357.us", supul_id: orange_supul_id, taxation_id: usa_taxation_id}) |> Repo.insert!
 
 entity_ids = Enum.map(Repo.all(Entity), fn(entity)-> entity.id end)
-{h_entity_id, d_entity_id} = {Enum.at(entity_ids, 0), Enum.at(entity_ids, 1) }
+{hong_sung_entity_id, delta_entity_id} = {Enum.at(entity_ids, 0), Enum.at(entity_ids, 1) }
+
+#? init financial_reports
+#? FR is to record economic activities of an entity.
+#? A supul will consolidate all the entities' FS which it has.
+alias Demo.Reports.FinancialReport
+
+hong_sung_report = %FinancialReport{entity_id: hong_sung_entity_id} |> Repo.insert!
+delta_report = %FinancialReport{entity_id: delta_entity_id} |> Repo.insert!
+
+
+#? init GAB(Global Autonomous Bank) accounts
+#? Every BS has a field named "gab_account".
+#? Every entity has one "gab_account"
+#? FS is a standard form which citizens of 194 nations can share.
+#? FS should be recorded by Standard Currency(ABC: Asset Backed Cryptocurrency)
+#? SC can be converted to any fiat currency in real time according to exchange rates.
+#? an entity can view his/her/its FS in any currency type.
+#? Thought all FS are recorded in SC, they can be viewed in any currency type. 
+alias Demo.Reports.BalanceSheet
+financial_report_ids = Enum.map(Repo.all(FinancialReport), fn(financial_report)-> financial_report.id end)
+{hong_sung_report_id, delta_report_id} = {Enum.at(financial_report_ids, 0), Enum.at(financial_report_ids, 1) }
+
+hong_sung_IS = %BalanceSheet{financial_report_id: hong_sung_report_id, gab_account: 1000} |> Repo.insert
+delta_IS = %BalanceSheet{financial_report_id: delta_report_id, gab_account: 2000} |> Repo.insert
 
 
 #? item => invoice_item => invoice
+alias Demo.Invoices.{Item, Invoice, InvoiceItem}
+
 item = Item.changeset(%Item{}, %{name: "Incheon => Jeju", price: "12.5"})
 item = Repo.insert!(item)
 item2 = Item.changeset(%Item{price: Decimal.new(20)}, %{name: "Jeju => Gwangju"})

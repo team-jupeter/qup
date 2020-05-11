@@ -4,18 +4,21 @@ defmodule Demo.Supuls.Supul do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "supuls" do
+    field :supul_code, :decimal, precision: 8
     field :geographical_area, :string
     field :name, :string
-    field :nationality, :string
 
     has_many :accounts, Demo.Accounts.Account
+    belongs_to :nation, Demo.Nations.Nation, type: :binary_id
+
     timestamps()
   end
 
   @doc false
+  @field [:name, :geographical_area, :supul_code]
   def changeset(supul, attrs) do
     supul
-    |> cast(attrs, [:name, :nationality, :geographical_area])
-    |> validate_required([:name, :nationality, :geographical_area])
+    |> cast(attrs, @field)
+    |> validate_required(@field)
   end
 end

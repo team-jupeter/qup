@@ -17,10 +17,12 @@ defmodule Demo.Users.User do
     field :password_confirmation, :string, virtual: true
 
     has_many :addresses, Address
+    has_one :heath_report, Demo.Reports.HealthReport
 
     timestamps()
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
+
     many_to_many(
       :entities,
       Entity,
