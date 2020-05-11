@@ -158,6 +158,7 @@ defmodule Demo.Users do
   end
 
 
+
   defp notify_subscribers({:ok, result}, event) do
     # IO.puts "notify_subscribers"
     # IO.inspect result

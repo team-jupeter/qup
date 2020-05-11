@@ -3,6 +3,7 @@ defmodule Demo.Users.User do
   import Ecto.Changeset
   alias Demo.Entities.Entity
   alias Demo.Geo.Address
+  alias Demo.Users.User
 
   # @required_fields [:name, :email, :nationality]
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -53,13 +54,20 @@ defmodule Demo.Users.User do
     end
   end
 
+  @required_fields [:type, :name, :email]
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:type, :name, :email])
+    |> cast(attrs, @required_fields)
     |> validate_required([:name, :email])
     |> validate_format(:email, ~r/@/)
   end
 
+  def changeset_update_entities(%User{} = user, entities) do
+    user
+    |> cast(%{}, @required_fields)
+    # associate entities to the user
+    |> put_assoc(:entities, entities)
+  end
 
 
   # @phone ~r/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/

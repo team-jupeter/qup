@@ -20,6 +20,7 @@ defmodule Demo.Repo.Migrations.CreateHealthReports do
       add :case_history, :decimal
 
       add :user_id, references(:users, type: :uuid, null: false)
+
       timestamps()
     end
 

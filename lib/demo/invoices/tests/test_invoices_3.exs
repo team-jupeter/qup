@@ -18,6 +18,9 @@ usa = Repo.insert!(nation2)
 nation_ids = Enum.map(Repo.all(Nation), fn(nation)-> nation.id end)
 {korea_id, usa_id} = {Enum.at(nation_ids, 0), Enum.at(nation_ids, 1) }
 
+nations = Repo.all(Nation)
+Repo.preload nations, :taxation
+
 #? init supuls. For example, Korea will have about 4,000 supuls.
 alias Demo.Supuls.Supul
 
@@ -102,13 +105,24 @@ delta_report = %FinancialReport{entity_id: delta_entity_id} |> Repo.insert!
 #? FS should be recorded by Standard Currency(ABC: Asset Backed Cryptocurrency)
 #? SC can be converted to any fiat currency in real time according to exchange rates.
 #? an entity can view his/her/its FS in any currency type.
-#? Thought all FS are recorded in SC, they can be viewed in any currency type. 
+#? Thought all FS are recorded in SC, they can be viewed in any currency type.
 alias Demo.Reports.BalanceSheet
+
 financial_report_ids = Enum.map(Repo.all(FinancialReport), fn(financial_report)-> financial_report.id end)
 {hong_sung_report_id, delta_report_id} = {Enum.at(financial_report_ids, 0), Enum.at(financial_report_ids, 1) }
 
-hong_sung_IS = %BalanceSheet{financial_report_id: hong_sung_report_id, gab_account: 1000} |> Repo.insert
-delta_IS = %BalanceSheet{financial_report_id: delta_report_id, gab_account: 2000} |> Repo.insert
+hong_sung_BS = %BalanceSheet{financial_report_id: hong_sung_report_id, gab_account: 1000} |> Repo.insert
+delta_BS = %BalanceSheet{financial_report_id: delta_report_id, gab_account: 2000} |> Repo.insert
+
+
+#? users_entities
+alias Demo.Entities.Entity
+alias Demo.Users.User
+alias Demo.Users
+
+upsert_user_entities(mr_hong, ["05e1eba0-2478-447a-9c02-a008d21d2c20"])
+upsert_user_entities(ms_sung, ["05e1eba0-2478-447a-9c02-a008d21d2c20"])
+upsert_user_entities(mr_trump, ["189f07c2-7ff1-44df-a471-c7aa12bbc211"])
 
 
 #? item => invoice_item => invoice

@@ -11,11 +11,11 @@ defmodule Demo.Repo.Migrations.CreateUsersEntities do
 
     end
 
-    # create(index(:user_entities, [:entity_id]))
-    # create(index(:user_entities, [:user_id]))
+    create(index(:user_entities, [:entity_id]))
+    create(index(:user_entities, [:user_id]))
 
-    # create(
-    #   unique_index(:users_entities, [:user_id, :entity_id], name: :user_id_entity_id_unique_index)
-    # )
+    create(
+      unique_index(:users_entities, [:user_id, :entity_id], name: :user_id_entity_id_unique_index)
+    )
   end
 end
