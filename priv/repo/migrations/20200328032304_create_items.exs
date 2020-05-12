@@ -7,7 +7,7 @@ defmodule Demo.Repo.Migrations.CreateItems do
       add :gpc_code, :text, default: "ABC10000"
       add :name, :text
       add :price, :decimal, precision: 12, scale: 2
-      add :tax_rate, :decimal, precision: 5, scale: 2
+      # add :tax_rate, :decimal, precision: 5, scale: 2
 
       timestamps()
     end

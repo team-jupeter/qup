@@ -39,7 +39,7 @@ defmodule Demo.Invoices.Invoice do
     IO.inspect "params"
     IO.inspect params
     data
-    # |> IO.inspect
+    |> IO.inspect
     |> cast(params, @fields)
     |> cast_embed(:buyer)
     |> IO.inspect
@@ -48,18 +48,33 @@ defmodule Demo.Invoices.Invoice do
 
   end
 
+
   def create(params) do
     IO.puts "create"
     changeset(%Invoice{}, params)
     |> validate_item_count(params)
     |> put_assoc(:invoice_items, get_items(params))
-    |> IO.inspect
     |> Repo.insert
+    |> add_total
+  end
+
+  
+  def add_total({_ok, invoice}) do
+    IO.puts "add total"
+    IO.inspect invoice
+
+    invoice
+    |> change
+    |> IO.inspect
+    |> put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
+    |> IO.inspect
+    # careful not to use Repo.update!
+    |> Repo.update
   end
 
   defp get_items(params) do
-    IO.puts "get_items"
-    IO.inspect params
+    # IO.puts "get_items"
+    # IO.inspect params
 
     items = items_with_prices(params[:invoice_items] || params["invoice_items"])
 
@@ -72,7 +87,7 @@ defmodule Demo.Invoices.Invoice do
 
 
   defp items_with_prices(items) do
-    IO.puts "items_with_prices"
+    # IO.puts "items_with_prices"
 
     item_ids = Enum.map(items, fn(item) -> item[:item_id] || item["item_id"] end)
 
@@ -81,20 +96,17 @@ defmodule Demo.Invoices.Invoice do
 
     prices = Repo.all(q)
 
-    IO.puts "show item_id and prices"
-    IO.inspect prices
+    # IO.puts "show item_id and prices"
+    # IO.inspect prices
 
-    IO.puts "return item_id, quantity, and prices"
+    # IO.puts "return item_id, quantity, and prices"
     Enum.map(items, fn(item) ->
       item_id = item[:item_id] || item["item_id"]
-      a = %{
+      %{
          item_id: item_id,
          quantity: item[:quantity] || item["quantity"],
          price: Enum.find(prices, fn(p) -> p[:id] == item_id end)[:price] || 0
        }
-      IO.puts "a"
-      IO.inspect a
-      a
     end)
   end
 

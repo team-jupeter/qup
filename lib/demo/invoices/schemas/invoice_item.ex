@@ -3,6 +3,7 @@ defmodule Demo.Invoices.InvoiceItem do
   import Ecto.Changeset
 
   schema "invoice_items" do
+    field :name, :string
     field :quantity, :decimal, precision: 12, scale: 2
     field :price, :decimal, precision: 12, scale: 2
     field :tax, :decimal, precision: 5, scale: 2

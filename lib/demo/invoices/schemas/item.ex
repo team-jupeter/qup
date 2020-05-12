@@ -9,10 +9,10 @@ defmodule Demo.Invoices.Item do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "items" do
-    field :gpc_code, :string
+    field :gpc_code, :string #? global product classification
     field :name, :string
     field :price, :decimal, precision: 12, scale: 2
-    field :tax_rate, :integer, precision: 5, scale: 2
+    # field :tax_rate, :integer, precision: 5, scale: 2
 
     has_many :invoice_items, InvoiceItem
 

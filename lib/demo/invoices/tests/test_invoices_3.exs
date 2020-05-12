@@ -199,7 +199,7 @@ item_ids = Enum.map(Repo.all(Item), fn(item)-> item.id end)
 {id1, id2} = {Enum.at(item_ids, 0), Enum.at(item_ids, 1) }
 
 # inv_items = [%{item_id: id1, price: 12.5, quantity: 2}, %{item_id: id2, price: 16, quantity: 3}]
-inv_items = [%{item_id: id1, quantity: 2}, %{item_id: id2, quantity: 3}]
+invoice_items = [%{item_id: id1, quantity: 2}, %{item_id: id2, quantity: 3}]
 
 
 #? invoice
@@ -211,25 +211,35 @@ entity_ids = Enum.map(Repo.all(Entity), fn(entity)-> entity.id end)
 params = %{
   "buyer" => %{"entity_id" => hs_entity_id},
   "seller" => %{"entity_id" => d_entity_id},
-  "invoice_items" => inv_items
+  "invoice_items" => invoice_items
 }
 
 
-{:ok, inv} = Invoice.create(params)
+{:ok, invoice} = Invoice.create(params)
+
+invoice_cs = change(invoice)
+invoice_t = Ecto.Changeset.put_change(invoice_cs, :total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
+
+IO.inspect invoice_t
+Repo.update!(invoice_t)
 
 # Repo.all(Invoice)
 # Repo.all(Invoice) |> Repo.preload(:invoice_items)
 # Repo.get(Invoice, "90f9078c-624d-4424-a68d-4cfeae6f908f") |> Repo.preload(:invoice_items)
-hong_sung_report = %FinancialReport{entity_id: hong_sung_entity_id} |> Repo.insert!
+# hong_sung_report = %FinancialReport{entity_id: hong_sung_entity_id} |> Repo.insert!
 
-Repo.insert!(%Item{name: "Seoul-Busan", price: Decimal.new("5")})
+Repo.insert!(%Item{name: "Seoul-Busan", price: Decimal.new("15")})
 Repo.insert!(%Item{name: "Incheon-NewYork", price: Decimal.new("22.5")})
-Repo.insert!(%Item{name: "Incheon-NewYork", price: Decimal.new("22.5")})
+Repo.insert!(%Item{name: "Incheon-NewYork", price: Decimal.new("21.5")})
 Repo.insert!(%Item{name: "Incheon-NewYork", price: Decimal.new("23.5")})
 Repo.insert!(%Item{name: "Cheongju-Osaka", price: Decimal.new("21.5")})
 Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("12")})
+Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("14")})
+Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("16")})
+Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("17")})
+Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("19")})
 Repo.insert!(%Item{name: "Shanghai-Hochiminh", price: Decimal.new("10")})
-Repo.insert!(%Item{name: "Shanghai-Hochiminh", price: Decimal.new("10")})
+Repo.insert!(%Item{name: "Shanghai-Hochiminh", price: Decimal.new("12")})
 
 #? number of each item spec
 # q = from(i in Item, select: %{name: i.name, count: (i.name)}, group_by: i.name)
@@ -240,13 +250,22 @@ Repo.all(q)
 l =  Repo.all(from(i in Item, select: {i.name, i.id}))
 items = for {k, v} <- l, into: %{}, do: {k, v}
 
-#? invoice_items
-invoice_items_1 = [%{item_id: items["Shanghai-Hochiminh"], quantity: 2}, %{item_id: items["Incheon => Jeju"], quantity: 5}]
+#? invoice with buyer and seller filled.
+invoice_items_1 = [%InvoiceItem{item_id: items["Shanghai-Hochiminh"], quantity: 2}, %InvoiceItem{item_id: items["Incheon => Jeju"], quantity: 5}] |> Repo.insert!
 invoice_items_2 = [%{item_id: items["Cheongju-Osaka"], quantity: 2}| invoice_items_1]
 invoice_items_3 = invoice_items_2 ++ [%{item_id: items["Incheon-NewYork"], quantity: 3 }, %{item_id: items["Seoul-Busan"], quantity: 1}, %{item_id: items["Osaka-Beijing"], quantity: 1}]
 
 
-superman_invoice = Invoice.create(%{customer: "Superman", invoice_items: invoice_items_1})
-batman_invoice = Invoice.create(%{customer: "Batman", invoice_items: invoice_items_2})
-xman_invoice = Invoice.create(%{customer: "Xman", invoice_items: invoice_items_3})
+params = %{
+  "buyer" => %{"entity_id" => "db47e9e2-06b5-455e-8b87-b84ee3ce6c14"}, #? shameless hard coding
+  "seller" => %{"entity_id" => d_entity_id},
+  "invoice_items" => invoice_items_1,
+}
+superman_invoice = Invoice.create(params)
 
+
+
+batman_invoice = Invoice.create(%{buyer: "Batman", seller: "Delta airline", invoice_items: invoice_items_2})
+xman_invoice = Invoice.create(%{buyer: "Xman", seller: "Delta airline", invoice_items: invoice_items_3})
+
+#? calculating total of invoice
