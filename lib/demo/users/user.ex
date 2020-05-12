@@ -7,6 +7,8 @@ defmodule Demo.Users.User do
 
   # @required_fields [:name, :email, :nationality]
   @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+
   schema "users" do
     # add user_type
     field :type, :string

@@ -5,7 +5,10 @@ defmodule Demo.Entities.Entity do
   alias Demo.Users.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+
   schema "entities" do
+    field :name, :string
     field :email, :string
     field :category, :string
     field :year_started, :integer
