@@ -17,7 +17,7 @@ defmodule Demo.Entities.Entity do
 
     has_one :color_code, Demo.ColorCodes.ColorCode
     has_one :sil, Demo.Mulets.Sil
-
+    has_one :financial_report, Demo.Reports.FinancialReport
     has_many :addresses, Demo.Geo.Address
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id

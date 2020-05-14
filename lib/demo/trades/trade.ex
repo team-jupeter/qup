@@ -20,7 +20,15 @@ defmodule Demo.Trades.Trade do
     timestamps()
   end
 
-  @fields [:seller_entity_name, :seller_supul_name, :seller_taxation_name, :seller_nation_name, :tax_amount, :invoice_id]
+  @fields [
+    :seller_entity_name,
+    :seller_supul_name,
+    :seller_taxation_name,
+    :seller_nation_name,
+    :tax_amount,
+    :invoice_id,
+    :taxation_id,
+  ]
 
   @doc false
   def changeset(trade, attrs \\ %{}) do

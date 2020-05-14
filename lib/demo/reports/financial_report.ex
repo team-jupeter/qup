@@ -16,6 +16,7 @@ defmodule Demo.Reports.FinancialReport do
 
 
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
 
     timestamps()
   end

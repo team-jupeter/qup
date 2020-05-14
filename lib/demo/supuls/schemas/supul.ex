@@ -4,11 +4,11 @@ defmodule Demo.Supuls.Supul do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "supuls" do
-    field :supul_code, :decimal, precision: 8
+    field :supul_code, :integer
     field :geographical_area, :string
     field :name, :string
 
-    has_many :accounts, Demo.Accounts.Account
+    has_one :financial_report, Demo.Reports.FinancialReport
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
 
     timestamps()

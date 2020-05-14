@@ -62,8 +62,9 @@ _ = '''
 #? init supuls. For example, Korea will have about 4,000 supuls.
 alias Demo.Supuls.Supul
 
-hankyung_supul = %Supul{name: "Hankyung_County", nation_id: korea_id, supul_code: 52070104} |> Repo.insert!
-orange_supul = %Supul{name: "Orange_County", nation_id: usa_id, supul_code: 02171124} |> Repo.insert!
+hankyung_supul = %Supul{name: "Hankyung_County", nation_id: korea_id, supul_code: 0x52070104} |> Repo.insert!
+hallim_supul = %Supul{name: "Hallim_County", nation_id: korea_id, supul_code: 0x52070102} |> Repo.insert!
+orange_supul = %Supul{name: "Orange_County", nation_id: usa_id, supul_code: 0x01171124} |> Repo.insert!
 
 supul_ids = Enum.map(Repo.all(Supul), fn(supul)-> supul.id end)
 {hankyung_supul_id, orange_supul_id} = {Enum.at(supul_ids, 0), Enum.at(supul_ids, 1)}
@@ -122,8 +123,8 @@ taxation_ids = Enum.map(Repo.all(Taxation), fn(taxation)-> taxation.id end)
 
 alias Demo.Entities.Entity
 
-hong_sung_entity = Entity.changeset(%Entity{}, %{category: "air_line", name: "Hong & Sung's Hair", nation_id: korea_id, email: "hong_sung@82345.kr", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
-delta_entity = Entity.changeset(%Entity{}, %{category: "hair_shop", name: "Delta Airline", nation_id: usa_id, email: "delta@023357.us", supul_id: orange_supul_id, taxation_id: irs_id}) |> Repo.insert!
+hong_sung_entity = Entity.changeset(%Entity{}, %{category: "hairshop", name: "Hong & Sung's Hair", nation_id: korea_id, email: "hong_sung@82345.kr", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+delta_entity = Entity.changeset(%Entity{}, %{category: "airline", name: "Delta Airline", nation_id: usa_id, email: "delta@023357.us", supul_id: orange_supul_id, taxation_id: irs_id}) |> Repo.insert!
 
 
 entity_ids = Enum.map(Repo.all(Entity), fn(entity)-> entity.id end)
@@ -342,6 +343,124 @@ invoice_items_2_tax_amount = Decimal.mult(Decimal.mult(invoice_items_2_tax_perce
 tax_amount = Decimal.add(invoice_items_1_tax_amount, invoice_items_2_tax_amount)
 
 trade = Trade.changeset(trade, %{tax_amount: tax_amount}) |> Repo.update!
+trade = Trade.changeset(trade, %{taxation_id: seller_taxation_id}) |> Repo.update!
+
+#? Supul Context
+#? 16 bit digits(hexa decimal)
+jejusi_supul = %Supul{name: "Jejusi", nation_id: korea_id, supul_code: 0x52130102} |> Repo.insert!
+jejudo_supul = %Supul{name: "Jejudo", nation_id: korea_id, supul_code: 0x52130100} |> Repo.insert!
+seoul_supul = %Supul{name: "Seoul", nation_id: korea_id, supul_code: 0x52010000} |> Repo.insert!
+korea_supul = %Supul{name: "Korea", nation_id: korea_id, supul_code: 0x52000000} |> Repo.insert!
+usa_supul = %Supul{name: "USA", nation_id: korea_id, supul_code: 0x01000000} |> Repo.insert!
+global_supul = %Supul{name: "Global", supul_code: 0x00000000} |> Repo.insert!
+
+
+
+#? buyer_entity_id
+buyer_entity_id = preloaded_invoice.buyer.entity_id
+buyer_entity = Repo.one from entity in Entity,
+where: entity.id == ^buyer_entity_id
+
+#? seller_entity_id
+seller_entity_id = preloaded_invoice.seller.entity_id
+seller_entity = Repo.one from entity in Entity,
+where: entity.id == ^seller_entity_id
+
+#? buyer_supul_id
+buyer_supul_id = Repo.one from supul in Supul,
+where: supul.id == ^buyer_entity.supul_id,
+select: supul.id
+
+#? seller_supul_id
+seller_supul_id = Repo.one from supul in Supul,
+where: supul.id == ^seller_entity.supul_id,
+select: supul.id
+
+seller_supul = Repo.one from supul in Supul,
+where: supul.id == ^seller_entity.supul_id
+
+#? generate two financial reports for buyer and seller
+hs_report = Repo.insert!(%FinancialReport{entity_id: buyer_entity_id, supul_id: buyer_supul_id})
+delta_report = Repo.insert!(%FinancialReport{entity_id: seller_entity_id, supul_id: seller_supul_id})
+
+#? init two balance sheets for the two reports above
+bs_1 = Repo.insert!(%BalanceSheet{financial_report_id: hs_report.id})
+bs_2 = Repo.insert!(%BalanceSheet{financial_report_id: delta_report.id})
+
+#? add balance sheet to report
+hs_report = FinancialReport.changeset(hs_report, %{balance_sheet: bs_1}) |> Repo.update!
+delta_report = FinancialReport.changeset(delta_report, %{balance_sheet: bs_2}) |> Repo.update!
+
+#? preload reports
+preloaded_hs_report = Repo.one from report in FinancialReport,
+  where: report.id == ^hs_report.id,
+  preload: [:balance_sheet, :supul]
+
+preloaded_delta_report = Repo.one from report in FinancialReport,
+  where: report.id == ^delta_report.id,
+  preload: [:balance_sheet, :supul]
+
+
+
+#? add initial gab_amount to the gab_account of seller balance sheet.
+delta_bs = preloaded_delta_report.balance_sheet
+delta_bs = BalanceSheet.changeset(delta_bs, %{gab_account: 10000}) |> Repo.update!
+
+hs_bs = preloaded_hs_report.balance_sheet
+hs_bs = BalanceSheet.changeset(hs_bs, %{gab_account: 5000}) |> Repo.update!
+
+#? gab_account adjustments.
+new_delta_gab_account = Decimal.add(delta_bs.gab_account, invoice.total)
+new_hs_gab_account = Decimal.sub(hs_bs.gab_account, invoice.total)
+
+#? generate changesets of seller and buyer, reflecting account adjustments.
+delta_bs_cs =  BalanceSheet.changeset(delta_bs, %{gab_account: new_delta_gab_account})
+hs_bs_cs =  BalanceSheet.changeset(hs_bs, %{gab_account: new_hs_gab_account})
+
+#? Adjust gab_balances of seller and buyer
+#? both update  will succeed or both fail, not just one.
+Ecto.Multi.new() |>
+   Ecto.Multi.update(:seller, delta_bs_cs) |>
+   Ecto.Multi.update(:buyer, hs_bs_cs) |>
+   Repo.transaction
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#? buyer_supul_code
+buyer_entity_id = preloaded_invoice.buyer.entity_id
+buyer_entity = Repo.one from entity in Entity, where: entity.id == ^buyer_entity_id
+buyer_supul_code = Repo.one from supul in Supul, where: supul.id == ^buyer_entity.supul_id, select: supul.supul_code
+
+#? seller_supul_code
+seller_supul_name = Repo.one from supul in Supul,
+where: supul.id == ^seller_entity.supul_id,
+select: supul.supul_code
+
+#? common supul_code
+#? shamefully hard coded. Write codes to determine the common supul of buyer and seller.
+supul_code = 0x00000000
+
+#? Supul Context
+#? Standard Bank
+
+
+
+
+
+
+
 
 
 

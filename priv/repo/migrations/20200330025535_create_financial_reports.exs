@@ -7,6 +7,7 @@ defmodule Demo.Repo.Migrations.CreateFinancialReports do
       add :locked, :boolean, default: false
 
       add :entity_id, references(:entities, type: :uuid, null: false)
+      add :supul_id, references(:supuls, type: :uuid, null: false)
 
       timestamps()
     end
