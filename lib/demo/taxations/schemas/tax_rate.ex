@@ -9,7 +9,7 @@ A~Z 중분류
 A~Z 소분류
 A~Z 세분류
 A~Z 세세분류
-가능한 상품 및 서비스의 종류 24^5 = 7,962,624
+가능한 상품 및 서비스의 종류 24^5 = 7,962,624,000
 '''
   @primary_key {:id, :binary_id, autogenerate: true}
 

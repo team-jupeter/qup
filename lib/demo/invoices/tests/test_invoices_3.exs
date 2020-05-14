@@ -288,6 +288,7 @@ seller_taxation_name = Repo.one from taxation in Taxation,
   select: taxation.name
 
 trade = Trade.changeset(trade, %{seller_taxation_name: seller_taxation_name}) |> Repo.update!
+# trade = Trade.changeset(trade, %{seller_taxation_id: seller_taxation_id}) |> Repo.update!
 
 #? find the nation name using the seller_nation_id
 seller_nation_id = seller_entity.nation_id
@@ -301,6 +302,8 @@ trade = Trade.changeset(trade, %{seller_nation_name: seller_nation_name}) |> Rep
 alias Demo.Taxations.TaxRate
 
 #? add unique constraints
+#? Korean Tax Service, Internal Revenue Service
+
 Repo.insert!(%TaxRate{taxation_id: kts_id, gpc_code: "ABCDE1001", tax_percent: Decimal.new("15")})
 Repo.insert!(%TaxRate{taxation_id: irs_id, gpc_code: "ABCDE1001", tax_percent: Decimal.new("20")})
 Repo.insert!(%TaxRate{taxation_id: irs_id, gpc_code: "ABCDE1003", tax_percent: Decimal.new("22")})
@@ -309,6 +312,16 @@ Repo.insert!(%TaxRate{taxation_id: irs_id, gpc_code: "ABCDE1003", tax_percent: D
 #? find the tax_percent of each invoice_item
 #? shamelessly hard coded
 #? use "for" statement in real coding
+
+_='''
+1. An invoice has many invoice_items
+2. An invoice_item has subtotal, item name, quantity of the item.
+3. A tax_rate has gpc_code, tax_percent
+4. An item has gpc_code
+5. We can calculate the total tax amount of an invoice using the above.
+total tax amount of an invoice = sum(subtotal of each invoice_item * tax_rate of the item in the invoice_item)
+'''
+
 invoice_items_1_gpc_code = Enum.at(preloaded_invoice.invoice_items, 0).item.gpc_code
 invoice_items_2_gpc_code = Enum.at(preloaded_invoice.invoice_items, 1).item.gpc_code
 
@@ -323,8 +336,8 @@ invoice_items_2_tax_percent = Repo.one from tax_rate in TaxRate,
 where: tax_rate.taxation_id == ^seller_taxation_id and tax_rate.gpc_code == ^invoice_items_2_gpc_code,
 select: tax_rate.tax_percent
 
-invoice_items_1_tax_amount = Decimal.mult(Decimal.mult(invoice_items_1_tax_percent, Enum.at(preloaded_invoice.invoice_items, 0).subtotal), "0.01")
-invoice_items_2_tax_amount = Decimal.mult(Decimal.mult(invoice_items_2_tax_percent, Enum.at(preloaded_invoice.invoice_items, 1).subtotal), "0.01")
+invoice_items_1_tax_amount = Decimal.mult(Decimal.mult(invoice_items_1_tax_percent, Enum.at(preloaded_invoice.invoice_items, 0).subtotal), "0.1")
+invoice_items_2_tax_amount = Decimal.mult(Decimal.mult(invoice_items_2_tax_percent, Enum.at(preloaded_invoice.invoice_items, 1).subtotal), "0.1")
 
 tax_amount = Decimal.add(invoice_items_1_tax_amount, invoice_items_2_tax_amount)
 
