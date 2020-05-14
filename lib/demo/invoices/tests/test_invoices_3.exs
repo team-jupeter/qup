@@ -424,20 +424,7 @@ Ecto.Multi.new() |>
    Ecto.Multi.update(:buyer, hs_bs_cs) |>
    Repo.transaction
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#? Supul Codes
 #? buyer_supul_code
 buyer_entity_id = preloaded_invoice.buyer.entity_id
 buyer_entity = Repo.one from entity in Entity, where: entity.id == ^buyer_entity_id
@@ -452,40 +439,67 @@ select: supul.supul_code
 #? shamefully hard coded. Write codes to determine the common supul of buyer and seller.
 supul_code = 0x00000000
 
-#? Supul Context
-#? Standard Bank
+
+#? Tickets
+#? init a few entities
+
+incheon_airport_entity = Entity.changeset(%Entity{}, %{category: "airport", name: "Incheon Airport", nation_id: korea_id, email: "incheon_airport@82345.kr", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+new_york_airport_entity = Entity.changeset(%Entity{}, %{category: "airport", name: "New York Airport", nation_id: korea_id, email: "new_york_airport@82345.kr", supul_id: orange_supul_id, taxation_id: irs_id}) |> Repo.insert!
+asina_entity = Entity.changeset(%Entity{}, %{category: "airline", name: "Asina Airline", nation_id: korea_id, email: "asina@82345.kr", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+delta_entity = Entity.changeset(%Entity{}, %{category: "airline", name: "Delta Airline", nation_id: usa_id, email: "delta@023357.us", supul_id: orange_supul_id, taxation_id: irs_id}) |> Repo.insert!
+jeju_bus_entity = Entity.changeset(%Entity{}, %{category: "bus", name: "Jeju Bus Corp.", nation_id: korea_id, email: "jeju_bus@023357.us", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+jeju_ferry_entity = Entity.changeset(%Entity{}, %{category: "Ferry", name: "Jeju ferry Corp.", nation_id: korea_id, email: "jeju_bus@023357.us", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+jeju_taxi_entity = Entity.changeset(%Entity{}, %{category: "taxi", name: "Jeju Taxi Corp.", nation_id: korea_id, email: "jeju_taxi@023357.us", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+ktx_entity = Entity.changeset(%Entity{}, %{category: "train", name: "KTX Corp.", nation_id: korea_id, email: "ktx@023357.us", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+
+#? entity_ids
+entity_ids = Enum.map(Repo.all(Entity), fn(entity)-> entity.id end)
+{hong_sung_entity_id, delta_entity_id} = {Enum.at(entity_ids, 0), Enum.at(entity_ids, 1) }
 
 
 
+#? init a few terminals
+alias Demo.Terminals.Terminal
 
+incheon_airport = Repo.insert!(%Terminal{type: "airport", name: "Incheon Airport", nation_id: korea_id})
+ny_airport = Repo.insert!(%Terminal{type: "airport", name: "New York Airport", nation_id: usa_id})
+jeju_airport = Repo.insert!(%Terminal{type: "airport", name: "Jeju Airport", nation_id: korea_id})
+jeju_bus = Repo.insert!(%Terminal{type: "bus_terminal", name: "Jeju Bus Terminal", nation_id: korea_id})
+jeju_ferry = Repo.insert!(%Terminal{type: "ferry_terminal", name: "Jeju Ferry Terminal", nation_id: korea_id})
+jeju_taxi = Repo.insert!(%Terminal{type: "taxi_terminal", name: "Jeju Taxi", nation_id: korea_id})
+seoul_station = Repo.insert!(%Terminal{type: "train_station", name: "Seoul Railway Station", nation_id: korea_id})
 
+#? init a few transports
+alias Demo.Transports.Transport
 
+asiana_3534 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "asiana_3534", purpose: "passengers", entity_id: asina_entity.id})
+delta_1452 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "delta_1452", purpose: "passengers", entity_id: delta_entity.id})
+kal_2234 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "kal_2234", purpose: "cargo", entity_id: asina_entity.id})
+jeju_air_6634 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "jeju_air_6634", purpose: "cargo", entity_id: asina_entity.id})
+jeju_bus_7734 = Repo.insert!(%Transport{transport_type: "bus", transport_id: "jeju_bus_7734", purpose: "passengers", entity_id: jeju_bus_entity.id})
+jeju_taxi_7884 = Repo.insert!(%Transport{transport_type: "taxi", transport_id: "jeju_taxi_7884", purpose: "passengers", entity_id: jeju_taxi_entity.id})
+jeju_ferry_7004 = Repo.insert!(%Transport{transport_type: "ferry", transport_id: "jeju_ferry_7004", purpose: "passengers", entity_id: jeju_ferry_entity.id})
+ktx_1004 = Repo.insert!(%Transport{transport_type: "train", transport_id: "ktx_1004", purpose: "passengers", entity_id: ktx_entity.id})
 
+#? many to many between terminals and transports
+incheon_airport = Repo.preload(incheon_airport, [:transports])
+ny_airport = Repo.preload(ny_airport, [:transports])
 
+incheon_airport_cs = change(incheon_airport)
+ny_airport_cs = change(ny_airport)
 
+incheon_airport_transport_cs = put_assoc(incheon_airport_cs, :transports, [
+  asiana_3534 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "asiana_3534", purpose: "passengers"}),
+  delta_1452 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "delta_1452", purpose: "passengers"}),
+])
+Repo.update!(incheon_airport_transport_cs)
 
+ny_airport_transport_cs = put_assoc(ny_airport_cs, :transports, [
+  delta_1452 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "delta_1452", purpose: "passengers", entity: delta_entity}),
+  kal_2234 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "kal_2234", purpose: "cargo", entity: asina_entity}),
+  jeju_air_6634 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "jeju_air_6634", purpose: "cargo", entity: asina_entity})
+])
+Repo.update!(ny_airport_transport_cs)
 
+#? init some tickets
 
-
-
-
-invoice_total = Ecto.Changeset.put_change(trade_cs, :total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
-
-#? we need for statement to determine the number of invoice_items in an invoice.
-#? shamelessly hard coding below
-{:ok, invoice} = Invoice.create(params)
-invoice_item_1 = Enum.at(trade.invoice_items, 0)
-invoice_item_2 = Enum.at(trade.invoice_items, 1)
-
-Repo.one from tax_rate in TaxRate,
-  where: tax_rate.gpc_code == ^invoice_item_1.item.gpc_code,
-  where: tax_rate.nation_id == ^seller.nation_id
-
-
-
-#? If we want to change a value of a key/field, we first have changeset of the struct which we wanna change.
-invoice_item_1_cs = change(invoice_item_1) #? make a changeset
-
-invoice_total = Ecto.Changeset.put_change(trade_cs, :total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
-
-Repo.update!(invoice_total)
