@@ -2,7 +2,16 @@ defmodule Demo.Trades.Trade do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+
   schema "trades" do
+    field :seller_entity_name, :string
+    field :seller_supul_name, :string
+    field :seller_nation_name, :string
+
+    field :seller_taxation_name, :string
+    field :tax_amount, :decimal, precision: 5, scale: 2
 
     belongs_to :invoice, Demo.Invoices.Invoice
     belongs_to :supul, Demo.Supuls.Supul
@@ -11,11 +20,13 @@ defmodule Demo.Trades.Trade do
     timestamps()
   end
 
+  @fields [:seller_entity_name, :seller_supul_name, :seller_taxation_name, :seller_nation_name, :tax_amount, :invoice_id]
+
   @doc false
-  def changeset(trade, attrs) do
+  def changeset(trade, attrs \\ %{}) do
     trade
-    |> cast(attrs, [:taxation, :supul])
-    |> validate_required([:taxation])
+    |> cast(attrs, @fields)
+    # |> validate_required([:taxation])
   end
 
 

@@ -10,6 +10,7 @@ defmodule Demo.Invoices.Item do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "items" do
     field :gpc_code, :string #? global product classification
+    field :category, :string
     field :name, :string
     field :price, :decimal, precision: 12, scale: 2
     # field :tax_rate, :integer, precision: 5, scale: 2
@@ -19,7 +20,7 @@ defmodule Demo.Invoices.Item do
     timestamps()
   end
 
-  @fields [:name, :price]
+  @fields [:gpc_code, :category, :name, :price]
 
   def changeset(data, params \\ %{}) do
     # IO.puts "Demo.Invoices.Item changeset"

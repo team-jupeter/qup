@@ -4,8 +4,9 @@ defmodule Demo.Repo.Migrations.CreateItems do
   def change do
     create table(:items, primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :gpc_code, :text, default: "ABC10000"
-      add :name, :text
+      add :gpc_code, :string
+      add :category, :string
+      add :name, :string
       add :price, :decimal, precision: 12, scale: 2
       # add :tax_rate, :decimal, precision: 5, scale: 2
 

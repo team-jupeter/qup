@@ -10,7 +10,7 @@ defmodule Demo.Invoices.Invoice do
     field :start_at, :date
     field :end_at, :date
     field :total, :decimal, precision: 12, scale: 2
-    field :tax, :decimal, precision: 5, scale: 2
+    field :tax_total, :decimal, precision: 5, scale: 2
 
     has_many :invoice_items, InvoiceItem, on_delete: :delete_all
     has_one :trade, Demo.Invoices.Invoice
@@ -32,7 +32,7 @@ defmodule Demo.Invoices.Invoice do
   end
 
 
-  @fields [:total, :start_at, :end_at, :tax]
+  @fields [:total, :start_at, :end_at, :tax_total]
 
   def changeset(data, params \\ %{}) do
     # IO.puts "changeset"
@@ -54,20 +54,20 @@ defmodule Demo.Invoices.Invoice do
     changeset(%Invoice{}, params)
     |> validate_item_count(params)
     |> put_assoc(:invoice_items, get_items(params))
-    |> Repo.insert
+    |> Repo.insert #? {ok, Invoice}
     |> add_total
   end
 
-  
+
   def add_total({_ok, invoice}) do
     IO.puts "add total"
     IO.inspect invoice
 
-    invoice
+    invoice #? When we change a struct, change => put_change => update
     |> change
-    |> IO.inspect
+    # |> IO.inspect
     |> put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
-    |> IO.inspect
+    # |> IO.inspect
     # careful not to use Repo.update!
     |> Repo.update
   end

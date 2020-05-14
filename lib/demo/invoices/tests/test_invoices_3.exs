@@ -110,7 +110,8 @@ korea_taxation = %Taxation{name: "Korea Tax Service", nation_id: korea_id} |> Re
 usa_taxation = %Taxation{name: "US Internal Revenue Service", nation_id: usa_id} |> Repo.insert!
 
 taxation_ids = Enum.map(Repo.all(Taxation), fn(taxation)-> taxation.id end)
-{korea_taxation_id, usa_taxation_id} = {Enum.at(taxation_ids, 0), Enum.at(taxation_ids, 1)}
+{kts_id, irs_id} = {Enum.at(taxation_ids, 0), Enum.at(taxation_ids, 1)}
+
 
 #? init entities
 #? An entity is a economic representation of at least one user.
@@ -121,8 +122,8 @@ taxation_ids = Enum.map(Repo.all(Taxation), fn(taxation)-> taxation.id end)
 
 alias Demo.Entities.Entity
 
-hong_sung_entity = Entity.changeset(%Entity{}, %{name: "Hong & Sung's Hair", nation_id: korea_id, email: "hong_sung@82345.kr", supul_id: hankyung_supul_id, taxation_id: korea_taxation_id}) |> Repo.insert!
-delta_entity = Entity.changeset(%Entity{}, %{name: "Delta Airline", nation_id: usa_id, email: "delta@023357.us", supul_id: orange_supul_id, taxation_id: usa_taxation_id}) |> Repo.insert!
+hong_sung_entity = Entity.changeset(%Entity{}, %{category: "air_line", name: "Hong & Sung's Hair", nation_id: korea_id, email: "hong_sung@82345.kr", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+delta_entity = Entity.changeset(%Entity{}, %{category: "hair_shop", name: "Delta Airline", nation_id: usa_id, email: "delta@023357.us", supul_id: orange_supul_id, taxation_id: irs_id}) |> Repo.insert!
 
 
 entity_ids = Enum.map(Repo.all(Entity), fn(entity)-> entity.id end)
@@ -189,8 +190,8 @@ to tell Ecto to take those entries as is.
 #? item
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 
-item1 = Item.changeset(%Item{}, %{name: "Incheon => Jeju", price: "12.5"}) |> Repo.insert!
-item2 = Item.changeset(%Item{price: Decimal.new(20)}, %{name: "Jeju => Gwangju"}) |> Repo.insert!
+item1 = Item.changeset(%Item{}, %{gpc_code: "ABCDE1001", category: "air_ticket", name: "Incheon => Jeju", price: "12.5"}) |> Repo.insert!
+item2 = Item.changeset(%Item{price: Decimal.new(20)}, %{gpc_code: "ABCDE1003", category: "air_ticket", name: "Jeju => Gwangju"}) |> Repo.insert!
 
 
 # invalid_item = Item.changeset(%Item{}, %{name: "Jeju => Gwangju", price: -1.5})
@@ -202,7 +203,7 @@ item_ids = Enum.map(Repo.all(Item), fn(item)-> item.id end)
 invoice_items = [%{item_id: id1, quantity: 2}, %{item_id: id2, quantity: 3}]
 
 
-#? invoice
+#? add total to invoice
 # {:ok, inv} = Invoice.create(%{buyer: h_entity_id, seller: d_entity_id, invoice_items: inv_items})
 
 entity_ids = Enum.map(Repo.all(Entity), fn(entity)-> entity.id end)
@@ -214,32 +215,23 @@ params = %{
   "invoice_items" => invoice_items
 }
 
+Invoice.create(params)
 
 {:ok, invoice} = Invoice.create(params)
 
-invoice_cs = change(invoice)
-invoice_t = Ecto.Changeset.put_change(invoice_cs, :total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
+#? If we want to change a value of a key/field, we first have changeset of the struct which we wanna change.
+invoice_cs = change(invoice) #? make a changeset
 
-IO.inspect invoice_t
-Repo.update!(invoice_t)
+invoice_total = Ecto.Changeset.put_change(invoice_cs, :total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
+
+Repo.update!(invoice_total)
+
 
 # Repo.all(Invoice)
 # Repo.all(Invoice) |> Repo.preload(:invoice_items)
 # Repo.get(Invoice, "90f9078c-624d-4424-a68d-4cfeae6f908f") |> Repo.preload(:invoice_items)
 # hong_sung_report = %FinancialReport{entity_id: hong_sung_entity_id} |> Repo.insert!
 
-Repo.insert!(%Item{name: "Seoul-Busan", price: Decimal.new("15")})
-Repo.insert!(%Item{name: "Incheon-NewYork", price: Decimal.new("22.5")})
-Repo.insert!(%Item{name: "Incheon-NewYork", price: Decimal.new("21.5")})
-Repo.insert!(%Item{name: "Incheon-NewYork", price: Decimal.new("23.5")})
-Repo.insert!(%Item{name: "Cheongju-Osaka", price: Decimal.new("21.5")})
-Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("12")})
-Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("14")})
-Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("16")})
-Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("17")})
-Repo.insert!(%Item{name: "Osaka-Beijing", price: Decimal.new("19")})
-Repo.insert!(%Item{name: "Shanghai-Hochiminh", price: Decimal.new("10")})
-Repo.insert!(%Item{name: "Shanghai-Hochiminh", price: Decimal.new("12")})
 
 #? number of each item spec
 # q = from(i in Item, select: %{name: i.name, count: (i.name)}, group_by: i.name)
@@ -250,22 +242,118 @@ Repo.all(q)
 l =  Repo.all(from(i in Item, select: {i.name, i.id}))
 items = for {k, v} <- l, into: %{}, do: {k, v}
 
-#? invoice with buyer and seller filled.
-invoice_items_1 = [%InvoiceItem{item_id: items["Shanghai-Hochiminh"], quantity: 2}, %InvoiceItem{item_id: items["Incheon => Jeju"], quantity: 5}] |> Repo.insert!
-invoice_items_2 = [%{item_id: items["Cheongju-Osaka"], quantity: 2}| invoice_items_1]
-invoice_items_3 = invoice_items_2 ++ [%{item_id: items["Incheon-NewYork"], quantity: 3 }, %{item_id: items["Seoul-Busan"], quantity: 1}, %{item_id: items["Osaka-Beijing"], quantity: 1}]
 
 
-params = %{
-  "buyer" => %{"entity_id" => "db47e9e2-06b5-455e-8b87-b84ee3ce6c14"}, #? shameless hard coding
-  "seller" => %{"entity_id" => d_entity_id},
-  "invoice_items" => invoice_items_1,
-}
-superman_invoice = Invoice.create(params)
+#? Trade
+alias Demo.Trades.Trade
+
+#? init a trade
+trade = %Trade{} |> Repo.insert!
+
+#? preload without nested association
+_ = Repo.one from invoice in Invoice,
+  where: invoice.id == ^invoice.id,
+  preload: [:invoice_items]
+
+trade = Trade.changeset(trade, %{invoice_id: invoice.id}) |> Repo.update!
+
+#? preload invoice with nested association
+preloaded_invoice = Repo.one from invoice in Invoice,
+  where: invoice.id == ^invoice.id,
+  preload: [invoice_items: :item]
+
+#? find the taxation name using the seller_taxation_id
+seller_entity_id = preloaded_invoice.seller.entity_id
+seller_entity = Repo.one from entity in Entity,
+  where: entity.id == ^seller_entity_id
+
+seller_entity_name = Repo.one from entity in Entity,
+  where: entity.id == ^seller_entity_id,
+  select: entity.name
+
+trade = Trade.changeset(trade, %{seller_entity_name: seller_entity_name}) |> Repo.update!
+
+#? find the supul name using the seller_supul_id
+seller_supul_id = seller_entity.supul_id
+seller_supul_name = Repo.one from supul in Supul,
+  where: supul.id == ^seller_supul_id,
+  select: supul.name
+
+trade = Trade.changeset(trade, %{seller_supul_name: seller_supul_name}) |> Repo.update!
+
+#? find the taxation name using the seller_taxation_id
+seller_taxation_id = seller_entity.taxation_id
+seller_taxation_name = Repo.one from taxation in Taxation,
+  where: taxation.id == ^seller_taxation_id,
+  select: taxation.name
+
+trade = Trade.changeset(trade, %{seller_taxation_name: seller_taxation_name}) |> Repo.update!
+
+#? find the nation name using the seller_nation_id
+seller_nation_id = seller_entity.nation_id
+seller_nation_name = Repo.one from nation in Nation,
+  where: nation.id == ^seller_nation_id,
+  select: nation.name
+
+trade = Trade.changeset(trade, %{seller_nation_name: seller_nation_name}) |> Repo.update!
+
+#? init tax_rates
+alias Demo.Taxations.TaxRate
+
+#? add unique constraints
+Repo.insert!(%TaxRate{taxation_id: kts_id, gpc_code: "ABCDE1001", tax_percent: Decimal.new("15")})
+Repo.insert!(%TaxRate{taxation_id: irs_id, gpc_code: "ABCDE1001", tax_percent: Decimal.new("20")})
+Repo.insert!(%TaxRate{taxation_id: irs_id, gpc_code: "ABCDE1003", tax_percent: Decimal.new("22")})
+
+
+#? find the tax_percent of each invoice_item
+#? shamelessly hard coded
+#? use "for" statement in real coding
+invoice_items_1_gpc_code = Enum.at(preloaded_invoice.invoice_items, 0).item.gpc_code
+invoice_items_2_gpc_code = Enum.at(preloaded_invoice.invoice_items, 1).item.gpc_code
+
+invoice_items_1_subtotal =  Enum.at(preloaded_invoice.invoice_items, 0).subtotal
+invoice_items_2_subtotal =  Enum.at(preloaded_invoice.invoice_items, 1).subtotal
+
+invoice_items_1_tax_percent = Repo.one from tax_rate in TaxRate,
+  where: tax_rate.taxation_id == ^seller_taxation_id and tax_rate.gpc_code == ^invoice_items_1_gpc_code,
+  select: tax_rate.tax_percent
+
+invoice_items_2_tax_percent = Repo.one from tax_rate in TaxRate,
+where: tax_rate.taxation_id == ^seller_taxation_id and tax_rate.gpc_code == ^invoice_items_2_gpc_code,
+select: tax_rate.tax_percent
+
+invoice_items_1_tax_amount = Decimal.mult(Decimal.mult(invoice_items_1_tax_percent, Enum.at(preloaded_invoice.invoice_items, 0).subtotal), "0.01")
+invoice_items_2_tax_amount = Decimal.mult(Decimal.mult(invoice_items_2_tax_percent, Enum.at(preloaded_invoice.invoice_items, 1).subtotal), "0.01")
+
+tax_amount = Decimal.add(invoice_items_1_tax_amount, invoice_items_2_tax_amount)
+
+trade = Trade.changeset(trade, %{tax_amount: tax_amount}) |> Repo.update!
 
 
 
-batman_invoice = Invoice.create(%{buyer: "Batman", seller: "Delta airline", invoice_items: invoice_items_2})
-xman_invoice = Invoice.create(%{buyer: "Xman", seller: "Delta airline", invoice_items: invoice_items_3})
 
-#? calculating total of invoice
+
+
+
+
+invoice_total = Ecto.Changeset.put_change(trade_cs, :total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
+
+#? we need for statement to determine the number of invoice_items in an invoice.
+#? shamelessly hard coding below
+{:ok, invoice} = Invoice.create(params)
+invoice_item_1 = Enum.at(trade.invoice_items, 0)
+invoice_item_2 = Enum.at(trade.invoice_items, 1)
+
+Repo.one from tax_rate in TaxRate,
+  where: tax_rate.gpc_code == ^invoice_item_1.item.gpc_code,
+  where: tax_rate.nation_id == ^seller.nation_id
+
+
+
+#? If we want to change a value of a key/field, we first have changeset of the struct which we wanna change.
+invoice_item_1_cs = change(invoice_item_1) #? make a changeset
+
+invoice_total = Ecto.Changeset.put_change(trade_cs, :total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
+
+Repo.update!(invoice_total)

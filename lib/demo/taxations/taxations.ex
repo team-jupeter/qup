@@ -1,4 +1,4 @@
-defmodule Demo.Taxation do
+defmodule Demo.Taxations do
   @moduledoc """
   The Taxes context.
   """
