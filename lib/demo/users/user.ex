@@ -2,7 +2,6 @@ defmodule Demo.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.Entities.Entity
-  alias Demo.Geo.Address
   alias Demo.Users.User
 
   # @required_fields [:name, :email, :nationality]
@@ -19,7 +18,7 @@ defmodule Demo.Users.User do
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
 
-    has_many :addresses, Address
+    has_many :certificates, Demo.Certificates.Certificate
     has_one :heath_report, Demo.Reports.HealthReport
 
     timestamps()
@@ -57,10 +56,11 @@ defmodule Demo.Users.User do
   end
 
   @required_fields [:type, :name, :email]
+  @fields [:name, :type, :email, :certificate_id]
   def changeset(user, attrs) do
     user
-    |> cast(attrs, @required_fields)
-    |> validate_required([:name, :email])
+    |> cast(attrs, @fields)
+    |> validate_required(@required_fields)
     |> validate_format(:email, ~r/@/)
   end
 

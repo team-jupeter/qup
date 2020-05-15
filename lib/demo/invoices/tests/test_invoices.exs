@@ -507,7 +507,7 @@ ny_airport_transport_cs = put_assoc(ny_airport_cs, :transports, [
   jeju_air_6634 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "jeju_air_6634", purpose: "cargo", entity: asina_entity})
 ])
 Repo.update!(ny_airport_transport_cs)
-
+ 
 #? init some tickets
 alias Demo.Tickets.Ticket
 
@@ -524,4 +524,5 @@ air_ticket_1 = Repo.insert!(%Ticket{
   })
 
 #? users context
-Repo.insert(%GeoLog{user_id: mr_hong.id})
+doctor_1 = Repo.insert(%Entity{user_id: mr_hong.id, certificate: "Diagnostic doctor"})
+

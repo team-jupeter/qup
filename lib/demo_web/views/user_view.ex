@@ -8,9 +8,9 @@
 #---
 defmodule DemoWeb.UserView do
   use DemoWeb, :view
-  alias Demo.Accounts
+  alias Demo.Users
 
-  def first_name(%Accounts.User{name: name}) do
+  def first_name(%Users.User{name: name}) do
     name
     |> String.split(" ")
     |> Enum.at(0)

@@ -121,15 +121,15 @@ defmodule Demo.Polices do
   end
 
 
-  defp notify_subscribers({:ok, result}, event) do
-    # IO.puts "notify_subscribers"
-    # IO.inspect result
-    # IO.inspect event
-    Phoenix.PubSub.broadcast(Demo.PubSub, @topic, {__MODULE__, event, result})
-    Phoenix.PubSub.broadcast(Demo.PubSub, @topic <> "#{result.id}", {__MODULE__, event, result})
-    {:ok, result}
-  end
+  # defp notify_subscribers({:ok, result}, event) do
+  #   # IO.puts "notify_subscribers"
+  #   # IO.inspect result
+  #   # IO.inspect event
+  #   Phoenix.PubSub.broadcast(Demo.PubSub, @topic, {__MODULE__, event, result})
+  #   Phoenix.PubSub.broadcast(Demo.PubSub, @topic <> "#{result.id}", {__MODULE__, event, result})
+  #   {:ok, result}
+  # end
 
-  defp notify_subscribers({:error, reason}, _event), do: {:error, reason}
+  # defp notify_subscribers({:error, reason}, _event), do: {:error, reason}
 
 end

@@ -1,5 +1,5 @@
 defmodule DemoWeb.InvoiceLiveView do
   use DemoWeb, :view
 
-  alias DemoWeb.InvoiceLive
+  # alias DemoWeb.InvoiceLive
 end

@@ -4,17 +4,21 @@ defmodule Demo.Certificates.Certificate do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "certificates" do
-    field :issuer, :string
     field :name, :string
-    field :valid_until, :string
+    field :issued_by, :string
+    field :issued_to, :string
+    field :issued_date, :naive_datetime
+    field :valid_until, :naive_datetime
 
+    belongs_to :user, Demo.Users.User, type: :binary_id
+    
     timestamps()
   end
 
   @doc false
   def changeset(certificate, attrs) do
     certificate
-    |> cast(attrs, [:name, :issuer, :valid_until])
-    |> validate_required([:name, :issuer, :valid_until])
+    |> cast(attrs, [])
+    |> validate_required([])
   end
 end

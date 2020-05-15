@@ -11,14 +11,16 @@ defmodule Demo.Reports.HealthReport do
     field :disabled, :decimal
     field :disease, :decimal
     field :dna, :decimal
-    field :fingerprint, :decimal
+    field :fingerprint, :decimal 
     field :height, :decimal
     field :infection, :boolean, default: false
     field :iris, :decimal
     field :liver_test, :decimal
     field :vision, :decimal
     field :weight, :decimal
+    field :digital_certificate, :string
 
+    has_many :prescriptions, Demo.Reports.Prescription
     belongs_to :user, Demo.Users.User, type: :binary_id
 
     timestamps()

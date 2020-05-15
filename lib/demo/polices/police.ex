@@ -7,7 +7,7 @@ defmodule Demo.Polices.Police do
     field :name, :string
     field :nationality, :string
 
-    belongs_to :user, Demo.Accounts.User
+    belongs_to :user, Demo.Users.User
 
     timestamps()
   end

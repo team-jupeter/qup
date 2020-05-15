@@ -7,7 +7,6 @@ defmodule Demo.Banks.Bank do
     field :name, :string
     field :nationality, :string
 
-    has_many :entities, Demo.Entities.Entity
     belongs_to :nation, Demo.Nations.Nation
 
     timestamps()

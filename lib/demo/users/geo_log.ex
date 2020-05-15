@@ -8,7 +8,7 @@ defmodule Demo.GeoLog do
     field :altitude, :string
     field :date_time, :naive_datetime
 
-    belongs_to :user, Demo.User.User, type: :binary_id
+    belongs_to :user, Demo.Users.User, type: :binary_id
 
     timestamps()
   end
