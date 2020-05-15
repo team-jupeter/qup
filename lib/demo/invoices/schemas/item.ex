@@ -13,6 +13,7 @@ defmodule Demo.Invoices.Item do
     field :category, :string
     field :name, :string
     field :price, :decimal, precision: 12, scale: 2
+    field :product_uuid, :string
     # field :tax_rate, :integer, precision: 5, scale: 2
 
     has_many :invoice_items, InvoiceItem

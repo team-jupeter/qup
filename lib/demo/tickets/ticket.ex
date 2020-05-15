@@ -6,11 +6,11 @@ defmodule Demo.Tickets.Ticket do
   schema "tickets" do
     field :transport_type, :string
     field :transport_id, :string
-    field :valid_until, :date
+    field :valid_until, :naive_datetime
     field :issued_by, :string
     field :user_id, :string
-    field :departure_time, :date
-    field :arrival_time, :date
+    field :departure_time, :naive_datetime
+    field :arrival_time, :naive_datetime
     field :departing_terminal, :string #? terminal_name
     field :arrival_terminal, :string #? terminal_name
     field :gate, :string

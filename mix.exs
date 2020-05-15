@@ -52,6 +52,7 @@ defmodule Demo.Mixfile do
       {:pbkdf2_elixir, "~> 1.0"},
       {:phoenix_pubsub_redis, "~> 2.1.0"},
       {:gen_stage, "~> 1.0.0"},
+      # {:geo, "~> 3.0"},
     ]
   end
 

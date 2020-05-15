@@ -3,6 +3,7 @@ defmodule Demo.Entities.Entity do
   import Ecto.Changeset
   alias Demo.Invoices.Invoice
   alias Demo.Users.User
+  # alias Demo.Terminals.Terminal
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -37,6 +38,15 @@ defmodule Demo.Entities.Entity do
       join_through: "users_entities",
       on_replace: :delete
     )
+
+    # many_to_many(
+    #   :terminals,
+    #   Terminal,
+    #   join_through: "terminals_entities",
+    #   on_replace: :delete
+    # )
+
+
 
     timestamps() #? inserted_at, updated_at
   end

@@ -442,14 +442,18 @@ supul_code = 0x00000000
 
 #? Tickets
 #? init a few entities
-
 incheon_airport_entity = Entity.changeset(%Entity{}, %{category: "airport", name: "Incheon Airport", nation_id: korea_id, email: "incheon_airport@82345.kr", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
 new_york_airport_entity = Entity.changeset(%Entity{}, %{category: "airport", name: "New York Airport", nation_id: korea_id, email: "new_york_airport@82345.kr", supul_id: orange_supul_id, taxation_id: irs_id}) |> Repo.insert!
+
 asina_entity = Entity.changeset(%Entity{}, %{category: "airline", name: "Asina Airline", nation_id: korea_id, email: "asina@82345.kr", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
 delta_entity = Entity.changeset(%Entity{}, %{category: "airline", name: "Delta Airline", nation_id: usa_id, email: "delta@023357.us", supul_id: orange_supul_id, taxation_id: irs_id}) |> Repo.insert!
+
 jeju_bus_entity = Entity.changeset(%Entity{}, %{category: "bus", name: "Jeju Bus Corp.", nation_id: korea_id, email: "jeju_bus@023357.us", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+
 jeju_ferry_entity = Entity.changeset(%Entity{}, %{category: "Ferry", name: "Jeju ferry Corp.", nation_id: korea_id, email: "jeju_bus@023357.us", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+
 jeju_taxi_entity = Entity.changeset(%Entity{}, %{category: "taxi", name: "Jeju Taxi Corp.", nation_id: korea_id, email: "jeju_taxi@023357.us", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
+
 ktx_entity = Entity.changeset(%Entity{}, %{category: "train", name: "KTX Corp.", nation_id: korea_id, email: "ktx@023357.us", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
 
 #? entity_ids
@@ -464,18 +468,21 @@ alias Demo.Terminals.Terminal
 incheon_airport = Repo.insert!(%Terminal{type: "airport", name: "Incheon Airport", nation_id: korea_id})
 ny_airport = Repo.insert!(%Terminal{type: "airport", name: "New York Airport", nation_id: usa_id})
 jeju_airport = Repo.insert!(%Terminal{type: "airport", name: "Jeju Airport", nation_id: korea_id})
-jeju_bus = Repo.insert!(%Terminal{type: "bus_terminal", name: "Jeju Bus Terminal", nation_id: korea_id})
-jeju_ferry = Repo.insert!(%Terminal{type: "ferry_terminal", name: "Jeju Ferry Terminal", nation_id: korea_id})
-jeju_taxi = Repo.insert!(%Terminal{type: "taxi_terminal", name: "Jeju Taxi", nation_id: korea_id})
+
+jeju_bus_terminal = Repo.insert!(%Terminal{type: "bus_terminal", name: "Jeju Bus Terminal", nation_id: korea_id})
+jeju_ferry_terminal = Repo.insert!(%Terminal{type: "ferry_terminal", name: "Jeju Ferry Terminal", nation_id: korea_id})
+jeju_taxi_terminal = Repo.insert!(%Terminal{type: "taxi_terminal", name: "Jeju Taxi", nation_id: korea_id})
+
 seoul_station = Repo.insert!(%Terminal{type: "train_station", name: "Seoul Railway Station", nation_id: korea_id})
 
 #? init a few transports
 alias Demo.Transports.Transport
 
-asiana_3534 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "asiana_3534", purpose: "passengers", entity_id: asina_entity.id})
-delta_1452 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "delta_1452", purpose: "passengers", entity_id: delta_entity.id})
-kal_2234 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "kal_2234", purpose: "cargo", entity_id: asina_entity.id})
-jeju_air_6634 = Repo.insert!(%Transport{transport_type: "airline", transport_id: "jeju_air_6634", purpose: "cargo", entity_id: asina_entity.id})
+asiana_3534 = Repo.insert!(%Transport{transport_type: "airplane", transport_id: "asiana_3534", purpose: "passengers", entity_id: asina_entity.id})
+delta_1452 = Repo.insert!(%Transport{transport_type: "airplane", transport_id: "delta_1452", purpose: "passengers", entity_id: delta_entity.id})
+kal_2234 = Repo.insert!(%Transport{transport_type: "airplane", transport_id: "kal_2234", purpose: "cargo", entity_id: asina_entity.id})
+jeju_air_6634 = Repo.insert!(%Transport{transport_type: "airplane", transport_id: "jeju_air_6634", purpose: "cargo", entity_id: asina_entity.id})
+
 jeju_bus_7734 = Repo.insert!(%Transport{transport_type: "bus", transport_id: "jeju_bus_7734", purpose: "passengers", entity_id: jeju_bus_entity.id})
 jeju_taxi_7884 = Repo.insert!(%Transport{transport_type: "taxi", transport_id: "jeju_taxi_7884", purpose: "passengers", entity_id: jeju_taxi_entity.id})
 jeju_ferry_7004 = Repo.insert!(%Transport{transport_type: "ferry", transport_id: "jeju_ferry_7004", purpose: "passengers", entity_id: jeju_ferry_entity.id})
@@ -502,4 +509,19 @@ ny_airport_transport_cs = put_assoc(ny_airport_cs, :transports, [
 Repo.update!(ny_airport_transport_cs)
 
 #? init some tickets
+alias Demo.Tickets.Ticket
 
+air_ticket_1 = Repo.insert!(%Ticket{
+  transport_type: "airline",
+  transport_id: delta_1452.id,
+  issued_by: delta_entity.id,
+  user_id: mr_hong.id,
+  departure_time: ~N[2020-05-14 21:30:00],
+  arrival_time: ~N[2020-05-15 13:45:00],
+  departing_terminal: incheon_airport.id,
+  arrival_terminal: ny_airport.id,
+  valid_until: ~N[2020-05-14 21:30:00]
+  })
+
+#? users context
+Repo.insert(%GeoLog{user_id: mr_hong.id})

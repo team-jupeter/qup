@@ -8,6 +8,7 @@ defmodule Demo.Repo.Migrations.CreateItems do
       add :category, :string
       add :name, :string
       add :price, :decimal, precision: 12, scale: 2
+      add :product_uuid, :string
       # add :tax_rate, :decimal, precision: 5, scale: 2
 
       timestamps()

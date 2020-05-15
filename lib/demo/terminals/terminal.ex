@@ -2,6 +2,7 @@ defmodule Demo.Terminals.Terminal do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.Transports.Transport
+  # alias Demo.Entities.Entity
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "terminals" do
@@ -18,6 +19,13 @@ defmodule Demo.Terminals.Terminal do
       join_through: "terminals_transports",
       on_replace: :delete
     )
+
+    # many_to_many(
+    #   :entities,
+    #   Entity,
+    #   join_through: "terminals_entities",
+    #   on_replace: :delete
+    # )
 
     timestamps()
   end
