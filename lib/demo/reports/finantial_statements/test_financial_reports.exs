@@ -246,10 +246,10 @@ seller_supul = Repo.preload(seller_supul, [financial_report: :income_statement])
 buyer_supul = Repo.preload(buyer_supul, [financial_report: :income_statement])
 
 seller_supul_IS = seller_supul.financial_report.income_statement
-seller_supul_IS = change(seller_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_supul.financial_report.income_statement.revenue, ledger.amount)) |> Repo.update!
+seller_supul_IS = change(seller_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_supul_IS.revenue, ledger.amount)) |> Repo.update!
 
 buyer_supul_IS = buyer_supul.financial_report.income_statement
-buyer_supul_IS = change(buyer_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_supul.financial_report.income_statement.travel_and_entertainment, ledger.amount)) |> Repo.update!
+buyer_supul_IS = change(buyer_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_supul_IS.travel_and_entertainment, ledger.amount)) |> Repo.update!
 
 #? find the seller state_supul and the buyer state_supul, and adjust their accounts.
 alias Demo.Supuls.StateSupul
@@ -265,10 +265,10 @@ seller_state_supul = Repo.preload(seller_state_supul, [financial_report: :income
 buyer_state_supul = Repo.preload(buyer_state_supul, [financial_report: :income_statement])
 
 seller_state_supul_IS = seller_state_supul.financial_report.income_statement
-seller_state_supul_IS = change(seller_state_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_state_supul.financial_report.income_statement.revenue, ledger.amount)) |> Repo.update!
+seller_state_supul_IS = change(seller_state_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_state_supul_IS.revenue, ledger.amount)) |> Repo.update!
 
 buyer_state_supul_IS = buyer_state_supul.financial_report.income_statement
-buyer_state_supul_IS = change(buyer_state_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_state_supul.financial_report.income_statement.travel_and_entertainment, ledger.amount)) |> Repo.update!
+buyer_state_supul_IS = change(buyer_state_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_state_supul_IS.travel_and_entertainment, ledger.amount)) |> Repo.update!
 
 #? find the seller state_supul and the buyer state_supul, and adjust their accounts.
 alias Demo.Supuls.NationSupul
@@ -284,15 +284,14 @@ seller_nation_supul = Repo.preload(seller_nation_supul, [financial_report: :inco
 buyer_nation_supul = Repo.preload(buyer_nation_supul, [financial_report: :income_statement])
 
 seller_nation_supul_IS = seller_nation_supul.financial_report.income_statement
-seller_nation_supul_IS = change(seller_nation_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_nation_supul.financial_report.income_statement.revenue, ledger.amount)) |> Repo.update!
+seller_nation_supul_IS = change(seller_nation_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_nation_supul_IS.revenue, ledger.amount)) |> Repo.update!
 
 buyer_nation_supul_IS = buyer_nation_supul.financial_report.income_statement
-buyer_nation_supul_IS = change(buyer_nation_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_nation_supul.financial_report.income_statement.travel_and_entertainment, ledger.amount)) |> Repo.update!
+buyer_nation_supul_IS = change(buyer_nation_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_nation_supul_IS.travel_and_entertainment, ledger.amount)) |> Repo.update!
 
 
 
-
-= '''
+'''
 Another invoice
 '''
 
@@ -395,10 +394,10 @@ seller_state_supul = Repo.preload(seller_state_supul, [financial_report: :income
 buyer_state_supul = Repo.preload(buyer_state_supul, [financial_report: :income_statement])
 
 seller_state_supul_IS = seller_state_supul.financial_report.income_statement
-seller_state_supul_IS = change(seller_state_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_state_supul.financial_report.income_statement.revenue, ledger.amount)) |> Repo.update!
+seller_state_supul_IS = change(seller_state_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_state_supul_IS.revenue, ledger.amount)) |> Repo.update!
 
 buyer_state_supul_IS = buyer_state_supul.financial_report.income_statement
-buyer_state_supul_IS = change(buyer_state_supul_IS) |> Ecto.Changeset.put_change(:employee_benefits:, Decimal.add(buyer_state_supul.financial_report.income_statement.travel_and_entertainment, ledger.amount)) |> Repo.update!
+buyer_state_supul_IS = change(buyer_state_supul_IS) |> Ecto.Changeset.put_change(:employee_benefits, Decimal.add(buyer_state_supul_IS.travel_and_entertainment, ledger.amount)) |> Repo.update!
 
 #? find the seller state_supul and the buyer state_supul, and adjust their accounts.
 alias Demo.Supuls.NationSupul
@@ -414,8 +413,24 @@ seller_nation_supul = Repo.preload(seller_nation_supul, [financial_report: :inco
 buyer_nation_supul = Repo.preload(buyer_nation_supul, [financial_report: :income_statement])
 
 seller_nation_supul_IS = seller_nation_supul.financial_report.income_statement
-seller_nation_supul_IS = change(seller_nation_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_nation_supul.financial_report.income_statement.revenue, ledger.amount)) |> Repo.update!
+seller_nation_supul_IS = change(seller_nation_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_nation_supul_IS.revenue, ledger.amount)) |> Repo.update!
 
 buyer_nation_supul_IS = buyer_nation_supul.financial_report.income_statement
-buyer_nation_supul_IS = change(buyer_nation_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_nation_supul.financial_report.income_statement.travel_and_entertainment, ledger.amount)) |> Repo.update!
+buyer_nation_supul_IS = change(buyer_nation_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_nation_supul_IS.travel_and_entertainment, ledger.amount)) |> Repo.update!
 
+
+= '''
+Balance Sheet
+'''
+seller_entity = Repo.preload(seller_entity, [financial_report: :balance_sheet])
+buyer_entity = Repo.preload(buyer_entity, [financial_report: :balance_sheet])
+
+seller_entity_BS = seller_entity.financial_report.balance_sheet
+seller_entity_BS = change(seller_entity_BS) |>
+Ecto.Changeset.put_change(:gab_account, Decimal.add(seller_entity_BS.gab_account, ledger.amount)) |>
+Repo.update!
+
+buyer_entity_BS = buyer_entity.financial_report.balance_sheet
+buyer_entity_BS = change(buyer_entity_BS) |>
+Ecto.Changeset.put_change(:gab_account, Decimal.sub(buyer_entity_BS.gab_account, ledger.amount)) |>
+Repo.update!
