@@ -8,7 +8,7 @@ defmodule Demo.Repo.Migrations.CreateSupuls do
       add :name, :string
       add :geographical_area, :string
 
-      add :nation_id, references(:nations, type: :uuid, null: false)
+      add :state_supul_id, references(:state_supuls, type: :uuid, null: false)
 
       timestamps()
     end

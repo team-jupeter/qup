@@ -24,7 +24,7 @@ defmodule Demo.Users.User do
     timestamps()
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
-
+    belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id
     many_to_many(
       :entities,
       Entity,
@@ -56,11 +56,11 @@ defmodule Demo.Users.User do
   end
 
   @required_fields [:type, :name, :email]
-  @fields [:name, :type, :email, :certificate_id]
+  @fields [:name, :type, :email]
   def changeset(user, attrs) do
     user
     |> cast(attrs, @fields)
-    |> validate_required(@required_fields)
+    |> validate_required([])
     |> validate_format(:email, ~r/@/)
   end
 

@@ -9,17 +9,17 @@ defmodule Demo.Taxations.Taxation do
     field :name, :string
 
     has_many :entities, Demo.Entities.Entity
-    belongs_to :nation, Demo.Nations.Nation, type: :binary_id
-
     has_many :tax_rates, Demo.Taxations.TaxRate
+    belongs_to :nation, Demo.Nations.Nation, type: :binary_id
 
     timestamps()
   end
 
+  @fields [:name]
   @doc false
   def changeset(taxation, attrs) do
     taxation
-    |> cast(attrs, [:name, :nationality])
-    |> validate_required([:name, :nationality])
+    |> cast(attrs, @fields)
+    |> validate_required([])
   end
 end

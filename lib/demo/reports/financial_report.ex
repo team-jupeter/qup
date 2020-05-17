@@ -17,14 +17,18 @@ defmodule Demo.Reports.FinancialReport do
 
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
+    belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
+    belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
+    belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id
 
     timestamps()
   end
 
+  @field [:entity_id, :supul_id, :state_supul_id, :nation_supul_id, :global_supul_id]
   @doc false
   def changeset(report, attrs) do
     report
-    |> cast(attrs, [])
+    |> cast(attrs, @field)
     |> validate_required([])
   end
 end

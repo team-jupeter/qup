@@ -7,34 +7,42 @@ defmodule Demo.Trades.Trade do
 
   schema "trades" do
     field :seller_entity_name, :string
+    field :seller_entity_id, :string
     field :seller_supul_name, :string
+    field :seller_supul_id, :string
     field :seller_nation_name, :string
-
+    field :seller_nation_id, :string
     field :seller_taxation_name, :string
-    field :tax_amount, :decimal, precision: 5, scale: 2
+    field :seller_taxation_id, :string
 
-    belongs_to :invoice, Demo.Invoices.Invoice
-    belongs_to :supul, Demo.Supuls.Supul
-    belongs_to :taxation, Demo.Taxations.Taxation
+    field :buyer_entity_name, :string
+    field :buyer_entity_id, :string
+    field :buyer_supul_name, :string
+    field :buyer_supul_id, :string
+    field :buyer_nation_name, :string
+    field :buyer_nation_id, :string
+    field :buyer_taxation_name, :string
+    field :buyer_taxation_id, :string
+
+    field :tax_amount, :decimal, precision: 15, scale: 2
 
     timestamps()
   end
 
   @fields [
-    :seller_entity_name,
-    :seller_supul_name,
-    :seller_taxation_name,
-    :seller_nation_name,
-    :tax_amount,
-    :invoice_id,
-    :taxation_id,
+    # :seller_entity_name,
+    # :seller_entity_id,
+    # :seller_supul_name,
+    # :seller_taxation_name,
+    # :seller_nation_name,
+    # :tax_amount,
   ]
 
   @doc false
   def changeset(trade, attrs \\ %{}) do
     trade
     |> cast(attrs, @fields)
-    # |> validate_required([:taxation])
+    |> validate_required([])
   end
 
 

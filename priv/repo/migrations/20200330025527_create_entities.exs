@@ -10,7 +10,7 @@ defmodule Demo.Repo.Migrations.CreateEntities do
       add :year_started, :integer
       add :year_ended, :integer
       add :share_price, :integer
-      add :balance, :decimal, default: 0
+      add :balance, :decimal, default: 0.0
       add :locked, :boolean, default: false
 
       add :nation_id, references(:nations, type: :uuid)
