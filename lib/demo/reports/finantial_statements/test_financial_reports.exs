@@ -58,7 +58,7 @@ alias Demo.Entities.Entity
 
 hs_entity = Entity.changeset(%Entity{}, %{category: "hairshop", name: "Hong & Sung's Hair", nation_id: korea.id, email: "hs@82345.kr", supul_id: hankyung_supul.id, taxation_id: kts.id}) |> Repo.insert!
 tomi_entity = Entity.changeset(%Entity{}, %{category: "food", name: "Tomi Kimbab", nation_id: korea.id, email: "tomi@82345.kr", supul_id: hallim_supul.id, taxation_id: kts.id}) |> Repo.insert!
-peter_entity = Entity.changeset(%Entity{}, %{category: "clinic", name: "Peter Clinic", nation_id: korea.id, email: "peter@82345.kr", supul_id: hallim_supul.id, taxation_id: kts.id}) |> Repo.insert!
+clinic_entity = Entity.changeset(%Entity{}, %{category: "clinic", name: "Peter Clinic", nation_id: korea.id, email: "peter@82345.kr", supul_id: hallim_supul.id, taxation_id: kts.id}) |> Repo.insert!
 delta_entity = Entity.changeset(%Entity{}, %{category: "airline", name: "Delta Airline", nation_id: usa.id, email: "delta@023357.us", supul_id: orange_supul.id, taxation_id: irs.id}) |> Repo.insert!
 
 
@@ -68,8 +68,8 @@ alias Demo.Users.User
 alias Demo.Users
 
 Repo.preload(hs_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [ms_sung, mr_hong]) |> Repo.update!
-Repo.preload(tomi_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [peter]) |> Repo.update!
-Repo.preload(peter_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [peter]) |> Repo.update!
+Repo.preload(tomi_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [mr_hong]) |> Repo.update!
+Repo.preload(clinic_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [peter]) |> Repo.update!
 Repo.preload(delta_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [trump, ms_sung]) |> Repo.update!
 
 
@@ -79,7 +79,7 @@ alias Demo.Reports.FinancialReport
 #? entity report
 hs_report = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hs_entity.id}) |> Repo.insert!
 tomi_report = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi_entity.id}) |> Repo.insert!
-peter_report = FinancialReport.changeset(%FinancialReport{}, %{entity_id: peter_entity.id}) |> Repo.insert!
+clinic_report = FinancialReport.changeset(%FinancialReport{}, %{entity_id: clinic_entity.id}) |> Repo.insert!
 delta_report = FinancialReport.changeset(%FinancialReport{}, %{entity_id: delta_entity.id}) |> Repo.insert!
 
 #? county report
@@ -109,7 +109,7 @@ alias Demo.Reports.CashFlow
 #? add BalanceSheet to a FinancialReport
 hs_bs = Ecto.build_assoc(hs_report, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
 tomi_bs = Ecto.build_assoc(tomi_report, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
-peter_bs = Ecto.build_assoc(peter_report, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
+clinic_bs = Ecto.build_assoc(clinic_report, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
 delta_bs = Ecto.build_assoc(delta_report, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
 
 hankyung_bs = Ecto.build_assoc(hankyung_report, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
@@ -126,7 +126,7 @@ usa_bs = Ecto.build_assoc(usa_report, :balance_sheet, %BalanceSheet{}) |> Repo.i
 #? add IncomeStatement to a FinancialReport
 hs_is = Ecto.build_assoc(hs_report, :income_statement, %IncomeStatement{}) |> Repo.insert!
 tomi_is = Ecto.build_assoc(tomi_report, :income_statement, %IncomeStatement{}) |> Repo.insert!
-peter_is = Ecto.build_assoc(peter_report, :income_statement, %IncomeStatement{}) |> Repo.insert!
+clinic_is = Ecto.build_assoc(clinic_report, :income_statement, %IncomeStatement{}) |> Repo.insert!
 delta_is = Ecto.build_assoc(delta_report, :income_statement, %IncomeStatement{}) |> Repo.insert
 
 hankyung_is = Ecto.build_assoc(hankyung_report, :income_statement, %IncomeStatement{}) |> Repo.insert!
@@ -145,7 +145,7 @@ Repo.preload(orange_report, [:income_statement])
 #? add CashFlow to a FinancialReport
 hs_cf = Ecto.build_assoc(hs_report, :cash_flow, %CashFlow{}) |> Repo.insert!
 tomi_cf = Ecto.build_assoc(tomi_report, :cash_flow, %CashFlow{}) |> Repo.insert!
-peter_cf = Ecto.build_assoc(peter_report, :cash_flow, %CashFlow{}) |> Repo.insert!
+clinic_cf = Ecto.build_assoc(clinic_report, :cash_flow, %CashFlow{}) |> Repo.insert!
 delta_cf = Ecto.build_assoc(delta_report, :cash_flow, %CashFlow{}) |> Repo.insert
 
 hankyung_cf = Ecto.build_assoc(hankyung_report, :cash_flow, %CashFlow{}) |> Repo.insert!
@@ -169,15 +169,15 @@ INVOICE CONTEXT
 #? item
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 
-item1 = Item.changeset(%Item{}, %{gpc_code: "ABCDE1001", category: "air_ticket", name: "Incheon => Jeju", price: Decimal.new(15)}) |> Repo.insert!
-item2 = Item.changeset(%Item{}, %{gpc_code: "ABCDE1003", category: "air_ticket", name: "Jeju => Gwangju", price: Decimal.new(20)}) |> Repo.insert!
+item1 = Item.changeset(%Item{}, %{gpc_code: "ABCDE1001", category: "air_ticket", name: "Jeju-Incheon", price: Decimal.new(100)}) |> Repo.insert!
+item2 = Item.changeset(%Item{}, %{gpc_code: "ABCDE1003", category: "air_ticket", name: "Incheon_NewYork", price: Decimal.new(250)}) |> Repo.insert!
 
-invoice_items = [%{item_id: item1.id, quantity: 2}, %{item_id: item1.id, quantity: 3}]
+invoice_items = [%{item_id: item1.id, quantity: 5}, %{item_id: item1.id, quantity: 1}]
 
 
 #? add total to invoice
 params = %{
-  "buyer" => %{"entity_id" => hs_entity.id},
+  "buyer" => %{"entity_id" => clinic_entity.id},
   "seller" => %{"entity_id" => delta_entity.id},
   "invoice_items" => invoice_items
 }
@@ -216,12 +216,12 @@ buyer_entity = Repo.preload(buyer_entity, [financial_report: :income_statement])
 
 seller_entity_IS = seller_entity.financial_report.income_statement
 seller_entity_IS = change(seller_entity_IS) |>
-Ecto.Changeset.put_change(:revenue, Decimal.add(seller_entity.financial_report.income_statement.revenue, ledger.amount)) |>
+Ecto.Changeset.put_change(:revenue, Decimal.add(seller_entity_IS.revenue, ledger.amount)) |>
 Repo.update!
 
 buyer_entity_IS = buyer_entity.financial_report.income_statement
 buyer_entity_IS = change(buyer_entity_IS) |>
-Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_entity.financial_report.income_statement.travel_and_entertainment, ledger.amount)) |>
+Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_entity_IS.travel_and_entertainment, ledger.amount)) |>
 Repo.update!
 
 
@@ -290,4 +290,132 @@ buyer_nation_supul_IS = buyer_nation_supul.financial_report.income_statement
 buyer_nation_supul_IS = change(buyer_nation_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_nation_supul.financial_report.income_statement.travel_and_entertainment, ledger.amount)) |> Repo.update!
 
 
+
+
+= '''
+Another invoice
+'''
+
+#? item => invoice_item => invoice
+#? item
+alias Demo.Invoices.{Item, Invoice, InvoiceItem}
+
+item3 = Item.changeset(%Item{}, %{gpc_code: "ABCDE1021", category: "food", name: "김밥", price: Decimal.from_float(1.5)}) |> Repo.insert!
+item4 = Item.changeset(%Item{}, %{gpc_code: "ABCDE1033", category: "food", name: "떡볶이", price: Decimal.from_float(2.0)}) |> Repo.insert!
+
+invoice_items = [%{item_id: item3.id, quantity: 2}, %{item_id: item4.id, quantity: 3}]
+
+
+#? add total to invoice
+params = %{
+  "buyer" => %{"entity_id" => clinic_entity.id},
+  "seller" => %{"entity_id" => tomi_entity.id},
+  "invoice_items" => invoice_items
+}
+{:ok, invoice_2} = Invoice.create(params)
+invoice_2 = change(invoice_2) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice_2.invoice_items, 0).subtotal, Enum.at(invoice_2.invoice_items, 1).subtotal)) |> Repo.update!
+
+#? write a ledger
+alias Demo.Reports.Ledger
+
+item = Repo.one from item in Item,
+  where: item.id == ^item3.id,
+  select: item.category
+
+ledger_2 = Ledger.changeset(%Ledger{}, %{invoice_id: invoice.id, buyer_id: invoice.buyer.entity_id, seller_id: invoice.seller.entity_id, amount: invoice.total, item: item, price: invoice.total}) |> Repo.insert!
+
+#? find the seller entity and the buyer entity, and adjust their accounts in Income Statement.
+seller_entity = Repo.one from entity in Entity,
+  where: entity.id == ^invoice_2.seller.entity_id
+
+buyer_entity = Repo.one from entity in Entity,
+  where: entity.id == ^invoice_2.buyer.entity_id
+
+
+seller_entity = Repo.preload(seller_entity, [financial_report: :income_statement])
+buyer_entity = Repo.preload(buyer_entity, [financial_report: :income_statement])
+
+seller_entity_IS = seller_entity.financial_report.income_statement
+seller_entity_IS = change(seller_entity_IS) |>
+Ecto.Changeset.put_change(:revenue, Decimal.add(seller_entity_IS.revenue, ledger.amount)) |>
+Repo.update!
+
+buyer_entity_IS = buyer_entity.financial_report.income_statement
+buyer_entity_IS = change(buyer_entity_IS) |>
+Ecto.Changeset.put_change(:employee_benefits, Decimal.add(buyer_entity_IS.income_statement.employee_benefits, ledger.amount)) |>
+Repo.update!
+
+
+#? find the seller supul and the buyer supul, and adjust their accounts.
+seller_supul_id = Repo.one from entity in Entity,
+  where: entity.id == ^invoice_2.seller.entity_id,
+  select: entity.supul_id
+
+
+buyer_supul_id = Repo.one from entity in Entity,
+  where: entity.id == ^invoice_2.buyer.entity_id,
+  select: entity.supul_id
+
+
+seller_supul = Repo.one from supul in Supul,
+  where: supul.id == ^seller_supul_id
+
+buyer_supul = Repo.one from supul in Supul,
+  where: supul.id == ^buyer_supul_id
+
+seller_supul = Repo.preload(seller_supul, [financial_report: :income_statement])
+buyer_supul = Repo.preload(buyer_supul, [financial_report: :income_statement])
+
+seller_supul_IS = seller_supul.financial_report.income_statement
+seller_supul_IS = change(seller_supul_IS) |>
+  Ecto.Changeset.put_change(:revenue, Decimal.add(seller_supul_IS.revenue, ledger.amount)) |>
+  Repo.update!
+
+buyer_supul_IS = buyer_supul.financial_report.income_statement
+buyer_supul_IS = change(buyer_supul_IS) |>
+  Ecto.Changeset.put_change(:employee_benefits, Decimal.add(buyer_supul_IS.employee_benefits, ledger.amount)) |>
+  Repo.update!
+
+#? consolidate seller_supul_IS and buyer_supul_IS.
+
+
+
+
+#? find the seller state_supul and the buyer state_supul, and adjust their accounts.
+alias Demo.Supuls.StateSupul
+
+seller_state_supul = Repo.one from state_supul in StateSupul,
+  where: state_supul.id == ^seller_supul.state_supul_id
+
+buyer_state_supul = Repo.one from state_supul in StateSupul,
+  where: state_supul.id == ^buyer_supul.state_supul_id
+
+
+seller_state_supul = Repo.preload(seller_state_supul, [financial_report: :income_statement])
+buyer_state_supul = Repo.preload(buyer_state_supul, [financial_report: :income_statement])
+
+seller_state_supul_IS = seller_state_supul.financial_report.income_statement
+seller_state_supul_IS = change(seller_state_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_state_supul.financial_report.income_statement.revenue, ledger.amount)) |> Repo.update!
+
+buyer_state_supul_IS = buyer_state_supul.financial_report.income_statement
+buyer_state_supul_IS = change(buyer_state_supul_IS) |> Ecto.Changeset.put_change(:employee_benefits:, Decimal.add(buyer_state_supul.financial_report.income_statement.travel_and_entertainment, ledger.amount)) |> Repo.update!
+
+#? find the seller state_supul and the buyer state_supul, and adjust their accounts.
+alias Demo.Supuls.NationSupul
+
+seller_nation_supul = Repo.one from nation_supul in NationSupul,
+  where: nation_supul.id == ^seller_state_supul.nation_supul_id
+
+buyer_nation_supul = Repo.one from nation_supul in NationSupul,
+  where: nation_supul.id == ^buyer_state_supul.nation_supul_id
+
+
+seller_nation_supul = Repo.preload(seller_nation_supul, [financial_report: :income_statement])
+buyer_nation_supul = Repo.preload(buyer_nation_supul, [financial_report: :income_statement])
+
+seller_nation_supul_IS = seller_nation_supul.financial_report.income_statement
+seller_nation_supul_IS = change(seller_nation_supul_IS) |> Ecto.Changeset.put_change(:revenue, Decimal.add(seller_nation_supul.financial_report.income_statement.revenue, ledger.amount)) |> Repo.update!
+
+buyer_nation_supul_IS = buyer_nation_supul.financial_report.income_statement
+buyer_nation_supul_IS = change(buyer_nation_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_nation_supul.financial_report.income_statement.travel_and_entertainment, ledger.amount)) |> Repo.update!
 
