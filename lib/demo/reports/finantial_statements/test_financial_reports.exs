@@ -17,16 +17,16 @@ alias Demo.Supuls.Supul
 
 global_supul = GlobalSupul.changeset(%GlobalSupul{}, %{name: "Global Supul", supul_code: 0x00000000}) |> Repo.insert!
 
-korea_supul = NationSupul.changeset(%NationSupul{}, %{name: "Korea Supul", global_supul_id: global_supul.id, supul_code: 0x52000000}) |> Repo.insert!
-usa_supul = NationSupul.changeset(%NationSupul{}, %{name: "USA Supul", global_supul_id: global_supul.id, supul_code: 0x01000000}) |> Repo.insert!
+korea_supul = NationSupul.changeset(%NationSupul{}, %{name: "Korea Supul", supul_code: 0x52000000}) |> Repo.insert!
+usa_supul = NationSupul.changeset(%NationSupul{}, %{name: "USA Supul", supul_code: 0x01000000}) |> Repo.insert!
 
-jejudo_supul = StateSupul.changeset(%StateSupul{}, %{name: "Jejudo State Supul", nation_supul_id: korea_supul.id, supul_code: 0x01434500}) |> Repo.insert!
-new_york_supul = StateSupul.changeset(%StateSupul{}, %{name: "New York State Supul", nation_supul_id: korea_supul.id, supul_code: 0x01223400}) |> Repo.insert!
+jejudo_supul = StateSupul.changeset(%StateSupul{}, %{name: "Jejudo State Supul", supul_code: 0x01434500}) |> Repo.insert!
+new_york_supul = StateSupul.changeset(%StateSupul{}, %{name: "New York State Supul", supul_code: 0x01223400}) |> Repo.insert!
 
-hankyung_supul = Supul.changeset(%Supul{}, %{name: "Hankyung_County", state_supul_id: jejudo_supul.id, supul_code: 0x01434501}) |> Repo.insert!
-hallim_supul = Supul.changeset(%Supul{}, %{name: "Hallim_County", state_supul_id: jejudo_supul.id, supul_code: 0x01434502}) |> Repo.insert!
-orange_supul = Supul.changeset(%Supul{}, %{name: "Orange_County", state_supul_id: new_york_supul.id, supul_code: 0x01223401}) |> Repo.insert!
-
+hankyung_supul = Supul.changeset(%Supul{}, %{name: "Hankyung_County", supul_code: 0x01434501}) |> Repo.insert!
+hallim_supul = Supul.changeset(%Supul{}, %{name: "Hallim_County", supul_code: 0x01434502}) |> Repo.insert!
+orange_supul = Supul.changeset(%Supul{}, %{name: "Orange_County", supul_code: 0x01223401}) |> Repo.insert!
+ 
 Repo.preload(jejudo_supul, [:supuls]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:supuls, [hankyung_supul, hallim_supul]) |> Repo.update!
 Repo.preload(new_york_supul, [:supuls]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:supuls, [orange_supul]) |> Repo.update!
 
@@ -40,10 +40,10 @@ Repo.preload(global_supul, [nation_supuls: :state_supuls])
 #? init users
 alias Demo.Users.User
 
-{ok, mr_hong} = User.changeset(%User{}, %{nation_id: korea.id, name: "Hong Gildong", supul_id: hankyung_supul.id}) |> Repo.insert
-{ok, ms_sung} = User.changeset(%User{}, %{nation_id: korea.id, name: "Sung Chunhyang", supul_id: hankyung_supul.id}) |> Repo.insert
-{ok, peter} = User.changeset(%User{}, %{nation_id: korea.id, name: "Peter Ju", supul_id: hankyung_supul.id}) |> Repo.insert
-{ok, trump} = User.changeset(%User{}, %{nation_id: usa.id, name: "Donald Trump", supul_id: orange_supul.id}) |> Repo.insert
+mr_hong = User.changeset(%User{}, %{nation_id: korea.id, name: "Hong Gildong", supul_id: hankyung_supul.id}) |> Repo.insert!
+ms_sung = User.changeset(%User{}, %{nation_id: korea.id, name: "Sung Chunhyang", supul_id: hankyung_supul.id}) |> Repo.insert!
+peter = User.changeset(%User{}, %{nation_id: korea.id, name: "Peter Ju", supul_id: hankyung_supul.id}) |> Repo.insert!
+trump = User.changeset(%User{}, %{nation_id: usa.id, name: "Donald Trump", supul_id: orange_supul.id}) |> Repo.insert!
 
 
 #? init taxations: kts = korea tax service, irs = internal revenue service
@@ -341,8 +341,13 @@ Repo.update!
 
 buyer_entity_IS = buyer_entity.financial_report.income_statement
 buyer_entity_IS = change(buyer_entity_IS) |>
-Ecto.Changeset.put_change(:employee_benefits, Decimal.add(buyer_entity_IS.income_statement.employee_benefits, ledger.amount)) |>
+Ecto.Changeset.put_change(:employee_benefits, Decimal.add(buyer_entity_IS.employee_benefits, ledger.amount)) |>
 Repo.update!
+
+
+
+
+
 
 
 #? find the seller supul and the buyer supul, and adjust their accounts.
@@ -417,7 +422,7 @@ seller_nation_supul_IS = change(seller_nation_supul_IS) |> Ecto.Changeset.put_ch
 
 buyer_nation_supul_IS = buyer_nation_supul.financial_report.income_statement
 buyer_nation_supul_IS = change(buyer_nation_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_nation_supul_IS.travel_and_entertainment, ledger.amount)) |> Repo.update!
-
+ 
 
 = '''
 Balance Sheet
@@ -427,10 +432,10 @@ buyer_entity = Repo.preload(buyer_entity, [financial_report: :balance_sheet])
 
 seller_entity_BS = seller_entity.financial_report.balance_sheet
 seller_entity_BS = change(seller_entity_BS) |>
-Ecto.Changeset.put_change(:gab_account, Decimal.add(seller_entity_BS.gab_account, ledger.amount)) |>
+Ecto.Changeset.put_change(:gab_account_t1, Decimal.add(seller_entity_BS.gab_account_t1, ledger.amount)) |>
 Repo.update!
 
 buyer_entity_BS = buyer_entity.financial_report.balance_sheet
 buyer_entity_BS = change(buyer_entity_BS) |>
-Ecto.Changeset.put_change(:gab_account, Decimal.sub(buyer_entity_BS.gab_account, ledger.amount)) |>
+Ecto.Changeset.put_change(:gab_account_t1, Decimal.sub(buyer_entity_BS.gab_account_t1, ledger.amount)) |>
 Repo.update!

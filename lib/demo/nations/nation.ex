@@ -9,7 +9,7 @@ defmodule Demo.Nations.Nation do
   schema "nations" do
     field :name, :string
 
-    has_one :bank,  Demo.Banks.Bank, on_replace: :nilify
+    
     has_one :taxation,  Demo.Taxations.Taxation, on_replace: :nilify
     has_many :entities, Demo.Entities.Entity, on_replace: :nilify
     has_many :users, Demo.Users.User, on_replace: :nilify

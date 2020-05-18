@@ -8,14 +8,15 @@ defmodule Demo.Supuls.Supul do
     field :geographical_area, :string
     field :name, :string
 
-    has_one :financial_report, Demo.Reports.FinancialReport
+    has_many :entities, Demo.Entities.Entity, on_replace: :nilify
+    has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify
     belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
 
     timestamps()
   end
 
   @doc false
-  @field [:name, :geographical_area, :supul_code, :state_supul_id]
+  @field [:name, :geographical_area, :supul_code]
   def changeset(supul, attrs) do
     supul
     |> cast(attrs, @field)

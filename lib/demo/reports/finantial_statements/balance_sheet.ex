@@ -4,7 +4,9 @@ defmodule Demo.Reports.BalanceSheet do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "balance_sheets" do
-    field :gab_account, :decimal, precision: 12, scale: 2
+    field :gab_account_t1, :decimal, precision: 12, scale: 2
+    field :gab_account_t2, :decimal, precision: 12, scale: 2
+    field :gab_account_t3, :decimal, precision: 12, scale: 2
     field :accounts_payable, :decimal, precision: 12, scale: 2
     field :accounts_receivable, :decimal, precision: 12, scale: 2
     field :accrued_liabilities, :decimal, precision: 12, scale: 2

@@ -11,7 +11,7 @@ defmodule Demo.Repo.Migrations.CreateFinancialReports do
       add :state_supul_id, references(:state_supuls, type: :uuid, null: false)
       add :nation_supul_id, references(:nation_supuls, type: :uuid, null: false)
       add :global_supul_id, references(:global_supuls, type: :uuid, null: false)
-
+      
       timestamps()
     end
 

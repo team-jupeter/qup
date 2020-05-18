@@ -4,12 +4,15 @@ defmodule Demo.Reports.IncomeStatement do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "income_statements" do
+    field :gab_account_t1, :decimal, precision: 12, scale: 2
+    field :gab_account_t2, :decimal, precision: 12, scale: 2
+    field :gab_account_t3, :decimal, precision: 12, scale: 2
     field :compensation, :decimal, precision: 12, scale: 2
     field :cost_of_goods_sold, :decimal, precision: 12, scale: 2
     field :depreciation_and_amortization, :decimal, precision: 12, scale: 2
     field :employee_benefits, :decimal, precision: 12, scale: 2
     field :income_taxes, :decimal, precision: 12, scale: 2
-    field :insurance, :decimal, precision: 12, scale: 2
+    field :insurance, :decimal, precision: 12, scale: 2 
     field :marketing, :decimal, precision: 12, scale: 2
     field :office, :decimal, precision: 12, scale: 2
     field :payroll, :decimal, precision: 12, scale: 2

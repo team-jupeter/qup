@@ -36,15 +36,15 @@ defmodule Demo.Invoices.Invoice do
 
   def changeset(data, params \\ %{}) do
     # IO.puts "changeset"
-    IO.inspect "params"
-    IO.inspect params
+    # IO.inspect "params"
+    # IO.inspect params
     data
-    |> IO.inspect
+    # |> IO.inspect
     |> cast(params, @fields)
     |> cast_embed(:buyer)
-    |> IO.inspect
+    # |> IO.inspect
     |> cast_embed(:seller)
-    |> IO.inspect
+    # |> IO.inspect
 
   end
 
@@ -60,8 +60,8 @@ defmodule Demo.Invoices.Invoice do
 
 
   def add_total({_ok, invoice}) do
-    IO.puts "add total"
-    IO.inspect invoice
+    # IO.puts "add total"
+    # IO.inspect invoice
 
     invoice #? When we change a struct, change => put_change => update
     |> change
@@ -78,8 +78,8 @@ defmodule Demo.Invoices.Invoice do
 
     items = items_with_prices(params[:invoice_items] || params["invoice_items"])
 
-    IO.inspect "items"
-    IO.inspect items
+    # IO.inspect "items"
+    # IO.inspect items
 
     IO.puts "return invoice_items"
     Enum.map(items, fn(item)-> InvoiceItem.changeset(%InvoiceItem{}, item) end)

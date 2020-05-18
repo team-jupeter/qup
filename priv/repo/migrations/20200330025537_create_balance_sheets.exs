@@ -4,8 +4,13 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
   def change do
     create table(:balance_sheets, primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :gab_account, :decimal, precision: 12, scale: 2, default: 0.0
+      
+      add :gab_account_t1, :decimal, precision: 12, scale: 2, default: 0.0
+      add :gab_account_t2, :decimal, precision: 12, scale: 2, default: 0.0
+      add :gab_account_t3, :decimal, precision: 12, scale: 2, default: 0.0
+      
       add :cash, :decimal, precision: 12, scale: 2, default: 0.0
+      
       add :marketable_securities, :decimal, precision: 12, scale: 2, default: 0.0
       add :prepaid_expenses, :decimal, precision: 12, scale: 2, default: 0.0
       add :accounts_receivable, :decimal, precision: 12, scale: 2, default: 0.0
