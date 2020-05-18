@@ -8,6 +8,7 @@ defmodule Demo.Repo.Migrations.CreateLedgers do
       add :buyer_id, :string
       add :amount, :decimal
       add :item, :string
+      add :quantity, :decimal, default: 0.0
       # add :invoice_items, {:array, :map}
       add :invoice_id, :string
 

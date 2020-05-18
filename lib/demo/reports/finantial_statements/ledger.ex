@@ -10,14 +10,16 @@ defmodule Demo.Reports.Ledger do
     field :item, :string
     field :amount, :decimal
     field :seller_id, :string
+    field :quantity, :decimal
 
     timestamps()
   end
 
+  @fields  [:seller_id, :buyer_id, :amount, :item, :invoice_id, :quantity]
   @doc false
   def changeset(ledger, attrs) do
     ledger
-    |> cast(attrs, [:seller_id, :buyer_id, :amount, :item, :invoice_id])
-    |> validate_required([:seller_id, :buyer_id, :amount, :item, :invoice_id])
+    |> cast(attrs, @fields)
+    |> validate_required([])
   end
 end

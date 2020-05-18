@@ -203,6 +203,10 @@ The system will double check entries.
 5) numbers from (2) and (4) are compared to check their correctness.
 '''
 
+
+'''
+Entity
+'''
 #? find the seller entity and the buyer entity, and adjust their accounts.
 seller_entity = Repo.one from entity in Entity,
   where: entity.id == ^invoice.seller.entity_id
@@ -224,6 +228,9 @@ buyer_entity_IS = change(buyer_entity_IS) |>
 Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_entity_IS.travel_and_entertainment, ledger.amount)) |>
 Repo.update!
 
+'''
+Supul
+'''
 
 #? find the seller supul and the buyer supul, and adjust their accounts.
 seller_supul_id = Repo.one from entity in Entity,
@@ -251,6 +258,9 @@ seller_supul_IS = change(seller_supul_IS) |> Ecto.Changeset.put_change(:revenue,
 buyer_supul_IS = buyer_supul.financial_report.income_statement
 buyer_supul_IS = change(buyer_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_supul_IS.travel_and_entertainment, ledger.amount)) |> Repo.update!
 
+'''
+StateSupul
+'''
 #? find the seller state_supul and the buyer state_supul, and adjust their accounts.
 alias Demo.Supuls.StateSupul
 
@@ -269,6 +279,12 @@ seller_state_supul_IS = change(seller_state_supul_IS) |> Ecto.Changeset.put_chan
 
 buyer_state_supul_IS = buyer_state_supul.financial_report.income_statement
 buyer_state_supul_IS = change(buyer_state_supul_IS) |> Ecto.Changeset.put_change(:travel_and_entertainment, Decimal.add(buyer_state_supul_IS.travel_and_entertainment, ledger.amount)) |> Repo.update!
+
+
+
+'''
+NationSupul
+'''
 
 #? find the seller state_supul and the buyer state_supul, and adjust their accounts.
 alias Demo.Supuls.NationSupul

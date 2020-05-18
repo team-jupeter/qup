@@ -51,11 +51,24 @@ hankyung_gab = Ecto.build_assoc(korea, :entities, hankyung_gab)
 
 Repo.preload(hankyung_gab, [:nation, :supul])
 
-#? write invoice for trade between mr_hong and hankyung_gab.
+#? prepare financial statements for entities.
+alias Demo.Reports.FinancialReport
+alias Demo.Reports.BalanceSheet
+alias Demo.Reports.GabBalanceSheet
+
+hankyung_gab_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hankyung_gab.id}) |> Repo.insert!
+hong_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong_entity.id}) |> Repo.insert!
+
+hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW"}) |> Repo.insert!
+hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
+
 '''
+INVOICE CONTEXT
+
 The price of ABC T1, T2, T3 will be updated every second.
 The code below is hard coded. We need write codes for invoice_items with only one item.
 '''
+#? write invoice for trade between mr_hong and hankyung_gab.
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 item = Item.changeset(%Item{}, %{gpc_code: "ABCDE11111", category: "ABC_T1", name: "Standard Currency", price: Decimal.from_float(1123.45)}) |> Repo.insert!
 invoice_items = [%{item_id: item.id, quantity: 5}, %{item_id: item.id, quantity: 0}]
@@ -78,44 +91,27 @@ item = Repo.one from item in Item,
   where: item.id == ^item_id,
   select: item.category
 
-ledger = Ledger.changeset(%Ledger{}, %{invoice_id: invoice.id, buyer_id: invoice.buyer.entity_id, seller_id: invoice.seller.entity_id, amount: invoice.total, item: item, price: invoice.total}) |> Repo.insert!
+ledger = Ledger.changeset(%Ledger{}, %{invoice_id: invoice.id, buyer_id: invoice.buyer.entity_id, seller_id: invoice.seller.entity_id, amount: invoice.total, item: item, price: invoice.total, quantity: Enum.at(invoice.invoice_items, 0).quantity}) |> Repo.insert!
 
-#? find the seller entity(hankyung_gab) and the buyer entity
-gab_branch = Repo.one from gab_branch in Entity, where: gab_branch.id == ^invoice.seller.entity_id
-buyer_entity = Repo.one from entity in Entity, where: entity.id == ^invoice.buyer.entity_id
+# hankyung_gab = Repo.one from hankyung_gab in Entity, 
+#     where: hankyung_gab.id == ^invoice.seller.entity_id
+# buyer_entity = Repo.one from entity in Entity, 
+#     where: entity.id == ^invoice.buyer.entity_id
 
-#? prepare financial report of both
-alias Demo.Reports.FinancialReport
-
-buyer_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: buyer_entity.id}) |> Repo.insert!
-gab_branch_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: gab_branch.id}) |> Repo.insert!
-
-
-#? adjust income statement accounts of both.
-alias Demo.Reports.BalanceSheet
-alias Demo.Reports.IncomeStatement
-alias Demo.Reports.CashFlow
-
-buyer_BS = Ecto.build_assoc(buyer_FR, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
-gab_branch_BS = Ecto.build_assoc(gab_branch_FR, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
-
-buyer_IS = Ecto.build_assoc(buyer_FR, :income_statement, %IncomeStatement{}) |> Repo.insert!
-gab_branch_IS = Ecto.build_assoc(gab_branch_FR, :income_statement, %IncomeStatement{}) |> Repo.insert!
-
-
-
-
-
-
-
-gab_branch = Repo.preload(gab_branch, [financial_report: :income_statement])
-gab_branch_IS = change(gab_branch_IS) |>
-Ecto.Changeset.put_change(:revenue, Decimal.add(gab_branch_IS.revenue, ledger.amount)) |>
+'''
+Adjust income_statement and balance_sheet of both.
+''' 
+#? Hankyung GAB Branch
+hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_sheet]).financial_report
+change(hankyung_gab_FR.gab_balance_sheet) |>
+Ecto.Changeset.put_change(:cash, Decimal.add(hankyung_gab_FR.gab_balance_sheet.cash, ledger.amount)) |>
+Ecto.Changeset.put_change(:gab_account_t1, Decimal.sub(hankyung_gab_FR.gab_balance_sheet.gab_account_t1, ledger.quantity)) |>
 Repo.update!
 
-buyer_entity = Repo.preload(buyer_entity, [financial_report: :income_statement])
-buyer_entity_IS = buyer_entity.financial_report.income_statement
-buyer_entity_IS = change(buyer_entity_IS) |>
-Ecto.Changeset.put_change(:gab_account_t1, Decimal.add(buyer_entity_IS.travel_and_entertainment, ledger.amount)) |>
-Repo.update!
 
+#? Hong Gil_Dong
+hong_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financial_report
+change(hong_FR.balance_sheet) |>
+Ecto.Changeset.put_change(:gab_account_t1, Decimal.add(hong_FR.balance_sheet.gab_account_t1, ledger.quantity)) |>
+Ecto.Changeset.put_change(:cash, Decimal.sub(hong_FR.balance_sheet.cash, ledger.amount)) |>
+Repo.update!
