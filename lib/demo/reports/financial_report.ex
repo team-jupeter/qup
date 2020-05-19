@@ -5,6 +5,8 @@ defmodule Demo.Reports.FinancialReport do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "financial_reports" do
     field :locked, :boolean, default: false
+    field :current_hash, :string
+    field :hash_history, {:array, :string}
 
     has_one :balance_sheet, Demo.Reports.BalanceSheet
     has_one :gab_balance_sheet, Demo.Reports.GabBalanceSheet

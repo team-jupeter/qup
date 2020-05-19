@@ -57,6 +57,20 @@ Repo.preload(hankyung_supul, [:entities]) \
 
 '''
 Mulet
+
+** use the code below to load invoice file **
+## from https://www.poeticoding.com/hashing-a-file-in-elixir/?utm_source=reddit&utm_campaign=reddit_elixir_677 
+
+hash_ref = :crypto.hash_init(:sha256)
+    
+File.stream!(file_path)
+|> Enum.reduce(hash_ref, fn chunk, prev_ref-> 
+  new_ref = :crypto.hash_update(prev_ref, chunk)
+  new_ref
+end)
+|> :crypto.hash_final()
+|> Base.encode16()
+|> String.downcase()
 '''
 
 #? make a mulet for Hangkyung Supul. Remember every supul, state_supul, nation_supul and global_supul has one, only one mulet.
@@ -94,27 +108,26 @@ invoice_hash = jejudo_mulet.current_hash
 global_mulet = Mulet.changeset(global_mulet, %{invoice_hash: invoice_hash})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 '''
 Sil
 '''
+
+#? entity report
+alias Demo.Reports.FinancialReport
+hong_report = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong_entity.id}) |> Repo.insert!
+tomi_report = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi_entity.id}) |> Repo.insert!
 
 #? attatch a sil to an entity.
 alias Demo.Sils.Sil
 hong_sil = Ecto.build_assoc(hong_entity, :sil, %{current_hash: hong_entity.id})
 
-#? attatch a mulet to the supul of the entity.
-hallim_mulet = Ecto.build_assoc(hong_entity, :sil, %{current_hash: hong_entity.id})
+report_hash = 
+    :crypto.hash(:sha256, "Put hong's updated financial report here") \
+    |> Base.encode16() \
+    |> String.downcase()
+
+hong_sil = Sil.changeset(hong_sil, %{report_hash: report_hash})
+
+hong_report = change(hong_report) |> \
+Ecto.Changeset.put_change(:current_hash, report_hash) |> \
+Repo.update!
