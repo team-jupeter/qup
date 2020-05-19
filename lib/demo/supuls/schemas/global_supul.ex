@@ -8,6 +8,7 @@ defmodule Demo.Supuls.GlobalSupul do
 
     has_many :nation_supuls, Demo.Supuls.NationSupul
     has_one :financial_report, Demo.Reports.FinancialReport
+    has_one :mulet, Demo.Mulets.Mulet
 
     timestamps()
   end

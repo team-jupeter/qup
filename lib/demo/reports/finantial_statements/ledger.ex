@@ -10,7 +10,7 @@ defmodule Demo.Reports.Ledger do
     field :item, :string
     field :amount, :decimal
     field :seller_id, :string
-    field :quantity, :decimal
+    field :quantity, :decimal #? for ABC transaction
 
     timestamps()
   end

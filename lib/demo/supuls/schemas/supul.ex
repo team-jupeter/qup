@@ -10,6 +10,7 @@ defmodule Demo.Supuls.Supul do
 
     has_many :entities, Demo.Entities.Entity, on_replace: :nilify
     has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify
+    has_one :mulet, Demo.Mulets.Mulet
     belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
 
     timestamps()

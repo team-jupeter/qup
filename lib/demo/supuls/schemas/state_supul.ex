@@ -7,9 +7,11 @@ defmodule Demo.Supuls.StateSupul do
     field :name, :string
 
     has_many :supuls, Demo.Supuls.Supul
-    belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
     has_one :financial_report, Demo.Reports.FinancialReport
-
+    has_one :mulet, Demo.Mulets.Mulet
+    
+    belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
+    
     timestamps()
   end
 

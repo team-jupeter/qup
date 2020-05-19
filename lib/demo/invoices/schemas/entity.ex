@@ -17,7 +17,7 @@ defmodule Demo.Entities.Entity do
     field :share_price, :integer
 
     has_one :color_code, Demo.ColorCodes.ColorCode
-    has_one :sil, Demo.Mulets.Sil
+    has_one :sil, Demo.Sils.Sil
     has_one :financial_report, Demo.Reports.FinancialReport
     has_many :licenses, Demo.Licenses.License
 

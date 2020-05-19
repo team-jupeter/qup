@@ -9,6 +9,7 @@ defmodule Demo.Supuls.NationSupul do
     has_many :state_supuls, Demo.Supuls.StateSupul
     belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id
     has_one :financial_report, Demo.Reports.FinancialReport
+    has_one :mulet, Demo.Mulets.Mulet
 
     timestamps()
   end

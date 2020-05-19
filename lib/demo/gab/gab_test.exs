@@ -54,7 +54,7 @@ Repo.preload(hankyung_gab, [:nation, :supul])
 #? prepare financial statements for entities.
 alias Demo.Reports.FinancialReport
 alias Demo.Reports.BalanceSheet
-alias Demo.Reports.GabBalanceSheet
+alias Demo.Reports.GabBalanceSheet 
 
 hankyung_gab_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hankyung_gab.id}) |> Repo.insert!
 hong_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong_entity.id}) |> Repo.insert!
@@ -99,7 +99,7 @@ ledger = Ledger.changeset(%Ledger{}, %{invoice_id: invoice.id, buyer_id: invoice
 #     where: entity.id == ^invoice.buyer.entity_id
 
 '''
-Adjust income_statement and balance_sheet of both.
+Adjust balance_sheet of both.
 ''' 
 #? Hankyung GAB Branch
 hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_sheet]).financial_report
@@ -114,4 +114,15 @@ hong_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financia
 change(hong_FR.balance_sheet) |>
 Ecto.Changeset.put_change(:gab_account_t1, Decimal.add(hong_FR.balance_sheet.gab_account_t1, ledger.quantity)) |>
 Ecto.Changeset.put_change(:cash, Decimal.sub(hong_FR.balance_sheet.cash, ledger.amount)) |>
+Repo.update!
+
+#? Reservoir will be managed by GAB
+#? GAB will check openhash of each data sent from supuls. 
+#? GAB is a system, not human.
+alias Demo.Gab.Reservoir
+reservoir = Reservoir.changeset(%Reservoir{}, %{}) |> Repo.insert!
+
+change(reservoir) |>
+Ecto.Changeset.put_change(:f82, Decimal.add(reservoir.f82, ledger.amount)) |>
+Ecto.Changeset.put_change(:abc_t1, Decimal.sub(reservoir.abc_t1, ledger.quantity)) |>
 Repo.update!
