@@ -13,7 +13,7 @@ defmodule Demo.Users.User do
     field :type, :string
     field :name, :string
     field :email, :string # unique id of a human being
-    field :birth_date, :date
+    field :birth_date, :naive_datetime
     field :password, :string, virtual: true
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true

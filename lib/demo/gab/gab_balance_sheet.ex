@@ -6,9 +6,9 @@ defmodule Demo.Reports.GabBalanceSheet do
     schema "gab_balance_sheets" do
       field :monetary_unit, :string
       
-      field :gab_account_t1, :decimal, precision: 12, scale: 2
-      field :gab_account_t2, :decimal, precision: 12, scale: 2
-      field :gab_account_t3, :decimal, precision: 12, scale: 2
+      field :t1, :decimal, precision: 12, scale: 2
+      field :t2, :decimal, precision: 12, scale: 2
+      field :t3, :decimal, precision: 12, scale: 2
 
       field :cash, :decimal, precision: 12, scale: 2
       

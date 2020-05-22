@@ -5,9 +5,9 @@ defmodule Demo.Repo.Migrations.CreateGabBalanceSheets do
     create table(:gab_balance_sheets, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :monetary_unit, :string
-      add :gab_account_t1, :decimal, precision: 12, scale: 2, default: 0.0
-      add :gab_account_t2, :decimal, precision: 12, scale: 2, default: 0.0
-      add :gab_account_t3, :decimal, precision: 12, scale: 2, default: 0.0
+      add :t1, :decimal, precision: 12, scale: 2, default: 0.0
+      add :t2, :decimal, precision: 12, scale: 2, default: 0.0
+      add :t3, :decimal, precision: 12, scale: 2, default: 0.0
       
       add :cash, :decimal, precision: 12, scale: 2, default: 0.0
       

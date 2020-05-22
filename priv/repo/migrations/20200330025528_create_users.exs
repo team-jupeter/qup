@@ -7,7 +7,7 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add :type, :string
       add :name, :string
       add :email, :string
-      add :birth_date, :date
+      add :birth_date, :naive_datetime
       add :password_hash, :string
 
       add :nation_id, references(:nations, type: :uuid, null: false)

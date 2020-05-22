@@ -4,9 +4,6 @@ defmodule Demo.Reports.IncomeStatement do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "income_statements" do
-    field :gab_account_t1, :decimal, precision: 12, scale: 2
-    field :gab_account_t2, :decimal, precision: 12, scale: 2
-    field :gab_account_t3, :decimal, precision: 12, scale: 2
     field :compensation, :decimal, precision: 12, scale: 2
     field :cost_of_goods_sold, :decimal, precision: 12, scale: 2
     field :depreciation_and_amortization, :decimal, precision: 12, scale: 2
@@ -25,6 +22,10 @@ defmodule Demo.Reports.IncomeStatement do
     field :taxes, :decimal, precision: 12, scale: 2
     field :travel_and_entertainment, :decimal, precision: 12, scale: 2
     field :utilities, :decimal, precision: 12, scale: 2
+
+    embeds_many :t1, Demo.ABC.T1
+    embeds_many :t2, Demo.ABC.T2
+    embeds_many :t3, Demo.ABC.T3
 
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
 

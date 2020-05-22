@@ -4,22 +4,17 @@ defmodule Demo.Reports.Ledger do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "ledgers" do
-    field :buyer_id, :string
-    field :invoice_id, :string
-    # field :invoice_items, {:array, :map}
-    field :item, :string
-    field :amount, :decimal
-    field :seller_id, :string
-    field :quantity, :decimal #? for ABC transaction
+    field :comment, :string
+    
+    has_many :transactions, Demo.Transactions.Transaction
 
     timestamps()
   end
 
-  @fields  [:seller_id, :buyer_id, :amount, :item, :invoice_id, :quantity]
   @doc false
-  def changeset(ledger, attrs) do
+  def changeset(ledger, attrs \\ %{}) do
     ledger
-    |> cast(attrs, @fields)
+    |> cast(attrs, [])
     |> validate_required([])
   end
 end

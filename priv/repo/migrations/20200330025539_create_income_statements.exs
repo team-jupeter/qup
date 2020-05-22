@@ -29,6 +29,10 @@ defmodule Demo.Repo.Migrations.CreateIncomeStatements do
       add :utilities, :decimal, precision: 12, scale: 2, default: 0.0
       add :income_taxes, :decimal, precision: 12, scale: 2, default: 0.0
 
+      add(:t1, {:array, :jsonb}, default: [])
+      add(:t2, {:array, :jsonb}, default: [])
+      add(:t3, {:array, :jsonb}, default: [])
+
       add :financial_report_id, references(:financial_reports, type: :uuid, null: false)
 
       timestamps()

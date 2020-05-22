@@ -3,6 +3,8 @@ defmodule Demo.Repo.Migrations.CreateInvoiceItems do
 
   def change do
     create table(:invoice_items) do
+      add :nounce, :integer
+      add :hash, :string
       add :quantity, :decimal, precision: 12, scale: 2, default: 0.0
       add :price, :decimal, precision: 12, scale: 2, default: 0.0
       add :tax_per_unit, :decimal, precision: 5, scale: 2, default: 0.0

@@ -16,8 +16,6 @@ defmodule Demo.Reports.FinancialReport do
     # has_one :comprehensive_IS
     # has_one :consolidated_FS
 
-
-
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id

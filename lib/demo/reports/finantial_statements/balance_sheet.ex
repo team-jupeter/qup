@@ -4,9 +4,6 @@ defmodule Demo.Reports.BalanceSheet do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "balance_sheets" do
-    field :gab_account_t1, :decimal, precision: 12, scale: 2
-    field :gab_account_t2, :decimal, precision: 12, scale: 2
-    field :gab_account_t3, :decimal, precision: 12, scale: 2
     field :accounts_payable, :decimal, precision: 12, scale: 2
     field :accounts_receivable, :decimal, precision: 12, scale: 2
     field :accrued_liabilities, :decimal, precision: 12, scale: 2
@@ -23,6 +20,10 @@ defmodule Demo.Reports.BalanceSheet do
     field :stock, :decimal, precision: 12, scale: 2
     field :taxes, :decimal, precision: 12, scale: 2
     field :treasury_stock, :decimal, precision: 12, scale: 2
+
+    embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
+    embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
+    embeds_many :t3s, Demo.ABC.T3, on_replace: :delete
 
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
 

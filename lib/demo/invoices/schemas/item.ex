@@ -6,15 +6,27 @@ defmodule Demo.Invoices.Item do
   alias Demo.Invoices.InvoiceItem
   alias Demo.Invoices.Item
   alias Demo.Repo
+  import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "items" do
-    field :gpc_code, :string #? global product classification
+    field :gpc_code, :string 
     field :category, :string
     field :name, :string
     field :price, :decimal, precision: 12, scale: 2
     field :product_uuid, :string
+    field :document, :string
+    field :document_hash, :string
     # field :tax_rate, :integer, precision: 5, scale: 2
+
+    field :input_tx, :string
+    field :output_to, :string
+    field :output_ratio, :decimal, precision: 12, scale: 2, default: 100.0
+
+    field :locking_use_area, {:array, :string}, default: []
+    field :locking_use_until, :naive_datetime
+    field :locking_output_to_entity_catetory, :naive_datetime
+    field :locking_output_to_specific_entities, {:array, :string}, default: []
 
     has_many :invoice_items, InvoiceItem
 

@@ -1,5 +1,5 @@
 import Ecto.Query
-import Ecto.Changeset
+import Ecto.Changeset 
 alias Demo.Repo
 
 #? init nations
@@ -28,6 +28,13 @@ alias Demo.Users.User
 mr_hong = User.changeset(%User{}, %{name: "Hong Gildong", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
 ms_sung = User.changeset(%User{}, %{name: "Sung Chunhyang", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!
 gab = User.changeset(%User{}, %{name: "GAB: Global Autonomous Bank", email: "gab@000011.un"}) |> Repo.insert!
+
+#? init taxations: kts = korea tax service, irs = internal revenue service
+alias Demo.Taxations.Taxation
+
+kts = Taxation.changeset(%Taxation{}, %{name: "Korea Tax Service", nation_id: korea.id}) |> Repo.insert!
+irs = Taxation.changeset(%Taxation{}, %{name: "US Internal Revenue Service", nation_id: usa.id}) |> Repo.insert!
+
 
 #? init entities
 alias Demo.Entities.Entity
@@ -105,14 +112,14 @@ Adjust balance_sheet of both.
 hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_sheet]).financial_report
 change(hankyung_gab_FR.gab_balance_sheet) |>
 Ecto.Changeset.put_change(:cash, Decimal.add(hankyung_gab_FR.gab_balance_sheet.cash, ledger.amount)) |>
-Ecto.Changeset.put_change(:gab_account_t1, Decimal.sub(hankyung_gab_FR.gab_balance_sheet.gab_account_t1, ledger.quantity)) |>
+Ecto.Changeset.put_change(:t1, Decimal.sub(hankyung_gab_FR.gab_balance_sheet.t1, ledger.quantity)) |>
 Repo.update!
 
 
 #? Hong Gil_Dong
 hong_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financial_report
 change(hong_FR.balance_sheet) |>
-Ecto.Changeset.put_change(:gab_account_t1, Decimal.add(hong_FR.balance_sheet.gab_account_t1, ledger.quantity)) |>
+Ecto.Changeset.put_change(:t1, Decimal.add(hong_FR.balance_sheet.t1, ledger.quantity)) |>
 Ecto.Changeset.put_change(:cash, Decimal.sub(hong_FR.balance_sheet.cash, ledger.amount)) |>
 Repo.update!
 
@@ -121,7 +128,7 @@ Repo.update!
 #? GAB is a system, not human.
 alias Demo.Gab.Reservoir
 reservoir = Reservoir.changeset(%Reservoir{}, %{}) |> Repo.insert!
-
+ 
 change(reservoir) |>
 Ecto.Changeset.put_change(:f82, Decimal.add(reservoir.f82, ledger.amount)) |>
 Ecto.Changeset.put_change(:abc_t1, Decimal.sub(reservoir.abc_t1, ledger.quantity)) |>

@@ -9,12 +9,17 @@ defmodule Demo.Entities.Entity do
   @foreign_key_type :binary_id
 
   schema "entities" do
+    field :entity_address, :string
+    field :entity_code, :string
     field :name, :string
     field :email, :string
     field :category, :string
     field :year_started, :integer
     field :year_ended, :integer
-    field :share_price, :integer
+    field :share_price, :decimal, default: 0.0
+    field :accrued_tax_payment, :decimal, default: 0.0
+    field :private_key, :string
+    field :public_key, :string
 
     has_one :color_code, Demo.ColorCodes.ColorCode
     has_one :sil, Demo.Sils.Sil

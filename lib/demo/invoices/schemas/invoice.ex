@@ -7,19 +7,19 @@ defmodule Demo.Invoices.Invoice do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "invoices" do
-    field :start_at, :date
-    field :end_at, :date
+    field :start_at, :naive_datetime
+    field :end_at, :naive_datetime
     field :total, :decimal, precision: 12, scale: 2
     field :tax_total, :decimal, precision: 5, scale: 2
 
+
+
     has_many :invoice_items, InvoiceItem, on_delete: :delete_all
-    has_one :trade, Demo.Invoices.Invoice
+    belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id
 
-    embeds_one :buyer, Demo.Invoices.BuyerEmbed, on_replace: :update
-    embeds_one :seller, Demo.Invoices.SellerEmbed, on_replace: :update
-
-    # embeds_many :products, Demo.Products.ProductEmbed, on_replace: :delete #? has_many
-    # #? has_one :permalink, Permalink
+    embeds_one :buyer, Demo.Invoices.BuyerEmbed, on_replace: :delete
+    embeds_one :seller, Demo.Invoices.SellerEmbed, on_replace: :delete
+    embeds_many :payments, Demo.Invoices.Payment, on_replace: :delete
 
     many_to_many(
       :entities,
@@ -52,6 +52,7 @@ defmodule Demo.Invoices.Invoice do
   def create(params) do
     IO.puts "create"
     changeset(%Invoice{}, params)
+    |> validate_hash
     |> validate_item_count(params)
     |> put_assoc(:invoice_items, get_items(params))
     |> Repo.insert #? {ok, Invoice}
@@ -119,4 +120,9 @@ defmodule Demo.Invoices.Invoice do
       cs
     end
   end
+
+  defp validate_hash(cs) do
+    cs
+  end
+
 end

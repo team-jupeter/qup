@@ -47,11 +47,12 @@ defmodule Demo.Mixfile do
       {:phoenix_html, "~> 2.13"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1"},
       {:nimble_strftime, ">= 0.0.0"},
       {:pbkdf2_elixir, "~> 1.0"},
       {:phoenix_pubsub_redis, "~> 2.1.0"},
       {:gen_stage, "~> 1.0.0"},
+      {:joken, "~> 2.0"},
       # {:geo, "~> 3.0"},
     ]
   end

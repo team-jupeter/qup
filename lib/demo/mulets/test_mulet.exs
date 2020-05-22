@@ -128,6 +128,6 @@ report_hash =
 
 hong_sil = Sil.changeset(hong_sil, %{report_hash: report_hash})
 
-hong_report = change(hong_report) |> \
-Ecto.Changeset.put_change(:current_hash, report_hash) |> \
-Repo.update!
+hong_report = change(hong_report) \
+    |> Ecto.Changeset.put_change(:current_hash, report_hash) \
+    |> Repo.update!
