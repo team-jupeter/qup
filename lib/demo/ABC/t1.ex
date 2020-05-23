@@ -8,7 +8,7 @@ defmodule Demo.ABC.T1 do
     field :amount, :decimal, precision: 12, scale: 2
   end
 
-  @fields [:prev_txn, :amount]
+  @fields [:input_from, :output_to, :amount]
   def changeset(t1, params) do
     t1
     |> cast(params, @fields)

@@ -5,12 +5,16 @@ defmodule Demo.Transactions.Transaction do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "transactions" do
 
-    #? previous transaction_id and index_no
-    field :input_from, :string
+    #? previous transaction_id and digital signature of invoice
+    field :hash_of_invoice, :string
+
+    #? who pays ABC? which t1s in his/her/its wallet?
+    field :input_from, :string #? public_address of buyer. 
     field :input_t1s, {:array, :map}, default: []
 
     #? recipient or seller's public key and payment amount
-    field :output_to, :string
+    field :output_to, :string #? public_address of seller. 
+
     field :output_amount, :decimal, precision: 12, scale: 2
 
     #? locking script and conditions of spending moneny by recipient.
@@ -25,7 +29,7 @@ defmodule Demo.Transactions.Transaction do
     # embeds_many :payments, Demo.Invoices.Payment, on_replace: :raise
 
     belongs_to :ledger, Demo.Reports.Ledger, type: :binary_id
-    has_many :invoices, Demo.Invoices.Invoice, on_delete: :delete_all
+    has_one :invoice, Demo.Invoices.Invoice, on_delete: :delete_all
 
     timestamps()
   end

@@ -75,3 +75,5 @@ config :demo, Demo.Repo,
   database: "demo_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :joken, default_signer: "secret"

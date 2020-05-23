@@ -16,7 +16,7 @@ defmodule ExPublicKey do
       alias ExPublicKey.RSAPublicKey, as: RSAPublicKey
       alias ExPublicKey.RSAPrivateKey, as: RSAPrivateKey
     end
-  end
+  end  
 
   def normalize_error(kind, error) do
     case Exception.normalize(kind, error) do

@@ -1,0 +1,8 @@
+erl_crash.dump
+*.ez
+*.iml
+gen_docs.sh
+.idea/
+_build/
+deps/
+doc/

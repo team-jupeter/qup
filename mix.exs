@@ -53,6 +53,8 @@ defmodule Demo.Mixfile do
       {:phoenix_pubsub_redis, "~> 2.1.0"},
       {:gen_stage, "~> 1.0.0"},
       {:joken, "~> 2.0"},
+      {:poison, ">= 2.0.0"},
+
       # {:geo, "~> 3.0"},
     ]
   end

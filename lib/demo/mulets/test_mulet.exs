@@ -88,24 +88,24 @@ global_mulet = Ecto.build_assoc(global_supul, :mulet, %{current_hash: global_sup
 
 #? let mulet work.
 #? hankyung_mulet
-invoice_hash = 
+incoming_hash = 
     :crypto.hash(:sha256, "Put hong's new invoice here") \
     |> Base.encode16() \
     |> String.downcase()
 
-hankyung_mulet = Mulet.changeset(hankyung_mulet, %{invoice_hash: invoice_hash})
+hankyung_mulet = Mulet.changeset(hankyung_mulet, %{incoming_hash: txn_hash})
 
 #? send hankyung_mulet.current_hash to the jejudo_mulet
-invoice_hash = hankyung_mulet.current_hash
-jejudo_mulet = Mulet.changeset(jejudo_mulet, %{invoice_hash: invoice_hash})
+incoming_hash = hankyung_mulet.current_hash
+jejudo_mulet = Mulet.changeset(jejudo_mulet, %{incoming_hash: incoming_hash})
 
 #? korea_mulet
-invoice_hash = jejudo_mulet.current_hash
-korea_mulet = Mulet.changeset(korea_mulet, %{invoice_hash: invoice_hash})
+incoming_hash = jejudo_mulet.current_hash
+korea_mulet = Mulet.changeset(korea_mulet, %{incoming_hash: incoming_hash})
 
 #? global_mulet
-invoice_hash = jejudo_mulet.current_hash
-global_mulet = Mulet.changeset(global_mulet, %{invoice_hash: invoice_hash})
+incoming_hash = jejudo_mulet.current_hash
+global_mulet = Mulet.changeset(global_mulet, %{incoming_hash: incoming_hash})
 
 
 '''

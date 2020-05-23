@@ -4,10 +4,9 @@ defmodule Demo.Reports.Ledger do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "ledgers" do
-    field :comment, :string
+    field :txn, :string
+    field :sender, :string 
     
-    has_many :transactions, Demo.Transactions.Transaction
-
     timestamps()
   end
 

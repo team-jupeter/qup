@@ -42,7 +42,6 @@ alias Demo.Entities.Entity
 hong_entity = Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
 tomi_entity = Entity.changeset(%Entity{}, %{name: "Sung Chunhyang Entity", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!
 hankyung_gab = Entity.changeset(%Entity{}, %{name: "Hankyung GAB Branch", email: "hankyung_gab@3435.kr"}) |> Repo.insert!
-nonghyup = Entity.changeset(%Entity{}, %{name: "NongHyup Bank", email: "nonghyup_bank@3335.kr"}) |> Repo.insert!
 
 #? build_assoc user and entity
 Repo.preload(hong_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [mr_hong]) |> Repo.update!
@@ -84,7 +83,7 @@ Authentication, Non-repudiation, Integrity
 # http://www.petecorey.com/blog/2018/01/22/generating-bitcoin-private-keys-and-public-addresses-with-elixir/
 
 #? Buyer == hong_entity 
-#? hong_entity's private_key or signing key
+#? hong_entity's private_key or signing key or secret key
 hong_sk = 
     :crypto.strong_rand_bytes(16) \
     |> :base64.encode \
@@ -93,9 +92,9 @@ hong_sk =
 #? hong_entity's public_key & public_address
 hong_pk = :crypto.generate_key(:ecdh, :crypto.ec_curve(:secp256k1), hong_sk) \
     |> elem(0)
-public_sha256 = :crypto.hash(:sha256, hong_pk)
-public_ripemd160 = :crypto.hash(:ripemd160, public_sha256) 
-hong_public_address = Demo.Crypto.Base58Check.encode(public_ripemd160, <<0x00>>)
+hong_public_sha256 = :crypto.hash(:sha256, hong_pk)
+hong_public_ripemd160 = :crypto.hash(:ripemd160, hong_public_sha256) 
+hong_public_address = Demo.Crypto.Base58Check.encode(hong_public_ripemd160, <<0x00>>)
 
 #? seller == hankyung_gab 
 #? hong_entity's private_key or signing key
@@ -107,9 +106,9 @@ hankyung_gab_sk =
 #? hong_entity's public_key & public_address
 hankyung_gab_pk = :crypto.generate_key(:ecdh, :crypto.ec_curve(:secp256k1), hankyung_gab_sk) \
     |> elem(0)
-public_sha256 = :crypto.hash(:sha256, hankyung_gab_pk)
-public_ripemd160 = :crypto.hash(:ripemd160, public_sha256) 
-hankyung_gab_public_address = Demo.Crypto.Base58Check.encode(public_ripemd160, <<0x00>>)
+hankyung_public_sha256 = :crypto.hash(:sha256, hankyung_gab_pk)
+hankyung_public_ripemd160 = :crypto.hash(:ripemd160, hankyung_public_sha256) 
+hankyung_gab_public_address = Demo.Crypto.Base58Check.encode(hankyung_public_ripemd160, <<0x00>>)
 
 #? Seller == tomi_entity
 #? tomi_entity's private_key
@@ -124,9 +123,9 @@ tomi_sk =
 tomi_pk = :crypto.generate_key(:ecdh, :crypto.ec_curve(:secp256k1), tomi_sk) \
     |> elem(0)
 
-public_sha256 = :crypto.hash(:sha256, tomi_pk)
-public_ripemd160 = :crypto.hash(:ripemd160, public_sha256) 
-tomi_public_address = Demo.Crypto.Base58Check.encode(public_ripemd160, <<0x00>>)
+tomi_public_sha256 = :crypto.hash(:sha256, tomi_pk)
+tomi_public_ripemd160 = :crypto.hash(:ripemd160, tomi_public_sha256) 
+tomi_public_address = Demo.Crypto.Base58Check.encode(tomi_public_ripemd160, <<0x00>>)
 
 
 
@@ -159,17 +158,17 @@ params = %{
 invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
 
 #? Write Transaction
-txn = Transaction.changeset(%Transaction{
+txn_1 = Transaction.changeset(%Transaction{
     input_from: hankyung_gab_public_address, 
     output_to: hong_public_address,
     output_amount: 0,
     locked: false,
     }) |> Repo.insert!
 
-txn = change(txn) |> Ecto.Changeset.put_change(:output_amount, invoice.total) |> Repo.update!
+txn_1 = change(txn_1) |> Ecto.Changeset.put_change(:output_amount, invoice.total) |> Repo.update!
 
 #? Association between Transaction and Invoice
-invoice = Ecto.build_assoc(txn, :invoices, invoice) 
+invoice = Ecto.build_assoc(txn_1, :invoice, invoice) 
 
 
 '''
@@ -190,7 +189,7 @@ hankyung_gab_BS = change(hankyung_gab_BS) |> \
         :cash, Decimal.add(hankyung_gab_BS.cash, Decimal.mult(String.to_integer(item.name), 
             Enum.at(invoice_items, 0).quantity))) |>  \
     Ecto.Changeset.put_change(:t1, 
-        Decimal.sub(hankyung_gab_BS.t1, txn.output_amount)) |> Repo.update!
+        Decimal.sub(hankyung_gab_BS.t1, txn_1.output_amount)) |> Repo.update!
 
 
 
@@ -205,11 +204,11 @@ hong_entity_BS = change(hong_entity_BS) |> \
         :cash, Decimal.sub(hong_entity_BS.cash, Decimal.mult(String.to_integer(item.name), 
             Enum.at(invoice_items, 0).quantity))) |> Repo.update!
 
-t1s = [%T1{input_from: hankyung_gab_public_address, amount: txn.output_amount, output_to: hong_public_address}]
+t1s = [%T1{input_from: hankyung_gab_public_address, amount: txn_1.output_amount, output_to: hong_public_address}]
 hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 
-
+ 
 
 '''
 TRANSACTION 2
@@ -229,10 +228,18 @@ params = %{
 }
 {:ok, invoice} = Invoice.create(params)
 invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
+#? hash_of_invoice = hong_public_sha256 = :crypto.hash(:sha256, invoice)
 
-#? Write Transaction
-    
-txn = Transaction.changeset(%Transaction{
+
+
+
+
+
+
+
+#? Write Transaction 
+txn_2 = Transaction.changeset(%Transaction{
+    hash_of_invoice: "dummy_hash_of_invoice",
     input_from: hankyung_gab_public_address, 
     output_to: hong_public_address,
     output_amount: 0,
@@ -242,10 +249,10 @@ txn = Transaction.changeset(%Transaction{
     locking_output_to_specific_entities: [tomi_public_address]
     }) |> Repo.insert!
 
-txn = change(txn) |> Ecto.Changeset.put_change(:output_amount, invoice.total) |> Repo.update!
+txn_2 = change(txn_2) |> Ecto.Changeset.put_change(:output_amount, invoice.total) |> Repo.update!
 
 #? Association between Transaction and Invoice
-invoice = Ecto.build_assoc(txn, :invoices, invoice) 
+invoice = Ecto.build_assoc(txn_2, :invoice, invoice) 
 
 '''
 Adjust balance_sheet of both.
@@ -256,7 +263,7 @@ hong_entity_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).f
 hong_entity_BS = hong_entity_FR.balance_sheet
 hong_t1s = hong_entity_BS.t1s
 
-case Enum.at(hong_t1s, 0).output_to == hong_public_address do:
+# case Enum.at(hong_t1s, 0).output_to == hong_public_address do:
     residual_amount = Decimal.sub(Enum.at(hong_t1s, 0).amount, invoice.total)
     [head | hong_t1s] = hong_t1s
     t1s = [%T1{input_from: hong_public_address, output_to: hong_public_address, amount: residual_amount}]
@@ -272,5 +279,114 @@ case Enum.at(hong_t1s, 0).output_to == hong_public_address do:
     
     hong_entity_BS = change(hong_entity_BS) |> \
         Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
-end
+# end
+
+
+
+
+
+'''
+Non-repudiation: Mulet of hankyung_gab
+'''
+
+'''
+After receiving ABC from hankyung_gab, mr_hong makes a payload 
+and send it to the mulet of hankyung_supul to record the transaction 
+in the openhash blockchain. 
+'''
+#? 
+
+'''
+First, mr_hong makes the payload of txn_1, and send it to hankyung_supul's mulet.
+'''
+import Poison
+#? openssl genrsa -out private_key.pem 2048
+#? openssl rsa -in private_key.pem -pubout > public_key.pem
+
+rsa_priv_key = ExPublicKey.load!("./private_key.pem")
+rsa_pub_key = ExPublicKey.load!("./public_key.pem")
+
+# serialize the JSON
+msg_serialized = Poison.encode!(txn_1)
+
+# generate time-stamp
+ts = DateTime.utc_now |> DateTime.to_unix
+
+# add a time-stamp
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+
+# generate a secure hash using SHA256 and sign the message with the private key
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, rsa_priv_key)
+
+# combine payload
+payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64 signature}"
+
+
+'''
+Second, the hankyung_mulet verifies and unserialize the payload from mr_hong. 
+'''
+alias Demo.Mulets.Mulet
+hankyung_mulet = Ecto.build_assoc(hankyung_supul, :mulet, %{current_hash: hankyung_supul.id}) 
+
+# pretend transmit the message...
+# pretend receive the message...
+
+# break up the payload
+parts = String.split(payload, "|")
+
+#? reject the payload if the timestamp is newer than the arriving time to mulet. 
+recv_ts = Enum.fetch!(parts, 0)
+
+
+# pretend ensure the time-stamp is not too old (or from the future)...
+# it should probably no more than 5 minutes old, and no more than 15 minutes in the future
+
+# verify the signature
+recv_msg_serialized = Enum.fetch!(parts, 1)
+{:ok, recv_sig} = Enum.fetch!(parts, 2) |> Base.url_decode64
+
+{:ok, sig_valid} = ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig, rsa_pub_key)
+# assert(sig_valid)
+
+recv_msg_unserialized = Poison.Parser.parse!(recv_msg_serialized, %{})
+# assert(msg == recv_msg_unserialized)
+
+'''
+Third, the mulet of hankyung_supul openhashes the unserialized message. 
+'''
+alias Demo.Mulets.Mulet
+hankyung_mulet = Ecto.build_assoc(hankyung_supul, :mulet, %{current_hash: hankyung_supul.id}) 
+
+txn_hash = 
+    :crypto.hash(:sha256, recv_msg_serialized) \
+    |> Base.encode16() \
+    |> String.downcase()
+
+hankyung_mulet = Mulet.changeset(hankyung_mulet, %{incoming_hash: txn_hash})
+
+'''
+Fourth, send the new hash to the mulets of upper supuls. 
+'''
+#? build_assoc jejudo_mulet with jejudo
+jejudo_mulet = Ecto.build_assoc(jejudo_supul, :mulet, %{current_hash: jejudo_supul.id}) 
+
+#? build_assoc korea_mulet with korea
+korea_mulet = Ecto.build_assoc(korea_supul, :mulet, %{current_hash: korea_supul.id}) 
+
+#? build_assoc global_mulet with global
+global_mulet = Ecto.build_assoc(global_supul, :mulet, %{current_hash: global_supul.id}) 
+    
+#? send hankyung_mulet.current_hash to the jejudo_mulet
+incoming_hash = hankyung_mulet.current_hash
+jejudo_mulet = Mulet.changeset(jejudo_mulet, %{incoming_hash: incoming_hash})
+
+#? korea_mulet
+incoming_hash = jejudo_mulet.current_hash
+korea_mulet = Mulet.changeset(korea_mulet, %{incoming_hash: incoming_hash})
+
+#? global_mulet
+incoming_hash = jejudo_mulet.current_hash
+global_mulet = Mulet.changeset(global_mulet, %{incoming_hash: incoming_hash})
+
+
 
