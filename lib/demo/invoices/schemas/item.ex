@@ -6,43 +6,42 @@ defmodule Demo.Invoices.Item do
   alias Demo.Invoices.InvoiceItem
   alias Demo.Invoices.Item
   alias Demo.Repo
+
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "items" do
+    field :product_uuid, :binary_id
     field :gpc_code, :string 
-    field :category, :string
+    field :category, :string 
     field :name, :string
-    field :price, :decimal, precision: 12, scale: 2
-    field :product_uuid, :string
+    field :price, :decimal, precision: 15, scale: 4
     field :document, :string
     field :document_hash, :string
     # field :tax_rate, :integer, precision: 5, scale: 2
-
-    field :input_tx, :string
-    field :output_to, :string
-    field :output_ratio, :decimal, precision: 12, scale: 2, default: 100.0
-
+    
     field :locking_use_area, {:array, :string}, default: []
     field :locking_use_until, :naive_datetime
-    field :locking_output_to_entity_catetory, :naive_datetime
-    field :locking_output_to_specific_entities, {:array, :string}, default: []
+    field :locking_output_entity_catetory, :naive_datetime
+    field :locking_output_specific_entities, {:array, :string}, default: []
+    
 
     has_many :invoice_items, InvoiceItem
 
     timestamps()
   end
 
-  @fields [:gpc_code, :category, :name, :price]
+  @fields [
+    :gpc_code, :product_uuid, :category, :name, :price, :document, 
+    :document_hash, :locking_use_area, :locking_use_until, 
+    :locking_output_entity_catetory, 
+    :locking_output_specific_entities,
+  ]
 
   def changeset(data, params \\ %{}) do
-    # IO.puts "Demo.Invoices.Item changeset"
-    # IO.inspect data
-    # IO.inspect params
-
     data
     |> cast(params, @fields)
-    # |> validate_required(@fields)
+    |> validate_required([])
     |> validate_number(:price, greater_than_or_equal_to: Decimal.new(0))
   end
 
@@ -64,4 +63,5 @@ defmodule Demo.Invoices.Item do
   #   |> group_by([i, _], i.id)
   #   |> order_by([_, ii], [desc: sum(field(ii, ^type))])
   # end
+
 end

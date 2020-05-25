@@ -28,6 +28,7 @@ alias Demo.Users.User
 mr_hong = User.changeset(%User{}, %{name: "Hong Gildong", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
 ms_sung = User.changeset(%User{}, %{name: "Sung Chunhyang", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!
 gab = User.changeset(%User{}, %{name: "GAB: Global Autonomous Bank", email: "gab@000011.un"}) |> Repo.insert!
+mr_musk = User.changeset(%User{}, %{name: "Ellen Musk", email: "mr_ellen_musk@000011.us"}) |> Repo.insert!
 
 #? init taxations: kts = korea tax service, irs = internal revenue service
 alias Demo.Taxations.Taxation
@@ -42,11 +43,13 @@ alias Demo.Entities.Entity
 hong_entity = Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
 tomi_entity = Entity.changeset(%Entity{}, %{name: "Sung Chunhyang Entity", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!
 hankyung_gab = Entity.changeset(%Entity{}, %{name: "Hankyung GAB Branch", email: "hankyung_gab@3435.kr"}) |> Repo.insert!
+tesla_entity = Entity.changeset(%Entity{}, %{name: "Tesla", email: "tesl@3435.us"}) |> Repo.insert!
 
 #? build_assoc user and entity
 Repo.preload(hong_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [mr_hong]) |> Repo.update!
 Repo.preload(tomi_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [ms_sung]) |> Repo.update!
 Repo.preload(hankyung_gab, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [gab]) |> Repo.update!
+Repo.preload(tesla_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [mr_musk]) |> Repo.update!
 
 
 #? make a GAB branch for Hangkyung Supul. Remember every supul has one, only one GAB branch.
@@ -54,6 +57,7 @@ hankyung_gab = Ecto.build_assoc(hankyung_supul, :entities, hankyung_gab)
 
 #? build_assoc hankyung_gab with korea
 hankyung_gab = Ecto.build_assoc(korea, :entities, hankyung_gab) 
+tesla_entity = Ecto.build_assoc(usa, :entities, tesla_entity) 
 
 Repo.preload(hankyung_gab, [:nation, :supul])
 
@@ -65,69 +69,12 @@ alias Demo.Reports.GabBalanceSheet
 hankyung_gab_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hankyung_gab.id}) |> Repo.insert!
 hong_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong_entity.id}) |> Repo.insert!
 tomi_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi_entity.id}) |> Repo.insert!
+tesla_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tesla_entity.id}) |> Repo.insert!
 
-hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW"}) |> Repo.insert!
-hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
+hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW", t1: 9999990.00}) |> Repo.insert!
+hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{cash: 50000000.00}) |> Repo.insert!
 tomi_entity_BS = Ecto.build_assoc(tomi_entity_FR, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
-
-
-'''
-Authentication, Non-repudiation, Integrity
-
-참고 Youtube => Blockchain tutorial 6: Digital signature
-'''
-#? Now supul, state_supul ...are entities with type fields.
-#? Entity types: human(single or group), entity(object or concept), supul(supul, state_supul, nation_supul, global_supul)
-
-#? crypto
-# http://www.petecorey.com/blog/2018/01/22/generating-bitcoin-private-keys-and-public-addresses-with-elixir/
-
-#? Buyer == hong_entity 
-#? hong_entity's private_key or signing key or secret key
-hong_sk = 
-    :crypto.strong_rand_bytes(16) \
-    |> :base64.encode \
-    |> :binary.decode_unsigned
-
-#? hong_entity's public_key & public_address
-hong_pk = :crypto.generate_key(:ecdh, :crypto.ec_curve(:secp256k1), hong_sk) \
-    |> elem(0)
-hong_public_sha256 = :crypto.hash(:sha256, hong_pk)
-hong_public_ripemd160 = :crypto.hash(:ripemd160, hong_public_sha256) 
-hong_public_address = Demo.Crypto.Base58Check.encode(hong_public_ripemd160, <<0x00>>)
-
-#? seller == hankyung_gab 
-#? hong_entity's private_key or signing key
-hankyung_gab_sk = 
-    :crypto.strong_rand_bytes(16) \
-    |> :base64.encode \
-    |> :binary.decode_unsigned
- 
-#? hong_entity's public_key & public_address
-hankyung_gab_pk = :crypto.generate_key(:ecdh, :crypto.ec_curve(:secp256k1), hankyung_gab_sk) \
-    |> elem(0)
-hankyung_public_sha256 = :crypto.hash(:sha256, hankyung_gab_pk)
-hankyung_public_ripemd160 = :crypto.hash(:ripemd160, hankyung_public_sha256) 
-hankyung_gab_public_address = Demo.Crypto.Base58Check.encode(hankyung_public_ripemd160, <<0x00>>)
-
-#? Seller == tomi_entity
-#? tomi_entity's private_key
-#? signing_key or sk
-tomi_sk = 
-    :crypto.strong_rand_bytes(16) \
-    |> :base64.encode \
-    |> :binary.decode_unsigned
-
-#? tomi_entity's public_key & public_address
-#? verification key or vk
-tomi_pk = :crypto.generate_key(:ecdh, :crypto.ec_curve(:secp256k1), tomi_sk) \
-    |> elem(0)
-
-tomi_public_sha256 = :crypto.hash(:sha256, tomi_pk)
-tomi_public_ripemd160 = :crypto.hash(:ripemd160, tomi_public_sha256) 
-
-
-
+tesla_entity_BS = Ecto.build_assoc(tesla_entity_FR, :balance_sheet, %BalanceSheet{inventory: [%{model_y: 25}]}) |> Repo.insert!
 
 '''
 TRANSACTION 1
@@ -142,8 +89,8 @@ alias Demo.Transactions.Transaction
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 
 
-#? write invoice for trade between mr_hong and hankyung_gab.
-item = Item.changeset(%Item{}, %{gpc_code: "ABCDE21111", category: "Fiat Currency", name: "KRW", price: Decimal.from_float(0.0012)}) |> Repo.insert!
+#? mr_hong needs ABC, so, let's write invoice for trade between mr_hong and hankyung_gab.
+item = Item.changeset(%Item{}, %{gpc_code: "ABCDE21111", category: "Fiat Currency", name: "KRW", price: Decimal.from_float(0.001)}) |> Repo.insert!
 invoice_items = [%{item_id: item.id, quantity: 20000}, %{item_id: item.id, quantity: 0}]
 
 
@@ -160,32 +107,18 @@ invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.
 txn_1 = Transaction.changeset(%Transaction{
     abc_input: hankyung_gab.id, 
     abc_output: hong_entity.id,
-    abc_output_amount: 0,
-    
-    item_input: hong_entity.id, 
-    item_output: hankyung_gab.id,
-    item_output_quantity: 0,
-
-    locked: false,
     }) |> Repo.insert!
 
+item_quantity = Enum.at(invoice.invoice_items, 0).quantity
 txn_1 = change(txn_1) \
-    |> Ecto.Changeset.put_change(:abc_output_amount, invoice.total) \
-    |> Ecto.Changeset.put_change(:item_output_quantity, invoice.total) \
-    |> Ecto.Changeset.put_change(:abc_output_amount, invoice.total) \
+    |> Ecto.Changeset.put_change(:abc_amount, invoice.total) \
+    |> Ecto.Changeset.put_change(:items, [%{"KRW" => item_quantity}]) \
     |> Repo.update!
+
 
 #? Association between Transaction and Invoice
 invoice = Ecto.build_assoc(txn_1, :invoice, invoice) 
 
-
-'''
-ISSUE:: ledger sometimes does and sometimes doesn't load its children and grand children. why???
-A child may preload its parent, but not the reverse. 
-
-Repo.preload(txn, :invoices)
-Repo.preload(invoice, :transaction)
-''' 
 
 #? Adjust balance_sheet of both.
 #? Hankyung GAB
@@ -194,12 +127,11 @@ hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_she
 hankyung_gab_BS = hankyung_gab_FR.gab_balance_sheet
 hankyung_gab_BS = change(hankyung_gab_BS) |> \
     Ecto.Changeset.put_change(
-        :cash, Decimal.add(hankyung_gab_BS.cash, Decimal.mult(String.to_integer(item.name), 
-            Enum.at(invoice_items, 0).quantity))) |>  \
+        :cash, Decimal.add(hankyung_gab_BS.cash, Enum.at(txn_1.items, 0)["KRW"])) |>  \
     Ecto.Changeset.put_change(:t1, 
-        Decimal.sub(hankyung_gab_BS.t1, txn_1.output_amount)) |> Repo.update!
+        Decimal.sub(hankyung_gab_BS.t1, txn_1.abc_amount)) |> Repo.update!
 
-
+        
 
 #? Hong Gil_Dong
 alias Demo.ABC.T1
@@ -209,10 +141,9 @@ hong_entity_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).f
 hong_entity_BS = hong_entity_FR.balance_sheet
 hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_change(
-        :cash, Decimal.sub(hong_entity_BS.cash, Decimal.mult(String.to_integer(item.name), 
-            Enum.at(invoice_items, 0).quantity))) |> Repo.update!
+        :cash, Decimal.sub(hong_entity_BS.cash,  Enum.at(txn_1.items, 0)["KRW"])) |> Repo.update!
 
-t1s = [%T1{input: hankyung_gab_public_address, amount: txn_1.output_amount, output: hong_public_address}]
+t1s = [%T1{input: "gab dummy address", amount: txn_1.abc_amount, output: "hong dummy address"}]
 hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 
@@ -220,75 +151,166 @@ hong_entity_BS = change(hong_entity_BS) |> \
 
 '''
 TRANSACTION 2
-Transaction between hong_entity and tomi_entity
+Transaction between Tesla and hong_entity
 '''
 
-#? write invoice for trade between mr_hong and hankyung_gab.
-item_1 = Item.changeset(%Item{}, %{gpc_code: "ABCDE11133", category: "Food", name: "김밥", price: Decimal.from_float(0.01)}) |> Repo.insert!
-item_2 = Item.changeset(%Item{}, %{gpc_code: "ABCDE11134", category: "Food", name: "떡볶이", price: Decimal.from_float(0.02)}) |> Repo.insert!
-invoice_items = [%{item_id: item_1.id, quantity: 3}, %{item_id: item_2.id, quantity: 3}]
+#? CAR
+alias Demo.Cars.Car
 
+car_1 = Car.changeset(
+    %Car{
+        gpc_code: "ABCDE11133", category: "Standard SUV", 
+        name: "Model Y", manufacturer: "Tesla", market_value: 5.0, 
+        production_date: ~N[2020-05-24 06:14:09], 
+        input: tesla_entity.id,
+        output: tesla_entity.id,
+        current_owner: tesla_entity.id, 
+    }) |> Repo.insert!
+
+#? write invoice for trade between mr_hong and hankyung_gab.
+item_1 = Item.changeset(%Item{}, 
+    %{
+        product_uuid: car_1.id,
+        price: car_1.market_value,
+        current_owner: tesla_entity.id,
+        new_owner: hong_entity.id,
+        owner_history: [tesla_entity.id],
+        txn_history: [],    
+    }) |> Repo.insert!
+
+
+invoice_items = [%{item_id: item_1.id, quantity: 1.0}, %{item_id: item_1.id, quantity: 0.0}]
 
 params = %{
-  "buyer" => %{"entity_id" => hong_entity.id, "entity_address" => hong_public_address},
-  "seller" => %{"entity_id" => tomi_entity.id, "entity_address" => tomi_public_address},
+  "buyer" => %{"entity_id" => hong_entity.id, "entity_address" => "dummy hong address"},
+  "seller" => %{"entity_id" => tesla_entity.id, "entity_address" => "dummy tesla address"},
   "invoice_items" => invoice_items,
 }
 {:ok, invoice} = Invoice.create(params)
 invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
+
 #? hash_of_invoice = hong_public_sha256 = :crypto.hash(:sha256, invoice)
 
 
+'''
 
+Invoicies are stored by entities and transactions are stored by supuls.
 
-
-
-
+'''
 
 #? Write Transaction 
-txn_2 = Transaction.changeset(%Transaction{
-    hash_of_invoice: "dummy_hash_of_invoice",
-    input: hankyung_gab_public_address, 
-    output: hong_public_address,
-    output_amount: 0,
-    locked: false,
-    locking_use_area: ["jejudo_supul"],
-    locking_output_entity_catetory: ["food"],
-    locking_output_specific_entities: [tomi_public_address]
-    }) |> Repo.insert!
+# tesla_entity_preload = Repo.preload(tesla_entity, [financial_report: :balance_sheet])
+# tesla_bs = tesla_entity_preload.financial_report.balance_sheet
+# hong_entity_preload = Repo.preload(hong_entity, [financial_report: :balance_sheet])
 
-txn_2 = change(txn_2) |> Ecto.Changeset.put_change(:output_amount, invoice.total) |> Repo.update!
+txn_2 = Transaction.changeset(%Transaction{
+    abc_input: hong_entity.id,
+    abc_output: tesla_entity.id,
+    abc_amount: invoice.total,
+    }) |> Repo.insert!
+    
 
 #? Association between Transaction and Invoice
 invoice = Ecto.build_assoc(txn_2, :invoice, invoice) 
 
+item_quantity = Enum.at(invoice.invoice_items, 0).quantity
+txn_2 = change(txn_1) \
+    |> Ecto.Changeset.put_change(:items, [%{model_y: item_quantity}]) \
+    |> Repo.update!
+
+# Repo.preload(txn_2, :invoice) #? why not the reverse???? how to konw invoice_id through txn_2 ???
+Repo.preload(invoice, :transaction)
+
+
 '''
+
 Adjust balance_sheet of both.
+
 ''' 
 #? Hong Gil_Dong
-hong_entity_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financial_report
-
-hong_entity_BS = hong_entity_FR.balance_sheet
 hong_t1s = hong_entity_BS.t1s
 
-# case Enum.at(hong_t1s, 0).output == hong_public_address do:
-    residual_amount = Decimal.sub(Enum.at(hong_t1s, 0).amount, invoice.total)
-    [head | hong_t1s] = hong_t1s
-    t1s = [%T1{input: hong_public_address, output: hong_public_address, amount: residual_amount}]
+#? case 
+#? Enum.at(hong_t1s, 0).output == hong_entity.id and
+#? Enum.at(invoice.invoice_items, 0).output == tesla_entity.id
+#? do:
+residual_amount = Decimal.sub(Enum.at(hong_t1s, 0).amount, invoice.total)
+[head | hong_t1s] = hong_t1s
+
+t1s = [%T1{input: hong_entity.id, output: hong_entity.id, amount: residual_amount}]
+fixed_assets = hong_entity_BS.fixed_assets
+
+hong_entity_BS = change(hong_entity_BS) \
+    |> Ecto.Changeset.put_embed(:t1s, t1s) \
+    |> Ecto.Changeset.put_change(:fixed_assets, [%{model_y: item_quantity} | fixed_assets]) \
+    |> Repo.update!
+#? end
     
-    hong_entity_BS = change(hong_entity_BS) |> \
-    Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
-    
-    
-    tomi_entity_FR = Repo.preload(tomi_entity, [financial_report: :balance_sheet]).financial_report
-    tomi_entity_BS = tomi_entity_FR.balance_sheet
-    
-    t1s = [%T1{input: hong_public_address, output: tomi_public_address, amount: invoice.total}]
-    
-    hong_entity_BS = change(hong_entity_BS) |> \
-        Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
+#? Tesla Entity
+tesla_entity_FR = Repo.preload(tesla_entity, [financial_report: :balance_sheet]).financial_report
+tesla_entity_BS = tesla_entity_FR.balance_sheet
+
+t1s = [%T1{input: hong_entity.id, output: tesla_entity.id, amount: invoice.total}]
+
+item_quantity = Decimal.to_integer(item_quantity)
+updated_inventory = [Map.update(Enum.at(tesla_entity_BS.inventory, 0), :model_y, 0, &(&1 - item_quantity))]
+
+#? code below is hard coded. Find out how to update a map's value in a list. 
+tesla_entity_BS = change(hong_entity_BS) \
+    |> Ecto.Changeset.put_embed(:t1s, t1s) \
+    |> Ecto.Changeset.put_change(:inventory, updated_inventory) \
+    |> Repo.update!
+
+#? Change input and outp of the car sold to mr_hong
+car_1 = Car.changeset(car_1, %{input: tesla_entity.id, output: hong_entity.id}) |> Repo.update!
+car_1 = Car.owner_changeset(car_1, %{new_owner: hong_entity.id, recent_txn_id: txn_2.id}) |> Repo.update!
 # end
 
+ 
+
+
+'''
+Authentication, Non-repudiation, Integrity
+
+참고 Youtube => Blockchain tutorial 6: Digital signature
+'''
+#? Now supul, state_supul ...are entities with type fields.
+#? Entity types: human(single or group), entity(object or concept), supul(supul, state_supul, nation_supul, global_supul)
+
+
+
+'''
+
+CRYPTO
+
+'''
+#? hankyung_gab_entity's private_key or signing key or secret key
+#? openssl genrsa -out hankyung_gab_private_key.pem 2048
+#? openssl rsa -in hankyung_gab_private_key.pem -pubout > hankyung_gab_public_key.pem
+hankyung_gab_rsa_priv_key = ExPublicKey.load!("./hankyung_gab_private_key.pem")
+hankyung_gab_rsa_pub_key = ExPublicKey.load!("./hankyung_gab_public_key.pem")
+
+# hankyung_public_sha256 = :crypto.hash(:sha256, hankyung_gab_rsa_pub_key)
+
+#? hankyung_gab_entity's private_key or signing key or secret key
+#? openssl genrsa -out tesla_private_key.pem 2048
+#? openssl rsa -in tesla_private_key.pem -pubout > tesla_public_key.pem
+tesla_rsa_priv_key = ExPublicKey.load!("./tesla_private_key.pem")
+tesla_rsa_pub_key = ExPublicKey.load!("./tesla_public_key.pem")
+
+
+#? hong_entity's private_key or signing key or secret key
+#? openssl genrsa -out hong_private_key.pem 2048
+#? openssl rsa -in hong_private_key.pem -pubout > hong_public_key.pem
+hong_rsa_priv_key = ExPublicKey.load!("./hong_private_key.pem")
+hong_rsa_pub_key = ExPublicKey.load!("./hong_public_key.pem")
+
+
+#? tomi_entity's private_key or signing key or secret key
+#? openssl genrsa -out tomi_private_key.pem 2048
+#? openssl rsa -in tomi_private_key.pem -pubout > tomi_public_key.pem
+tomi_rsa_priv_key = ExPublicKey.load!("./tomi_private_key.pem")
+tomi_rsa_pub_key = ExPublicKey.load!("./tomi_public_key.pem")
 
 
 
@@ -308,11 +330,6 @@ in the openhash blockchain.
 First, mr_hong makes the payload of txn_1, and send it to hankyung_supul's mulet.
 '''
 import Poison
-#? openssl genrsa -out private_key.pem 2048
-#? openssl rsa -in private_key.pem -pubout > public_key.pem
-
-rsa_priv_key = ExPublicKey.load!("./private_key.pem")
-rsa_pub_key = ExPublicKey.load!("./public_key.pem")
 
 # serialize the JSON
 msg_serialized = Poison.encode!(txn_1)
@@ -324,7 +341,7 @@ ts = DateTime.utc_now |> DateTime.to_unix
 ts_msg_serialized = "#{ts}|#{msg_serialized}"
 
 # generate a secure hash using SHA256 and sign the message with the private key
-{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, rsa_priv_key)
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, hong_rsa_priv_key)
 
 # combine payload
 payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64 signature}"
@@ -353,7 +370,7 @@ recv_ts = Enum.fetch!(parts, 0)
 recv_msg_serialized = Enum.fetch!(parts, 1)
 {:ok, recv_sig} = Enum.fetch!(parts, 2) |> Base.url_decode64
 
-{:ok, sig_valid} = ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig, rsa_pub_key)
+{:ok, sig_valid} = ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig, hong_rsa_pub_key)
 # assert(sig_valid)
 
 recv_msg_unserialized = Poison.Parser.parse!(recv_msg_serialized, %{})

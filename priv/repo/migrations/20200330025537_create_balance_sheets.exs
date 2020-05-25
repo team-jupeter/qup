@@ -8,8 +8,8 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
       add :marketable_securities, :decimal, precision: 12, scale: 2, default: 0.0
       add :prepaid_expenses, :decimal, precision: 12, scale: 2, default: 0.0
       add :accounts_receivable, :decimal, precision: 12, scale: 2, default: 0.0
-      add :inventory, :decimal, precision: 12, scale: 2, default: 0.0
-      add :fixed_assets, :decimal, precision: 12, scale: 2, default: 0.0
+      add :inventory, {:array, :map}, default: []
+      add :fixed_assets, {:array, :map}, default: []
       add :accounts_payable, :decimal, precision: 12, scale: 2, default: 0.0
       add :accrued_liabilities, :decimal, precision: 12, scale: 2, default: 0.0
       add :customer_prepayments, :decimal, precision: 12, scale: 2, default: 0.0

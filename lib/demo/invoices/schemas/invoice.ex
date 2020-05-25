@@ -35,24 +35,15 @@ defmodule Demo.Invoices.Invoice do
   @fields [:total, :start_at, :end_at, :tax_total]
 
   def changeset(data, params \\ %{}) do
-    # IO.puts "changeset"
-    # IO.inspect "params"
-    # IO.inspect params
     data
-    # |> IO.inspect
     |> cast(params, @fields)
     |> cast_embed(:buyer)
-    # |> IO.inspect
     |> cast_embed(:seller)
-    # |> IO.inspect
-
   end
 
 
   def create(params) do
-    IO.puts "create"
     changeset(%Invoice{}, params)
-    |> validate_hash
     |> validate_item_count(params)
     |> put_assoc(:invoice_items, get_items(params))
     |> Repo.insert #? {ok, Invoice}
@@ -61,46 +52,26 @@ defmodule Demo.Invoices.Invoice do
 
 
   def add_total({_ok, invoice}) do
-    # IO.puts "add total"
-    # IO.inspect invoice
-
     invoice #? When we change a struct, change => put_change => update
     |> change
-    # |> IO.inspect
     |> put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
-    # |> IO.inspect
-    # careful not to use Repo.update!
     |> Repo.update
   end
 
   defp get_items(params) do
-    # IO.puts "get_items"
-    # IO.inspect params
-
     items = items_with_prices(params[:invoice_items] || params["invoice_items"])
-
-    # IO.inspect "items"
-    # IO.inspect items
-
-    IO.puts "return invoice_items"
+    IO.puts "items"
+    IO.inspect items
     Enum.map(items, fn(item)-> InvoiceItem.changeset(%InvoiceItem{}, item) end)
   end
 
 
   defp items_with_prices(items) do
-    # IO.puts "items_with_prices"
-
     item_ids = Enum.map(items, fn(item) -> item[:item_id] || item["item_id"] end)
-
-    # q = from("items", where: id: in ^item_ids, select: [:id, :price])
     q = from(i in Item, select: %{id: i.id, price: i.price}, where: i.id in ^item_ids)
 
     prices = Repo.all(q)
 
-    # IO.puts "show item_id and prices"
-    # IO.inspect prices
-
-    # IO.puts "return item_id, quantity, and prices"
     Enum.map(items, fn(item) ->
       item_id = item[:item_id] || item["item_id"]
       %{
@@ -121,8 +92,5 @@ defmodule Demo.Invoices.Invoice do
     end
   end
 
-  defp validate_hash(cs) do
-    cs
-  end
 
 end

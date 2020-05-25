@@ -10,8 +10,8 @@ defmodule Demo.Reports.BalanceSheet do
     field :additional_paid_in_capital, :decimal, precision: 12, scale: 2
     field :cash, :decimal, precision: 12, scale: 2
     field :customer_prepayments, :decimal, precision: 12, scale: 2
-    field :fixed_assets, :decimal, precision: 12, scale: 2
-    field :inventory, :decimal, precision: 12, scale: 2
+    field :fixed_assets, {:array, :map}, default: []
+    field :inventory, {:array, :map}, default: []
     field :long_term_debt, :decimal, precision: 12, scale: 2
     field :marketable_securities, :decimal, precision: 12, scale: 2
     field :prepaid_expenses, :decimal, precision: 12, scale: 2

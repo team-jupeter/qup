@@ -16,7 +16,7 @@ defmodule Demo.Mulets.Mulet do
 
     timestamps()
   end
-
+ 
 
     @doc false
   def changeset(%Mulet{} = mulet, attrs \\ %{}) do

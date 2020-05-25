@@ -3,12 +3,12 @@ defmodule Demo.ABC.T2 do
   import Ecto.Changeset
 
   embedded_schema do
-    field :input_from, :string
-    field :output_to, :string
+    field :input, :string
+    field :output, :string
     field :amount, :decimal, precision: 12, scale: 2
   end
 
-  @fields [:input_from, :output_to, :amount]
+  @fields [:input, :output, :amount]
   def changeset(t2, params) do
     t2
     |> cast(params, @fields)
