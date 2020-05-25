@@ -172,22 +172,22 @@ item_1 = Item.changeset(%Item{},
     %{
         product_uuid: car_1.id,
         price: car_1.market_value,
-        current_owner: tesla_entity.id,
-        new_owner: hong_entity.id,
-        owner_history: [tesla_entity.id],
-        txn_history: [],    
+        # current_owner: tesla_entity.id,
+        # new_owner: hong_entity.id,
+        # owner_history: [tesla_entity.id],
+        # txn_history: [],    
     }) |> Repo.insert!
 
 
 invoice_items = [%{item_id: item_1.id, quantity: 1.0}, %{item_id: item_1.id, quantity: 0.0}]
 
 params = %{
-  "buyer" => %{"entity_id" => hong_entity.id, "entity_address" => "dummy hong address"},
-  "seller" => %{"entity_id" => tesla_entity.id, "entity_address" => "dummy tesla address"},
+  "buyer" => %{"entity_id" => hong_entity.id, "entity_address" => "dummy hong public address"},
+  "seller" => %{"entity_id" => tesla_entity.id, "entity_address" => "dummy tesla public address"},
   "invoice_items" => invoice_items,
 }
 {:ok, invoice} = Invoice.create(params)
-invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
+# invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
 
 #? hash_of_invoice = hong_public_sha256 = :crypto.hash(:sha256, invoice)
 
@@ -211,15 +211,15 @@ txn_2 = Transaction.changeset(%Transaction{
     
 
 #? Association between Transaction and Invoice
-invoice = Ecto.build_assoc(txn_2, :invoice, invoice) 
+invoice_2 = Ecto.build_assoc(txn_2, :invoice, invoice) 
 
-item_quantity = Enum.at(invoice.invoice_items, 0).quantity
-txn_2 = change(txn_1) \
+item_quantity = Enum.at(invoice_2.invoice_items, 0).quantity
+txn_2 = change(txn_2) \
     |> Ecto.Changeset.put_change(:items, [%{model_y: item_quantity}]) \
     |> Repo.update!
 
 # Repo.preload(txn_2, :invoice) #? why not the reverse???? how to konw invoice_id through txn_2 ???
-Repo.preload(invoice, :transaction)
+# Repo.preload(invoice_2, :transaction)
 
 
 '''
@@ -251,15 +251,17 @@ tesla_entity_FR = Repo.preload(tesla_entity, [financial_report: :balance_sheet])
 tesla_entity_BS = tesla_entity_FR.balance_sheet
 
 t1s = [%T1{input: hong_entity.id, output: tesla_entity.id, amount: invoice.total}]
-
 item_quantity = Decimal.to_integer(item_quantity)
 updated_inventory = [Map.update(Enum.at(tesla_entity_BS.inventory, 0), :model_y, 0, &(&1 - item_quantity))]
 
 #? code below is hard coded. Find out how to update a map's value in a list. 
-tesla_entity_BS = change(hong_entity_BS) \
+tesla_entity_BS = change(tesla_entity_BS) \
     |> Ecto.Changeset.put_embed(:t1s, t1s) \
     |> Ecto.Changeset.put_change(:inventory, updated_inventory) \
     |> Repo.update!
+
+
+
 
 #? Change input and outp of the car sold to mr_hong
 car_1 = Car.changeset(car_1, %{input: tesla_entity.id, output: hong_entity.id}) |> Repo.update!

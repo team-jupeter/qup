@@ -44,7 +44,7 @@ defmodule Demo.Cars.Car do
     :current_cargo_type, :current_cargo_amount, :market_value,
     :book_value, :waste_date, :current_owner, :new_owner, 
     :owner_history, :current_legal_status, :txn_history,
-    :recent_txn_id
+    :recent_txn_id, :input, :output
   ]
   @doc false
   def changeset(car, attrs \\ %{}) do
