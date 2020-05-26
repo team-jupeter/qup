@@ -10,6 +10,7 @@ defmodule Demo.Invoices.InvoiceItem do
     field :tax_per_unit, :decimal, precision: 5, scale: 2
     field :tax_subtotal, :decimal, precision: 5, scale: 2
     field :subtotal, :decimal, precision: 12, scale: 2
+    field :item_name, :string
 
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
     belongs_to :item, Demo.Invoices.Item, type: :binary_id

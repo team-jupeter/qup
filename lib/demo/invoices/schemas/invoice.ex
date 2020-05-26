@@ -11,8 +11,7 @@ defmodule Demo.Invoices.Invoice do
     field :end_at, :naive_datetime
     field :total, :decimal, precision: 12, scale: 2
     field :tax_total, :decimal, precision: 5, scale: 2
-
-
+    field :fiat_currency, :decimal, precision: 12, scale: 2
 
     has_many :invoice_items, InvoiceItem, on_delete: :delete_all
     belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id

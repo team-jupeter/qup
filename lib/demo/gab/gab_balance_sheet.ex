@@ -6,11 +6,11 @@ defmodule Demo.Reports.GabBalanceSheet do
     schema "gab_balance_sheets" do
       field :monetary_unit, :string
       
-      field :t1, :decimal, precision: 12, scale: 2
-      field :t2, :decimal, precision: 12, scale: 2
-      field :t3, :decimal, precision: 12, scale: 2
+      field :t1s, {:array, :map}
+      field :t2s, {:array, :map} 
+      field :t3s, {:array, :map} 
 
-      field :cash, :decimal, precision: 12, scale: 2
+      field :cashes, {:array, :map} 
       
   
       belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id

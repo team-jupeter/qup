@@ -4,12 +4,13 @@ defmodule Demo.Invoices.BuyerEmbed do
 
   embedded_schema do
     field :entity_id
-    field :entity_address
+    field :public_address
   end
 
+  @fields [:entity_id, :public_address]
   def changeset(buyer_embed, params) do
     buyer_embed
-    |> cast(params, [:entity_id])
-    |> validate_required([:entity_id])
+    |> cast(params, @fields)
+    |> validate_required(@fields)
   end
 end

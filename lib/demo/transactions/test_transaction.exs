@@ -2,7 +2,7 @@ import Ecto.Query
 import Ecto.Changeset
 alias Demo.Repo
 
-#? init nations
+#? init nations 
 alias Demo.Nations.Nation
 
 korea = Nation.changeset(%Nation{}, %{name: "South Korea"}) |> Repo.insert!

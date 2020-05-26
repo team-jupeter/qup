@@ -54,7 +54,6 @@ defmodule Demo.Cars.Car do
   end
 
   def owner_changeset(%Car{} = car, attrs \\ %{}) do
-    IO.inspect attrs
     car
     |> cast(attrs, @fields)
     |> validate_required([])
