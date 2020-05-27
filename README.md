@@ -1,5 +1,5 @@
 
-## qup(quarantine unified passport) == 검역 통합 여권
+## COREA(Connected Openhash Reports on Economic Activities)
 * This project is for both a coding exercise and preparing a startup.
 * The goal of this project is to code an electronic passport which any nation can adopt for its immigration process at airports and quarantine process to protect its citizen from infectious virus such as COVID 19.
 * This is an open source coding exercise based on phoenix_liveview_example(https://github.com/phoenixframework/phoenix_live_view).
