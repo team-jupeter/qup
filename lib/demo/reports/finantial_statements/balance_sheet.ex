@@ -24,7 +24,7 @@ defmodule Demo.Reports.BalanceSheet do
     embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
     embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
     embeds_many :t3s, Demo.ABC.T3, on_replace: :delete
-
+ 
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
 
 
@@ -34,7 +34,7 @@ defmodule Demo.Reports.BalanceSheet do
   @doc false
   def changeset(balance_sheet, attrs \\ %{}) do
     balance_sheet
-    |> cast(attrs, [:gab_account])
+    |> cast(attrs, [:gab_account, :t1s, :short_term_debt])
     # |> validate_required([:cash, :marketable_securities, :prepaid_expenses, :accounts_receivable, :inventory, :fixed_assets, :accounts_payable, :accrued_liabilities, :customer_prepayments, :taxes, :short_term_debt, :long_term_debt, :stock, :additional_paid_in_capital, :retained_earnings, :treasury_stock])
   end
 end

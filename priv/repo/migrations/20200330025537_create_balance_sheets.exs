@@ -1,7 +1,7 @@
 defmodule Demo.Repo.Migrations.CreateBalanceSheets do
   use Ecto.Migration
 
-  def change do
+  def change do 
     create table(:balance_sheets, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :cash, :decimal, precision: 12, scale: 2, default: 0.0
@@ -21,8 +21,8 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
       add :retained_earnings, :decimal, precision: 12, scale: 2, default: 0.0
       add :treasury_stock, :decimal, precision: 12, scale: 2, default: 0.0
 
-      add(:t1s, {:array, :jsonb}, default: [])
-      add(:t2s, {:array, :jsonb}, default: []) 
+      add(:t1s, {:array, :map}, default: [])
+      add(:t2s, {:array, :map}, default: []) 
       add(:t3s, {:array, :jsonb}, default: [])
 
       add :financial_report_id, references(:financial_reports, type: :uuid, null: false)

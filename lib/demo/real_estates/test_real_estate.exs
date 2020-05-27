@@ -75,7 +75,7 @@ hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_balance_sheet, %GabBala
 hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{cash: Decimal.new(50000000.00)}) |> Repo.insert!
 tomi_entity_BS = Ecto.build_assoc(tomi_entity_FR, :balance_sheet, %BalanceSheet{fixed_assets: [%{building: 1.0}]}) |> Repo.insert!
 tesla_entity_BS = Ecto.build_assoc(tesla_entity_FR, :balance_sheet, %BalanceSheet{inventory: []}) |> Repo.insert!
-
+ 
 
 
 '''
@@ -284,6 +284,8 @@ Adjust balance_sheet of both.
 
 ''' 
 #? Tesla
+t1s2 = [%T1{input: hankyung_gab.id, output: tesla_entity.id, amount: Decimal.from_float(10000.0)}]
+tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 tesla_t1s = tesla_entity_BS.t1s
 
 #? case 
@@ -291,13 +293,14 @@ tesla_t1s = tesla_entity_BS.t1s
 #? Enum.at(invoice.invoice_items, 0).output == tesla_entity.id
 #? do:
 residual_amount = Decimal.sub(Enum.at(tesla_t1s, 0).amount, invoice.total)
-[head | tesla_t1s] = tesla_t1s
-
-t1s = [%T1{input: tesla_entity.id, output: tesla_entity.id, amount: residual_amount}]
+# [head | tesla_t1s] = tesla_t1s
+alias Demo.ABC.T2
 fixed_assets = tesla_entity_BS.fixed_assets
+t2s = [%T2{input: hankyung_gab.id, output: tesla_entity.id, amount: Decimal.from_float(10000.0)}]
+t1s2 = [%T1{input: hankyung_gab.id, output: tesla_entity.id, amount: Decimal.from_float(10000.0)}]
 
 tesla_entity_BS = change(tesla_entity_BS) \
-    |> Ecto.Changeset.put_embed(:t1s, t1s) \
+    |> Ecto.Changeset.put_embed(:t1s, t1s2) \
     |> Ecto.Changeset.put_change(:fixed_assets, [%{building: item_quantity} | fixed_assets]) \
     |> Repo.update!
 #? end
