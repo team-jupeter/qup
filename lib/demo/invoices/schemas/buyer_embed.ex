@@ -3,7 +3,7 @@ defmodule Demo.Invoices.BuyerEmbed do
   use Ecto.Schema
 
   embedded_schema do
-    field :entity_id
+    field :entity_id 
     field :public_address
   end
 

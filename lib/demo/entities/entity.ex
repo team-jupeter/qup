@@ -10,19 +10,19 @@ defmodule Demo.Entities.Entity do
 
   schema "entities" do
     field :entity_address, :string
-    field :entity_code, :string
+    field :entity_code, :string 
     field :name, :string
     field :email, :string
-    field :category, :string
-    field :year_started, :integer
-    field :year_ended, :integer
-    field :share_price, :decimal, default: 0.0
-    field :accrued_tax_payment, :decimal, default: 0.0
+
     field :private_key, :string
     field :public_key, :string
 
+    #? A user must have only one entity, and An entity may have several business_embeds. 
+    embeds_many :business_embeds, Demo.Entities.BusinessEmbed, on_replace: :delete
+
     has_one :color_code, Demo.ColorCodes.ColorCode
     has_one :sil, Demo.Sils.Sil
+
     has_one :financial_report, Demo.Reports.FinancialReport
     has_many :licenses, Demo.Licenses.License
 
@@ -56,7 +56,7 @@ defmodule Demo.Entities.Entity do
     timestamps() #? inserted_at, updated_at
   end
 
-  @fields [:nation_id, :email, :supul_id, :taxation_id, :category, :name]
+  @fields [:nation_id, :email, :supul_id, :taxation_id, :name]
 
   def changeset(account, attrs \\ %{}) do
     account

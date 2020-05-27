@@ -32,7 +32,7 @@ defmodule Demo.Reports.BalanceSheet do
   end
 
   @doc false
-  def changeset(balance_sheet, attrs) do
+  def changeset(balance_sheet, attrs \\ %{}) do
     balance_sheet
     |> cast(attrs, [:gab_account])
     # |> validate_required([:cash, :marketable_securities, :prepaid_expenses, :accounts_receivable, :inventory, :fixed_assets, :accounts_payable, :accrued_liabilities, :customer_prepayments, :taxes, :short_term_debt, :long_term_debt, :stock, :additional_paid_in_capital, :retained_earnings, :treasury_stock])

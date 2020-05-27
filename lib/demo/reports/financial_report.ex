@@ -10,6 +10,7 @@ defmodule Demo.Reports.FinancialReport do
 
     has_one :balance_sheet, Demo.Reports.BalanceSheet
     has_one :gab_balance_sheet, Demo.Reports.GabBalanceSheet
+    has_one :gov_balance_sheet, Demo.Reports.GovBalanceSheet
     has_one :income_statement, Demo.Reports.IncomeStatement
     has_one :cash_flow, Demo.Reports.CashFlow
     # has_one :equity_statement,
