@@ -6,9 +6,9 @@ defmodule Demo.DocumentsTest do
   describe "documents" do
     alias Demo.Documents.Document
 
-    @valid_attrs %{content: "some content", summary: "some summary", table_of_content: "some table_of_content", titile: "some titile"}
-    @update_attrs %{content: "some updated content", summary: "some updated summary", table_of_content: "some updated table_of_content", titile: "some updated titile"}
-    @invalid_attrs %{content: nil, summary: nil, table_of_content: nil, titile: nil}
+    @valid_attrs %{content: "some content", summary: "some summary", table_of_content: "some table_of_content", title: "some title"}
+    @update_attrs %{content: "some updated content", summary: "some updated summary", table_of_content: "some updated table_of_content", title: "some updated title"}
+    @invalid_attrs %{content: nil, summary: nil, table_of_content: nil, title: nil}
 
     def document_fixture(attrs \\ %{}) do
       {:ok, document} =
@@ -34,7 +34,7 @@ defmodule Demo.DocumentsTest do
       assert document.content == "some content"
       assert document.summary == "some summary"
       assert document.table_of_content == "some table_of_content"
-      assert document.titile == "some titile"
+      assert document.title == "some title"
     end
 
     test "create_document/1 with invalid data returns error changeset" do
@@ -47,7 +47,7 @@ defmodule Demo.DocumentsTest do
       assert document.content == "some updated content"
       assert document.summary == "some updated summary"
       assert document.table_of_content == "some updated table_of_content"
-      assert document.titile == "some updated titile"
+      assert document.title == "some updated title"
     end
 
     test "update_document/2 with invalid data returns error changeset" do

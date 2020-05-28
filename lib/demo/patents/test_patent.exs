@@ -18,7 +18,7 @@ alias Demo.Supuls.Supul
 global_supul = GlobalSupul.changeset(%GlobalSupul{}, %{name: "Global Supul", supul_code: 0x00000000}) |> Repo.insert!
 korea_supul = NationSupul.changeset(%NationSupul{}, %{name: "Korea Supul", supul_code: 0x52000000}) |> Repo.insert!
 jejudo_supul = StateSupul.changeset(%StateSupul{}, %{name: "Jejudo State Supul", supul_code: 0x01434500}) |> Repo.insert!
-korea_supul = Supul.changeset(%Supul{}, %{name: "smba_County", supul_code: 0x01434501}) |> Repo.insert!
+korea_supul = Supul.changeset(%Supul{}, %{name: "kipo_County", supul_code: 0x01434501}) |> Repo.insert!
 
 
 #? init users
@@ -26,60 +26,29 @@ alias Demo.Users.User
 
 # {ok, mr_hong} = User.changeset(%User{}, %{name: "Hong Gildong"}) |> Repo.insert
 mr_hong = User.changeset(%User{}, %{name: "Hong Gildong", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
-ms_sung = User.changeset(%User{}, %{name: "Sung Chunhyang", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!
 gab = User.changeset(%User{}, %{name: "GAB: Global Autonomous Bank", email: "gab@000011.un"}) |> Repo.insert!
-mr_musk = User.changeset(%User{}, %{name: "Ellen Musk", email: "mr_ellen_musk@000011.us"}) |> Repo.insert!
 korea = User.changeset(%User{}, %{name: "South Korea", email: "korea@000000.kr"}) |> Repo.insert!
-
-#? init taxations: kts = korea tax service, irs = internal revenue service
-alias Demo.Taxations.Taxation
-
-kts = Taxation.changeset(%Taxation{}, %{name: "Korea Tax Service", nation_id: korea.id}) |> Repo.insert!
-irs = Taxation.changeset(%Taxation{}, %{name: "US Internal Revenue Service", nation_id: usa.id}) |> Repo.insert!
 
 
 #? init entities
 alias Demo.Entities.Entity
 
 hong_entity = Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
-tomi_entity = Entity.changeset(%Entity{}, %{name: "Sung Chunhyang Entity", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!
-smba = Entity.changeset(%Entity{}, %{name: "SMBA Korea", email: "smba@3435.kr"}) |> Repo.insert!
-tesla_entity = Entity.changeset(%Entity{}, %{name: "Tesla", email: "tesl@3435.us"}) |> Repo.insert!
+kipo = Entity.changeset(%Entity{}, %{name: "Korean Intellectual Property Office", email: "kipo@3435.kr"}) |> Repo.insert!
 
 #? build_assoc user and entity
 Repo.preload(hong_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [mr_hong]) |> Repo.update!
-Repo.preload(tomi_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [ms_sung]) |> Repo.update!
-Repo.preload(smba, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [korea]) |> Repo.update!
-Repo.preload(tesla_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [mr_musk]) |> Repo.update!
+Repo.preload(kipo, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [korea]) |> Repo.update!
 
-
-#? BinessEmbed
-alias Demo.Entities.BusinessEmbed
-
-#? hard coded. In real codes, we will use user_id than user name, and product_id than product name.
-tesla_korea  = [
-    %BusinessEmbed{name: "Tesla Korea", crn: "AADFD3432", sic_code: "FAAF3432",
-    legal_status: "Corporation", year_started: 2020, addresses: [%{office: "제주시 한경면 판포중1길 10-1 해거름전망대"}],
-    employees: [%{CEO: "Ellen Musk"}, %{test_driver: "Son O_Gong"}], products: [%{car: "CyberTruck"}, %{car: "Model_S"}], 
-    yearly_sales: Decimal.from_float(1523454.33), num_of_shares: [%{common_stock: 5000000}, %{preferred_stock: 1000000}],
-    share_price: [%{common_stock: Decimal.from_float(435.34)}, %{preferred_stock: Decimal.from_float(111.34)}], accrued_tax_payment: Decimal.from_float(352425.34),
-    credit_rate: "AAA"}
-    ] #? List => an entity may have more than one businesses
-
-
-tesla_entity = change(tesla_entity) \
-    |> Ecto.Changeset.put_embed(:business_embeds, tesla_korea) \
-    |> Repo.update!
 
 
 #? make a GAB branch for Hangkyung Supul. Remember every supul has one, only one GAB branch.
-# smba = Ecto.build_assoc(korea_supul, :entities, smba) 
+# kipo = Ecto.build_assoc(korea_supul, :entities, kipo) 
 
-#? build_assoc smba with korea
-smba = Ecto.build_assoc(korea, :entities, smba) 
-tesla_entity = Ecto.build_assoc(usa, :entities, tesla_entity) 
+#? build_assoc kipo with korea
+kipo = Ecto.build_assoc(korea, :entities, kipo) 
 
-Repo.preload(smba, [:nation, :supul])
+Repo.preload(kipo, [:nation, :supul])
 
 #? prepare financial statements for entities.
 alias Demo.Reports.FinancialReport
@@ -87,15 +56,19 @@ alias Demo.Reports.BalanceSheet
 alias Demo.Reports.GabBalanceSheet 
 alias Demo.Reports.GovBalanceSheet 
 
-smba_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: smba.id}) |> Repo.insert!
+kipo_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: kipo.id}) |> Repo.insert!
 hong_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong_entity.id}) |> Repo.insert!
-tomi_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi_entity.id}) |> Repo.insert!
-tesla_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tesla_entity.id}) |> Repo.insert!
 
-smba_BS = Ecto.build_assoc(smba_FR, :gov_balance_sheet, %GovBalanceSheet{monetary_unit: "KRW", t1s: [%{input: korea.id, output: smba.id, amount: Decimal.from_float(10000000.00)}], cashes: [%{KRW: Decimal.new(10000000000.00)}]}) |> Repo.insert!
-hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{cash: Decimal.new(50000000.00)}) |> Repo.insert!
-tomi_entity_BS = Ecto.build_assoc(tomi_entity_FR, :balance_sheet, %BalanceSheet{fixed_assets: [%{building: 1.0}]}) |> Repo.insert!
-tesla_entity_BS = Ecto.build_assoc(tesla_entity_FR, :balance_sheet, %BalanceSheet{inventory: []}) |> Repo.insert!
+kipo_BS = Ecto.build_assoc(kipo_FR, :gov_balance_sheet, 
+    %GovBalanceSheet{
+        monetary_unit: "KRW", 
+        t1s: [%{input: korea.id, output: kipo.id, amount: Decimal.from_float(100.00)}], 
+        cashes: [%{KRW: Decimal.new(10000.00)}]}) |> Repo.insert!
+hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, 
+        %BalanceSheet{
+            cash: Decimal.new(50000.00), 
+            t1s: [%{input: korea.id, output: kipo.id, amount: Decimal.from_float(100.00)}]}) \
+        |> Repo.insert!
 
 
 
@@ -105,15 +78,15 @@ CRYPTO
 
 '''
 
-#? smba_entity's private_key or signing key or secret key
-#? openssl genrsa -out smba_private_key.pem 2048
-#? openssl rsa -in smba_private_key.pem -pubout > smba_public_key.pem
-smba_rsa_priv_key = ExPublicKey.load!("./smba_private_key.pem")
-smba_rsa_pub_key = ExPublicKey.load!("./smba_public_key.pem")
+#? kipo_entity's private_key or signing key or secret key
+#? openssl genrsa -out kipo_private_key.pem 2048
+#? openssl rsa -in kipo_private_key.pem -pubout > kipo_public_key.pem
+kipo_rsa_priv_key = ExPublicKey.load!("./kipo_private_key.pem")
+kipo_rsa_pub_key = ExPublicKey.load!("./kipo_public_key.pem")
 
-# smba_public_sha256 = :crypto.hash(:sha256, smba_rsa_pub_key)
+# kipo_public_sha256 = :crypto.hash(:sha256, kipo_rsa_pub_key)
 
-#? smba_entity's private_key or signing key or secret key
+#? kipo_entity's private_key or signing key or secret key
 #? openssl genrsa -out tesla_private_key.pem 2048
 #? openssl rsa -in tesla_private_key.pem -pubout > tesla_public_key.pem
 tesla_rsa_priv_key = ExPublicKey.load!("./tesla_private_key.pem")
@@ -134,35 +107,33 @@ tomi_rsa_priv_key = ExPublicKey.load!("./tomi_private_key.pem")
 tomi_rsa_pub_key = ExPublicKey.load!("./tomi_public_key.pem")
 
 
-
-import Ecto.Query
-import Ecto.Changeset
-alias Demo.Repo
-
-
-#? Write a document on policy financing projects
-alias Demo.Documents.Document
-
- document = Document.changeset(
-    %Document{
-        title: "정책자금 융자계획",
-        content: "신난다 재미난다 어린이 명작동화 ....",
-        summary: "중소기업진흥에 관한 법률 제66조 및 제67조에 따른 [2020년도 중소벤처기업부 소관 중소기업 정책자금 융자계획]을 붙임과 같이 공고합니다.",
-        table_of_content: ["목차", "요약", "본문", "첨부"],
-    }) |> Repo.insert!
-
 #? Write a subject on policy financing projects
-alias Demo.SMBA.Subject
+alias Demo.Patents.PatentApplication
 
- subject = Subject.changeset(
-    %Subject{
-        category: "중소벤처기업 정책자금",
-        starting_date: ~N[2020-05-24 06:14:09],
-        ending_date:  ~N[2020-06-24 06:14:09],
-        interest_rate: Decimal.from_float(2.5),
-        self_funding_ratio: Decimal.from_float(30.0),
-        applicants: [tesla_entity.id], 
-        documents: [document.id],
+kipo_application = PatentApplication.changeset(
+    %PatentApplication{
+        type: "Patent Application",
+        title: "Openhash Banking System",
+        applicants: [hong_entity.id],
+        inventor: [hong_entity.id],
+        description: "This invention is to ...",   
+        background_art: ["Previous arts on banking systems has ..."],      
+        summary_of_invention: "This is invention is to ...",
+        technical_problem: "Previous technologies in electronic banking ...",
+        solution_to_problem: "By combining previous blockchain and new ...",
+        advantageous_effects_of_invention: "Because of no transaction fees in electronic transactions ...",
+        brief_description_of_drawings: ["pic_1 shows ...", "pic_2 shows ..."],    
+        description_of_embodiments: "This inventions ...",
+        examples: "The explanation hereinafter is not limited to ....",
+        industrial_applicability: "By substituting current financial institutions with this new ...",
+        patent_literature: ["patent_No 1334_kr", "patent_No 4334_us"],    
+        non_patent_literature: ["How to improve user satisfactions on e-banking system"] ,     
+        abstract: "This invention is to provide ...",
+        drawings: ["pic_1 ", "pic_2"], 
+
+        attached_docs_list: ["document_1", "document_2"],
+        attached_docs_hashes: ["hash_of_document_1", "hash_of_document_2"],
+        hash_of_attached_docs_hashes: "hash_of_attached_docs_hashes",
     }) |> Repo.insert!
 
 
@@ -170,27 +141,26 @@ alias Demo.SMBA.Subject
 
 TRANSACTION
 Let's assume Tesla is selected as beneficiary of policy finance.
-Transaction between SMBA and tesla_entity.
+Transaction between kipo and tesla_entity.
 
 '''
 alias Demo.Transactions.Transaction
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 
-#? write invoice for trade between mr_hong and smba.
+#? write invoice for trade between mr_hong and kipo.
 item = Item.changeset(%Item{}, 
     %{
-        product_uuid: subject.id,
-        price: Decimal.from_float(1000000.0),
-        document: document.id
+        product_uuid: kipo.id,
+        price: Decimal.from_float(10.0),
+        document: kipo_application.id
     }) |> Repo.insert!
 
 
-invoice_items = [%{item_id: item.id, quantity: 1.0, item_name: "중소기업 정책금융"}, %{item_id: item.id, quantity: 0.0}]
+invoice_items = [%{item_id: item.id, quantity: 1.0, item_name: "특허 출원"}, %{item_id: item.id, quantity: 0.0}]
 
 params = %{
-    
-  "buyer" => %{"entity_id" => smba.id,  "public_address" => "smba_public_address"},
-  "seller" => %{"entity_id" => tesla_entity.id, "public_address" => "tesla_public_address"},
+  "buyer" => %{"main" => hong_entity.id, "participants" => hong_entity.id},
+  "seller" => %{"main" => kipo.id, "participants" => kipo.id},
   "invoice_items" => invoice_items,
 }
 {:ok, invoice} = Invoice.create(params)
@@ -211,8 +181,8 @@ Invoicies are stored by entities and transactions are stored by supuls.
 # hong_entity_preload = Repo.preload(hong_entity, [financial_report: :balance_sheet])
 
 txn = Transaction.changeset(%Transaction{
-    abc_input: smba.id,
-    abc_output: tesla_entity.id,
+    abc_input: hong_entity.id,
+    abc_output: kipo.id,
     abc_amount: invoice.total,
     items: [%{report: "final_report"}]
     }) |> Repo.insert!
@@ -227,34 +197,37 @@ Adjust balance_sheet of both.
 
 ''' 
 
-#? SMBA
+#? kipo
 alias Demo.ABC.T1
 
 #? Adjust balance_sheet of both.
-#? SMBA
+#? kipo
 #? The code below NOT consider any other elements in the t1s list. We should find out just enough elements to pay the invoice total. 
-new_t1s = Enum.map(smba_BS.t1s, fn elem ->
+new_t1s = Enum.map(hong_entity_BS.t1s, fn elem ->
     Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, txn.abc_amount) end)
 end)
 
-smba_BS = change(smba_BS) |> \
+hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_change(:t1s, new_t1s) \
     |> Repo.update!
 
-        
-#? Tesla Korea
-t1s = [%T1{input: "smba_public_address", amount: txn.abc_amount, output: "smba_public_address"}]
-tesla_entity_BS = change(tesla_entity_BS) |> \
-    Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
+#? kipo Korea
+alias Demo.ABC.T1
+new_t1s = Enum.map(kipo_BS.t1s, fn elem ->
+    Map.update!(elem, :amount, fn curr_value -> Decimal.add(curr_value, txn.abc_amount) end)
+end)
 
 
+kipo_BS = change(kipo_BS) |> \
+Ecto.Changeset.put_change(:t1s, new_t1s) \
+|> Repo.update!
 
 '''
-Non-repudiation: Mulet of smba
+Non-repudiation: Mulet of kipo
 '''
 
 '''
-After receiving ABC from smba, mr_hong makes a payload 
+After receiving ABC from kipo, mr_hong makes a payload 
 and send it to the mulet of korea_supul to record the transaction 
 in the openhash blockchain. 
 '''
@@ -282,7 +255,7 @@ payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64 signature}"
 
 
 '''
-Second, the smba_mulet verifies and unserialize the payload from mr_hong. 
+Second, the kipo_mulet verifies and unserialize the payload from mr_hong. 
 '''
 alias Demo.Mulets.Mulet
 korea_mulet = Ecto.build_assoc(korea_supul, :mulet, %{current_hash: korea_supul.id}) 
@@ -327,6 +300,3 @@ Fourth, send the new hash to the mulets of upper supuls.
 incoming_hash = korea_mulet.current_hash
 global_mulet = Mulet.changeset(global_mulet, %{incoming_hash: incoming_hash})
 
-
-
- 

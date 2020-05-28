@@ -4,7 +4,7 @@ defmodule Demo.Documents.Document do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "documents" do
-    field :titile, :string
+    field :title, :string
     field :presented_by, {:array, :binary_id}, default: []
     field :presented_to, :binary_id
     field :summary, :string
@@ -16,7 +16,7 @@ defmodule Demo.Documents.Document do
   end
 
   @fields [
-    :titile, 
+    :title, 
     :presented_by,
     :presented_to,
     :summary,

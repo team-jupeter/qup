@@ -134,7 +134,7 @@ alias Demo.Documents.Document
 
  document = Document.changeset(
     %Document{
-        titile: "국가연구개발사업 신청서",
+        title: "국가연구개발사업 신청서",
         presented_to: moef.id,
         presented_by: [tesla_entity.id, tomi_entity.id],
         summary: "이모의 고단한 손길없이 자율 동작하는 김밥말이 머신을 개발하여....",
@@ -148,7 +148,7 @@ alias Demo.Documents.Document
     
     참여연구원_목록 = Document0034.changeset(
     %Document{
-        titile: "참여연구원 명단 및 약력",
+        title: "참여연구원 명단 및 약력",
         content: "손오공: 화과산에서 10년간 도를 닦고...,홍길동, 임꺽정, X-man",
     }) |> Repo.insert!
     '''

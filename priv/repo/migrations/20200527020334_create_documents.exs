@@ -4,7 +4,7 @@ defmodule Demo.Repo.Migrations.CreateDocuments do
   def change do
     create table(:documents, primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :titile, :string
+      add :title, :string
       add :presented_by, {:array, :binary_id}, default: []
       add :presented_to, :binary_id
       add :summary, :string
