@@ -332,7 +332,7 @@ tomi_entity_BS = change(tomi_entity_BS) \
 Taxation
 Adjust balance_sheet of both.
 '''
-#? Tesla shall pay purchase tax
+#? Tesla shall pay purchase tax 취득세
 purchase_tax_rate = Decimal.from_float(0.05)
 tax_payable = Decimal.mult(txn_2.abc_amount, purchase_tax_rate)
 

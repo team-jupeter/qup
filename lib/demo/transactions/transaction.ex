@@ -21,17 +21,6 @@ defmodule Demo.Transactions.Transaction do
     field :if_only_item, :string 
     field :fair?, :boolean, default: false
 
-    #? locking script and conditions of spending moneny by recipient.
-    # field :locked, :boolean, default: false
-    # field :locking_use_area, {:array, :string}, default: []
-    # field :locking_use_until, :naive_datetime 
-    # field :locking_output_entity_catetory, {:array, :string}, default: []
-    # field :locking_output_specific_entities, {:array, :string}, default: []
-    
-    # embeds_one :buyer, Demo.Invoices.BuyerEmbed, on_replace: :update
-    # embeds_one :seller, Demo.Invoices.SellerEmbed, on_replace: :update
-    # embeds_many :payments, Demo.Invoices.Payment, on_replace: :raise
-
     has_one :invoice, Demo.Invoices.Invoice, on_delete: :delete_all
 
     timestamps()
@@ -45,7 +34,7 @@ defmodule Demo.Transactions.Transaction do
     |> check_fair_trade(attrs)
   end
 
-  defp check_fair_trade(txn_cs, attrs) do
+  defp check_fair_trade(txn_cs, attrs \\ %{}) do
     #? check the fairness of the transaction
     # market_value = average_market_value(attrs.item_id)
     txn_cs

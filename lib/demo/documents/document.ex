@@ -4,18 +4,30 @@ defmodule Demo.Documents.Document do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "documents" do
-    field :content, :string
-    field :summary, :string
-    field :table_of_content, {:array, :string}
     field :titile, :string
+    field :presented_by, {:array, :binary_id}, default: []
+    field :presented_to, :binary_id
+    field :summary, :string
+    field :attached_docs_list, {:array, :string}
+    field :attached_docs_hashes, {:array, :string}
+    field :hash_of_attached_docs_hashes, :string
 
     timestamps()
   end
 
+  @fields [
+    :titile, 
+    :presented_by,
+    :presented_to,
+    :summary,
+    :attached_docs_list,
+    :attached_docs_hashes,
+    :hash_of_attached_docs_hashes,
+  ]
   @doc false
   def changeset(document, attrs \\ %{}) do
     document
-    |> cast(attrs, [:titile, :summary, :table_of_content, :content])
-    |> validate_required([:titile, :summary, :table_of_content, :content])
+    |> cast(attrs, @fields)
+    |> validate_required([])
   end
 end

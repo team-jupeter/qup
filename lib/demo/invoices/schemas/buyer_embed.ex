@@ -3,11 +3,11 @@ defmodule Demo.Invoices.BuyerEmbed do
   use Ecto.Schema
 
   embedded_schema do
-    field :entity_id 
-    field :public_address
+    field :main 
+    field :participants
   end
 
-  @fields [:entity_id, :public_address]
+  @fields [:main, :participants]
   def changeset(buyer_embed, params) do
     buyer_embed
     |> cast(params, @fields)
