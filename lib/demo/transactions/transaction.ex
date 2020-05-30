@@ -20,8 +20,9 @@ defmodule Demo.Transactions.Transaction do
     field :txn_status, :string, default: "processing" #? processing, pending, completed
     field :if_only_item, :string 
     field :fair?, :boolean, default: false
-
+    
     has_one :invoice, Demo.Invoices.Invoice, on_delete: :delete_all
+    has_one :ticket, Demo.Tickets.Ticket, on_delete: :delete_all
 
     timestamps()
   end
@@ -31,14 +32,14 @@ defmodule Demo.Transactions.Transaction do
     transaction
     |> cast(attrs, [])
     |> validate_required([])
-    |> check_fair_trade(attrs)
+    # |> check_fair_trade(attrs)
   end
 
-  defp check_fair_trade(txn_cs, attrs \\ %{}) do
-    #? check the fairness of the transaction
-    # market_value = average_market_value(attrs.item_id)
-    txn_cs
-  end
+  # defp check_fair_trade(txn_cs, attrs \\ %{}) do
+  #   #? check the fairness of the transaction
+  #   # market_value = average_market_value(attrs.item_id)
+  #   txn_cs
+  # end
 
   # defp average_market_value(attrs.item) do
   #   market_value = 4

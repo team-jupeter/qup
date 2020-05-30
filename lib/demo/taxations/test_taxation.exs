@@ -243,8 +243,8 @@ invoice_items = [%{item_id: item_1.id, quantity: 1.0, item_name: "Residential Bu
 
 params = %{
     
-  "buyer" => %{"entity_id" => tesla_entity.id,  "public_address" => "tesla_public_address"},
-  "seller" => %{"entity_id" => tomi_entity.id, "public_address" => "tomi_public_address"},
+  "buyer" => %{main: tesla_entity.id,  participants: tesla_entity.id},
+  "seller" => %{main: tomi_entity.id,  participants: tomi_entity.id},
   "invoice_items" => invoice_items,
 }
 {:ok, invoice} = Invoice.create(params)

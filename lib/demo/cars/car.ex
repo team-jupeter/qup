@@ -35,6 +35,8 @@ defmodule Demo.Cars.Car do
     field :input, :string
     field :output, :string
 
+    has_many :tickets, Demo.Tickets.Ticket
+
     timestamps()
   end
 

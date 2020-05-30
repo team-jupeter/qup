@@ -2,8 +2,9 @@ defmodule Demo.Repo.Migrations.CreateMulets do
   use Ecto.Migration
 
   def change do
-    create table(:mulets) do
-      add :hash_history, {:array, :string}
+    create table(:mulets, primary_key: false) do
+      add :id, :uuid, primary_key: true
+      add :hash_history, {:array, :string}, default: []
       add :current_hash, :string
       add :incoming_hash, :string
   

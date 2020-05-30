@@ -12,6 +12,6 @@ defmodule Demo.MOEFs.MOEF do
   def changeset(moef, params \\ %{}) do
     moef
     |> cast(params, [])
-    |> cast_embed(:settings)
+    |> cast_embed(:settings) 
   end
 end

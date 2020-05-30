@@ -1,4 +1,4 @@
-defmodule Demo.Moefs.MoefSettings do
+defmodule Demo.MOEFs.MOEFSettings do
   use Ecto.Schema
   import Ecto.Changeset
   
@@ -10,4 +10,4 @@ defmodule Demo.Moefs.MoefSettings do
       struct
       |> cast(params, [:columns])
     end
-  end
+  end 

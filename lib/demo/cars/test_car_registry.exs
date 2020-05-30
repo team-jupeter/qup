@@ -233,7 +233,7 @@ hong_t1s = hong_entity_BS.t1s
 #? case 
 #? Enum.at(hong_t1s, 0).output == hong_entity.id and
 #? Enum.at(invoice.invoice_items, 0).output == tesla_entity.id
-#? do:
+#? do: 
 residual_amount = Decimal.sub(Enum.at(hong_t1s, 0).amount, invoice.total)
 [head | hong_t1s] = hong_t1s
 

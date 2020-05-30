@@ -56,7 +56,7 @@ defmodule Demo.Entities.Entity do
     timestamps() #? inserted_at, updated_at
   end
 
-  @fields [:nation_id, :email, :supul_id, :taxation_id, :name]
+  @fields [:nation_id, :email, :supul_id, :taxation_id, :name, :entity_address, :private_key, :public_key]
 
   def changeset(account, attrs \\ %{}) do
     account

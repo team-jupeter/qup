@@ -59,7 +59,7 @@ tesla_korea  = [
     share_price: [%{common_stock: Decimal.from_float(435.34)}, %{preferred_stock: Decimal.from_float(111.34)}], accrued_tax_payment: Decimal.from_float(352425.34),
     credit_rate: "AAA"}
     ] #? List => an entity may have more than one businesses
-
+   
 
 tesla_entity = change(tesla_entity) \
     |> Ecto.Changeset.put_embed(:business_embeds, tesla_korea) \
@@ -348,11 +348,11 @@ global_mulet = Mulet.changeset(global_mulet, %{incoming_hash: incoming_hash})
 
 
 
-alias Demo.Moefs.Moef
+alias Demo.MOEFs.MOEF
 
 
 
-moef = Repo.insert! Moef.changeset(%Moef{}, %{settings: %{columns: %{"key" => "value", "key2" => "value2"}}})
+moef = Repo.insert! MOEF.changeset(%MOEF{}, %{settings: %{columns: %{"key" => "value", "key2" => "value2"}}})
 
 settings_changeset = moef.settings \
     |> Ecto.Changeset.change(%{columns: %{moef.settings.columns | "key" => "new value"}})

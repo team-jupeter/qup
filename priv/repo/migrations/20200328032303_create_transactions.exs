@@ -16,7 +16,6 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :txn_status, :string, default: "processing" 
       add :if_only_item, :string
       add :fair?, :boolean, default: false
- 
 
       # add :locked, :boolean, default: false
       # add :locking_use_area, {:array, :string}, default: []

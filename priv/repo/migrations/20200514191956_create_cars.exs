@@ -9,6 +9,7 @@ defmodule Demo.Repo.Migrations.CreateCars do
       add :gpc_code, :string
       add :manufacturer, :string
       add :production_date, :naive_datetime
+      add :waste_date, :naive_datetime
       add :current_location, :string 
       add :location_history, {:array, :string}
       add :status, {:array, :string}, default: ["normal"]
@@ -30,7 +31,6 @@ defmodule Demo.Repo.Migrations.CreateCars do
       add :current_legal_status, {:array, :string}, default: []
       add :txn_history, {:array, :binary_id}, default: []
       add :recent_txn_id, :binary_id
-
 
       timestamps()
     end
