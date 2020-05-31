@@ -14,7 +14,7 @@ defmodule Demo.Products.Product do
     field :price, :decimal
     field :stars, :decimal
     field :tax, :decimal 
-    field :pvr, :decimal #? price to value ratio
+    field :pvr, :decimal #? price to value ratio 가성비 
 
     embeds_many :comments, Demo.Products.CommentEmbed
 

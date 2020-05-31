@@ -25,6 +25,7 @@ defmodule Demo.Tickets.Ticket do
     field :caution, :string
     field :gopang_fee, :decimal, precision: 15, scale: 4
     field :status, :string, default: "ticket accepted"
+    field :distance, :decimal, precision: 15, scale: 4
   
     embeds_many :road_sections, Demo.Gopangs.RoadSectionEmbed
     embeds_many :stations, Demo.Gopangs.StationEmbed

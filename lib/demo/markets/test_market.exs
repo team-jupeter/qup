@@ -76,6 +76,11 @@ Repo.preload(hong_entity, [:users]) \
 |> Ecto.Changeset.put_assoc(:users, [mr_hong])  \
 |> Repo.update!()
 
+Repo.preload(lim_entity, [:users]) \
+|> Ecto.Changeset.change()  \
+|> Ecto.Changeset.put_assoc(:users, [mr_lim])  \
+|> Repo.update!()
+
 Repo.preload(tomi_entity, [:users])  \
 |> Ecto.Changeset.change()  \
 |> Ecto.Changeset.put_assoc(:users, [ms_sung])  \
@@ -99,8 +104,14 @@ gopang_FR =
 hong_entity_FR =
   FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong_entity.id}) |> Repo.insert!()
 
+lim_entity_FR =
+  FinancialReport.changeset(%FinancialReport{}, %{entity_id: lim_entity.id}) |> Repo.insert!()
+
 tomi_entity_FR =
   FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi_entity.id}) |> Repo.insert!()
+
+
+
 
 gopang_BS =
   Ecto.build_assoc(gopang_FR, :gov_balance_sheet, %GopangBalanceSheet{
@@ -112,6 +123,15 @@ gopang_BS =
 
 hong_entity_BS =
   Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{
+    cash: Decimal.from_float(50_000_000.00),
+    t1s: [%{
+      input: korea.id, 
+      output: gopang.id, 
+      amount: Decimal.from_float(10_000.00)}]}) \
+  |> Repo.insert!()
+
+lim_entity_BS =
+  Ecto.build_assoc(lim_entity_FR, :balance_sheet, %BalanceSheet{
     cash: Decimal.from_float(50_000_000.00),
     t1s: [%{
       input: korea.id, 
@@ -140,6 +160,11 @@ CRYPTO
 # ? openssl rsa -in gopang_private_key.pem -pubout > gopang_public_key.pem
 gopang_rsa_priv_key = ExPublicKey.load!("./gopang_private_key.pem")
 gopang_rsa_pub_key = ExPublicKey.load!("./gopang_public_key.pem")
+
+# ? openssl genrsa -out lim_private_key.pem 2048
+# ? openssl rsa -in lim_private_key.pem -pubout > lim_public_key.pem
+lim_rsa_priv_key = ExPublicKey.load!("./lim_private_key.pem")
+lim_rsa_pub_key = ExPublicKey.load!("./lim_public_key.pem")
 
 hong_rsa_priv_key = ExPublicKey.load!("./hong_private_key.pem")
 hong_rsa_pub_key = ExPublicKey.load!("./hong_public_key.pem")
@@ -227,7 +252,7 @@ alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 alias Demo.Tickets.Ticket
 
 #? Lunch Box 1
-item_1 =
+item_1 = #? "갈비 도시락"
   Item.changeset(
     %Item{},
     %{
@@ -238,7 +263,7 @@ item_1 =
   |> Repo.insert!()
 
 #? Lunch Box 2
-item_2 =
+item_2 = #? "스시 도시락"
   Item.changeset(
     %Item{},
     %{
@@ -277,6 +302,7 @@ ticket_2 =
     item_weight: 980,
     caution: "rotenable",
     gopang_fee: Decimal.from_float(0.1),
+    # distance: 
   }) \
   |> Repo.insert!()
 
@@ -295,11 +321,12 @@ params_1 = %{
 
 
 
-
+#? Rewrite codes to calculate subtotal of invoice_items regarless of the number of items sold. 
 invoice_items_2 = [
   %{item_id: item_2.id, quantity: 1.0, item_name: "스시 도시락"},
   %{item_id: item_2.id, quantity: 0.0, item_name: "스시 도시락"}
 ]
+
 params_2 = %{
   "buyer" => %{"main" => lim_entity.id, "participants" => lim_entity.id},
   "seller" => %{"main" => tomi_entity.id, "participants" => tomi_entity.id},
@@ -337,7 +364,7 @@ txn_1 =
 # ? Association between Transaction and Invoice
 invoice_1 = Ecto.build_assoc(txn_1, :invoice, invoice_1)
 
-#? For lunch box 1
+#? For lunch box 2
 txn_2 =
   Transaction.changeset(%Transaction{
     abc_input: lim_entity.id,
@@ -365,9 +392,28 @@ ticket_2 = Ecto.build_assoc(txn_2, :ticket, ticket_2)
 preloaded_ticket_1 = Repo.preload(ticket_1, [:transaction])
 preloaded_ticket_2 = Repo.preload(ticket_2, [:transaction])
 
+
+'''
+
+SUPUL
+
+'''
+#? SAME TO THE PROCESS SHOWN AT 국가 교통물류 인프라. 
+
+
+
+
+
+
+
+
+
+
 '''
 QUIZ: 
 (1) Write code to calculate gopang_fee of each item depending on distance between buyer and seller.
 (2) Write code to calculate the PVR(가성비, price_to_value_ratio) of each product.
-(3) Write code to calcualte the credit rate(from AAA to FFF) of the seller using the PVRs of products it sells. 
+(3) Write code to calcualte the credit rate(from AAA to FFF) of the seller using the PVRs of products it sells.
+(4) Write code to reflect the credit rate of evaluators or consumers.  
+
 '''

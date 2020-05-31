@@ -25,7 +25,8 @@ defmodule Demo.Repo.Migrations.CreateTickets do
       add :caution, :string
       add :gopang_fee, :decimal, precision: 15, scale: 4
       add :status, :string, default: "ticket accepted"
-  
+      add :distance, :decimal, precision: 15, scale: 4
+
       add :route, :map, default: %{}
       add :road_sections, {:array, :jsonb}, default: []
       add :stations, {:array, :jsonb}, default: []
