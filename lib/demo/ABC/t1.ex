@@ -9,19 +9,12 @@ defmodule Demo.ABC.T1 do
     field :amount, :decimal, precision: 12, scale: 2
 
     #? locking script and conditions of spending moneny by recipient.
-    field :locked, :boolean, default: false
-    field :locking_use_area, {:array, :string}, default: []
-    field :locking_use_until, :naive_datetime 
-    field :locking_output_entity_catetory, {:array, :string}, default: []
-    field :locking_output_specific_entities, {:array, :string}, default: []
-    field :locking_output_specific_dates, {:array, :naive_datetime}, default: []
+    embeds_one :abc_locker, Demo.ABC.ABCLockeEmbed
 
   end
 
   @fields [
-      :input, :output, :amount, :locked, :locking_use_area,
-      :locking_use_until, :naive_datetime, :locking_output_entity_catetory, 
-      :locking_output_specific_entities, :locking_output_specific_dates,
+      :input, :output, :amount
   ]
   def changeset(t1, params) do
     t1

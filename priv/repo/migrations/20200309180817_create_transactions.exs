@@ -11,7 +11,7 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :abc_output, :string 
       add :abc_input_t1s, {:array, :map}, default: []
       add :abc_amount, :decimal, precision: 15, scale: 4
-      add :items, {:array, :map}
+      add :items, {:array, :binary_id}
       add :fiat_currency, :decimal, precision: 15, scale: 4
       add :txn_status, :string, default: "processing" 
       add :if_only_item, :string

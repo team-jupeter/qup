@@ -20,11 +20,7 @@ defmodule Demo.Invoices.Item do
     field :document_hash, :string
     # field :tax_rate, :integer, precision: 5, scale: 2
     
-    field :locking_use_area, {:array, :string}, default: []
-    field :locking_use_until, :naive_datetime
-    field :locking_output_entity_catetory, :naive_datetime
-    field :locking_output_specific_entities, {:array, :string}, default: []
-    
+    embeds_one :item_locker, Demo.Invoices.ItemLockeEmbed
 
     has_many :invoice_items, InvoiceItem
 
@@ -33,9 +29,7 @@ defmodule Demo.Invoices.Item do
 
   @fields [
     :gpc_code, :product_uuid, :category, :name, :price, :document, 
-    :document_hash, :locking_use_area, :locking_use_until, 
-    :locking_output_entity_catetory, 
-    :locking_output_specific_entities,
+    :document_hash
   ]
 
   def changeset(data, params \\ %{}) do

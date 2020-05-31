@@ -15,7 +15,7 @@ defmodule Demo.Transactions.Transaction do
     field :abc_output, :string #? public_address of buyer. 
     field :abc_input_t1s, {:array, :map}, default: []
     field :abc_amount, :decimal, precision: 15, scale: 4
-    field :items, {:array, :map}
+    field :items, {:array, :binary_id}
     field :fiat_currency, :decimal, precision: 15, scale: 4
     field :txn_status, :string, default: "processing" #? processing, pending, completed
     field :if_only_item, :string 

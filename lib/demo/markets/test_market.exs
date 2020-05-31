@@ -41,6 +41,10 @@ ms_sung =
   User.changeset(%User{}, %{name: "Sung Chunhyang", email: "sung_chun_hyang@82345.kr"}) \
   |> Repo.insert!()
 
+mr_lim =
+  User.changeset(%User{}, %{name: "Lim Geuk Jung", email: "limgeukjung@88889.kr"}) \
+  |> Repo.insert!()
+
 gab =
   User.changeset(%User{}, %{name: "GAB: Global Autonomous Bank", email: "gab@000011.un"}) \
   |> Repo.insert!()
@@ -55,8 +59,13 @@ hong_entity =
   Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@8245.kr", entity_address: "제주시 한경면 20-1 해거름전망대"}) \
   |> Repo.insert!()
 
+lim_entity =
+  Entity.changeset(%Entity{}, %{name: "Lim Geuk Jung Entity", email: "limgeukjung@88889@8245.kr", entity_address: "서귀포시 안덕면 77-1"}) \
+  |> Repo.insert!()
+
 tomi_entity =
-  Entity.changeset(%Entity{}, %{name: "Tomi Kimbab", email: "tomi@3532.kr", entity_address: "제주시 한림읍 11-1"}) |> Repo.insert!()
+  Entity.changeset(%Entity{}, %{name: "Tomi Lunch Box", email: "tomi@3532.kr", entity_address: "제주시 한림읍 11-1"}) \
+  |> Repo.insert!()
 
 gopang =
   Entity.changeset(%Entity{}, %{name: "Gopang Hankyng", email: "gopang_hankyung@3435.kr"}) |> Repo.insert!()
@@ -138,6 +147,73 @@ hong_rsa_pub_key = ExPublicKey.load!("./hong_public_key.pem")
 tomi_rsa_priv_key = ExPublicKey.load!("./tomi_private_key.pem")
 tomi_rsa_pub_key = ExPublicKey.load!("./tomi_public_key.pem")
 
+
+
+
+'''
+
+PRODUCTS, COMMENTS AND ENTITIES
+
+'''
+#? PRODUCTS
+alias Demo.Products.Product
+alias Demo.Products.CommentEmbed
+
+lunchbox_1 = Product.changeset(%Product{}, %{
+  name: "갈비 도시락", 
+  price: Decimal.from_float(1.0), 
+  gpc_code: "ADF3455", 
+}) |> Repo.insert!
+
+
+lunchbox_2 = Product.changeset(%Product{}, %{
+  name: "스시 도시락", 
+  price: Decimal.from_float(2.0), 
+  gpc_code: "ADF5555", \
+}) |> Repo.insert!
+
+
+#? COMMENTS
+comment_1 = CommentEmbed.changeset(%CommentEmbed{}, %{
+  product_id: lunchbox_1.id,
+  written_by: hong_entity.id,
+  content: "잘도 맛나요.",
+  stars: 5,
+  })
+
+comment_2 = CommentEmbed.changeset(%CommentEmbed{}, %{
+  product_id: lunchbox_1.id,
+  written_by: lim_entity.id,
+  content: "나름 먹을만하다능.",
+  stars: 3
+  }) 
+
+comment_3 = CommentEmbed.changeset(%CommentEmbed{}, %{
+  product_id: lunchbox_2.id,
+  written_by: lim_entity.id,
+  content: "맛없어요.",
+  stars: 1
+  }) 
+
+#? Put_Embed between tomi's products and comments.
+lunchbox_1 = change(lunchbox_1) \
+    |> Ecto.Changeset.put_embed(:comments, [comment_1, comment_2]) \
+    |> Repo.update!
+
+lunchbox_2 = change(lunchbox_2) \
+    |> Ecto.Changeset.put_embed(:comments, [comment_3]) \
+    |> Repo.update!
+#? end
+
+
+#? PRODUCTS AND ENTITIES == MANY_TO_MANY
+Repo.preload(tomi_entity, [:products]) \
+|> Ecto.Changeset.change()  \
+|> Ecto.Changeset.put_assoc(:products, [lunchbox_1, lunchbox_2])  \
+|> Repo.update!()
+
+
+
 '''
 
 TRANSACTION
@@ -150,26 +226,38 @@ alias Demo.Transactions.Transaction
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 alias Demo.Tickets.Ticket
 
-# ? write invoice for trade between mr_hong and gopang.
-item =
+#? Lunch Box 1
+item_1 =
   Item.changeset(
     %Item{},
     %{
-      product_uuid: tomi_entity.id,
-      price: Decimal.from_float(1.0),
+      product_uuid: lunchbox_1.id,
+      price: lunchbox_1.price,
     }
   ) \
   |> Repo.insert!()
 
-# ? issue an ticket
+#? Lunch Box 2
+item_2 =
+  Item.changeset(
+    %Item{},
+    %{
+      product_uuid: lunchbox_2.id,
+      price: lunchbox_2.price,
+    }
+  ) \
+  |> Repo.insert!()
 
-ticket =
+
+# ? issue an ticket
+#? For mr_hong
+ticket_1 =
   Ticket.changeset(%Ticket{}, %{
     departure: tomi_entity.entity_address,
     destination: hong_entity.entity_address,
     departure_time: "2020-06-23 23:50:07",
     arrival_time: "2020-06-24 00:20:07",
-    item_id: item.id,
+    item_id: item_1.id,
     item_size: [%{width: 10, height: 10, length: 30}],
     item_weight: 980,
     caution: "rotenable",
@@ -177,260 +265,109 @@ ticket =
   }) \
   |> Repo.insert!()
 
+#? for mz_sung
+ticket_2 =
+  Ticket.changeset(%Ticket{}, %{
+    departure: tomi_entity.entity_address,
+    destination: lim_entity.entity_address,
+    departure_time: "2020-06-23 23:50:07",
+    arrival_time: "2020-06-24 00:20:07",
+    item_id: item_2.id,
+    item_size: [%{width: 10, height: 10, length: 30}],
+    item_weight: 980,
+    caution: "rotenable",
+    gopang_fee: Decimal.from_float(0.1),
+  }) \
+  |> Repo.insert!()
 
-invoice_items = [
-  %{item_id: item.id, quantity: 5.0, item_name: "김밥"},
-  %{item_id: item.id, quantity: 0.0}
+#? INVOICE
+#? For Lunch Box provider
+invoice_items_1 = [
+  %{item_id: item_1.id, quantity: 1.0, item_name: "갈비 도시락"},
+  %{item_id: item_1.id, quantity: 0.0, item_name: "갈비 도시락"}
 ]
-
-params = %{
+params_1 = %{
   "buyer" => %{"main" => hong_entity.id, "participants" => hong_entity.id},
   "seller" => %{"main" => tomi_entity.id, "participants" => tomi_entity.id},
-  "invoice_items" => invoice_items
+  "invoice_items" => invoice_items_1
 }
+{:ok, invoice_1} = Invoice.create(params_1)
 
-{:ok, invoice} = Invoice.create(params)
+
+
+
+invoice_items_2 = [
+  %{item_id: item_2.id, quantity: 1.0, item_name: "스시 도시락"},
+  %{item_id: item_2.id, quantity: 0.0, item_name: "스시 도시락"}
+]
+params_2 = %{
+  "buyer" => %{"main" => lim_entity.id, "participants" => lim_entity.id},
+  "seller" => %{"main" => tomi_entity.id, "participants" => tomi_entity.id},
+  "invoice_items" => invoice_items_2
+}
+{:ok, invoice_2} = Invoice.create(params_2)
+
 
 # invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
 
 # ? hash_of_invoice = hong_public_sha256 = :crypto.hash(:sha256, invoice)
 
+
+
 '''
 
-Route and Ticket
+Tickets & Transactions
 
 '''
 # ? calculate route, then embed it on the ticket. 
 
 
-# ? Write Transaction p
+# ? Write Transactions
+#? For lunch box 1
 alias Demo.Transactions.Transaction
-txn =
+txn_1 =
   Transaction.changeset(%Transaction{
     abc_input: hong_entity.id,
-    abc_output: gopang.id,
-    abc_amount: invoice.total,
-    items: [%{김밥: 5}],
+    abc_output: tomi_entity.id,
+    abc_amount: invoice_1.total,
+    items: [item_1.id],
   }) \
   |> Repo.insert!()
 
 # ? Association between Transaction and Invoice
-invoice = Ecto.build_assoc(txn, :invoice, invoice)
-ticket = Ecto.build_assoc(txn, :ticket, ticket)
+invoice_1 = Ecto.build_assoc(txn_1, :invoice, invoice_1)
+
+#? For lunch box 1
+txn_2 =
+  Transaction.changeset(%Transaction{
+    abc_input: lim_entity.id,
+    abc_output: gopang.id,
+    abc_amount: invoice_2.total,
+    items: [item_2.id],
+  }) \
+  |> Repo.insert!()
+
+invoice_2 = Ecto.build_assoc(txn_2, :invoice, invoice_2)
 
 
-preloaded_ticket = Repo.preload(ticket, [:transaction])
+# ? Association between Transaction and Invoice
+# invoice_1 = Ecto.build_assoc(txn_1, :invoice, invoice_1)
+# invoice_2 = Ecto.build_assoc(txn_2, :invoice, invoice_2)
+# preloaded_ticket_1 = Repo.preload(ticket_1, [:transaction])
 
 
 
-'''
+#? TICKETS ARE FOR TXN_1 ONLY
+ticket_1 = Ecto.build_assoc(txn_1, :ticket, ticket_1)
+ticket_2 = Ecto.build_assoc(txn_2, :ticket, ticket_2)
 
-SIGNATURE
-First, both buyer and seller sign the ticket.
-
-'''
-import Poison
-
-# serialize the JSON
-msg_serialized = Poison.encode!(preloaded_ticket)
-
-# generate time-stamp
-ts = DateTime.utc_now() |> DateTime.to_unix()
-
-# add a time-stamp
-ts_msg_serialized = "#{ts}|#{msg_serialized}"
-
-# generate a secure hash using SHA256 and sign the message with the private key
-{:ok, buyer_signature} = ExPublicKey.sign(ts_msg_serialized, hong_rsa_priv_key)
-{:ok, seller_signature} = ExPublicKey.sign(ts_msg_serialized, tomi_rsa_priv_key)
-
-# combine payload
-payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64(buyer_signature)}|#{Base.url_encode64(seller_signature)}"
-
-#? send the payload to the NEAREST common supul of both buyer and seller. 
-
+#? preload if necessary.
+preloaded_ticket_1 = Repo.preload(ticket_1, [:transaction])
+preloaded_ticket_2 = Repo.preload(ticket_2, [:transaction])
 
 '''
-
-SUPUL
-Second, the supul_mulet verifies and unserialize the payload from mr_hong. 
-
+QUIZ: 
+(1) Write code to calculate gopang_fee of each item depending on distance between buyer and seller.
+(2) Write code to calculate the PVR(가성비, price_to_value_ratio) of each product.
+(3) Write code to calcualte the credit rate(from AAA to FFF) of the seller using the PVRs of products it sells. 
 '''
-
-alias Demo.Mulets.Mulet
-hankyung_mulet = Ecto.build_assoc(hankyung_supul, :mulet, %{current_hash: hankyung_supul.id})
-
-#? pretend transmit the message...
-#? pretend receive the message...
-
-#? break up the payload
-parts = String.split(payload, "|")
-
-# ? reject the payload if the timestamp is newer than the arriving time to mulet. 
-recv_ts = Enum.fetch!(parts, 0)
-
-#? pretend ensure the time-stamp is not too old (or from the future)...
-#? verify the signature
-recv_msg_serialized = Enum.fetch!(parts, 1)
-{:ok, recv_sig_buyer} = Enum.fetch!(parts, 2) |> Base.url_decode64()
-{:ok, recv_sig_seller} = Enum.fetch!(parts, 3) |> Base.url_decode64()
-
-{:ok, sig_valid_buyer} =
-  ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig_buyer, hong_rsa_pub_key)
-
-{:ok, sig_valid_seller} =
-  ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig_seller, tomi_rsa_pub_key)
-
-# assert(sig_valid)
-
-#? Archieve Tickets
-alias Demo.Mulets.TicketStorage
-alias Demo.Tickets.Payload
-payload_archive = Payload.changeset(%Payload{payload: payload}) |> Repo.insert!
-payload_archive = Ecto.build_assoc(hankyung_supul, :payloads, payload_archive)
-
-payload_storage = TicketStorage.changeset(%TicketStorage{}, %{new_payload: payload_archive})
-
-
-
-#? recv_msg_unserialized = Poison.Parser.parse!(recv_msg_serialized, %{})
-# assert(msg == recv_msg_unserialized)
-
-
-
-
-'''
-
-Adjust balance_sheet of both.
-
-'''
-alias Demo.ABC.T1
-
-# ? gopang
-new_t1s =
-  Enum.map(gopang_BS.t1s, fn elem ->
-    Map.update!(elem, :amount, fn curr_value -> Decimal.add(curr_value, ticket.gopang_fee) end)
-  end)
-
-gopang_BS = change(gopang_BS) |> Ecto.Changeset.put_change(:t1s, new_t1s) |> Repo.update!()
-
-
-# ? mr_hong
-residual_amount = Decimal.sub(Enum.at(hong_entity_BS.t1s, 0).amount, txn.abc_amount)
-new_t1s = [%T1{input: hong_entity.id, output: hong_entity.id, amount: residual_amount}]
-hong_entity_BS = change(hong_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
-
-# ? tomi
-new_t1s = [%T1{input: hong_entity.id, output: tomi_entity.id, amount: txn.abc_amount} | tomi_entity_BS.t1s]
-tomi_entity_BS = change(tomi_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
-
-
-'''
-
-Third, the mulet of supul, state_supul, korea_supul and global_supul openhashes the unserialized message. 
-
-'''
-
-#? Supul Mulet 
-#? pretend transmit the message...
-#? pretend receive the message...
-hankyung_mulet = Ecto.build_assoc(hankyung_supul, :mulet, %{current_hash: hankyung_supul.id}) 
-
-incoming_hash = :crypto.hash(:sha256, payload) \
-  |> Base.encode16() \
-  |> String.downcase()
-hankyung_mulet = Mulet.changeset(hankyung_mulet, %{incoming_hash: incoming_hash})
-
-#? send every 10th payload to the state_supul of supul.
-
-#? StateSupul Mulet 
-#? pretend transmit the message...
-#? pretend receive the message...
-jejudo_mulet = Ecto.build_assoc(jejudo_supul, :mulet, %{current_hash: jejudo_supul.id}) 
-jejudo_mulet = Mulet.changeset(jejudo_mulet, %{incoming_hash: incoming_hash})
-
-#? send every 100th payload to the nation_supul of sate_supul.
-korea_mulet = Ecto.build_assoc(korea_supul, :mulet, %{current_hash: korea_supul.id}) 
-korea_mulet = Mulet.changeset(korea_mulet, %{incoming_hash: incoming_hash})
-
-#? send every 10000th payload to the global_supul of sate_supul.
-global_mulet = Ecto.build_assoc(global_supul, :mulet, %{current_hash: global_supul.id}) 
-global_mulet = Mulet.changeset(global_mulet, %{incoming_hash: incoming_hash})
-
-#? send every 1000th payload to the supuls of the world.
-hankyung_mulet = Mulet.changeset(hankyung_mulet, %{incoming_hash: incoming_hash})
-
-
-
-
-
-
-'''
-
-GOPANG
-
-'''
-#? assume the gopang of hankyung has calcuated the road sections to be inclued in the route.
-alias Demo.Gopangs.RoadSectionEmbed
-
-road_sections = [
-    %RoadSectionEmbed{
-    section_uid: "qt2453",
-    a_spot: %{lagitude: 35.89421911, longitude: 139.94637467, altitude: 39.9463},
-    b_spot: %{lagitude: 35.8925543, longitude: 139.94626565, altitude: 34.4567}
-    },
-    %RoadSectionEmbed{
-    section_uid: "qt2454",
-    a_spot: %{lagitude: 35.89421425, longitude: 139.946453, altitude: 32.9443},
-    b_spot: %{lagitude: 35.892552, longitude: 139.9462665, altitude: 32.455}
-    },
-    %RoadSectionEmbed{
-    section_uid: "qt2456",
-    a_spot: %{lagitude: 35.8942165, longitude: 139.9463745, altitude: 36.944},
-    b_spot: %{lagitude: 35.8925523, longitude: 139.94626563, altitude: 37.45434}
-    },
-]
-
-
-# ? build_assock: allocate a car or cars to the ticket
-alias Demo.Cars.Car
-car_1 = Car.changeset(%Car{}, %{name: "은하철도_999"}) |> Repo.insert!()
-ticket = Ecto.build_assoc(car_1, :tickets, ticket)
-
-#? put_embed
-ticket =
-  change(ticket) \
-  |> Ecto.Changeset.put_embed(:road_sections, road_sections) \
-  |> Repo.update!()
-
-
-
-'''
-
-SHOW TIME !!! 👻 👻 👻 👻 👻 👻
-
-'''
-#? Code machine learning module here !!!!
-
-ticket = change(ticket) \
-|> Ecto.Changeset.put_embed(:deliverybox, %{
-    code: "adfs3424",
-    status: "moving",
-    current_location: %{latitude: "위도", longitude: "경도"}}) \
-|> Repo.update!()
-
-
-
-alias Demo.Gopangs.RouteEmbed
-alias Demo.Gopangs.RoadSectionEmbed
-
-route = %RouteEmbed{
-    departure_spot: %{lagitude: 35.89421911, longitude: 139.94637467, altitude: 39.9463},
-    arrival_spot: %{lagitude: 35.8925543, longitude: 139.94626565, altitude: 34.4567}
-  }
-  
-ticket =
-  change(ticket) \
-  |> Ecto.Changeset.put_embed(:route, route) \
-  |> Repo.update!()
-
