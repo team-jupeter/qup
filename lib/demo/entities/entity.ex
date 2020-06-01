@@ -2,6 +2,7 @@ defmodule Demo.Entities.Entity do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.Invoices.Invoice
+
   alias Demo.Users.User
   alias Demo.Products.Product
 
@@ -25,6 +26,8 @@ defmodule Demo.Entities.Entity do
 
     has_one :financial_report, Demo.Reports.FinancialReport
     has_many :licenses, Demo.Licenses.License
+
+    has_one :t2_item, Demo.ABC.T2Item
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id

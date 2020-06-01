@@ -6,11 +6,11 @@ defmodule Demo.Reports.GabBalanceSheet do
     schema "gab_balance_sheets" do
       field :monetary_unit, :string
       
-      field :t1s, {:array, :map}
-      field :t2s, {:array, :map} 
-      field :t3s, {:array, :map} 
+      field :t1, :decimal, precision: 15, scale: 2
+      field :t2, :decimal, precision: 15, scale: 2
+      field :t3, :decimal, precision: 15, scale: 2
 
-      field :cashes, {:array, :map} 
+      field :cashes, {:array, :map}
       
   
       belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
@@ -19,7 +19,7 @@ defmodule Demo.Reports.GabBalanceSheet do
       timestamps()
     end
   
-    @fields [:monetary_unit, :gab_account_t1, :gab_account_t2, :gab_account_t3, :cash]
+    @fields [:t1, :t2, :t3, :cash]
     @doc false
     def changeset(balance_sheet, attrs) do
       balance_sheet

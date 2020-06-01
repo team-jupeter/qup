@@ -45,7 +45,7 @@ tomi_entity = Entity.changeset(%Entity{}, %{name: "Sung Chunhyang Entity", email
 hankyung_gab = Entity.changeset(%Entity{}, %{name: "Hankyung GAB Branch", email: "hankyung_gab@3435.kr"}) |> Repo.insert!
 tesla_entity = Entity.changeset(%Entity{}, %{name: "Tesla", email: "tesl@3435.us"}) |> Repo.insert!
 
-#? build_assoc user and entity
+#? put_assoc user and entity
 Repo.preload(hong_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [mr_hong]) |> Repo.update!
 Repo.preload(tomi_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [ms_sung]) |> Repo.update!
 Repo.preload(hankyung_gab, [:users]) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:users, [gab]) |> Repo.update!
@@ -57,6 +57,7 @@ hankyung_gab = Ecto.build_assoc(hankyung_supul, :entities, hankyung_gab)
 
 #? build_assoc hankyung_gab with korea
 hankyung_gab = Ecto.build_assoc(korea, :entities, hankyung_gab) 
+hong_entity = Ecto.build_assoc(korea, :entities, hong_entity) 
 tesla_entity = Ecto.build_assoc(usa, :entities, tesla_entity) 
 
 Repo.preload(hankyung_gab, [:nation, :supul])

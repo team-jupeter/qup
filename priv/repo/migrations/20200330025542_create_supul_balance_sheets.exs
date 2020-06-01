@@ -5,9 +5,10 @@ defmodule Demo.Repo.Migrations.CreateSupulBalanceSheets do
     create table(:supul_balance_sheets, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :monetary_unit, :string
-      add :t1s, {:array, :map}
-      add :t2s, {:array, :map} 
-      add :t3s, {:array, :map} 
+      
+      add :t1, :decimal, precision: 15, scale: 2
+      add :t2, :decimal, precision: 15, scale: 2
+      add :t3, :decimal, precision: 15, scale: 2
 
       add :cashes, {:array, :map} 
       

@@ -22,6 +22,7 @@ defmodule Demo.Repo.Migrations.CreateEntities do
 
       add(:business_embeds, {:array, :jsonb}, default: [])
 
+
       timestamps()
     end
 
