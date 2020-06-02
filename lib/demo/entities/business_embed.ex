@@ -27,7 +27,7 @@ defmodule Demo.Entities.BusinessEmbed do
     :addresses, :employees, :products, :yearly_sales, :num_of_shares,
     :share_price, :accrued_tax_payment, :credit_rate, :credit_rate_of_members
   ]
-  @required [:name, :crn, :sic_code, :legal_status, :year_started, :num_of_shares]
+  # @required [:name, :crn, :sic_code, :legal_status, :year_started, :num_of_shares]
 
   def changeset(buyer_embed, params) do
     buyer_embed

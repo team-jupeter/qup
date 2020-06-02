@@ -1,4 +1,4 @@
-defmodule Demo.Reports.Treatment do
+defmodule Demo.CDC.Treatment do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,7 +11,7 @@ defmodule Demo.Reports.Treatment do
     field :disease, :string
     field :comment, :string
 
-    belongs_to :prescription, Demo.Reports.Prescription, type: :binary_id
+    belongs_to :prescription, Demo.CDC.Prescription, type: :binary_id
 
     timestamps()
   end

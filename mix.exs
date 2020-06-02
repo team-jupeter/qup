@@ -19,7 +19,7 @@ defmodule Demo.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Demo.Application, []},
+      mod: {Demo.Application, [:timex]},
       extra_applications: [:logger, :runtime_tools, :inets]
     ]
   end
@@ -54,7 +54,7 @@ defmodule Demo.Mixfile do
       {:gen_stage, "~> 1.0.0"},
       {:joken, "~> 2.0"},
       {:poison, ">= 2.0.0"},
-
+      {:timex, "~> 3.0"},
       # {:geo, "~> 3.0"},
     ]
   end

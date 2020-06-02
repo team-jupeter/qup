@@ -12,6 +12,8 @@ defmodule Demo.SMBA.Subject do
     field :documents, {:array, :binary_id}, default: []
     field :applicants, {:array, :binary_id}, default: []
     
+    belongs_to :applicant, Demo.SMBA.Applicant, type: :binary_id
+    
     timestamps()
   end
 

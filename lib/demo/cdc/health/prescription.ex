@@ -1,4 +1,4 @@
-defmodule Demo.Reports.Prescription do
+defmodule Demo.CDC.Prescription do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -12,8 +12,8 @@ defmodule Demo.Reports.Prescription do
     field :infection, :boolean
     field :test, :string #? document uid
 
-    belongs_to :health_report, Demo.Reports.HealthReport, type: :binary_id
-    has_many :treatments, Demo.Reports.Treatment
+    belongs_to :health_report, Demo.CDC.HealthReport, type: :binary_id
+    has_many :treatments, Demo.CDC.Treatment
 
     timestamps()
   end

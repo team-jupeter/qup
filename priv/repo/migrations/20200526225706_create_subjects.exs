@@ -12,6 +12,9 @@ defmodule Demo.Repo.Migrations.CreateSubjects do
       add :documents, {:array, :binary_id}, default: []
       add :applicants, {:array, :binary_id}, default: []
       
+      add :applicant_id, (:applicants, type: :uuid, null: false)
+
+
       timestamps()
     end
 

@@ -13,7 +13,7 @@ defmodule Demo.SMBA.Applicant do
   end
 
   @doc false
-  def changeset(apply, attrs) do
+  def changeset(apply, attrs \\ %{}) do
     apply
     |> cast(attrs, [])
     |> validate_required([])

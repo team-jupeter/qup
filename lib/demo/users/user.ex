@@ -19,7 +19,7 @@ defmodule Demo.Users.User do
     field :password_confirmation, :string, virtual: true
 
     has_many :certificates, Demo.Certificates.Certificate
-    has_one :heath_report, Demo.Reports.HealthReport
+    has_one :heath_report, Demo.CDC.HealthReport
 
     timestamps()
 

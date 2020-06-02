@@ -1,4 +1,4 @@
-defmodule Demo.Reports.HealthReport do
+defmodule Demo.CDC.HealthReport do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -20,7 +20,8 @@ defmodule Demo.Reports.HealthReport do
     field :weight, :decimal
     field :digital_certificate, :string
 
-    has_many :prescriptions, Demo.Reports.Prescription
+    has_many :diagnoses, Demo.CDC.Diagnosis
+    has_many :prescriptions, Demo.CDC.Prescription
     belongs_to :user, Demo.Users.User, type: :binary_id
 
     timestamps()
