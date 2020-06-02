@@ -77,7 +77,7 @@ alias Demo.Documents.Document
 
  document = Document.changeset(
     %Document{
-        title: "전문의 자격증",
+        title: "진단의학 전문의 자격증",
         presented_to: sung_entity.id,
         presented_by: [mohw.id],
         summary: "위와 같이 자격을....",
@@ -89,7 +89,7 @@ alias Demo.Documents.Document
 alias Demo.Certificates.Certificate
 certificate = Certificate.changeset(%Certificate{name: "Diagnostic medicine specialist", document: document.id, issued_to: sung_entity.id, issued_date: Timex.to_date({2015, 6, 24})}) |> Repo.insert!
 
-
+ 
 '''
 
 License GRANT
@@ -107,8 +107,8 @@ License GRANT
         hash_of_attached_docs_hashes: "sha256(attached_docs_hashes)",
     }) |> Repo.insert!
 
-alias Demo.Certificates.Certificate
-certificate = Certificate.changeset(%Certificate{name: "Diagnostic medicine specialist", document: document.id, issued_to: sung_entity.id, issued_date: Timex.to_date({2015, 6, 24})}) |> Repo.insert!
+alias Demo.Licenses.License
+license = License.changeset(%License{name: "Tomi Clinic", document: document.id, issued_to: sung_entity.id, issued_date: Timex.to_date({2015, 6, 24})}) |> Repo.insert!
 
 
 
@@ -131,7 +131,7 @@ ticket = Ticket.changeset(%Ticket{}, %{item_id: item.id}) |> Repo.insert!()
 
 
 invoice_items = [
-  %{item_id: item.id, quantity: 1.0, item_name: "Doctor Certificate"},
+  %{item_id: item.id, quantity: 1.0, item_name: "Diagnostic Specialist Certificate"},
   %{item_id: item.id, quantity: 0.0}
 ]
 
@@ -146,14 +146,6 @@ params = %{
 # invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
 
 # ? hash_of_invoice = sung_public_sha256 = :crypto.hash(:sha256, invoice)
-
-
-'''
-
-TRANSACTION
-성춘향은 보건복지부에 전문의 자격증 발급 수수료를 지불
--- 생략 --
-'''
 
 
 

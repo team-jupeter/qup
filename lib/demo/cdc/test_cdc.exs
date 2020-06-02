@@ -64,6 +64,10 @@ tomi_clinic =
   Entity.changeset(%Entity{}, %{name: "Tomi Clinic", email: "tomi@3532.kr", entity_address: "제주시 한림읍 11-1"}) \
   |> Repo.insert!()
 
+hankyung_gab =
+  Entity.changeset(%Entity{}, %{name: "Hankyung GAB", email: "hankyung_gab@3532.kr", entity_address: "제주시 한림읍 11-1"}) \
+  |> Repo.insert!()
+
 # ? build_assoc user and entity
 Repo.preload(hong_entity, [:users]) \
 |> Ecto.Changeset.change()  \
@@ -86,8 +90,6 @@ alias Demo.Reports.BalanceSheet
 alias Demo.Reports.GabBalanceSheet
 alias Demo.Reports.GopangBalanceSheet
 
-gopang_FR =
-  FinancialReport.changeset(%FinancialReport{}, %{entity_id: gopang.id}) |> Repo.insert!()
 
 hong_entity_FR =
   FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong_entity.id}) |> Repo.insert!()
@@ -98,11 +100,11 @@ tomi_clinic_FR =
 
 hong_entity_BS =
   Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{
-    cash: Decimal.from_float(50_000_000.00),
+    cash: Decimal.from_float(50_000.00),
     t1s: [%{
-      input: korea.id, 
-      output: gopang.id, 
-      amount: Decimal.from_float(10_000.00)}]}) \
+      input: hankyung_gab.id, 
+      output: hong_entity.id, 
+      amount: Decimal.from_float(100.00)}]}) \
   |> Repo.insert!()
 
 tomi_clinic_BS =
@@ -137,19 +139,10 @@ tomi_rsa_pub_key = ExPublicKey.load!("./tomi_public_key.pem")
 '''
 
 DOCTOR CERTIFICATE
-
-'''
-
-
-
-
-
-
-
-
-'''
+episode 178
 
 CLINIC LICENSE
+episode 178
 
 '''
 
@@ -168,13 +161,42 @@ alias Demo.CDC.Diagnosis
 health_report = HealthReport.changeset(%HealthReport{}, %{user_id: hong_entity.id}) |> Repo.insert!
 diagnosis = Diagnosis.changeset(%Diagnosis{}, %{client: hong_entity.id, doctor: sung_entity.id, clinic: tomi_clinic.id, test_name: "HIV Test", meditations: ["multivitamins"]}) |> Repo.insert!
 
+#? build_assoc between health_report and diagnosis
 
 
+alias Demo.CDC.MetabolicPanelEmbed
 
+sodium = MetabolicPanelEmbed.changeset(%MetabolicPanelEmbed{}, 
+  %{test: "sodium", abnormal: true, value: 124.0, flag: "L", units: "mEq/L", reference_range: "136-145"})
 
+potassium = MetabolicPanelEmbed.changeset(%MetabolicPanelEmbed{}, 
+  %{test: "potassium", abnormal: true, value: 5.8, flag: "H", units: "mEq/L", reference_range: "3.5-5.1"})
 
+carbon_dioxide = MetabolicPanelEmbed.changeset(%MetabolicPanelEmbed{}, 
+  %{test: "carbon_dioxide", value: 25.0, units: "mEq/L", reference_range: "23-29"})
 
+chloride = MetabolicPanelEmbed.changeset(%MetabolicPanelEmbed{}, 
+  %{test: "chloride", value: 101.0, flag: "L", units: "mEq/L", reference_range: "98-107"})
 
+glucose = MetabolicPanelEmbed.changeset(%MetabolicPanelEmbed{}, 
+  %{test: "glucose", abnormal: true, value: 107.0, flag: "H", units: "mg/dL", reference_range: "74-100"})
+
+creatinine = MetabolicPanelEmbed.changeset(%MetabolicPanelEmbed{}, 
+  %{test: "chloride", value: 10.1, units: "mg/dL", reference_range: "8.6-10.2"})
+
+blood_urea_nitrogen = MetabolicPanelEmbed.changeset(%MetabolicPanelEmbed{}, 
+  %{test: "blood_urea_nitrogen", value: 17.0, units: "mg/dL", reference_range: "8-23"})
+
+creatinine = MetabolicPanelEmbed.changeset(%MetabolicPanelEmbed{}, 
+  %{test: "creatinine", value: 0.9, units: "mg/dL", reference_range: "0.8-1.3"})
+
+  
+
+diagnosis = change(diagnosis) \
+    |> Ecto.Changeset.put_embed(:metabolic_panels, [
+      sodium, potassium, carbon_dioxide, chloride, glucose, 
+      creatinine, blood_urea_nitrogen, creatinine]) \
+    |> Repo.update!
 
 
 
@@ -189,9 +211,9 @@ alias Demo.Products.Product
 alias Demo.Products.CommentEmbed
 
 hiv_test = Product.changeset(%Product{}, %{
-  name: "HIV 검사", 
+  name: "HIV Test", 
   price: Decimal.from_float(1.0), 
-  gpc_code: "ABB1111", 
+  items: [diagnosis.id], 
 }) |> Repo.insert!
 
 
@@ -259,7 +281,7 @@ Tickets & Transactions
 
 
 # ? Write Transactions
-#? For lunch box 1
+#? For HIV Test
 alias Demo.Transactions.Transaction
 txn =
   Transaction.changeset(%Transaction{

@@ -3,9 +3,9 @@ defmodule Demo.CDC.MedicalImageEmbed do
     import Ecto.Changeset
   
     embedded_schema do
-        field :collection_date, :naive_datetime
-        field :received_date, :naive_datetime
-        field :reported_date, :naive_datetime
+        field :collection_date, :date
+        field :received_date, :date
+        field :reported_date, :date
         
         field :x_ray, :string
         field :ct, :string
@@ -15,7 +15,7 @@ defmodule Demo.CDC.MedicalImageEmbed do
     end
   
     @fields [
-        
+      :collection_date, :received_date, :reported_date, :x_ray, :ct, :mri, 
     ]
     @doc false
     def changeset(medic_image, attrs \\ %{}) do

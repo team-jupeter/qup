@@ -5,6 +5,10 @@ defmodule Demo.Repo.Migrations.CreateDiagnoses do
     create table(:diagnoses, primary_key: false) do
       add :id, :uuid, primary_key: true
 
+      add :collection_date, :date
+      add :received_date, :date
+      add :reported_date, :date
+
       add :client, :binary_id
       add :doctor, :binary_id
       add :clinic, :binary_id
@@ -18,7 +22,7 @@ defmodule Demo.Repo.Migrations.CreateDiagnoses do
 
       add :name, :string
 
-      add :health_report_id, (:health_reports, type: :uuid, null: false)
+      add :health_report_id, references(:health_reports, type: :uuid, null: false)
 
       timestamps()
     end
