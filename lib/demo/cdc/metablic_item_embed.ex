@@ -1,4 +1,4 @@
-defmodule Demo.CDC.MetabolicPanelEmbed do
+defmodule Demo.CDC.MetabolicItemEmbed do
     use Ecto.Schema
     import Ecto.Changeset
   
@@ -25,8 +25,8 @@ defmodule Demo.CDC.MetabolicPanelEmbed do
       :basic, :reference_range, 
     ]
     @doc false
-    def changeset(medic_panel, attrs \\ %{}) do
-      medic_panel
+    def changeset(medic_item, attrs \\ %{}) do
+      medic_item
       |> cast(attrs, @fields)
       |> validate_required([])
     end

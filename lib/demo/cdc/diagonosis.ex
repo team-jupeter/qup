@@ -14,7 +14,7 @@ defmodule Demo.CDC.Diagnosis do
         field :test_name, :string
         field :meditations, {:array, :string}
 
-        embeds_many :metabolic_panels, Demo.CDC.MetabolicPanelEmbed
+        has_many :metabolic_panels, Demo.CDC.MetabolicPanel
         embeds_many :medical_images, Demo.CDC.MedicalImageEmbed
 
         belongs_to :health_report, Demo.CDC.HealthReport, type: :binary_id
@@ -29,5 +29,6 @@ defmodule Demo.CDC.Diagnosis do
       diagnosis
       |> cast(attrs, @fields)
       |> validate_required([])
+      |> cast_assoc(:metabolic_panels)
     end
   end
