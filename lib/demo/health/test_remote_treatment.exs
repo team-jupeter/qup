@@ -120,21 +120,21 @@ tomi_clinic_BS =
 CRYPTO
 
 '''
-hong_rsa_priv_key = ExPublicKey.load!("./hong_private_key.pem")
-hong_rsa_pub_key = ExPublicKey.load!("./hong_public_key.pem")
+hong_rsa_priv_key = ExPublicKey.load!("./keys/hong_private_key.pem")
+hong_rsa_pub_key = ExPublicKey.load!("./keys/hong_public_key.pem")
 
 # ? openssl genrsa -out sung_private_key.pem 2048
 # ? openssl rsa -in sung_private_key.pem -pubout > sung_public_key.pem
-sung_rsa_priv_key = ExPublicKey.load!("./sung_private_key.pem")
-sung_rsa_pub_key = ExPublicKey.load!("./sung_public_key.pem")
+sung_rsa_priv_key = ExPublicKey.load!("./keys/sung_private_key.pem")
+sung_rsa_pub_key = ExPublicKey.load!("./keys/sung_public_key.pem")
 
 # ? openssl genrsa -out korea_private_key.pem 2048
 # ? openssl rsa -in korea_private_key.pem -pubout > korea_public_key.pem
-korea_rsa_priv_key = ExPublicKey.load!("./korea_private_key.pem")
-korea_rsa_pub_key = ExPublicKey.load!("./korea_public_key.pem")
+korea_rsa_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
+korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
 
-tomi_rsa_priv_key = ExPublicKey.load!("./tomi_private_key.pem")
-tomi_rsa_pub_key = ExPublicKey.load!("./tomi_public_key.pem")
+tomi_rsa_priv_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
+tomi_rsa_pub_key = ExPublicKey.load!("./keys/tomi_public_key.pem")
 
 
 
@@ -150,7 +150,45 @@ episode 178
 '''
 
 
+'''
 
+CONTACTLESS SPECIMEN COLLECTION AND TEST
+
+'''
+#? init test labaratory of Tomi Clinic
+alias Demo.Labs.Lab
+lab_A119_cs = Lab.changeset(%Lab{}, %{
+  gpc_code: "some_gpc_code",
+  location: %{latitude: "524354", longitude: "35424", altitude: "342665"}, 
+  purpose: "medical specimen test"
+  })
+  
+lab_A119 = Ecto.build_assoc(tomi_clinic, :labs, lab_A119_cs) |> Repo.insert!
+  
+alias Demo.Machines.Machine
+machine_B007_cs = Machine.changeset(%Machine{}, %{
+  gpc_code: "adfg_2344",
+  location: "Jejudo", 
+  purpose: "Covid_19 Test", 
+  made_by: hong_entity.id, 
+  made_where: "Korea", 
+  made_when: "2020",
+})
+
+machine_B007 = Ecto.build_assoc(tomi_clinic, :labs, machine_B007_cs) |> Repo.insert!
+
+
+
+'''
+
+1. ISSUE A TICKET TO COLLECT A SPECIMEN FROM HONG GIL DONG.
+2. GENERATE A TRANSACTION(A) TO PAY GOPANG FEE.
+3. DO SPECIMEN COLLECTION BY MS. SUNG
+4. DO TEST ON THE SPECIMEN AT THE LAB_A119
+5. GENERATE A REPORT FROM THE MACHINE_B007.
+6. ATTACH THE REPORT TO THE TEST REPORT BELOW.
+
+'''
 
 
 

@@ -4,6 +4,10 @@ defmodule Demo.CDC.MetabolicPanel do
   
     @primary_key {:id, :binary_id, autogenerate: true}
     schema "metabolic_panels" do
+        field :collection_date, :date
+        field :received_date, :date
+        field :reported_date, :date
+
         field :panel_name, :string
         field :comment, :string
         field :result, :string

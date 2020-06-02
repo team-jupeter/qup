@@ -33,6 +33,11 @@ defmodule Demo.Entities.Entity do
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
 
+    has_many :reports, Demo.Reports.Report
+    has_many :certificates, Demo.Certificates.Certificate
+    has_many :machines, Demo.Machines.Machine
+    has_many :labs, Demo.Labs.Lab
+    
     many_to_many(
       :invoices,
       Invoice,

@@ -3,10 +3,6 @@ defmodule Demo.CDC.MetabolicItemEmbed do
     import Ecto.Changeset
   
     embedded_schema do
-        field :collection_date, :date
-        field :received_date, :date
-        field :reported_date, :date
-        
         field :test, :string
         field :result, :string
         field :abnormal, :boolean, default: false
