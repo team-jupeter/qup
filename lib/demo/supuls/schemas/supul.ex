@@ -10,6 +10,8 @@ defmodule Demo.Supuls.Supul do
 
     has_many :entities, Demo.Entities.Entity, on_replace: :nilify
     has_many :payloads, Demo.Tickets.Payload, on_replace: :nilify
+    has_many :schools, Demo.Schools.School, on_replace: :nilify
+
     has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify
     has_one :mulet, Demo.Mulets.Mulet
     has_one :gopang, Demo.Gopangs.Gopang

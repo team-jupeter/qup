@@ -67,6 +67,10 @@ tomi_clinic =
   Entity.changeset(%Entity{}, %{name: "Tomi Clinic", email: "tomi@3532.kr", entity_address: "제주시 한림읍 11-1"}) \
   |> Repo.insert!()
 
+siemens =
+  Entity.changeset(%Entity{}, %{name: "Siemens", email: "siemens@3532.de", entity_address: "제주시 한림읍 11-1"}) \
+  |> Repo.insert!()
+
 hankyung_gab =
   Entity.changeset(%Entity{}, %{name: "Hankyung GAB", email: "hankyung_gab@3532.kr", entity_address: "제주시 한림읍 11-1"}) \
   |> Repo.insert!()
@@ -164,28 +168,45 @@ lab_A119_cs = Lab.changeset(%Lab{}, %{
   })
   
 lab_A119 = Ecto.build_assoc(tomi_clinic, :labs, lab_A119_cs) |> Repo.insert!
-  
+
+#? register a machine to the lab
 alias Demo.Machines.Machine
 machine_B007_cs = Machine.changeset(%Machine{}, %{
   gpc_code: "adfg_2344",
+  machine: "B007",
   location: "Jejudo", 
   purpose: "Covid_19 Test", 
-  made_by: hong_entity.id, 
-  made_where: "Korea", 
+  made_by: siemens.id, 
+  made_where: "Germany", 
   made_when: "2020",
 })
 
 machine_B007 = Ecto.build_assoc(tomi_clinic, :labs, machine_B007_cs) |> Repo.insert!
+
+#? generate a report with the reports from the test machine. 
+alias Demo.Reports.Report
+machine_report_cs = Report.changeset(%Report{}, %{
+  previous_report: "bf5d4117-278c-4fd1-ab91-9b33ab705328", #? "binary_id of the previous report made by the tomi_clinic",
+  current_hash: "bf5d4117-278c-4fd1-ab91-9b33ab705328", #? to prevent forgery. 
+  title: "HIV test for Hong Gil_Dong",
+  written_by: tomi_clinic.id,
+  written_to: hong_entity.id,
+  attached_documents: "some document from the machine_B007"
+  })
+  
+machine_report = Ecto.build_assoc(tomi_clinic, :reports, machine_report_cs) |> Repo.insert!
+
+#? attach the report to the TEST REPORT below
 
 
 
 '''
 
 1. ISSUE A TICKET TO COLLECT A SPECIMEN FROM HONG GIL DONG.
-2. GENERATE A TRANSACTION(A) TO PAY GOPANG FEE.
-3. DO SPECIMEN COLLECTION BY MS. SUNG
+2. GENERATE A TRANSACTION(A) TO PAY GOPANG FEE. GOPANG IS A DELIVERY SERVICE USING AUTONOMOUS VEHICLES. 
+3. DO SPECIMEN COLLECTION PROCESS BY MS. SUNG
 4. DO TEST ON THE SPECIMEN AT THE LAB_A119
-5. GENERATE A REPORT FROM THE MACHINE_B007.
+5. GENERATE A REPORT FROM THE MACHINE_B007. // digital file
 6. ATTACH THE REPORT TO THE TEST REPORT BELOW.
 
 '''

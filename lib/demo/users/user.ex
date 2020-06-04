@@ -3,6 +3,7 @@ defmodule Demo.Users.User do
   import Ecto.Changeset
   alias Demo.Entities.Entity
   alias Demo.Users.User
+  alias Demo.Schools.School
 
   # @required_fields [:name, :email, :nationality]
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -20,11 +21,14 @@ defmodule Demo.Users.User do
 
     has_many :certificates, Demo.Certificates.Certificate
     has_one :heath_report, Demo.CDC.HealthReport
+    has_one :student, Demo.Schools.Student
+    has_one :mentor, Demo.Schools.Mentor
 
     timestamps()
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
     belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id
+    
     many_to_many(
       :entities,
       Entity,
@@ -32,6 +36,12 @@ defmodule Demo.Users.User do
       on_replace: :delete
     )
 
+    many_to_many(
+      :schools,
+      School,
+      join_through: "schools_students",
+      on_replace: :delete
+    )
   end
 
   def registration_changeset(user, params) do

@@ -9,7 +9,9 @@ defmodule Demo.Repo.Migrations.CreateReports do
       add :title, :string
       add :written_by, :binary_id
       add :written_to, {:array, :binary_id}
-      add :documents, :string
+      add :attached_documents, :text
+
+      add :entity_id, references(:entities, type: :uuid, null: false)
 
       timestamps() 
     end

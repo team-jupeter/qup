@@ -9,7 +9,7 @@ defmodule Demo.Reports.Report do
     field :title, :string
     field :written_by, :binary_id
     field :written_to, {:array, :binary_id}
-    field :documents, :string
+    field :attached_documents, :string #? attached_documents
 
     belongs_to :machine, Demo.Machines.Machine, type: :binary_id
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
@@ -17,10 +17,19 @@ defmodule Demo.Reports.Report do
     timestamps()
   end
 
+  @fields [
+    :previous_report, 
+    :current_hash, 
+    :title,
+    :written_by,
+    :written_to,
+    :documents,
+  ]
+
   @doc false
   def changeset(report, attrs) do
     report
-    |> cast(attrs, [:title])
-    |> validate_required([:title])
+    |> cast(attrs, @fields)
+    |> validate_required([])
   end
 end

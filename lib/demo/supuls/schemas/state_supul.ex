@@ -7,6 +7,8 @@ defmodule Demo.Supuls.StateSupul do
     field :name, :string
 
     has_many :supuls, Demo.Supuls.Supul
+    has_many :schools, Demo.Schools.School, on_replace: :nilify
+
     has_one :financial_report, Demo.Reports.FinancialReport
     has_one :mulet, Demo.Mulets.Mulet
     

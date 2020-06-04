@@ -12,6 +12,7 @@ defmodule Demo.Repo.Migrations.CreateCertificates do
       add :document, :binary_id
 
       add :user_id, references(:users, type: :uuid, null: false)
+      add :entity_id, references(:entities, type: :uuid, null: false)
       
       timestamps()
     end

@@ -13,7 +13,9 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add :nation_id, references(:nations, type: :uuid, null: false)
       add :entity_id, references(:entities, type: :uuid, null: false)
       add :supul_id, references(:supuls, type: :uuid, null: false)
+      add :school_id, references(:schools, type: :uuid)
 
+  
       timestamps()
     end
 
