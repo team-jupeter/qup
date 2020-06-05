@@ -3,7 +3,7 @@ defmodule Demo.ABC.T1 do
   import Ecto.Changeset
   alias Demo.ABC.T1
   
-  embedded_schema do
+  embedded_schema do 
     field :input, :string
     field :output, :string
     field :amount, :decimal, precision: 12, scale: 2

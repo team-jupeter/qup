@@ -53,6 +53,10 @@ mr_gong =
   User.changeset(%User{}, %{name: "Gong Ja", email: "gongja@82345.kr"}) \
   |> Repo.insert!()
 
+mr_meng =
+  User.changeset(%User{}, %{name: "Meng Ja", email: "mengja@82345.kr"}) \
+  |> Repo.insert!()
+
 
 # ?many_to_many
 # |> Ecto.Changeset.change()  \
@@ -67,7 +71,7 @@ SCHOOL, MENTORS, STUDENTS
 #? init a school in Hankyung-Myon, Jeju
 alias Demo.Schools.School
 abc_hankyung = School.changeset(%School{}, %{
-  type: "Elementary" #? kindergarten, elementary, middle, college, graduate
+  type: "Elementary 4th" #? kindergarten, elementary, middle, college, graduate
 }) |> Repo.insert!
 
 #? build_assoc school and its supul.
@@ -78,7 +82,7 @@ abc_hankyung = Ecto.build_assoc(hankyung_supul, :schools, abc_hankyung)
 alias Demo.Schools.Mentor
 mentor_gong = Mentor.changeset(%Mentor{}, %{
   name: "Gongja",
-  certificates: ["E1", "M2", "C4"], #? we hard coded here, but they should be associated.
+  certificates: ["E1", "M2", "C3"], #? we hard coded here, but they should be associated.
   user_id: mr_gong.id
 }) |> Repo.insert!
 
@@ -118,9 +122,10 @@ Repo.preload(abc_hankyung, [:students]) \
 Repo.preload(abc_hankyung, [:students, :mentors])
 
 
-mr_hong = Ecto.build_assoc(abc_hankyung, :students, mr_hong)
-ms_sung = Ecto.build_assoc(abc_hankyung, :students, ms_sung)
+student_hong = Ecto.build_assoc(abc_hankyung, :students, student_hong)
+student_sung = Ecto.build_assoc(abc_hankyung, :students, student_sung)
 
+Repo.preload(student_sung, :school)
 
 
 
@@ -145,7 +150,7 @@ student_sung = change(student_sung) |> \
 
 '''
 -- omitted --
-ARCHIVE
+ARCHIVE TRANSACTION
 archive the scores in the supul.
 '''
 
@@ -184,11 +189,6 @@ Repo.preload(abc_namwon, [:students]) \
 |> Ecto.Changeset.put_assoc(:students, [student_sung, student_lee])  \
 |> Repo.update!()
 
-#? ms_sung add abc_namwon to, and remove abc_hankyung from her current_schools,  
-Repo.preload(abc_namwon, [:students]) \
-|> Ecto.Changeset.change()  \
-|> Ecto.Changeset.put_assoc(:students, [student_lee, student_sung])  \
-|> Repo.update!()
 
 #? update the past schools of 성 춘향 
 student_sung = change(student_sung) |> \
