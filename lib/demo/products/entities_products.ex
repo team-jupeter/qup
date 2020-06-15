@@ -1,4 +1,4 @@
-defmodule Demo.Products.EntitiesProducts do
+defmodule Demo.Products.AccountsProducts do
     @moduledoc """
     This module is used to test:
       * Many to many associations join_through with schema
@@ -9,7 +9,7 @@ defmodule Demo.Products.EntitiesProducts do
     @foreign_key_type :binary_id
   
     schema "entities_products" do
-      belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+      belongs_to :entity, Demo.Accounts.Entity, type: :binary_id
       belongs_to :product, Demo.Products.Product, type: :binary_id
       timestamps()
     end

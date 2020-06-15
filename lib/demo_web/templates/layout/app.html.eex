@@ -13,8 +13,8 @@
         <nav role="navigation">
           <ul>
             <%= if @current_user do %>
-              <li><%= @current_user.email %></li>
               <li>
+                <%= @current_user.email %>
                 <%= link "Log out",
                       to: Routes.session_path(@conn, :delete, @current_user),
                       method: "delete" %>
@@ -22,7 +22,7 @@
             <% else %>
               <li><%= link "Register", to: Routes.user_path(@conn, :new) %></li>
               <li><%= link "Log in", to: Routes.session_path(@conn, :new) %></li>
-            <% end %>
+            <% end %> 
           </ul>
         </nav>
       </section>

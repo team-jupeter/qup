@@ -8,7 +8,7 @@ defmodule Demo.FinancialAccounts.FinancialAccount do
     field :left, :string
     field :right, :string
 
-    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+    belongs_to :entity, Demo.Accounts.Entity, type: :binary_id
 
     timestamps()
   end

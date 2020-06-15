@@ -1,0 +1,30 @@
+<h1>Listing Videos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Url</th>
+      <th>Title</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for balance_sheet <- @balance_sheets do %>
+    <tr>
+      <td><%= balance_sheet.url %></td>
+      <td><%= balance_sheet.title %></td>
+      <td><%= balance_sheet.description %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.balance_sheet_path(@conn, :show, balance_sheet) %></span>
+        <span><%= link "Edit", to: Routes.balance_sheet_path(@conn, :edit, balance_sheet) %></span>
+        <span><%= link "Delete", to: Routes.balance_sheet_path(@conn, :delete, balance_sheet), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Balance Sheet", to: Routes.balance_sheet_path(@conn, :new) %></span>

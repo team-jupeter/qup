@@ -1,4 +1,4 @@
-defmodule Demo.Repo.Migrations.CreateUsersEntities do
+defmodule Demo.Repo.Migrations.CreateUsersAccounts do
   use Ecto.Migration
 
   def change do

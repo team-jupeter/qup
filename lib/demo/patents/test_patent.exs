@@ -22,7 +22,7 @@ korea_supul = Supul.changeset(%Supul{}, %{name: "kipo_County", supul_code: 0x014
 
 
 #? init users
-alias Demo.Users.User
+alias Demo.Accounts.User
 
 # {ok, mr_hong} = User.changeset(%User{}, %{name: "Hong Gildong"}) |> Repo.insert
 mr_hong = User.changeset(%User{}, %{name: "Hong Gildong", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
@@ -31,7 +31,7 @@ korea = User.changeset(%User{}, %{name: "South Korea", email: "korea@000000.kr"}
 
 
 #? init entities
-alias Demo.Entities.Entity
+alias Demo.Accounts.Entity
 
 hong_entity = Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
 kipo = Entity.changeset(%Entity{}, %{name: "Korean Intellectual Property Office", email: "kipo@3435.kr"}) |> Repo.insert!

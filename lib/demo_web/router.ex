@@ -34,7 +34,7 @@ defmodule DemoWeb.Router do
     live "/users-live/new", UserLive.New
     live "/users-live/:id", UserLive.Show
     live "/users-live/:id/edit", UserLive.Edit
-
+ 
     live "/invoices-live/page/:page", InvoiceLive.Index
     live "/invoices-live", InvoiceLive.Index
     live "/invoices-live-scroll", InvoiceLive.IndexManualScroll
@@ -57,6 +57,39 @@ defmodule DemoWeb.Router do
     live_dashboard "/dashboard", metrics: DemoWeb.Telemetry
   end
 
+  scope "/manage", DemoWeb do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/videos", VideoController
+  end
+
+  scope "/business", DemoWeb do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/entities", EntityController
+  end
+
+  scope "/gab", DemoWeb do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/gab_accounts", GabAccountController
+  end
+
+  scope "/reports", DemoWeb do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/financial_report", FinancialReportController
+    resources "/balance_sheets", BalanceSheetController
+    resources "/income_statements", IncomeStatementController
+    resources "/cf_statements", CFStatementController
+  end
+
+
+  scope "/campus", DemoWeb do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/schools", SchoolController
+  end
   # scope "/", DemoWeb do
   #   pipe_through [:browser, :bare]
 

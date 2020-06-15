@@ -34,7 +34,7 @@ namwon_supul =
   |> Repo.insert!()
 
 # ? init users
-alias Demo.Users.User
+alias Demo.Accounts.User
 
 # {ok, mr_hong} = User.changeset(%User{}, %{name: "Hong Gildong"}) |> Repo.insert
 mr_hong =

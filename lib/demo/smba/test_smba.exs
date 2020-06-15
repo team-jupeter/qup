@@ -22,7 +22,7 @@ korea_supul = Supul.changeset(%Supul{}, %{name: "smba_County", supul_code: 0x014
 
 
 #? init users
-alias Demo.Users.User
+alias Demo.Accounts.User
 
 # {ok, mr_hong} = User.changeset(%User{}, %{name: "Hong Gildong"}) |> Repo.insert
 mr_hong = User.changeset(%User{}, %{name: "Hong Gildong", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
@@ -39,7 +39,7 @@ irs = Taxation.changeset(%Taxation{}, %{name: "US Internal Revenue Service", nat
 
 
 #? init entities
-alias Demo.Entities.Entity
+alias Demo.Accounts.Entity
 
 hong_entity = Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
 tomi_entity = Entity.changeset(%Entity{}, %{name: "Sung Chunhyang Entity", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!
@@ -54,7 +54,7 @@ Repo.preload(tesla_entity, [:users]) |> Ecto.Changeset.change() |> Ecto.Changese
 
 
 #? BinessEmbed
-alias Demo.Entities.BusinessEmbed
+alias Demo.Accounts.BusinessEmbed
 
 #? hard coded. In real codes, we will use user_id than user name, and product_id than product name.
 tesla_korea  = [

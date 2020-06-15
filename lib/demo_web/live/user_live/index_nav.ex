@@ -1,7 +1,7 @@
 defmodule DemoWeb.UserLive.IndexNav do
   use Phoenix.LiveView, layout: {DemoWeb.LayoutView, "live.html"}
 
-  alias Demo.Users
+  alias Demo.Accounts
   alias DemoWeb.UserLiveView
   alias DemoWeb.Router.Helpers, as: Routes
 
@@ -18,11 +18,11 @@ defmodule DemoWeb.UserLive.IndexNav do
 
   defp fetch(socket) do
     %{page: page, per_page: per_page} = socket.assigns
-    users = Users.list_users(page, per_page)
-    assign(socket, users: users, page_title: "Listing Users – Page #{page}")
+    users = Accounts.list_users(page, per_page)
+    assign(socket, users: users, page_title: "Listing Accounts – Page #{page}")
   end
 
-  def handle_info({Users, [:user | _], _}, socket) do
+  def handle_info({Accounts, [:user | _], _}, socket) do
     {:noreply, fetch(socket)}
   end
 
@@ -35,8 +35,8 @@ defmodule DemoWeb.UserLive.IndexNav do
   def handle_event("keydown", _, socket), do: {:noreply, socket}
 
   def handle_event("delete_user", %{"id" => id}, socket) do
-    user = Users.get_user!(id)
-    {:ok, _user} = Users.delete_user(user)
+    user = Accounts.get_user!(id)
+    {:ok, _user} = Accounts.delete_user(user)
 
     {:noreply, socket}
   end

@@ -31,7 +31,7 @@ hankyung_supul =
 
 
 # ? init users
-alias Demo.Users.User
+alias Demo.Accounts.User
 
 # {ok, mr_hong} = User.changeset(%User{}, %{name: "Hong Gildong"}) |> Repo.insert
 mr_hong =
@@ -70,7 +70,7 @@ Repo.preload(mr_gong, [:certificates]) |> Ecto.Changeset.change() \
 STEP ONE(1)
 Suggestion
 '''
-#? 이 몽룡 등이 입법 제안을 게시판에 게시
+#? 이 몽룡 등이 법률의 신설 또는 기존 법률의 수정제안을 게시판에 게시
 
 alias Demo.Votes.Law
   law = Law.changeset(%Law{}, %{
@@ -95,13 +95,13 @@ voting_rule = [ #? 헌법, 법률, 규칙, 규정
 #? Lee Mong Ryong etc. publicize their suggestion and get supporters equal to or more than the necessary supporters described in voting rule.
 alias Demo.Votes.Initiative
 initiative = Initiative.changeset(%Initiative{}, %{
-  type: "Law", 
+  type: "Law", #? constitution, ordinance, rule, law
   initiators: [mr_lee.id, ms_sung.id],
   lawyers: [mr_meng.id, mr_gong.id],
   layer_review: "본 제안은 헌법 및 이전 법률과 상치하지 않고....의 효과가 예상되며...",
   law_id: law.id,
   supports: 23451, #? number of supports from bulletin board.
-  supporters: [mr_hong] #? pretend more than 10_000 supporters.
+  # supporters: [mr_hong] #? pretend more than 10_000 supporters.
 }) |> Repo.insert!
 
 
@@ -119,8 +119,8 @@ end
 
 alias Demo.Votes.SurveyEmbed
 survey = SurveyEmbed.changeset(%SurveyEmbed{}, %{
-  title: "Update Law article 1, clause 1",
-  responden: mr_hong.id,
+  title: "Update Criminal Law article 1, clause 1",
+  respondent: mr_hong.id,
   summary: "형사소송법 조항 1항 1조의 이전 문구 ...을 새로운 문구 ...로 바꾸는 제안으로, 그 취지는 ...",
   discussion_site: "http://example.com/discussion/article1"
 }) 
@@ -212,6 +212,7 @@ alias Demo.Votes.Vote
 vote = Vote.changeset(%Vote{}, %{
     area: "South Korea",
     type: "Law", 
+    law_id: law.id, 
     }) |> Repo.insert!
 
 alias Demo.Votes.RoundEmbed

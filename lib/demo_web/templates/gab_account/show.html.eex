@@ -1,0 +1,13 @@
+<h4>Show Gab account</h4>
+
+<ul>
+
+  <li>
+    <strong>Balance:</strong>
+    <%= @gab_account.balance %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.gab_account_path(@conn, :edit, @gab_account) %></span>
+<span><%= link "Back", to: Routes.gab_account_path(@conn, :index) %></span>

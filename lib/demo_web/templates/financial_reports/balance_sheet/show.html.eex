@@ -1,0 +1,23 @@
+<h1>Show Balance Sheet</h1>
+
+<ul>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @balance_sheet.url %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @balance_sheet.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @balance_sheet.description %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.balance_sheet_path(@conn, :edit, @balance_sheet) %></span>
+<span><%= link "Back", to: Routes.balance_sheet_path(@conn, :index) %></span>

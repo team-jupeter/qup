@@ -1,17 +1,18 @@
-defmodule Demo.Entities.BusinessEmbed do
+defmodule Demo.Business.BusinessEmbed do
   import Ecto.Changeset
   use Ecto.Schema
 
   embedded_schema do
     field :name, :string #? Company Name
     field :crn, :string #? Company Registration Number
+    field :company_prefix, :string #? Company Prefix
     field :sic_code, :string #? Standard Industrial Classification
     field :legal_status, :string #? Corporation, Foundation, NGO ...
     field :year_started, :integer
     field :year_ended, :integer
     field :addresses, {:array, :map} #? office, factory, lab ...
     field :employees, {:array, :map} #? user_ids
-    field :products, {:array, :map} #? Global Products Classification
+    field :products, {:array, :map} #? GTIN
     field :yearly_sales, :decimal, default: 0.0
     field :num_of_shares, {:array, :map}
     field :share_price, {:array, :map}

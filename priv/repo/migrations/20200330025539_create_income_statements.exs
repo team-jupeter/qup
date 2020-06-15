@@ -34,6 +34,7 @@ defmodule Demo.Repo.Migrations.CreateIncomeStatements do
       add(:t3, {:array, :jsonb}, default: [])
 
       add :financial_report_id, references(:financial_reports, type: :uuid, null: false)
+      add :entity_id, references(:entities, type: :uuid, null: false)
 
       timestamps()
     end

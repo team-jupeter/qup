@@ -1,0 +1,75 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :locked %>
+  <%= text_input f, :locked %>
+  <%= error_tag f, :locked %>
+
+  <%= label f, :current_hash %>
+  <%= text_input f, :current_hash %>
+  <%= error_tag f, :current_hash %>
+
+  <%= label f, :hash_history %>
+  <%= text_input f, :hash_history %>
+  <%= error_tag f, :hash_history %>
+
+  <%= label f, :credit_rate %>
+  <%= text_input f, :credit_rate %>
+  <%= error_tag f, :credit_rate %>
+
+  <%= label f, :num_of_shares %>
+  <%= text_input f, :num_of_shares %>
+  <%= error_tag f, :num_of_shares %>
+
+  <%= label f, :num_of_shares_issued %>
+  <%= text_input f, :num_of_shares_issued %>
+  <%= error_tag f, :num_of_shares_issued %>
+
+  <%= label f, :num_of_treasury_stocks %>
+  <%= text_input f, :num_of_treasury_stocks %>
+  <%= error_tag f, :num_of_treasury_stocks %>
+
+  <%= label f, :market_capitalization %>
+  <%= text_input f, :market_capitalization %>
+  <%= error_tag f, :market_capitalization %>
+
+  <%= label f, :stock_price %>
+  <%= text_input f, :stock_price %>
+  <%= error_tag f, :stock_price %>
+
+  <%= label f, :intrinsic_value %>
+  <%= text_input f, :intrinsic_value %>
+  <%= error_tag f, :intrinsic_value %>
+
+  <%= label f, :re_fmv %>
+  <%= text_input f, :re_fmv %>
+  <%= error_tag f, :re_fmv %>
+
+  <%= label f, :debt_int_rate %>
+  <%= text_input f, :debt_int_rate %>
+  <%= error_tag f, :debt_int_rate %>
+
+  <%= label f, :entity_id %>
+  <%= text_input f, :entity_id %>
+  <%= error_tag f, :entity_id %>
+
+  <%= label f, :supul_id %>
+  <%= text_input f, :supul_id %>
+  <%= error_tag f, :supul_id %>
+
+  <%= label f, :state_supul_id %>
+  <%= text_input f, :state_supul_id %>
+  <%= error_tag f, :state_supul_id %>
+
+  <%= label f, :nation_supul_id %>
+  <%= text_input f, :nation_supul_id %>
+  <%= error_tag f, :nation_supul_id %>
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+<% end %>

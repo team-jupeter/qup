@@ -2,12 +2,12 @@
 defmodule DemoWeb.AirportChannel do
   use DemoWeb, :channel
 
-  alias Demo.Users
+  alias Demo.Accounts
 
   def join("airports:" <> user_name, _params, socket) do
     send(self(), :after_join)
     user_name = String.to_integer(user_name)
-    airport = Users.get_user!(user_name)
+    airport = Accounts.get_user!(user_name)
 
     {:ok, assign(socket, :airport, airport)}
   end
@@ -20,12 +20,12 @@ defmodule DemoWeb.AirportChannel do
 
 
   # def handle_in(event, params, socket) do
-  #   user = Users.get_user!(socket.assigns.user_id)
+  #   user = Accounts.get_user!(socket.assigns.user_id)
   #   handle_in(event, params, user, socket)
   # end
 
   # def handle_in("new_passenger", params, user, socket) do
-  #   case Users.inform_airport(user, socket.assigns.airport, params) do
+  #   case Accounts.inform_airport(user, socket.assigns.airport, params) do
   #     {:ok, passenger} ->
   #       broadcast!(socket, "new_passenger", %{ # or push
   #         id: passenger.id,

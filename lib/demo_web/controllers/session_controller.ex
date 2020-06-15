@@ -7,14 +7,14 @@ defmodule DemoWeb.SessionController do
 
   def create(conn, %{"session" => %{"email" => email, "password" => pass}}) do
     # IO.inspect conn
-    case Demo.Users.authenticate_by_email_and_pass(email, pass) do
+    case Demo.Accounts.authenticate_by_email_and_pass(email, pass) do
       {:ok, user} ->
         conn
         |> DemoWeb.Auth.login(user)
         |> put_flash(:info, "Welcome back!")
         |> redirect(to: Routes.page_path(conn, :index))
 
-      {:error, _reason} ->
+      {:error, _reason} -> 
         conn
         |> put_flash(:error, "Invalid email/password combination")
         |> render("new.html")

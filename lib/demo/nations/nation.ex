@@ -11,8 +11,8 @@ defmodule Demo.Nations.Nation do
 
     
     has_one :taxation,  Demo.Taxations.Taxation, on_replace: :nilify
-    has_many :entities, Demo.Entities.Entity, on_replace: :nilify
-    has_many :users, Demo.Users.User, on_replace: :nilify
+    has_many :entities, Demo.Accounts.Entity, on_replace: :nilify
+    has_many :users, Demo.Accounts.User, on_replace: :nilify
   end
 
   def changeset(%Nation{} = nation, attrs) do

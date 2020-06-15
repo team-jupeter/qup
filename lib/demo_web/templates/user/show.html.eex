@@ -1,2 +1,27 @@
-<h1>Showing User</h1>
-<%= render "user.html", user: @user %>
+<h4>User Detail</h4>
+<b>Type</b> (<%= @user.type %>) </br>
+<b>ID</b> (<%= @user.id %>) </br>
+<b>Name</b> (<%= @user.name %>) </br>
+<b>Social Secutiry Number</b> (<%= @user.ssn %>) </br> 
+<b>Username</b> (<%= @user.username %>) </br>
+<b>Email</b> (<%= @user.email %>) </br>
+<b>Birth Date</b> (<%= @user.birth_date %>) </br>
+<b>Password Hash</b> (<%= @user.password_hash %>) </br>
+<b>Private Key</b> (<%= @user.private_key %>) </br>
+ </br>
+
+
+<section class="container">
+<nav role="navigation">
+<h4>Register</h4>
+    <ul>
+        <li><%= link "Entity", to: Routes.user_path(@conn, :new) %></li>
+        <li><%= link "Student", to: Routes.user_path(@conn, :new) %></li>
+        <li><%= link "Mentor", to: Routes.user_path(@conn, :new) %></li>
+        <li><%= link "Certificate", to: Routes.user_path(@conn, :new) %></li>
+        <li><%= link "Health Report", to: Routes.user_path(@conn, :new) %></li>
+        <li><%= link "Nation", to: Routes.user_path(@conn, :new) %></li>
+        <li><%= link "Supul", to: Routes.user_path(@conn, :new) %></li>
+    </ul>
+</nav>
+</section>

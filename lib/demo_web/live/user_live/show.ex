@@ -4,7 +4,7 @@ defmodule DemoWeb.UserLive.Show do
 
   alias DemoWeb.UserLive
   alias DemoWeb.Router.Helpers, as: Routes
-  alias Demo.Users
+  alias Demo.Accounts
   alias Phoenix.LiveView.Socket
 
   def render(assigns) do
@@ -29,20 +29,20 @@ defmodule DemoWeb.UserLive.Show do
   end
 
   def handle_params(%{"id" => id}, _url, socket) do
-    if connected?(socket), do: Demo.Users.subscribe(id)
+    if connected?(socket), do: Demo.Accounts.subscribe(id)
     {:noreply, socket |> assign(id: id) |> fetch()}
   end
 
   defp fetch(%Socket{assigns: %{id: id}} = socket) do
-    IO.inspect Users.get_user!(id)
-    assign(socket, user: Users.get_user!(id))
+    IO.inspect Accounts.get_user!(id)
+    assign(socket, user: Accounts.get_user!(id))
   end
 
-  def handle_info({Users, [:user, :updated], _}, socket) do
+  def handle_info({Accounts, [:user, :updated], _}, socket) do
     {:noreply, fetch(socket)}
   end
 
-  def handle_info({Users, [:user, :deleted], _}, socket) do
+  def handle_info({Accounts, [:user, :deleted], _}, socket) do
     {:stop,
      socket
      |> put_flash(:error, "This user has been deleted from the system")

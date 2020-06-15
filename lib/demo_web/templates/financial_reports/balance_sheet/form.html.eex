@@ -1,0 +1,92 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :accounts_payable %>
+  <%= text_input f, :accounts_payable %>
+  <%= error_tag f, :accounts_payable %>
+
+  <%= label f, :accounts_receivable %>
+  <%= text_input f, :accounts_receivable %>
+  <%= error_tag f, :accounts_receivable %>
+
+  <%= label f, :accrued_liabilities %>
+  <%= text_input f, :accrued_liabilities %>
+  <%= error_tag f, :accrued_liabilities %>
+
+  <%= label f, :additional_paid_in_capital %>
+  <%= text_input f, :additional_paid_in_capital %>
+  <%= error_tag f, :additional_paid_in_capital %>
+
+  <%= label f, :cash %>
+  <%= text_input f, :cash %>
+  <%= error_tag f, :cash %>
+
+  <%= label f, :customer_prepayments %>
+  <%= text_input f, :customer_prepayments %>
+  <%= error_tag f, :customer_prepayments %>
+
+  <%= label f, :fixed_assets %>
+  <%= text_input f, :fixed_assets %>
+  <%= error_tag f, :fixed_assets %>
+
+  <%= label f, :inventory %>
+  <%= text_input f, :inventory %>
+  <%= error_tag f, :inventory %>
+
+  <%= label f, :long_term_debt %>
+  <%= text_input f, :long_term_debt %>
+  <%= error_tag f, :long_term_debt %>
+
+  <%= label f, :marketable_securities %>
+  <%= text_input f, :marketable_securities %>
+  <%= error_tag f, :marketable_securities %>
+
+  <%= label f, :prepaid_expenses %>
+  <%= text_input f, :prepaid_expenses %>
+  <%= error_tag f, :prepaid_expenses %>
+  
+  <%= label f, :retained_earnings %>
+  <%= text_input f, :retained_earnings %>
+  <%= error_tag f, :retained_earnings %>
+
+  <%= label f, :short_term_debt %>
+  <%= text_input f, :short_term_debt %>
+  <%= error_tag f, :short_term_debt %>
+
+  <%= label f, :stock %>
+  <%= text_input f, :stock %>
+  <%= error_tag f, :stock %>
+
+  <%= label f, :taxes %>
+  <%= text_input f, :taxes %>
+  <%= error_tag f, :taxes %>
+
+  <%= label f, :treasury_stock %>
+  <%= text_input f, :treasury_stock %>
+  <%= error_tag f, :treasury_stock %>
+
+  <%= label f, :t1s %>
+  <%= text_input f, :t1s %>
+  <%= error_tag f, :t1s %>
+
+  <%= label f, :t2s %>
+  <%= text_input f, :t2s %>
+  <%= error_tag f, :t2s %>
+
+  <%= label f, :t3s %>
+  <%= text_input f, :t3s %>
+  <%= error_tag f, :t3s %>
+
+  <%= label f, :entity_id %>
+  <%= text_input f, :entity_id %>
+  <%= error_tag f, :entity_id %>
+
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+<% end %>

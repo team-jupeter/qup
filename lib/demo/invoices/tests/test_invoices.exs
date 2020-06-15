@@ -72,7 +72,7 @@ supul_ids = Enum.map(Repo.all(Supul), fn(supul)-> supul.id end)
 #? init users
 #? A user belongs to a nation, and a natural human.
 #? A user should have at least one entity, a legal human, which will represent all the economic activities of the user.
-alias Demo.Users.User
+alias Demo.Accounts.User
 
 [gildong, chunhyang, trump] = [%User{nation_id: korea_id, name: "Mr.Hong"}, %User{nation_id: korea_id, name: "Ms.Sung"},%User{nation_id: usa_id, name: "Donald Trump"}]
 mr_hong = Repo.insert!(gildong)
@@ -121,7 +121,7 @@ taxation_ids = Enum.map(Repo.all(Taxation), fn(taxation)-> taxation.id end)
 #? every entity belongs to a nation.
 #? every entity belongs to a supul.
 
-alias Demo.Entities.Entity
+alias Demo.Accounts.Entity
 
 hong_sung_entity = Entity.changeset(%Entity{}, %{category: "hairshop", name: "Hong & Sung's Hair", nation_id: korea_id, email: "hong_sung@82345.kr", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
 delta_entity = Entity.changeset(%Entity{}, %{category: "airline", name: "Delta Airline", nation_id: usa_id, email: "delta@023357.us", supul_id: orange_supul_id, taxation_id: irs_id}) |> Repo.insert!
@@ -157,9 +157,9 @@ delta_BS = %BalanceSheet{financial_report_id: delta_report_id, gab_account: 2000
 
 
 #? users_entities
-alias Demo.Entities.Entity
-alias Demo.Users.User
-alias Demo.Users
+alias Demo.Accounts.Entity
+alias Demo.Accounts.User
+alias Demo.Accounts
 
 # preload
 hs_entity = Repo.preload(hong_sung_entity, [:users])

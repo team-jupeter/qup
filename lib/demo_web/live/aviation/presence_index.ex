@@ -1,12 +1,12 @@
 defmodule DemoWeb.Aviation.PresenceIndex do
   use Phoenix.LiveView
 
-  alias Demo.Users
+  alias Demo.Accounts
   alias DemoWeb.{UserView, Presence}
   alias Phoenix.Socket.Broadcast
 
   def mount(%{"name" => name}, _session, socket) do
-    Demo.Users.subscribe()
+    Demo.Accounts.subscribe()
     Phoenix.PubSub.subscribe(Demo.PubSub, "users")
     Presence.track(self(), "users", name, %{})
     {:ok, fetch(socket)}
@@ -16,7 +16,7 @@ defmodule DemoWeb.Aviation.PresenceIndex do
 
   defp fetch(socket) do
     assign(socket, %{
-      users: Users.list_users(1, 10),
+      users: Accounts.list_users(1, 10),
       online_users: DemoWeb.Presence.list("users"),
       page: 0
     })
@@ -26,13 +26,13 @@ defmodule DemoWeb.Aviation.PresenceIndex do
     {:noreply, fetch(socket)}
   end
 
-  def handle_info({Users, [:user | _], _}, socket) do
+  def handle_info({Accounts, [:user | _], _}, socket) do
     {:noreply, fetch(socket)}
   end
 
   def handle_event("delete_user", id, socket) do
-    user = Users.get_user!(id)
-    {:ok, _user} = Users.delete_user(user)
+    user = Accounts.get_user!(id)
+    {:ok, _user} = Accounts.delete_user(user)
 
     {:noreply, socket}
   end

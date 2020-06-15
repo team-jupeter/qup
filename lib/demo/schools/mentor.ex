@@ -7,7 +7,7 @@ defmodule Demo.Schools.Mentor do
     field :name, :string
     field :certificates, {:array, :string}
 
-    belongs_to :user, Demo.Users.User, type: :binary_id
+    belongs_to :user, Demo.Accounts.User, type: :binary_id
 
     many_to_many(
       :schools,

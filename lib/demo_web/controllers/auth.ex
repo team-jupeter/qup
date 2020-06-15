@@ -7,7 +7,7 @@ defmodule DemoWeb.Auth do
     # IO.puts "call"
     # IO.inspect conn
     user_id = get_session(conn, :user_id)
-    user = user_id && Demo.Users.get_user(user_id)
+    user = user_id && Demo.Accounts.get_user(user_id)
     # a = assign(conn, :current_user, user)
     # IO.inspect a
     assign(conn, :current_user, user)
@@ -29,5 +29,19 @@ defmodule DemoWeb.Auth do
     # IO.puts "logout"
     # IO.inspect conn
     configure_session(conn, drop: true) # initialize conn
+  end
+
+  import Phoenix.Controller
+  alias DemoWeb.Router.Helpers, as: Routes
+
+  def authenticate_user(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must be logged in to access that page")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
+    end
   end
 end

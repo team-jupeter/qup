@@ -1,0 +1,30 @@
+<h1>Listing Videos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Url</th>
+      <th>Title</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for financial_report <- @financial_reports do %>
+    <tr>
+      <td><%= financial_report.url %></td>
+      <td><%= financial_report.title %></td>
+      <td><%= financial_report.description %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.financial_report_path(@conn, :show, financial_report) %></span>
+        <span><%= link "Edit", to: Routes.financial_report_path(@conn, :edit, financial_report) %></span>
+        <span><%= link "Delete", to: Routes.financial_report_path(@conn, :delete, financial_report), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Video", to: Routes.financial_report_path(@conn, :new) %></span>

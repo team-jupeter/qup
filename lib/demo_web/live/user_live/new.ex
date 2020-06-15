@@ -3,11 +3,11 @@ defmodule DemoWeb.UserLive.New do
 
   alias DemoWeb.UserLive
   alias DemoWeb.Router.Helpers, as: Routes
-  alias Demo.Users
-  alias Demo.Users.User
+  alias Demo.Accounts
+  alias Demo.Accounts.User
 
   def mount(_params, _session, socket) do
-    changeset = Users.change_user(%User{})
+    changeset = Accounts.change_user(%User{})
     {:ok, assign(socket, changeset: changeset)}
   end
 
@@ -16,7 +16,7 @@ defmodule DemoWeb.UserLive.New do
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset =
       %User{}
-      |> Demo.Users.change_user(user_params)
+      |> Demo.Accounts.change_user(user_params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
@@ -27,7 +27,7 @@ defmodule DemoWeb.UserLive.New do
     IO.inspect user_params
     IO.inspect socket
 
-    case Users.create_user(user_params) do
+    case Accounts.create_user(user_params) do
       {:ok, user} ->
         {:noreply,
          socket

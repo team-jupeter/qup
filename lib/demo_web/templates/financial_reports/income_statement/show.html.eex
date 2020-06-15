@@ -1,0 +1,23 @@
+<h1>Show Financial Report</h1>
+
+<ul>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @financial_report.url %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @financial_report.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @financial_report.description %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.financial_report_path(@conn, :edit, @financial_report) %></span>
+<span><%= link "Back", to: Routes.financial_report_path(@conn, :index) %></span>

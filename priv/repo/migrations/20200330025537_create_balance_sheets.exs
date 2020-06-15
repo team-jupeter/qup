@@ -26,6 +26,7 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
       add(:t3s, {:array, :jsonb}, default: [])
 
       add :financial_report_id, references(:financial_reports, type: :uuid, null: false)
+      add :entity_id, references(:entities, type: :uuid, null: false)
 
       timestamps()
     end

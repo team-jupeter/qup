@@ -28,7 +28,7 @@ supul_ids = Enum.map(Repo.all(Supul), fn(supul)-> supul.id end)
 
 
 #? init users
-alias Demo.Users.User
+alias Demo.Accounts.User
 
 [gildong, chunhyang, trump] = [%User{nation_id: korea_id, name: "Mr.Hong", email: "mr_hong@2331.kr", type: "human"}, %User{nation_id: korea_id, name: "Ms.Sung", email: "ms_sung@1335.kr", type: "human"}, %User{nation_id: usa_id, name: "Donald Trump", email: "trump@1335.us", type: "human"}]
 mr_hong = Repo.insert!(gildong)
@@ -57,7 +57,7 @@ Repo.preload(mr_hong, :certificates)
 
 
 #? add a few doctors to the clinic
-alias Demo.Entities.Entity
+alias Demo.Accounts.Entity
 
 jeil_clinic = Entity.changeset(
   %Entity{},

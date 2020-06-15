@@ -22,7 +22,7 @@ hankyung_supul = Supul.changeset(%Supul{}, %{name: "Hankyung_County", supul_code
 
 
 #? init users
-alias Demo.Users.User
+alias Demo.Accounts.User
 
 # {ok, mr_hong} = User.changeset(%User{}, %{name: "Hong Gildong"}) |> Repo.insert
 mr_hong = User.changeset(%User{}, %{name: "Hong Gildong", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
@@ -38,7 +38,7 @@ irs = Taxation.changeset(%Taxation{}, %{name: "US Internal Revenue Service", nat
 
 
 #? init entities
-alias Demo.Entities.Entity
+alias Demo.Accounts.Entity
 
 hong_entity = Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
 tomi_entity = Entity.changeset(%Entity{}, %{name: "Sung Chunhyang Entity", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!

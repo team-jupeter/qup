@@ -17,7 +17,7 @@ seoul_supul = StateSupul.changeset(%StateSupul{}, %{name: "Seoul Supul", supul_c
 
 
 # ? init users
-alias Demo.Users.User
+alias Demo.Accounts.User
 ms_sung =
   User.changeset(%User{}, %{name: "Sung Chunhyang", email: "sung_chun_hyang@82345.kr"}) \
   |> Repo.insert!()
@@ -27,7 +27,7 @@ korea =
 
 
 # ? init entities
-alias Demo.Entities.Entity
+alias Demo.Accounts.Entity
 
 mohw =
   Entity.changeset(%Entity{}, %{name: "Ministry of Health and Welfare of South Korea", email: "mohw@0000.kr"}) |> Repo.insert!()

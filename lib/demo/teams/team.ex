@@ -1,7 +1,7 @@
-defmodule Demo.Entities.Team do
+defmodule Demo.Accounts.Team do
   import Ecto.Changeset
   use Ecto.Schema
-  alias Demo.Entities.{MemberEmbed, ProjectEmbed}
+  alias Demo.Accounts.{MemberEmbed, ProjectEmbed}
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "teams" do
@@ -13,7 +13,7 @@ defmodule Demo.Entities.Team do
     embeds_many :project_embeds, ProjectEmbed, on_replace: :delete
 
     # has_many :users, Demo.Accounts.User
-    belongs_to :entity, Demo.Entities.Entity
+    belongs_to :entity, Demo.Accounts.Entity
 
   end
 

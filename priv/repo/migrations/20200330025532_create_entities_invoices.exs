@@ -1,4 +1,4 @@
-defmodule Demo.Repo.Migrations.CreateEntitiesInvoices do
+defmodule Demo.Repo.Migrations.CreateAccountsInvoices do
   use Ecto.Migration
 
   def change do

@@ -6,7 +6,8 @@ defmodule Demo.Repo.Migrations.CreateHealthReports do
       add :id, :uuid, primary_key: true
       add :weight, :decimal
       add :height, :decimal
-      add :fingerprint, :decimal
+      add :face, :decimal
+      add :fingerprints, {:array, :map}
       add :infection, :boolean, default: false
       add :iris, :decimal
       add :blood_pressure, :decimal

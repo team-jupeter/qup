@@ -1,0 +1,10 @@
+<h4>Entities</h4>
+
+<table>
+  <%= for entity <- @entities do %>
+    <tr>
+      <td><%= render "entity.html", entity: entity %></td>
+      <td><%= link "View", to: Routes.entity_path(@conn, :show, entity.id) %></td>
+    </tr>
+  <% end %>
+</table>

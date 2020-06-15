@@ -16,7 +16,7 @@ defmodule Demo.Schools.Student do
     embeds_many :certificates, Demo.Certificates.Certificate, on_replace: :delete
     embeds_one :learning_path, Demo.Schools.LearningPathEmbed, on_replace: :delete
 
-    belongs_to :user, Demo.Users.User, type: :binary_id
+    belongs_to :user, Demo.Accounts.User, type: :binary_id
     belongs_to :school, Demo.Schools.School, type: :binary_id
 
 

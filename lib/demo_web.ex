@@ -24,6 +24,7 @@ defmodule DemoWeb do
       import Plug.Conn
       import DemoWeb.Gettext
       import Phoenix.LiveView.Controller, only: [live_render: 3]
+      import DemoWeb.Auth, only: [authenticate_user: 2] # New import
       alias DemoWeb.Router.Helpers, as: Routes
     end
   end
@@ -53,6 +54,8 @@ defmodule DemoWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import DemoWeb.Auth, only: [authenticate_user: 2] # New import
+
     end
   end
 
