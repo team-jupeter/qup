@@ -5,23 +5,16 @@
 <b>Industry Classification</b> (<%= @entity.industry_classification %>) </br>
 <b>Name</b> (<%= @entity.name %>) </br>
 <b>Email</b> (<%= @entity.email %>) </br>
-<b>Address</b> (<%= @entity.address %>) </br>
+<b>Address</b> (<%= @entity.entity_address %>) </br>
 <b>Founding Date</b> (<%= @entity.founding_date %>) </br>
-<b>Password Hash</b> (<%= @entity.password_hash %>) </br>
 <b>Private Key</b> (<%= @entity.private_key %>) </br>
 <b>Locked</b> (<%= @entity.locked %>) </br>
  </br>
 <b>GAB Balance</b> (<%= @entity.gab_balance %>) </br>
+ </br> 
+ </br>
 
-<section class="container">
-<nav role="navigation">
-<h4>Register</h4>
+<h4>Financial Reports</h4>
     <ul>
-        <li><%= link "Financial Report", to: Routes.entity_path(@conn, :new) %></li>
-        <li><%= link "Balance Sheet", to: Routes.entity_path(@conn, :new) %></li>
-        <li><%= link "Income Statement", to: Routes.entity_path(@conn, :new) %></li>
-        <li><%= link "Cash Flow Statement", to: Routes.entity_path(@conn, :new) %></li>
-        <li><%= link "Equity Report", to: Routes.entity_path(@conn, :new) %></li>
+        <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @entity.id) %></li>
     </ul>
-</nav>
-</section>

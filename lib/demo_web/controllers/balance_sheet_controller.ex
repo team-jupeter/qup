@@ -12,13 +12,9 @@ defmodule DemoWeb.BalanceSheetController do
   # alias Demo.Reports
   alias Demo.Reports.BalanceSheet
   alias Demo.BalanceSheets
-  # alias Demo.Accounts.Entity
+  # alias Demo.Business.Entity
 
-  def action(conn, _) do
-    args = [conn, conn.params, conn.assigns.current_entity]
-    apply(__MODULE__, action_name(conn), args)
-  end
-
+ 
   def index(conn, _params, _current_entity) do
     render(conn, "index.html")
   end

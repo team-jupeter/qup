@@ -24,7 +24,14 @@ defmodule DemoWeb.EntityController do
 
   def show(conn, %{"id" => id}, current_user) do
     entity = Business.get_user_entity!(current_user, id) 
+
+    conn = conn
+    |> DemoWeb.Auth.entity_login(entity)
+
+    # IO.inspect conn
+
     render(conn, "show.html", entity: entity)
+
   end
 
   def edit(conn, %{"id" => id}, current_user) do
@@ -72,4 +79,5 @@ defmodule DemoWeb.EntityController do
         render(conn, "new.html", changeset: changeset)
     end
   end
+
 end

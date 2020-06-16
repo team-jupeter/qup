@@ -19,7 +19,7 @@ defmodule Demo.ColorCodes.ColorCode do
     field :char_8, :integer
     field :char_9, :integer
 
-    belongs_to :entity, Demo.Accounts.Entity
+    belongs_to :entity, Demo.Business.Entity
 
     timestamps()
   end

@@ -12,7 +12,7 @@ defmodule Demo.Reports.Report do
     field :attached_documents, :string #? attached_documents
 
     belongs_to :machine, Demo.Machines.Machine, type: :binary_id
-    belongs_to :entity, Demo.Accounts.Entity, type: :binary_id
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id
 
     timestamps()
   end

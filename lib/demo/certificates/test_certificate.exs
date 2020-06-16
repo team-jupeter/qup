@@ -27,7 +27,7 @@ korea =
 
 
 # ? init entities
-alias Demo.Accounts.Entity
+alias Demo.Business.Entity
 
 mohw =
   Entity.changeset(%Entity{}, %{name: "Ministry of Health and Welfare of South Korea", email: "mohw@0000.kr"}) |> Repo.insert!()

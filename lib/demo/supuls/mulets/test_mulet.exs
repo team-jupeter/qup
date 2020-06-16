@@ -29,7 +29,7 @@ mr_hong = User.changeset(%User{}, %{name: "Hong Gildong", email: "hong_gil_dong@
 ms_sung = User.changeset(%User{}, %{name: "Sung Chunhyang", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!
 
 #? init entities
-alias Demo.Accounts.Entity
+alias Demo.Business.Entity
 
 hong_entity = Entity.changeset( \
     %Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) \

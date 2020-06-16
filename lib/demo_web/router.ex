@@ -79,9 +79,10 @@ defmodule DemoWeb.Router do
     pipe_through [:browser, :authenticate_user]
 
     resources "/financial_report", FinancialReportController
-    resources "/balance_sheets", BalanceSheetController
-    resources "/income_statements", IncomeStatementController
-    resources "/cf_statements", CFStatementController
+    resources "/balance_sheet", BalanceSheetController
+    resources "/income_statement", IncomeStatementController
+    resources "/cf_statement", CFStatementController
+    resources "/equity_statement", EquityStatementController
   end
 
 

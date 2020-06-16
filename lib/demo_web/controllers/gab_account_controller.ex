@@ -3,7 +3,7 @@ defmodule DemoWeb.GabAccountController do
 
   alias Demo.GabAccounts
   alias Demo.GabAccounts.GabAccount
-  # alias Demo.Accounts.Entity
+  # alias Demo.Business.Entity
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_entity]

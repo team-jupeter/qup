@@ -12,7 +12,7 @@ defmodule Demo.Certificates.Certificate do
     field :document, :binary_id
 
     belongs_to :user, Demo.Accounts.User, type: :binary_id
-    belongs_to :entity, Demo.Accounts.Entity, type: :binary_id
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id
     
     timestamps()
   end

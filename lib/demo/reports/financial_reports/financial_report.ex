@@ -19,8 +19,8 @@ defmodule Demo.Reports.FinancialReport do
     field :re_fmv, :decimal, precision: 10, scale: 2 
     field :debt_int_rate, :decimal, precision: 5, scale: 2 
 
-    embeds_one :fr_embed_a, Demo.Reports.FREmbedA #? 중소기업
-    embeds_one :fr_embed_b, Demo.Reports.FREmbedB #? 대기업 또는 기업 집단
+    # embeds_one :fr_embed_a, Demo.Reports.FREmbedA #? 중소기업
+    # embeds_one :fr_embed_b, Demo.Reports.FREmbedB #? 대기업 또는 기업 집단
 
 
     has_one :balance_sheet, Demo.Reports.BalanceSheet
@@ -33,7 +33,7 @@ defmodule Demo.Reports.FinancialReport do
     # has_one :comprehensive_IS
     # has_one :consolidated_FS
 
-    belongs_to :entity, Demo.Accounts.Entity, type: :binary_id
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
     belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
@@ -42,7 +42,13 @@ defmodule Demo.Reports.FinancialReport do
     timestamps()
   end
 
-  @fields [:num_of_treasury_stocks, :locked, :num_of_shares, :hash_history, :market_capitalization, :stock_price, :intrinsic_value, :debt_int_rate]
+  @fields [
+    :locked, :current_hash, :hash_history, 
+    :num_of_shares, :num_of_shares_issued, :num_of_treasury_stocks, 
+    :credit_rate, :market_capitalization, :stock_price, 
+    :intrinsic_value, :debt_int_rate, :re_fmv,
+    :entity_id, :supul_id, 
+  ]
   @doc false
   def changeset(report, attrs) do
     report

@@ -33,6 +33,11 @@ defmodule Demo.Business.Entity do
     has_one :sil, Demo.Sils.Sil
 
     has_one :financial_report, Demo.Reports.FinancialReport
+    has_one :balance_sheet, Demo.Reports.BalanceSheet
+    has_one :income_statement, Demo.Reports.IncomeStatement
+    has_one :cf_statement, Demo.Reports.CFStatement
+    has_one :equity_statement, Demo.Reports.EquityStatement
+    
     has_many :licenses, Demo.Licenses.License
 
     has_one :t2_item, Demo.ABC.T2Item

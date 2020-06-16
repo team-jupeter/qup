@@ -1,0 +1,77 @@
+<h4>Financial Report</h4>
+<p>Notice: Values in this page are automatically calculated from other financial statements.</p>
+
+<ul>
+
+  <li>
+    <strong>Current Hash:</strong>
+    <%= @fr.current_hash %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @fr.hash_history %>
+  </li>
+
+  <li>
+    <strong>Credit Rate:</strong>
+    <%= @fr.credit_rate %>
+  </li>
+
+  <li>
+    <strong>Number of Shares:</strong>
+    <%= @fr.num_of_shares %>
+  </li>
+
+  <li>
+    <strong>Number of Shares Issued:</strong>
+    <%= @fr.num_of_shares_issued %>
+  </li>
+
+  <li>
+    <strong>Number of Treasury Stocks:</strong>
+    <%= @fr.num_of_treasury_stocks %>
+  </li>
+
+  <li>
+    <strong>Market Capitalization:</strong>
+    <%= @fr.market_capitalization %>
+  </li>
+
+  <li>
+    <strong>Stock Price:</strong>
+    <%= @fr.stock_price %>
+  </li>
+
+  <li>
+    <strong>Intrinsic Value:</strong>
+    <%= @fr.intrinsic_value %>
+  </li>
+
+  <li>
+    <strong>Estimated Fair Marke Value:</strong>
+    <%= @fr.re_fmv %>
+  </li>
+
+  <li>
+    <strong>Debt Interest Rate:</strong>
+    <%= @fr.debt_int_rate %>
+  </li>
+
+  <li>
+    <strong>Entity ID:</strong>
+    <%= @fr.entity_id %>
+  </li>
+
+  <li>
+    <strong>Supul ID:</strong>
+    <%= @fr.supul_id %>
+  </li>
+
+
+</ul>
+
+<span><%= link "Edit", to: Routes.financial_report_path(@conn, :edit, @fr.id) %></span>
+<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>
+<span><%= link "New", to: Routes.financial_report_path(@conn, :index) %></span>
+

@@ -10,7 +10,7 @@ defmodule Demo.ABC.T2Item do
     field :proportion_in_market,:decimal, precision: 5, scale: 2 #? market capitalization ratio in Korean security market.
     field :intrinsic_price_gab, :decimal, precision: 7, scale: 2 #? difference between market price and re_fmv.
 
-    belongs_to :entity, Demo.Accounts.Entity, type: :binary_id 
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id 
     belongs_to :t2_pool, Demo.ABC.T2Pool, type: :binary_id 
 
     timestamps()

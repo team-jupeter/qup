@@ -15,12 +15,13 @@ defmodule DemoWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    # IO.inspect conn
+    IO.puts id
+    IO.inspect conn
     user = Accounts.get_user(id)
     # IO.inspect conn
     render(conn, "show.html", user: user)
   end
-
+ 
   def new(conn, _params) do
     # IO.inspect conn
     changeset = Accounts.change_user(%User{})

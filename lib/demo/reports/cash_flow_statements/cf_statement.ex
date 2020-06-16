@@ -13,7 +13,7 @@ defmodule Demo.Reports.CFStatement do
     field :opening_cash_balance, :decimal, precision: 12, scale: 2
 
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
-    belongs_to :entity, Demo.Accounts.Entity, type: :binary_id
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id
 
     timestamps()
   end

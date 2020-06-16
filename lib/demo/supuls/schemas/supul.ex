@@ -8,7 +8,7 @@ defmodule Demo.Supuls.Supul do
     field :geographical_area, :string
     field :name, :string
 
-    has_many :entities, Demo.Accounts.Entity, on_replace: :nilify
+    has_many :entities, Demo.Business.Entity, on_replace: :nilify
     has_many :payloads, Demo.Tickets.Payload, on_replace: :nilify
     has_many :schools, Demo.Schools.School, on_replace: :nilify
 

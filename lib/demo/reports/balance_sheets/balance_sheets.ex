@@ -5,7 +5,7 @@ defmodule Demo.BalanceSheets do
 
   alias Demo.Reports.BalanceSheet
   # alias Demo.Reports.Report
-  alias Demo.Accounts.Entity
+  alias Demo.Business.Entity
   # alias Demo.Reports.FinancialReport
 
   def get_balance_sheet!(id), do: Repo.get!(BalanceSheet, id)

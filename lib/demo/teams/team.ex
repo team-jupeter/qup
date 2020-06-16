@@ -13,7 +13,7 @@ defmodule Demo.Accounts.Team do
     embeds_many :project_embeds, ProjectEmbed, on_replace: :delete
 
     # has_many :users, Demo.Accounts.User
-    belongs_to :entity, Demo.Accounts.Entity
+    belongs_to :entity, Demo.Business.Entity
 
   end
 

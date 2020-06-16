@@ -43,6 +43,7 @@ defmodule Demo.Accounts do
 
   def get_user_by(params), do: Repo.get_by(User, params)
 
+
   def authenticate_by_email_and_pass(email, given_pass) do
     user = get_user_by(email: email)
 

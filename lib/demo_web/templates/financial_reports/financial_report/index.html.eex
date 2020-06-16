@@ -1,4 +1,0 @@
-<h1>Financial Reports</h1>
-
-
-<span><%= link "New Financial Report", to: Routes.financial_report_path(@conn, :new) %></span>

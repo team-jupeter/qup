@@ -10,7 +10,7 @@ defmodule Demo.Geo.Address do
     field :street, :string
 
     belongs_to :user, Demo.Accounts.User, type: :binary_id
-    belongs_to :entity, Demo.Accounts.Entity, type: :binary_id
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id
 
     timestamps()
   end

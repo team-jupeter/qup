@@ -31,7 +31,7 @@ korea = User.changeset(%User{}, %{name: "South Korea", email: "korea@000000.kr"}
 
 
 #? init entities
-alias Demo.Accounts.Entity
+alias Demo.Business.Entity
 
 hong_entity = Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
 kipo = Entity.changeset(%Entity{}, %{name: "Korean Intellectual Property Office", email: "kipo@3435.kr"}) |> Repo.insert!

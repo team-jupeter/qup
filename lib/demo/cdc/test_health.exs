@@ -57,7 +57,7 @@ Repo.preload(mr_hong, :certificates)
 
 
 #? add a few doctors to the clinic
-alias Demo.Accounts.Entity
+alias Demo.Business.Entity
 
 jeil_clinic = Entity.changeset(
   %Entity{},

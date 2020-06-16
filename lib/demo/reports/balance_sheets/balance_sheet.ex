@@ -26,7 +26,7 @@ defmodule Demo.Reports.BalanceSheet do
     embeds_many :t3s, Demo.ABC.T3, on_replace: :delete
  
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
-    belongs_to :entity, Demo.Accounts.Entity, type: :binary_id
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id
 
 
     timestamps()

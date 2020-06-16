@@ -4,23 +4,21 @@ defmodule Demo.FinancialReports do
   alias Demo.Repo
 
   alias Demo.Reports.FinancialReport
-  # alias Demo.Reports.Report
-  alias Demo.Accounts.Entity
-
+  alias Demo.Business.Entity
 
   def get_financial_report!(id), do: Repo.get!(FinancialReport, id)
 
-  def get_entity_financial_report!(%Entity{} = entity, id) do
+  def get_entity_financial_report!(entity_id) do
     FinancialReport
-    |> entity_financial_reports_query(entity)
-    |> Repo.get!(id)
+    |> entity_financial_reports_query(entity_id)
+    |> Repo.all
   end
 
-  defp entity_financial_reports_query(query, %Entity{id: entity_id}) do
+  defp entity_financial_reports_query(query, entity_id) do    
     from(f in query, where: f.entity_id == ^entity_id)
   end
 
-
+ 
   def create_financial_report(%Entity{} = entity, attrs \\ %{}) do
     %FinancialReport{}
     |> FinancialReport.changeset(attrs)

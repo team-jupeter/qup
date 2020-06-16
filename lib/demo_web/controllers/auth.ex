@@ -22,6 +22,17 @@ defmodule DemoWeb.Auth do
     |> put_session(:user_id, user.id)
     # |> IO.inspect
     |> configure_session(renew: true)
+  end
+
+  def entity_login(conn, entity) do
+    IO.puts "entity_login"
+    # IO.inspect conn
+    conn
+    |> assign(:current_entity, entity)
+    # |> IO.inspect
+    |> put_session(:entity_id, entity.id)
+    # |> IO.inspect
+    |> configure_session(renew: true)
     # |> IO.inspect
   end
 
@@ -44,4 +55,15 @@ defmodule DemoWeb.Auth do
       |> halt()
     end
   end
+
+  # def authenticate_entity(conn, _opts) do
+  #   if conn.assigns.current_entity do
+  #     conn
+  #   else
+  #     conn
+  #     |> put_flash(:error, "You must be logged in to access that page")
+  #     |> redirect(to: Routes.page_path(conn, :index))
+  #     |> halt()
+  #   end
+  # end
 end

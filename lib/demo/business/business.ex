@@ -2,30 +2,22 @@ defmodule Demo.Business do
   import Ecto.Query, warn: false
 
   alias Demo.Repo
-  alias Demo.Accounts.Entity
+  alias Demo.Business.Entity
   alias Demo.Accounts.User
 
-  def list_entities do
-    Repo.all(Entity)
-  end
 
   def list_user_entities(%User{} = user) do
-    Entity
-    |> user_entities_query(user)
-    |> Repo.all()
+    user = Repo.preload(user, :entities)
+    user.entities
   end
 
   def get_user_entity!(%User{} = user, id) do
     Entity
-    |> user_entities_query(user)
+    # |> user_entities_query(user)
     |> Repo.get!(id)
-  end
+  end 
 
   def get_entity!(id), do: Repo.get!(Entity, id)
-
-  defp user_entities_query(query, %User{id: user_id}) do
-    from(e in query, where: e.user_id == ^user_id)
-  end
 
   def update_entity(%Entity{} = entity, attrs) do
     entity

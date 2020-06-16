@@ -8,33 +8,27 @@
 #---
 defmodule DemoWeb.FinancialReportController do
   use DemoWeb, :controller
+  # import Plug.Conn
 
   alias Demo.FinancialReports
   alias Demo.Reports.FinancialReport
-  # alias Demo.Accounts.Entity
 
-  def action(conn, _) do
-    args = [conn, conn.params, conn.assigns.current_entity]
-    apply(__MODULE__, action_name(conn), args)
-  end
+  def show(conn, %{"id" => id}) do
+    [financial_report] = FinancialReports.get_entity_financial_report!(id) 
 
-  def index(conn, _params, _current_entity) do
-    render(conn, "index.html")
-  end
+    IO.inspect financial_report
 
-  def show(conn, %{"id" => id}, current_entity) do
-    financial_report = FinancialReports.get_entity_financial_report!(current_entity, id) 
-    render(conn, "show.html", financial_report: financial_report)
-  end
+    render(conn, "show.html", fr: financial_report)
+  end 
 
   def edit(conn, %{"id" => id}, current_entity) do
-    financial_report = FinancialReports.get_entity_financial_report!(current_entity, id) 
+    financial_report = FinancialReports.get_entity_financial_report!(id) 
     changeset = FinancialReports.change_financial_report(financial_report)
     render(conn, "edit.html", financial_report: financial_report, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "financial_report" => financial_report_params}, current_entity) do
-    financial_report = FinancialReports.get_entity_financial_report!(current_entity, id) 
+    financial_report = FinancialReports.get_entity_financial_report!(id) 
 
     case FinancialReports.update_financial_report(financial_report, financial_report_params) do
       {:ok, financial_report} ->

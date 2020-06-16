@@ -66,7 +66,7 @@ irs =
   |> Repo.insert!()
 
 # ? init entities
-alias Demo.Accounts.Entity
+alias Demo.Business.Entity
 
 hong_entity =
   Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) \

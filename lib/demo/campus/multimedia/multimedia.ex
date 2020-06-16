@@ -19,7 +19,7 @@ defmodule Demo.Multimedia do
     Video
     |> user_videos_query(user)
     |> Repo.get!(id)
-  end
+  end 
 
   def get_video!(id), do: Repo.get!(Video, id)
 

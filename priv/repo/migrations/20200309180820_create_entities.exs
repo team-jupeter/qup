@@ -18,7 +18,7 @@ defmodule Demo.Repo.Migrations.CreateAccounts do
       add :private_key, :string
       add :public_key, :string
 
-      add :gab_balance, :decimal, default: Decimal.from_float(0.0)
+      add :gab_balance, :decimal, default: 0.0
 
       add :nation_id, references(:nations, type: :uuid)
       add :supul_id, references(:supuls, type: :uuid)

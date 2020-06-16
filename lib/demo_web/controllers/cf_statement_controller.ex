@@ -11,7 +11,7 @@ defmodule DemoWeb.CFStatementController do
 
   alias Demo.CFStatements
   alias Demo.Reports.CFStatement
-  # alias Demo.Accounts.Entity
+  # alias Demo.Business.Entity
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_entity]

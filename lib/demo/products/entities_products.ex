@@ -9,7 +9,7 @@ defmodule Demo.Products.AccountsProducts do
     @foreign_key_type :binary_id
   
     schema "entities_products" do
-      belongs_to :entity, Demo.Accounts.Entity, type: :binary_id
+      belongs_to :entity, Demo.Business.Entity, type: :binary_id
       belongs_to :product, Demo.Products.Product, type: :binary_id
       timestamps()
     end

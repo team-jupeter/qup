@@ -5,7 +5,7 @@ defmodule Demo.CFStatements do
 
   alias Demo.Reports.CFStatement
   # alias Demo.Reports.Report
-  alias Demo.Accounts.Entity
+  alias Demo.Business.Entity
 
 
   def get_cf_statement!(id), do: Repo.get!(CFStatement, id)

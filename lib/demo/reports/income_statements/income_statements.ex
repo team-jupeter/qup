@@ -5,7 +5,7 @@ defmodule Demo.IncomeStatements do
 
   alias Demo.Reports.IncomeStatement
   # alias Demo.Reports.Report
-  alias Demo.Accounts.Entity
+  alias Demo.Business.Entity
 
 
 

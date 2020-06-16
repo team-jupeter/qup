@@ -22,7 +22,7 @@ defmodule Demo.Invoices.Invoice do
 
     many_to_many(
       :entities,
-      Demo.Accounts.Entity,
+      Demo.Business.Entity,
       join_through: "entities_invoices",
       on_replace: :delete
       )

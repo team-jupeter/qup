@@ -1,7 +1,7 @@
 defmodule Demo.Products.Product do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Demo.Accounts.Entity
+  alias Demo.Business.Entity
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id

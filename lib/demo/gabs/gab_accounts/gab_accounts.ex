@@ -3,7 +3,7 @@ defmodule Demo.GabAccounts do
   alias Demo.Repo
 
   alias Demo.GabAccounts.GabAccount
-  alias Demo.Accounts.Entity
+  alias Demo.Business.Entity
 
 
  

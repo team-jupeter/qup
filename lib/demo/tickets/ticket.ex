@@ -33,7 +33,7 @@ defmodule Demo.Tickets.Ticket do
     embeds_one :deliverybox, Demo.Gopangs.DeliveryboxEmbed
 
     belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id
-    belongs_to :Entity, Demo.Accounts.Entity, type: :binary_id
+    belongs_to :Entity, Demo.Business.Entity, type: :binary_id
     belongs_to :car, Demo.Cars.Car, type: :binary_id
 
     timestamps()

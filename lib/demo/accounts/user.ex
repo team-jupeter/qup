@@ -1,7 +1,7 @@
 defmodule Demo.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Demo.Accounts.Entity
+  alias Demo.Business.Entity
   alias Demo.Accounts.User
   alias Demo.Schools.School
   alias Demo.Repo
@@ -14,7 +14,7 @@ defmodule Demo.Accounts.User do
     field :type, :string
     field :name, :string
     field :username, :string
-    field :ssn, :string
+    field :ssn, :string #? Social Security Number 
     field :email, :string # unique id of a human being
     field :birth_date, :naive_datetime
     field :password, :string, virtual: true
@@ -33,8 +33,8 @@ defmodule Demo.Accounts.User do
 
     timestamps()
 
-    belongs_to :nation, Demo.Nations.Nation, type: :binary_id
-    belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id
+    belongs_to :nation, Demo.Nations.Nation, type: :binary_id #? 고국
+    belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id #? 고향 
     
     many_to_many(
       :entities,
@@ -68,7 +68,7 @@ defmodule Demo.Accounts.User do
     user 
     |> Repo.preload([:entities])
     |> change()  \
-    |> put_assoc(:entities, [entities])
+    |> put_assoc(:entities, [entities]) #? many to many between users and entities
     |> Repo.update!()
   end
 
