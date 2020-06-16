@@ -73,5 +73,5 @@
 
 <span><%= link "Edit", to: Routes.financial_report_path(@conn, :edit, @fr.id) %></span>
 <span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>
-<span><%= link "New", to: Routes.financial_report_path(@conn, :index) %></span>
+<span><%= link "New", to: Routes.financial_report_path(@conn, :new) %></span>
 
