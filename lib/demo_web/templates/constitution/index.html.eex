@@ -1,0 +1,30 @@
+<h3>Listing Constitutions</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Hash</th>
+      <th>Private key</th>
+      <th>Text</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for constitution <- @constitutions do %>
+    <tr>
+      <td><%= constitution.hash %></td>
+      <td><%= constitution.private_key %></td>
+      <td><%= constitution.text %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.constitution_path(@conn, :show, constitution) %></span>
+        <span><%= link "Edit", to: Routes.constitution_path(@conn, :edit, constitution) %></span>
+        <span><%= link "Delete", to: Routes.constitution_path(@conn, :delete, constitution), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Constitution", to: Routes.constitution_path(@conn, :new) %></span>

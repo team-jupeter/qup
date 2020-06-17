@@ -91,6 +91,13 @@ defmodule DemoWeb.Router do
 
     resources "/schools", SchoolController
   end
+
+  scope "/nation", DemoWeb do
+    pipe_through [:browser]
+
+    resources "/constitutions", ConstitutionController
+    resources "/", NationController
+  end
   # scope "/", DemoWeb do
   #   pipe_through [:browser, :bare]
 

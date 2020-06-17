@@ -1,4 +1,4 @@
-<h1>Edit Financial Report</h1>
+<h3>Edit Financial Report</h3>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.financial_report_path(@conn, :update, @fr)) %>
 

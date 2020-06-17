@@ -13,6 +13,7 @@ defmodule Demo.Accounts.User do
   schema "users" do
     field :type, :string
     field :name, :string
+    field :nationality, :string
     field :username, :string
     field :ssn, :string #? Social Security Number 
     field :email, :string # unique id of a human being
@@ -22,7 +23,7 @@ defmodule Demo.Accounts.User do
     field :password_confirmation, :string, virtual: true
 
 
-    field :private_key, :string
+    field :nation_signature, :string
     
     # field :entity_names, {:array, :string}
 
@@ -34,6 +35,7 @@ defmodule Demo.Accounts.User do
     timestamps()
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id #? 고국
+    belongs_to :constitution,  Demo.Votes.Constitution, type: :binary_id #? 고향 
     belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id #? 고향 
     
     many_to_many(
@@ -54,7 +56,7 @@ defmodule Demo.Accounts.User do
   
 
   # @required_fields [:type, :name, :email]
-  @fields [:name, :type, :email, :birth_date, :password, :private_key]
+  @fields [:name, :type, :nationality, :email, :birth_date, :password, :nation_signature]
 
   def changeset(user, attrs) do
     IO.puts "hey"

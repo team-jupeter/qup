@@ -6,25 +6,22 @@ defmodule Demo.Votes.Constitution do
   @foreign_key_type :binary_id
 
   schema "constitutions" do
-    field :previous_contents, :binary_id
-    field :previous_hash, :string
-    field :current_hash, :string
-    field :article, :integer
-    field :clause, :integer
+    field :content, :string
     field :suggested_update, :string
     field :empowered_on, :naive_datetime
+    field :signed_by, {:array, :string}, default: []
 
-    has_many :votes, Demo.Votes.Vote
     has_one :initiative, Demo.Votes.Initiative
-    
+
+    has_many :users, Demo.Accounts.User
+    has_many :votes, Demo.Votes.Vote
+
+    belongs_to :nation, Demo.Nations.Nation
+
     timestamps()
   end
   @fields [
-    :previous_contents,
-   :previous_hash, 
-   :current_hash, 
-   :article, 
-   :clause,
+   :content,
    :suggested_update, 
    :empowered_on, 
   ]
@@ -34,4 +31,5 @@ defmodule Demo.Votes.Constitution do
     |> cast(attrs, @fields)
     |> validate_required([])
   end
+
 end

@@ -15,8 +15,7 @@ defmodule Demo.Repo.Migrations.CreateAccounts do
 
       add :locked, :boolean, default: false
 
-      add :private_key, :string
-      add :public_key, :string
+      add :nation_signature, :text
 
       add :gab_balance, :decimal, default: 0.0
 

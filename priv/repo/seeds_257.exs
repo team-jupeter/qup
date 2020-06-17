@@ -5,8 +5,6 @@ alias Demo.Repo
 # ? init nations
 alias Demo.Nations.Nation
 
-korea = Nation.changeset(%Nation{}, %{name: "South Korea"}) |> Repo.insert!()
-
 # ? init supuls. For example, Korea will have about 5,000 supuls.
 alias Demo.Supuls.GlobalSupul
 alias Demo.Supuls.NationSupul
@@ -80,12 +78,16 @@ gab =
     }) \
   |> Repo.insert!()
 
+alias Demo.Nations.Nation
 korea =
-  User.changeset(%User{}, %{
-    type: "Nation",
-    name: "South_Korea", 
-    username: "korea", 
-    email: "korea@000000.kr",
+Nation.changeset(%Nation{}, %{
+  name: "South_Korea", 
+  }) |> Repo.insert!()
+
+alias Demo.Votes.Constitution
+constitution =
+  Constitution.changeset(%Constitution{}, %{
+    name: "The Constitution of South_Korea", 
     }) |> Repo.insert!()
  
 
@@ -94,10 +96,6 @@ korea =
 CRYPTO
 Both users and entities should have private and public keys for future transactions.
 '''
-
-# ? openssl genrsa -out korea_private_key.pem 2048
-# ? openssl rsa -in korea_private_key.pem -pubout > korea_public_key.pem
-
 lim_rsa_priv_key = ExPublicKey.load!("./keys/lim_private_key.pem")
 lim_rsa_pub_key = ExPublicKey.load!("./keys/lim_public_key.pem")
 
@@ -109,7 +107,34 @@ tomi_rsa_pub_key = ExPublicKey.load!("./keys/tomi_public_key.pem")
 
 korea_rsa_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
 korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
+
+# ? openssl genrsa -out constitution_private_key.pem 2048
+# ? openssl rsa -in constitution_private_key.pem -pubout > constitution_public_key.pem
+constitution_rsa_priv_key = ExPublicKey.load!("./keys/constitution_private_key.pem")
+constitution_rsa_pub_key = ExPublicKey.load!("./keys/constitution_public_key.pem")
     
+#? SIGNATURES
+import Poison
+
+#? Make a nation with the signature of her constitution.
+msg_serialized = Poison.encode!(korea)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, constitution_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+korea = change(korea) |> Ecto.Changeset.put_change(:constitution_signature, signature) |> Repo.update!
+
+
+
+
+#? constitutions
+alias Demo.Votes.Constitution
+const_kr = Constitution.changeset(%Constitution{}, )
+
+
+
+
+
 
 alias Demo.Repo
 alias Demo.Accounts.User
@@ -195,22 +220,19 @@ kts_rsa_pub_key = ExPublicKey.load!("./keys/kts_public_key.pem")
     
 # ? build_assoc user and entity
 mr_hong = User.changeset_update_entities(mr_hong, [hong_entity])
-hong_entity = Entity.changeset_update_users(hong_entity, mr_hong)
+hong_entity = Entity.changeset_update_users(hong_entity, [mr_hong])
 
 User.changeset_update_entities(mr_lim, [lim_entity])
-Entity.changeset_update_users(lim_entity, mr_lim)
+Entity.changeset_update_users(lim_entity, [mr_lim])
 
 User.changeset_update_entities(ms_sung, [tomi_entity,sung_entity])
-User.changeset_update_entities(ms_sung, tomi_entity)
-User.changeset_update_entities(ms_sung, sung_entity)
-Entity.changeset_update_users(tomi_entity, ms_sung)
-Entity.changeset_update_users(sung_entity, ms_sung)
+Entity.changeset_update_users(tomi_entity, [ms_sung])
+Entity.changeset_update_users(sung_entity, [ms_sung])
+
 
 User.changeset_update_entities(korea, [kts, gopang])
-Entity.changeset_update_users(tomi_entity, korea)
-Entity.changeset_update_users(sung_entity, korea)
-
-
+Entity.changeset_update_users(kts, [korea])
+Entity.changeset_update_users(gopang, [korea])
 
 
 

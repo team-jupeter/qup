@@ -11,9 +11,13 @@
 <b>Locked</b> (<%= @entity.locked %>) </br>
  </br>
 <b>GAB Balance</b> (<%= @entity.gab_balance %>) </br>
- </br> 
- </br>
-
+</br> 
+</br>
+<li>
+<strong>Signature:</strong>
+<%= @entity.signature %>
+</li>
+</br>
 <h4>Financial Reports</h4>
     <ul>
         <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @entity.id) %></li>

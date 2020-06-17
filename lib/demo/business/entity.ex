@@ -12,6 +12,7 @@ defmodule Demo.Business.Entity do
   @foreign_key_type :binary_id
 
   schema "entities" do
+    field :nationality, :string
     field :company_prefix, :string
     field :registered_no, :string
     field :industry_classification, :string
@@ -23,8 +24,7 @@ defmodule Demo.Business.Entity do
     field :locked, :boolean, default: false
     field :gab_balance, :decimal, default: Decimal.from_float(0.0)
    
-    field :private_key, :string
-    field :public_key, :string
+    field :nation_signature, :string
 
     #? A user must have only one entity, and An entity may have several business_embeds. 
     embeds_many :business_embeds, Demo.Business.BusinessEmbed, on_replace: :delete
@@ -80,7 +80,11 @@ defmodule Demo.Business.Entity do
 
 
 
-  @fields [:company_prefix, :nation_id, :email, :supul_id, :taxation_id, :name, :entity_address, :private_key, :public_key]
+  @fields [
+    :nationality, :company_prefix, 
+    :nation_id, :email, :supul_id, :taxation_id, 
+    :name, :entity_address, :nation_signature,
+  ]
 
   def changeset(user, attrs) do
     user

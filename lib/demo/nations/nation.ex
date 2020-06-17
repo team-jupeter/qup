@@ -8,22 +8,28 @@ defmodule Demo.Nations.Nation do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "nations" do
     field :name, :string
-
+    field :empowered_by, :string
     
+    field :constitution_signature, :string
+
+    has_one :constitution,  Demo.Votes.Constitution, on_replace: :nilify
     has_one :taxation,  Demo.Taxations.Taxation, on_replace: :nilify
     has_many :entities, Demo.Business.Entity, on_replace: :nilify
     has_many :users, Demo.Accounts.User, on_replace: :nilify
   end
 
+  @fields [
+    :name, :empowered_by, :constitution_signature,
+  ]
   def changeset(%Nation{} = nation, attrs) do
     nation
-    |> cast(attrs, [:name])
+    |> cast(attrs, @fields)
     |> validate_required([:name])
   end
 
-  def create(params) do
-    changeset(%Nation{}, params)
-    |> put_assoc(:users, params[:nation_id])
-    |> Repo.insert
-  end
+  # def create(params) do
+  #   changeset(%Nation{}, params)
+  #   |> put_assoc(:users, params[:nation_id])
+  #   |> Repo.insert
+  # end
 end

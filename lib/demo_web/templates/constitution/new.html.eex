@@ -1,0 +1,5 @@
+<h3>New Constitution</h3>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.constitution_path(@conn, :create)) %>
+
+<span><%= link "Back", to: Routes.constitution_path(@conn, :index) %></span>

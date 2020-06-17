@@ -1,4 +1,4 @@
-<h1>New Gab account</h1>
+<h3>New Gab account</h3>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.gab_account_path(@conn, :create)) %>
 

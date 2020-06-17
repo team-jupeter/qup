@@ -1,0 +1,29 @@
+<h3>Show Nation</h3>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @nation.name %>
+  </li>
+
+  <li>
+    <strong>ID:</strong>
+    <%= @nation.id %>
+  </li>
+
+  <li>
+    <strong>Constitution Signature:</strong>
+    <%= @nation.signature %>
+  </li>
+
+  <li>
+    <strong>Empowered By:</strong>
+    <%= @nation.empowered_by %>
+  </li>
+
+
+</ul>
+
+<span><%= link "Edit", to: Routes.nation_path(@conn, :edit, @nation) %></span>
+<span><%= link "Back", to: Routes.nation_path(@conn, :index) %></span>

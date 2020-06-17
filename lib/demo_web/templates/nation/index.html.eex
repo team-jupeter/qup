@@ -1,0 +1,26 @@
+<h3>Listing Nations</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for nation <- @nations do %>
+    <tr>
+      <td><%= nation.name %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.nation_path(@conn, :show, nation) %></span>
+        <span><%= link "Edit", to: Routes.nation_path(@conn, :edit, nation) %></span>
+        <span><%= link "Delete", to: Routes.nation_path(@conn, :delete, nation), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Nation", to: Routes.nation_path(@conn, :new) %></span>

@@ -1,4 +1,4 @@
-<h1>Edit Equity Statement</h1>
+<h3>Edit Equity Statement</h3>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.equity_statement_path(@conn, :update, @es)) %>
 

@@ -1,4 +1,4 @@
-<h1>Edit Balance Sheet</h1>
+<h3>Edit Balance Sheet</h3>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.balance_sheet_path(@conn, :update, @bs)) %>
 

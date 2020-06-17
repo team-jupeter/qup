@@ -1,0 +1,17 @@
+<h3>Show Constitution</h3>
+
+<ul>
+  <li>
+    <strong>Text:</strong>
+    <%= @constitution.text %>
+  </li>
+
+  <li>
+    <strong>Nation:</strong>
+    <%= @constitution.nation_id %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.constitution_path(@conn, :edit, @constitution) %></span>
+<span><%= link "Back", to: Routes.constitution_path(@conn, :index) %></span>
