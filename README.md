@@ -1,7 +1,9 @@
 
-# COREA(Connected Openhash Reports on Economic Activities)
+# COREA(Connected/Coded Openhash Reports on Economic Activities)
 * This project is for both a coding exercise and preparing a startup.
-* The goal of this project is to code an electronic passport which any nation can adopt for its immigration process at airports and quarantine process to protect its citizen from infectious virus such as COVID 19.
+* The goal of this project is to code an electronic passport, called PAS, which any nation can adopt for its immigration process at airports and quarantine process to protect its citizen from infectious virus such as COVID 19.
+* Another goal is to put any kind of national or governmental services into PAS for their citizens to easily utilize those services. 
+* Some examples of those national or governmental services are any kinds of AUTONOMOUS governmental organizations and national infrastructures such as education, health, traffic/logistics, road and markets etc. 
 * This is an open source coding exercise based on phoenix_liveview_example(https://github.com/phoenixframework/phoenix_live_view).
 * The progress of coding is recorded as educational video contents and uploaded to Youtube channel,[ \[Team Jupeter\]](https://www.youtube.com/watch?v=LsZgh8szGYA&list=PLlSZlNj22M7QRBGl7s9WnT0xqKGDuzPKk).
 * For Koreans, recommend to visit [the homepage of this project](https://openhash.ai/%ED%91%9C%EC%A4%80-%EC%97%AC%EA%B6%8C-%EC%9D%B8%ED%94%84%EB%9D%BC).
@@ -11,6 +13,7 @@
 * Coding an **electronic unified passport** for all nations to adopt easily, especially for unified quarantine processes at worldwide airports.
 * All nations share data of airport passengers to protect, control and/or restrict the spread of dangerous viruses such as COVID 19. 
 * All immigration services of worldwide nations share passenger data, share the same quarantine/immigration processes regardless of their locations and nationalities, and control airports of their jurisdiction respectively.
+* All kinds of governmental services or national infrastructures are coded and plugged into PAS as automous unmanned organizations. We call those services EXTENSIONS of PAS.
 
 # Features of the system
 
