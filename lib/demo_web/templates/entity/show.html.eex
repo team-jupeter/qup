@@ -17,4 +17,8 @@
 <h4>Financial Reports</h4>
     <ul>
         <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @entity.id) %></li>
+        <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :show, @entity.id) %></li>
+        <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @entity.id) %></li>
+        <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :show, @entity.id) %></li>
+        <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :show, @entity.id) %></li>
     </ul>

@@ -3,7 +3,7 @@ defmodule Demo.Business.Entity do
   import Ecto.Changeset
   alias Demo.Invoices.Invoice
 
-  alias Demo.Accounts.User
+  alias Demo.Accounts.User 
   alias Demo.Products.Product
   alias Demo.Business.Entity
   alias Demo.Repo
@@ -91,9 +91,9 @@ defmodule Demo.Business.Entity do
 
   def changeset_update_users(%Entity{} = entity, users) do
     entity 
-    |> Repo.preload([:users])
+    |> Repo.preload(:users)
     |> change()  \
-    |> put_assoc(:users, [users])
+    |> put_assoc(:users, users)
     |> Repo.update!()
   end
 

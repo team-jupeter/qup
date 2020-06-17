@@ -32,10 +32,29 @@ defmodule Demo.Reports.BalanceSheet do
     timestamps()
   end
 
+  @fields [
+    :accounts_payable,
+    :accounts_receivable,
+    :accrued_liabilities,
+    :additional_paid_in_capital,
+    :cash,
+    :customer_prepayments,
+    :fixed_assets,
+    :inventory, 
+    :long_term_debt,
+    :marketable_securities,
+    :prepaid_expenses,
+    :retained_earnings,
+    :short_term_debt,
+    :stock,
+    :taxes,
+    :treasury_stock,
+
+  ]
   @doc false
   def changeset(balance_sheet, attrs \\ %{}) do
     balance_sheet
-    |> cast(attrs, [:gab_account, :t1s, :short_term_debt])
+    |> cast(attrs, @fields)
     # |> validate_required([:cash, :marketable_securities, :prepaid_expenses, :accounts_receivable, :inventory, :fixed_assets, :accounts_payable, :accrued_liabilities, :customer_prepayments, :taxes, :short_term_debt, :long_term_debt, :stock, :additional_paid_in_capital, :retained_earnings, :treasury_stock])
   end
 end

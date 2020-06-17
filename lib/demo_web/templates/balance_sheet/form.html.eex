@@ -69,21 +69,6 @@
   <%= text_input f, :treasury_stock %>
   <%= error_tag f, :treasury_stock %>
 
-  <%= label f, :t1s %>
-  <%= text_input f, :t1s %>
-  <%= error_tag f, :t1s %>
-
-  <%= label f, :t2s %>
-  <%= text_input f, :t2s %>
-  <%= error_tag f, :t2s %>
-
-  <%= label f, :t3s %>
-  <%= text_input f, :t3s %>
-  <%= error_tag f, :t3s %>
-
-  <%= label f, :entity_id %>
-  <%= text_input f, :entity_id %>
-  <%= error_tag f, :entity_id %>
 
 
   <div>

@@ -1,4 +1,4 @@
-<h1>Listing Videos</h1>
+<h4>Listing Monthly Income Statements</h4>
 
 <table>
   <thead>
@@ -11,16 +11,12 @@
     </tr>
   </thead>
   <tbody>
-<%= for financial_report <- @financial_reports do %>
+<%= for income_statement <- @is do %>
     <tr>
-      <td><%= financial_report.url %></td>
-      <td><%= financial_report.title %></td>
-      <td><%= financial_report.description %></td>
 
       <td>
-        <span><%= link "Show", to: Routes.financial_report_path(@conn, :show, financial_report) %></span>
-        <span><%= link "Edit", to: Routes.financial_report_path(@conn, :edit, financial_report) %></span>
-        <span><%= link "Delete", to: Routes.financial_report_path(@conn, :delete, financial_report), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <span><%= link "Show", to: Routes.income_statement_path(@conn, :show, income_statement) %></span>
+        <span><%= link "Edit", to: Routes.income_statement_path(@conn, :edit, income_statement) %></span>
       </td>
     </tr>
 <% end %>

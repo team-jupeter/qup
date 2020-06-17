@@ -1,4 +1,4 @@
-<h1>New Financial Report</h1>
+<h4>New Income Statement</h4>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.financial_report_path(@conn, :create)) %>
 

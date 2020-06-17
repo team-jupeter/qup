@@ -4,22 +4,29 @@ defmodule Demo.IncomeStatements do
   alias Demo.Repo
 
   alias Demo.Reports.IncomeStatement
-  # alias Demo.Reports.Report
   alias Demo.Business.Entity
 
 
 
-  def get_entity_income_statement!(%Entity{} = entity, id) do
+  def list_income_statements(id) do
     IncomeStatement
-    |> entity_income_statements_query(entity)
-    |> Repo.get!(id)
+    |> entity_income_statements_query(id)
+    |> Repo.all()
+  end
+  
+  def get_income_statement!(id), do: Repo.get!(IncomeStatement, id)
+
+  def get_entity_income_statement!(entity_id) do
+    IncomeStatement
+    |> entity_income_statements_query(entity_id)
+    |> Repo.all
   end
 
-  defp entity_income_statements_query(query, %Entity{id: entity_id}) do
+  defp entity_income_statements_query(query, entity_id) do    
     from(f in query, where: f.entity_id == ^entity_id)
   end
 
-
+ 
   def create_income_statement(%Entity{} = entity, attrs \\ %{}) do
     %IncomeStatement{}
     |> IncomeStatement.changeset(attrs)
@@ -34,21 +41,13 @@ defmodule Demo.IncomeStatements do
     |> Repo.update()
   end
 
-
-  def delete_income_statement(%IncomeStatement{} = income_statement) do
-    Repo.delete(income_statement)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking report changes.
-
-  ## Examples
-
-      iex> change_income_statement(report)
-      %Ecto.Changeset{source: %Report{}}
-
-  """
   def change_income_statement(%IncomeStatement{} = income_statement) do
     IncomeStatement.changeset(income_statement, %{})
   end
+  
+'''
+  def delete_income_statement(%IncomeStatement{} = income_statement) do
+    Repo.delete(income_statement)
+  end
+'''
 end

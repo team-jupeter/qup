@@ -1,23 +1,101 @@
-<h1>Show Balance Sheet</h1>
+<h4>Show Balance Sheet</h4>
 
 <ul>
 
   <li>
-    <strong>Url:</strong>
-    <%= @balance_sheet.url %>
+    <strong>Accounts Payable</strong>
+    <%= @bs.accounts_payable %>
   </li>
 
   <li>
-    <strong>Title:</strong>
-    <%= @balance_sheet.title %>
+    <strong>Accounts Receivable </strong>
+    <%= @bs.accounts_receivable %>
   </li>
 
   <li>
-    <strong>Description:</strong>
-    <%= @balance_sheet.description %>
+    <strong>Accrued Liabilities</strong>
+    <%= @bs.accrued_liabilities %>
   </li>
+
+  <li>
+    <strong>Additional Paid_in Capital</strong>
+    <%= @bs.additional_paid_in_capital %>
+  </li>
+
+  <li>
+    <strong>Cash</strong>
+    <%= @bs.cash %>
+  </li>
+
+  <li>
+    <strong>Customer Prepayments</strong>
+    <%= @bs.customer_prepayments %>
+  </li>
+
+  <li>
+    <strong>Fixed Assets</strong>
+    <%= @bs.fixed_assets %>
+  </li>
+
+  <li>
+    <strong>Inventory</strong>
+    <%= @bs.inventory %>
+  </li>
+
+  <li>
+    <strong>Long_term Debt</strong>
+    <%= @bs.long_term_debt %>
+  </li>
+
+  <li>
+    <strong>Marketable Securities</strong>
+    <%= @bs.marketable_securities %>
+  </li>
+
+  <li>
+    <strong>Prepaid Expenses</strong>
+    <%= @bs.prepaid_expenses %>
+  </li>
+
+  <li>
+    <strong>Retained Earnings</strong>
+    <%= @bs.retained_earnings %>
+  </li>
+
+  <li>
+    <strong>Short_term Debt</strong>
+    <%= @bs.short_term_debt %>
+  </li>
+
+  <li>
+    <strong>Stock</strong>
+    <%= @bs.stock %>
+  </li>
+
+  <li>
+    <strong>Taxes</strong>
+    <%= @bs.taxes %>
+  </li>
+
+  <li>
+    <strong>Treasury Stock</strong>
+    <%= @bs.treasury_stock %>
+  </li>
+
+  <li>
+    <strong>t1s</strong>
+  </li>
+
+  <li>
+    <strong>t2s</strong>
+  </li>
+
+  <li>
+    <strong>t3s</strong>
+  </li>
+
 
 </ul>
 
-<span><%= link "Edit", to: Routes.balance_sheet_path(@conn, :edit, @balance_sheet) %></span>
-<span><%= link "Back", to: Routes.balance_sheet_path(@conn, :index) %></span>
+<span><%= link "Edit", to: Routes.balance_sheet_path(@conn, :edit, @bs) %></span>
+<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

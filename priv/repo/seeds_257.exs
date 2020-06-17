@@ -128,9 +128,17 @@ hong_entity =
     }) \
   |> Repo.insert!()
 
+sung_entity =
+  Entity.changeset(%Entity{}, %{
+    name: "Sung Chunhyang Entity", 
+    email: "sung_gil_dong@8245.kr", 
+    entity_address: "제주시 한경면 20-1 해거름전망대",
+    }) \
+  |> Repo.insert!()
+
 lim_entity =
   Entity.changeset(%Entity{}, %{
-    name: "Lim Geuk Jung Entity", 
+    name: "Lim Geukjung Entity", 
     email: "limgeukjung@88889@8245.kr", 
     entity_address: "서귀포시 안덕면 77-1",
     }) \
@@ -178,38 +186,29 @@ tomi_rsa_pub_key = ExPublicKey.load!("./keys/tomi_public_key.pem")
 
 lim_entity_rsa_priv_key = ExPublicKey.load!("./keys/lim_entity_private_key.pem")
 lim_entity_rsa_pub_key = ExPublicKey.load!("./keys/lim_entity_public_key.pem")
-    
+
+gopang_rsa_priv_key = ExPublicKey.load!("./keys/gopang_private_key.pem")
+gopang_rsa_pub_key = ExPublicKey.load!("./keys/gopang_public_key.pem")
+
 kts_rsa_priv_key = ExPublicKey.load!("./keys/kts_private_key.pem")
 kts_rsa_pub_key = ExPublicKey.load!("./keys/kts_public_key.pem")
     
 # ? build_assoc user and entity
-mr_hong = User.changeset_update_entities(mr_hong, hong_entity)
+mr_hong = User.changeset_update_entities(mr_hong, [hong_entity])
 hong_entity = Entity.changeset_update_users(hong_entity, mr_hong)
 
-User.changeset_update_entities(mr_lim, lim_entity)
+User.changeset_update_entities(mr_lim, [lim_entity])
 Entity.changeset_update_users(lim_entity, mr_lim)
 
-User.changeset_update_entities(ms_sung, [tomi_entity, sung_entity])
+User.changeset_update_entities(ms_sung, [tomi_entity,sung_entity])
+User.changeset_update_entities(ms_sung, tomi_entity)
+User.changeset_update_entities(ms_sung, sung_entity)
 Entity.changeset_update_users(tomi_entity, ms_sung)
 Entity.changeset_update_users(sung_entity, ms_sung)
 
 User.changeset_update_entities(korea, [kts, gopang])
 Entity.changeset_update_users(tomi_entity, korea)
 Entity.changeset_update_users(sung_entity, korea)
-
-
-# ? Generate private and public keys for entities
-gopang_rsa_priv_key = ExPublicKey.load!("./keys/gopang_private_key.pem")
-gopang_rsa_pub_key = ExPublicKey.load!("./keys/gopang_public_key.pem")
-
-hong_entity_rsa_priv_key = ExPublicKey.load!("./keys/hong_entity_private_key.pem")
-hong_entity_rsa_pub_key = ExPublicKey.load!("./keys/hong_entity_public_key.pem")
-
-tomi_rsa_priv_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
-tomi_rsa_pub_key = ExPublicKey.load!("./keys/tomi_public_key.pem")
-
-kts_rsa_priv_key = ExPublicKey.load!("./keys/kts_private_key.pem")
-kts_rsa_pub_key = ExPublicKey.load!("./keys/kts_public_key.pem")
 
 
 
@@ -278,6 +277,27 @@ tomi_entity_BS =
     }) \
   |> Repo.insert!()
 
+
+
+alias Demo.Reports.IncomeStatement
+
+hong_entity_IS =
+  Ecto.build_assoc(hong_entity, :income_statement, %IncomeStatement{
+    revenue: Decimal.from_float(20_000.00),
+    cost_of_goods_sold: Decimal.from_float(10_000.00),
+  }) \
+  |> Repo.insert!()
+
+
+
+alias Demo.Reports.CFStatement
+
+hong_entity_CFS =
+  Ecto.build_assoc(hong_entity, :cf_statement, %CFStatement{
+    debt_issuance: Decimal.from_float(20_000.00),
+    equity_issuance: Decimal.from_float(100_000.00),
+  }) \
+  |> Repo.insert!()
 
 '''
 

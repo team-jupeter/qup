@@ -1,23 +1,44 @@
-<h1>Show Video</h1>
+<h4>Show Monthly Cash Flow Statement</h4>
 
 <ul>
 
   <li>
-    <strong>Url:</strong>
-    <%= @video.url %>
+    <strong>capital_expenditures:</strong>
+    <%= @cf.capital_expenditures %>
   </li>
 
   <li>
-    <strong>Title:</strong>
-    <%= @video.title %>
+    <strong>changes_in_working_capital:</strong>
+    <%= @cf.changes_in_working_capital %>
   </li>
 
   <li>
-    <strong>Description:</strong>
-    <%= @video.description %>
+    <strong>debt_issuance:</strong>
+    <%= @cf.debt_issuance %>
   </li>
+
+  <li>
+    <strong>depreciation_amortization:</strong>
+    <%= @cf.depreciation_amortization %>
+  </li>
+
+  <li>
+    <strong>equity_issuance:</strong>
+    <%= @cf.equity_issuance %>
+  </li>
+
+  <li>
+    <strong>net_earnings:</strong>
+    <%= @cf.net_earnings %>
+  </li>
+
+  <li>
+    <strong>opening_cash_balance:</strong>
+    <%= @cf.opening_cash_balance %>
+  </li>
+
 
 </ul>
 
-<span><%= link "Edit", to: Routes.video_path(@conn, :edit, @video) %></span>
-<span><%= link "Back", to: Routes.video_path(@conn, :index) %></span>
+<span><%= link "Edit", to: Routes.cf_statement_path(@conn, :edit, @cf) %></span>
+<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

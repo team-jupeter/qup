@@ -1,23 +1,99 @@
-<h1>Show Financial Report</h1>
+<h4>Monthly Income Statement</h4>
 
 <ul>
 
   <li>
-    <strong>Url:</strong>
-    <%= @financial_report.url %>
+    <strong>compensation</strong>
+    <%= @is.compensation %>
   </li>
 
   <li>
-    <strong>Title:</strong>
-    <%= @financial_report.title %>
+    <strong>cost_of_goods_sold</strong>
+    <%= @is.cost_of_goods_sold %>
   </li>
 
   <li>
-    <strong>Description:</strong>
-    <%= @financial_report.description %>
+    <strong>depreciation_and_amortization</strong>
+    <%= @is.depreciation_and_amortization %>
   </li>
+
+  <li>
+    <strong>employee_benefits</strong>
+    <%= @is.employee_benefits %>
+  </li>
+
+  <li>
+    <strong>income_taxes</strong>
+    <%= @is.income_taxes %>
+  </li>
+
+  <li>
+    <strong>insurance</strong>
+    <%= @is.insurance %>
+  </li>
+
+  <li>
+    <strong>marketing</strong>
+    <%= @is.marketing %>
+  </li>
+
+  <li>
+    <strong>office</strong>
+    <%= @is.office %>
+  </li>
+
+  <li>
+    <strong>payroll</strong>
+    <%= @is.payroll %>
+  </li>
+
+  <li>
+    <strong>professional_fees</strong>
+    <%= @is.professional_fees %>
+  </li>
+
+  <li>
+    <strong>rent</strong>
+    <%= @is.rent %>
+  </li>
+ 
+  <li>
+    <strong>repair_and_maintenance</strong>
+    <%= @is.repair_and_maintenance %>
+  </li>
+ 
+  <li>
+    <strong>revenue</strong>
+    <%= @is.revenue %>
+  </li>
+ 
+  <li>
+    <strong>sales_discounts</strong>
+    <%= @is.sales_discounts %>
+  </li>
+ 
+  <li>
+    <strong>supplies</strong>
+    <%= @is.supplies %>
+  </li>
+ 
+  <li>
+    <strong>taxes</strong>
+    <%= @is.taxes %>
+  </li>
+ 
+  <li>
+    <strong>travel_and_entertainment</strong>
+    <%= @is.travel_and_entertainment %>
+  </li>
+ 
+  <li>
+    <strong>utilities</strong>
+    <%= @is.utilities %>
+  </li>
+ 
 
 </ul>
 
-<span><%= link "Edit", to: Routes.financial_report_path(@conn, :edit, @financial_report) %></span>
-<span><%= link "Back", to: Routes.financial_report_path(@conn, :index) %></span>
+<span><%= link "Edit", to: Routes.income_statement_path(@conn, :edit, @is) %></span>
+<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

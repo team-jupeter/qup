@@ -13,6 +13,11 @@ defmodule DemoWeb.FinancialReportController do
   alias Demo.FinancialReports
   alias Demo.Reports.FinancialReport
 
+  # def action(conn, _) do
+  #   args = [conn, conn.params, conn.assigns.current_entity]
+  #   apply(__MODULE__, action_name(conn), args)
+  # end
+
   def show(conn, %{"id" => id}) do
     [financial_report] = FinancialReports.get_entity_financial_report!(id) 
     case financial_report do
@@ -29,14 +34,6 @@ defmodule DemoWeb.FinancialReportController do
     render(conn, "edit.html", fr: financial_report, changeset: changeset)
   end
 
-'''  
-  def edit(conn, %{"id" => id}, current_user) do
-    video = Multimedia.get_user_video!(current_user, id) 
-    changeset = Multimedia.change_video(video)
-    render(conn, "edit.html", video: video, changeset: changeset)
-  end
-'''
-
   def update(conn, %{"id" => id, "financial_report" => financial_report_params}) do
     financial_report = FinancialReport |> Demo.Repo.get!(id) 
 
@@ -52,14 +49,6 @@ defmodule DemoWeb.FinancialReportController do
     end
   end
 
-  def delete(conn, %{"id" => id}, current_entity) do
-    financial_report = FinancialReports.get_entity_financial_report!(current_entity, id) 
-    {:ok, _financial_report} = FinancialReports.delete_financial_report(financial_report)
-
-    conn
-    |> put_flash(:info, "FinancialReport deleted successfully.")
-    |> redirect(to: Routes.financial_report_path(conn, :index))
-  end
 
   def new(conn, _params) do
     changeset = FinancialReports.change_financial_report(%FinancialReport{})
@@ -77,4 +66,17 @@ defmodule DemoWeb.FinancialReportController do
         render(conn, "new.html", changeset: changeset)
     end
   end
+
+  '''  
+  No one can delete any records in supul.
+  
+  def delete(conn, %{"id" => id}) do
+    financial_report = FinancialReports.get_entity_financial_report!(id) 
+    {:ok, _financial_report} = FinancialReports.delete_financial_report(financial_report)
+
+    conn
+    |> put_flash(:info, "FinancialReport deleted successfully.")
+    |> redirect(to: Routes.financial_report_path(conn, :index))
+  end
+'''
 end

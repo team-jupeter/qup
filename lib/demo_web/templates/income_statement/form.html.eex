@@ -5,17 +5,78 @@
     </div>
   <% end %>
 
-  <%= label f, :url %>
-  <%= text_input f, :url %>
-  <%= error_tag f, :url %>
+  <%= label f, :compensation %>
+  <%= text_input f, :compensation %>
+  <%= error_tag f, :compensation %>
 
-  <%= label f, :title %>
-  <%= text_input f, :title %>
-  <%= error_tag f, :title %>
+  <%= label f, :cost_of_goods_sold %>
+  <%= text_input f, :cost_of_goods_sold %>
+  <%= error_tag f, :cost_of_goods_sold %>
 
-  <%= label f, :description %>
-  <%= textarea f, :description %>
-  <%= error_tag f, :description %>
+  <%= label f, :depreciation_and_amortization %>
+  <%= text_input f, :depreciation_and_amortization %>
+  <%= error_tag f, :depreciation_and_amortization %>
+
+  <%= label f, :employee_benefits %>
+  <%= text_input f, :employee_benefits %>
+  <%= error_tag f, :employee_benefits %>
+
+  <%= label f, :income_taxes %>
+  <%= text_input f, :income_taxes %>
+  <%= error_tag f, :income_taxes %>
+
+  <%= label f, :insurance %>
+  <%= text_input f, :insurance %>
+  <%= error_tag f, :insurance %>
+
+  <%= label f, :marketing %>
+  <%= text_input f, :marketing %>
+  <%= error_tag f, :marketing %>
+
+  <%= label f, :office %>
+  <%= text_input f, :office %>
+  <%= error_tag f, :office %>
+
+  <%= label f, :payroll %>
+  <%= text_input f, :payroll %>
+  <%= error_tag f, :payroll %>
+
+  <%= label f, :professional_fees %>
+  <%= text_input f, :professional_fees %>
+  <%= error_tag f, :professional_fees %>
+
+  <%= label f, :rent %>
+  <%= text_input f, :rent %>
+  <%= error_tag f, :rent %>
+
+  <%= label f, :repair_and_maintenance %>
+  <%= text_input f, :repair_and_maintenance %>
+  <%= error_tag f, :repair_and_maintenance %>
+
+  <%= label f, :revenue %>
+  <%= text_input f, :revenue %>
+  <%= error_tag f, :revenue %>
+
+  <%= label f, :sales_discounts %>
+  <%= text_input f, :sales_discounts %>
+  <%= error_tag f, :sales_discounts %>
+
+  <%= label f, :supplies %>
+  <%= text_input f, :supplies %>
+  <%= error_tag f, :supplies %>
+
+  <%= label f, :taxes %>
+  <%= text_input f, :taxes %>
+  <%= error_tag f, :taxes %>
+
+  <%= label f, :travel_and_entertainment %>
+  <%= text_input f, :travel_and_entertainment %>
+  <%= error_tag f, :travel_and_entertainment %>
+
+  <%= label f, :utilities %>
+  <%= text_input f, :utilities %>
+  <%= error_tag f, :utilities %>
+
 
   <div>
     <%= submit "Save" %>

@@ -1,5 +1,5 @@
-<h1>Edit Video</h1>
+<h4>Edit Income Statment</h4>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.video_path(@conn, :update, @video)) %>
+<%= render "form.html", Map.put(assigns, :action, Routes.income_statement_path(@conn, :update, @is)) %>
 
-<span><%= link "Back", to: Routes.video_path(@conn, :index) %></span>
+<span><%= link "Back", to: Routes.income_statement_path(@conn, :index) %></span>

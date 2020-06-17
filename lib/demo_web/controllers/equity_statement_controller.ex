@@ -1,71 +1,74 @@
-#---
-# Excerpted from "Programming Phoenix 1.4",
-# published by The Pragmatic Bookshelf.
-# Copyrights apply to this code. It may not be used to create training material,
-# courses, books, articles, and the like. Contact us if you are in doubt.
-# We make no guarantees that this code is fit for any purpose.
-# Visit http://www.pragmaticprogrammer.com/titles/phoenix14 for more book information.
-#---
 defmodule DemoWeb.EquityStatementController do
   use DemoWeb, :controller
+  # import Plug.Conn
 
-  alias Demo.Business
-  alias Demo.Business.Entity
+  alias Demo.EquityStatements
+  alias Demo.Reports.EquityStatement
 
-  def action(conn, _) do
-    args = [conn, conn.params, conn.assigns.current_user]
-    apply(__MODULE__, action_name(conn), args)
+  # def action(conn, _) do
+  #   args = [conn, conn.params, conn.assigns.current_entity]
+  #   apply(__MODULE__, action_name(conn), args)
+  # end
+
+  def show(conn, %{"id" => id}) do
+    [equity_statement] = EquityStatements.get_entity_equity_statement!(id) 
+    case equity_statement do
+      nil -> 
+        new(conn, "dummy")
+      equity_statement ->
+        render(conn, "show.html", es: equity_statement)
+    end
+  end 
+
+  def edit(conn, %{"id" => id}) do
+    equity_statement = EquityStatement |> Demo.Repo.get!(id) 
+    changeset = EquityStatements.change_equity_statement(equity_statement)
+    render(conn, "edit.html", es: equity_statement, changeset: changeset)
   end
 
+  def update(conn, %{"id" => id, "equity_statement" => equity_statement_params}) do
+    equity_statement = EquityStatement |> Demo.Repo.get!(id) 
 
-  def show(conn, %{"id" => id}, current_user) do
-    entity = Business.get_user_entity!(current_user, id) 
-    render(conn, "show.html", entity: entity)
-  end
-
-  def edit(conn, %{"id" => id}, current_user) do
-    entity = Business.get_user_entity!(current_user, id) 
-    changeset = Business.change_entity(entity)
-    render(conn, "edit.html", entity: entity, changeset: changeset)
-  end
-
-  def update(conn, %{"id" => id, "entity" => entity_params}, current_user) do
-    entity = Business.get_user_entity!(current_user, id) 
-
-    case Business.update_entity(entity, entity_params) do
-      {:ok, entity} ->
+    case EquityStatements.update_equity_statement(equity_statement, equity_statement_params) do
+      {:ok, equity_statement} ->
         conn
-        |> put_flash(:info, "Entity updated successfully.")
-        |> redirect(to: Routes.entity_path(conn, :show, entity))
+        |> put_flash(:info, "EquityStatement updated successfully.")
+        # |> redirect(to: Routes.equity_statement_path(conn, :show, equity_statement))
+        render(conn, "show.html", es: equity_statement)
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", entity: entity, changeset: changeset)
+        render(conn, "edit.html", equity_statement: equity_statement, changeset: changeset)
     end
   end
 
-  def delete(conn, %{"id" => id}, current_user) do
-    entity = Business.get_user_entity!(current_user, id) 
-    {:ok, _entity} = Business.delete_entity(entity)
 
-    conn
-    |> put_flash(:info, "Entity deleted successfully.")
-    |> redirect(to: Routes.entity_path(conn, :index))
-  end
-
-  def new(conn, _params, _current_user) do
-    changeset = Business.change_entity(%Entity{})
+  def new(conn, _params) do
+    changeset = EquityStatements.change_equity_statement(%EquityStatement{})
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"entity" => entity_params}, current_user) do
-    case Business.create_entity(current_user, entity_params) do
-      {:ok, entity} ->
+  def create(conn, %{"equity_statement" => equity_statement_params}, current_entity) do
+    case EquityStatements.create_equity_statement(current_entity, equity_statement_params) do
+      {:ok, equity_statement} ->
         conn
-        |> put_flash(:info, "Entity created successfully.")
-        |> redirect(to: Routes.entity_path(conn, :show, entity))
+        |> put_flash(:info, "EquityStatement created successfully.")
+        |> redirect(to: Routes.equity_statement_path(conn, :show, equity_statement))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
+
+  '''  
+  No one can delete any records in supul.
+  
+  def delete(conn, %{"id" => id}) do
+    equity_statement = EquityStatements.get_entity_equity_statement!(id) 
+    {:ok, _equity_statement} = EquityStatements.delete_equity_statement(equity_statement)
+
+    conn
+    |> put_flash(:info, "EquityStatement deleted successfully.")
+    |> redirect(to: Routes.equity_statement_path(conn, :index))
+  end
+'''
 end

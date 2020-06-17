@@ -66,9 +66,9 @@ defmodule Demo.Accounts.User do
 
   def changeset_update_entities(%User{} = user, entities) do
     user 
-    |> Repo.preload([:entities])
+    |> Repo.preload(:entities)
     |> change()  \
-    |> put_assoc(:entities, [entities]) #? many to many between users and entities
+    |> put_assoc(:entities, entities) #? many to many between users and entities
     |> Repo.update!()
   end
 

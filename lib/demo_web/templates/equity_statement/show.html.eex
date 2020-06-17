@@ -1,0 +1,13 @@
+<h4>Show Equity Statement</h4>
+
+<ul>
+
+  <li>
+    <strong></strong>
+    <%= @es. %>
+  </li>
+  
+</ul>
+
+<span><%= link "Edit", to: Routes.balance_sheet_path(@conn, :edit, @es) %></span>
+<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

@@ -21,17 +21,19 @@
   <%= text_input f, :depreciation_amortization %>
   <%= error_tag f, :depreciation_amortization %>
 
-  <%= label f, :equity_issuance %>
-  <%= text_input f, :equity_issuance %>
-  <%= error_tag f, :equity_issuance %>
+  <%= label f, :capital_expenditures %>
+  <%= text_input f, :capital_expenditures %>
+  <%= error_tag f, :capital_expenditures %>
 
-  <%= label f, :net_earnings %>
-  <%= text_input f, :net_earnings %>
-  <%= error_tag f, :net_earnings %>
 
-  <%= label f, :opening_cash_balance %>
-  <%= text_input f, :opening_cash_balance %>
-  <%= error_tag f, :opening_cash_balance %>
+      field :, :decimal, precision: 12, scale: 2
+      field :, :decimal, precision: 12, scale: 2
+      field :, :decimal, precision: 12, scale: 2
+      field :, :decimal, precision: 12, scale: 2
+      field :equity_issuance, :decimal, precision: 12, scale: 2
+      field :net_earnings, :decimal, precision: 12, scale: 2
+      field :opening_cash_balance, :decimal, precision: 12, scale: 2
+  
 
 
   <div>

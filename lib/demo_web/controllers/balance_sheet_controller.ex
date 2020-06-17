@@ -1,59 +1,56 @@
-# ---
-# Excerpted from "Programming Phoenix 1.4",
+#---
+# Excerpted bsom "Programming Phoenix 1.4",
 # published by The Pragmatic Bookshelf.
 # Copyrights apply to this code. It may not be used to create training material,
 # courses, books, articles, and the like. Contact us if you are in doubt.
 # We make no guarantees that this code is fit for any purpose.
 # Visit http://www.pragmaticprogrammer.com/titles/phoenix14 for more book information.
-# ---
+#---
 defmodule DemoWeb.BalanceSheetController do
   use DemoWeb, :controller
+  # import Plug.Conn
 
-  # alias Demo.Reports
-  alias Demo.Reports.BalanceSheet
   alias Demo.BalanceSheets
-  # alias Demo.Business.Entity
+  alias Demo.Reports.BalanceSheet
 
- 
-  def index(conn, _params, _current_entity) do
-    render(conn, "index.html")
-  end
+  # def action(conn, _) do
+  #   args = [conn, conn.params, conn.assigns.current_entity]
+  #   apply(__MODULE__, action_name(conn), args)
+  # end
 
-  def show(conn, %{"id" => id}, current_entity) do
-    balance_sheet = BalanceSheets.get_entity_balance_sheet!(current_entity, id)
-    render(conn, "show.html", balance_sheet: balance_sheet)
-  end
+  def show(conn, %{"id" => id}) do
+    [balance_sheet] = BalanceSheets.get_entity_balance_sheet!(id) 
+    case balance_sheet do
+      nil -> 
+        new(conn, "dummy")
+      balance_sheet ->
+        render(conn, "show.html", bs: balance_sheet)
+    end
+  end 
 
-  def edit(conn, %{"id" => id}, current_entity) do
-    balance_sheet = BalanceSheets.get_entity_balance_sheet!(current_entity, id)
+  def edit(conn, %{"id" => id}) do
+    balance_sheet = BalanceSheet |> Demo.Repo.get!(id) 
     changeset = BalanceSheets.change_balance_sheet(balance_sheet)
-    render(conn, "edit.html", balance_sheet: balance_sheet, changeset: changeset)
+    render(conn, "edit.html", bs: balance_sheet, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "balance_sheet" => balance_sheet_params}, current_entity) do
-    balance_sheet = BalanceSheets.get_entity_balance_sheet!(current_entity, id)
+  def update(conn, %{"id" => id, "balance_sheet" => balance_sheet_params}) do
+    balance_sheet = BalanceSheet |> Demo.Repo.get!(id) 
 
     case BalanceSheets.update_balance_sheet(balance_sheet, balance_sheet_params) do
       {:ok, balance_sheet} ->
         conn
         |> put_flash(:info, "BalanceSheet updated successfully.")
-        |> redirect(to: Routes.balance_sheet_path(conn, :show, balance_sheet))
+        # |> redirect(to: Routes.balance_sheet_path(conn, :show, balance_sheet))
+        render(conn, "show.html", bs: balance_sheet)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", balance_sheet: balance_sheet, changeset: changeset)
     end
   end
 
-  def delete(conn, %{"id" => id}, current_entity) do
-    balance_sheet = BalanceSheets.get_entity_balance_sheet!(current_entity, id)
-    {:ok, _balance_sheet} = BalanceSheets.delete_balance_sheet(balance_sheet)
 
-    conn
-    |> put_flash(:info, "BalanceSheet deleted successfully.")
-    |> redirect(to: Routes.balance_sheet_path(conn, :index))
-  end
-
-  def new(conn, _params, _current_entity) do
+  def new(conn, _params) do
     changeset = BalanceSheets.change_balance_sheet(%BalanceSheet{})
     render(conn, "new.html", changeset: changeset)
   end
@@ -69,4 +66,17 @@ defmodule DemoWeb.BalanceSheetController do
         render(conn, "new.html", changeset: changeset)
     end
   end
+
+  '''  
+  No one can delete any records in supul.
+  
+  def delete(conn, %{"id" => id}) do
+    balance_sheet = BalanceSheets.get_entity_balance_sheet!(id) 
+    {:ok, _balance_sheet} = BalanceSheets.delete_balance_sheet(balance_sheet)
+
+    conn
+    |> put_flash(:info, "BalanceSheet deleted successfully.")
+    |> redirect(to: Routes.balance_sheet_path(conn, :index))
+  end
+'''
 end

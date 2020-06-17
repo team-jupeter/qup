@@ -33,21 +33,13 @@ defmodule Demo.FinancialReports do
     |> Repo.update()
   end
 
-
-  def delete_financial_report(%FinancialReport{} = financial_report) do
-    Repo.delete(financial_report)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking report changes.
-
-  ## Examples
-
-      iex> change_report(report)
-      %Ecto.Changeset{source: %Report{}}
-
-  """
   def change_financial_report(%FinancialReport{} = financial_report) do
     FinancialReport.changeset(financial_report, %{})
   end
+  
+'''
+  def delete_financial_report(%FinancialReport{} = financial_report) do
+    Repo.delete(financial_report)
+  end
+'''
 end
