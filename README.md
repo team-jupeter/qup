@@ -1,9 +1,10 @@
 
 # COREA(Connected/Coded Openhash Reports on Economic Activities)
-* This project is for both a coding exercise and preparing a startup.
+* This is an on-going project for both a coding exercise and preparing a startup.
 * The goal of this project is to code an electronic passport, called PAS, which any nation can adopt for its immigration process at airports and quarantine process to protect its citizen from infectious virus such as COVID 19.
 * Another goal is to put any kind of governmental services or national infrastructures into PAS for their citizens to easily utilize those services. 
-* Some examples of those governmental services are any kinds of AUTONOMOUS governmental organizations such as unmanned Internal Revenue Service, Police Stations, Courts, Congresses, and national infrastructures such as various educational facilities/schools, health/medical facilities, traffic/logistics, roads and markets etc. 
+* Examples of those governmental services are autonomous and unmanned governmental organizations including Internal Revenue Service, police stations, courts, congresses. 
+* Examples of those national infrastructures are autonomous and unmanned social infrastructures including various educational facilities/schools, health/medical facilities, traffic/logistics, roads and markets etc. 
 * This is an open source coding exercise based on phoenix_liveview_example(https://github.com/phoenixframework/phoenix_live_view).
 * The progress of coding is recorded as educational video contents and uploaded to Youtube channel,[ \[Team Jupeter\]](https://www.youtube.com/watch?v=LsZgh8szGYA&list=PLlSZlNj22M7QRBGl7s9WnT0xqKGDuzPKk).
 * For Koreans, recommend to visit [the homepage of this project](https://openhash.ai/%ED%91%9C%EC%A4%80-%EC%97%AC%EA%B6%8C-%EC%9D%B8%ED%94%84%EB%9D%BC).
