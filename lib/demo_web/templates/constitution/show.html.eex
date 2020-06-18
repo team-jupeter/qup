@@ -1,14 +1,20 @@
-<h3>Show Constitution</h3>
+<h4>Show Constitution</h4>
 
 <ul>
+
   <li>
-    <strong>Text:</strong>
-    <%= @constitution.text %>
+    <strong>nationality:</strong>
+    <%= @constitution.nationality %>
   </li>
 
   <li>
-    <strong>Nation:</strong>
-    <%= @constitution.nation_id %>
+    <strong>content_hash:</strong>
+    <%= @constitution.content_hash %>
+  </li>
+
+  <li>
+    <strong>empowered_on:</strong>
+    <%= @constitution.empowered_on %>
   </li>
 
 </ul>

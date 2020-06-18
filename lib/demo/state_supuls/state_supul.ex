@@ -5,8 +5,13 @@ defmodule Demo.Supuls.StateSupul do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "state_supuls" do
     field :name, :string
+    field :nation_name, :string
+
+    field :payload, :string
+    field :payload_hash, :string
 
     has_many :supuls, Demo.Supuls.Supul
+    has_many :entities, Demo.Business.Entity
     has_many :schools, Demo.Schools.School, on_replace: :nilify
 
     has_one :financial_report, Demo.Reports.FinancialReport
@@ -17,10 +22,14 @@ defmodule Demo.Supuls.StateSupul do
     timestamps()
   end
 
+  @fields [
+    :name, :nation_name, 
+    :payload, :payload_hash
+  ]
   @doc false
   def changeset(state_supul, attrs) do
     state_supul
-    |> cast(attrs, [:name])
+    |> cast(attrs, @fields)
     |> validate_required([:name])
   end
 end

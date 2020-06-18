@@ -1,0 +1,69 @@
+<h4>Show Supul</h4>
+
+<ul>
+
+  <li>
+    <strong>ID:</strong>
+    <%= @supul.id %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @supul.type %>
+  </li>
+  
+  <li>
+    <strong>supul_code:</strong>
+    <%= @supul.supul_code %>
+  </li>
+  
+  <li>
+    <strong>geographical_area:</strong>
+    <%= @supul.geographical_area %>
+  </li>
+  
+  <li>
+    <strong>name:</strong>
+    <%= @supul.name %>
+  </li>
+  
+  <li>
+    <strong>state_name:</strong>
+    <%= @supul.state_name %>
+  </li>
+  
+  <li>
+    <strong>nation_name:</strong>
+    <%= @supul.nation_name %>
+  </li>
+  
+  
+  <li>
+    <strong>state_supul:</strong>
+    <%= @supul.state_supul_id %>
+  </li>
+
+  <li>
+    <strong>financial_report:</strong>
+  </li>
+  <li>
+    <strong>schools:</strong>
+  </li>
+  
+  <li>
+    <strong>financial_report:</strong>
+  </li>
+  <li>
+    <strong>mulet:</strong>
+  </li>
+  <li>
+    <strong>gopang:</strong>
+  </li>
+  <li>
+    <strong>gopang:</strong>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.supul_path(@conn, :edit, @supul) %></span>
+<span><%= link "Back", to: Routes.supul_path(@conn, :index) %></span>

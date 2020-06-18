@@ -1,4 +1,4 @@
-<h3>New Constitution</h3>
+<h4>New Constitution</h4>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.constitution_path(@conn, :create)) %>
 

@@ -1,0 +1,5 @@
+<h4>Edit State supul</h4>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.state_supul_path(@conn, :update, @state_supul)) %>
+
+<span><%= link "Back", to: Routes.state_supul_path(@conn, :index) %></span>

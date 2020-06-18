@@ -6,11 +6,12 @@ defmodule Demo.Votes.Constitution do
   @foreign_key_type :binary_id
 
   schema "constitutions" do
+    field :nationality, :string
     field :content, :string
-    field :suggested_update, :string
+    field :content_hash, :string
     field :empowered_on, :naive_datetime
     field :signed_by, {:array, :string}, default: []
-
+ 
     has_one :initiative, Demo.Votes.Initiative
 
     has_many :users, Demo.Accounts.User
@@ -22,8 +23,8 @@ defmodule Demo.Votes.Constitution do
   end
   @fields [
    :content,
-   :suggested_update, 
    :empowered_on, 
+   :nationality,
   ]
   @doc false
   def changeset(constitution, attrs \\ %{}) do

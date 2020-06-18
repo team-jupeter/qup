@@ -1,4 +1,4 @@
-<h3>Edit Nation</h3>
+<h4>Edit Nation</h4>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.nation_path(@conn, :update, @nation)) %>
 

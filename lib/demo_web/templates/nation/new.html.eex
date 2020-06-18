@@ -1,4 +1,4 @@
-<h3>New Nation</h3>
+<h4>New Nation</h4>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.nation_path(@conn, :create)) %>
 

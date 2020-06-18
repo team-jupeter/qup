@@ -5,7 +5,11 @@ defmodule Demo.Repo.Migrations.CreateStateSupuls do
     create table(:state_supuls, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :name, :string
-
+      add :nation_name, :string
+  
+      add :payload, :text
+      add :payload_hash, :text
+      
       add :nation_supul_id, references(:nation_supuls, type: :uuid, null: false)
 
       timestamps()

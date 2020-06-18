@@ -1,4 +1,4 @@
-<h3>New User</h3>
+<h4>New User</h4>
 
 <%= form_for @changeset, Routes.user_path(@conn, :create), fn f -> %>
   <%= if @changeset.action do %>
@@ -7,6 +7,10 @@
     </div>
   <% end %>
 
+  <div>
+    <%= text_input f, :nationality, placeholder: "Nationality" %>
+    <%= error_tag f, :nationality %>
+  </div>
   <div>
     <%= text_input f, :name, placeholder: "Name" %>
     <%= error_tag f, :name %>

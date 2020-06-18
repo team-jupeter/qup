@@ -15,8 +15,6 @@ defmodule DemoWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    IO.puts id
-    IO.inspect conn
     user = Accounts.get_user(id)
     # IO.inspect conn
     render(conn, "show.html", user: user)

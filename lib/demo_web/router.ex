@@ -98,6 +98,18 @@ defmodule DemoWeb.Router do
     resources "/constitutions", ConstitutionController
     resources "/", NationController
   end
+
+  scope "/supul", DemoWeb do
+    pipe_through [:browser]
+
+    resources "/global_supuls", GlobalSupulController
+    resources "/nation_supuls", NationSupulController
+    resources "/state_supuls", StateSupulController
+    resources "/supuls", SupulController
+    get "/", GlobalSupulController, :index
+  end
+
+
   # scope "/", DemoWeb do
   #   pipe_through [:browser, :bare]
 

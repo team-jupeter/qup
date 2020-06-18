@@ -5,21 +5,17 @@
     </div>
   <% end %>
 
-  <%= label f, :nation_id %>
-  <%= text_input f, :nation_id %>
-  <%= error_tag f, :nation_id %>
-
-  <%= label f, :private_key %>
-  <%= text_input f, :private_key %>
-  <%= error_tag f, :private_key %>
+  <%= label f, :nationality %>
+  <%= text_input f, :nationality %>
+  <%= error_tag f, :nationality %>
 
   <%= label f, :content %>
   <%= textarea f, :content %>
   <%= error_tag f, :content %>
 
-  <%= label f, :suggested_update %>
-  <%= textarea f, :suggested_update %>
-  <%= error_tag f, :suggested_update %>
+  <%= label f, :content_hash %>
+  <%= textarea f, :content_hash %>
+  <%= error_tag f, :content_hash %>
 
   <%= label f, :empowered_on %>
   <%= datetime_select f, :empowered_on %>

@@ -1,4 +1,4 @@
-<h3>Edit Video</h3>
+<h4>Edit Video</h4>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.video_path(@conn, :update, @video)) %>
 

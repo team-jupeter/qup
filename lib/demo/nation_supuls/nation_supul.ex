@@ -6,6 +6,10 @@ defmodule Demo.Supuls.NationSupul do
   schema "nation_supuls" do
     field :name, :string
 
+    field :payload, :string
+    field :payload_hash, :string
+
+    has_many :entities, Demo.Business.Entity
     has_many :state_supuls, Demo.Supuls.StateSupul
     has_many :schools, Demo.Schools.School, on_replace: :nilify
 
@@ -16,10 +20,13 @@ defmodule Demo.Supuls.NationSupul do
     timestamps()
   end
 
+  @fields [
+    :name, :payload, :payload_hash, 
+  ]
   @doc false
   def changeset(nation_supul, attrs) do
     nation_supul
-    |> cast(attrs, [:name])
+    |> cast(attrs, @fields)
     |> validate_required([:name])
   end
 end

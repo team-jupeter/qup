@@ -1,0 +1,5 @@
+<h4>New Nation supul</h4>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.nation_supul_path(@conn, :create)) %>
+
+<span><%= link "Back", to: Routes.nation_supul_path(@conn, :index) %></span>

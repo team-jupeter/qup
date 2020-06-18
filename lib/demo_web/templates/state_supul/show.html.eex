@@ -1,0 +1,23 @@
+<h4>Show State supul</h4>
+
+<ul>
+
+  <li>
+    <strong>ID:</strong>
+    <%= @state_supul.id %>
+  </li>
+
+  <li>
+    <strong>name:</strong>
+    <%= @state_supul.name %>
+  </li>
+
+  <li>
+    <strong>nation_name:</strong>
+    <%= @supul.nation_name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.state_supul_path(@conn, :edit, @state_supul) %></span>
+<span><%= link "Back", to: Routes.state_supul_path(@conn, :index) %></span>

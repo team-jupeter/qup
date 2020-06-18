@@ -1,0 +1,14 @@
+<h4>Show Global Supul</h4>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @global_supul.name %>
+  </li>
+
+
+</ul>
+
+<span><%= link "Edit", to: Routes.global_supul_path(@conn, :edit, @global_supul) %></span>
+<span><%= link "Back", to: Routes.global_supul_path(@conn, :index) %></span>

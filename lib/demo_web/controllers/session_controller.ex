@@ -7,6 +7,7 @@ defmodule DemoWeb.SessionController do
 
   def create(conn, %{"session" => %{"email" => email, "password" => pass}}) do
     # IO.inspect conn
+    IO.puts "hiroo"
     case Demo.Accounts.authenticate_by_email_and_pass(email, pass) do
       {:ok, user} ->
         conn

@@ -1,15 +1,15 @@
 <h4>User Detail</h4>
 <b>Type</b> (<%= @user.type %>) </br>
+<b>Nationlity</b> (<%= @user.nationality %>) </br>
 <b>ID</b> (<%= @user.id %>) </br>
 <b>Name</b> (<%= @user.name %>) </br>
 <b>Nation ID</b> (<%= @user.nation_id %>) </br> 
 <b>Constitution ID</b> (<%= @user.constitution_id %>) </br> 
+<b>Supul ID</b> (<%= @user.supul_id %>) </br> 
 <b>Social Secutiry Number</b> (<%= @user.ssn %>) </br> 
 <b>Username</b> (<%= @user.username %>) </br>
 <b>Email</b> (<%= @user.email %>) </br>
 <b>Birth Date</b> (<%= @user.birth_date %>) </br>
-<b>Password Hash</b> (<%= @user.password_hash %>) </br>
-<b>Private Key</b> (<%= @user.private_key %>) </br>
  </br>
 
 

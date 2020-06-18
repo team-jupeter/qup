@@ -7,16 +7,12 @@
 <b>Email</b> (<%= @entity.email %>) </br>
 <b>Address</b> (<%= @entity.entity_address %>) </br>
 <b>Founding Date</b> (<%= @entity.founding_date %>) </br>
-<b>Private Key</b> (<%= @entity.private_key %>) </br>
 <b>Locked</b> (<%= @entity.locked %>) </br>
- </br>
+ </br> 
 <b>GAB Balance</b> (<%= @entity.gab_balance %>) </br>
 </br> 
 </br>
-<li>
-<strong>Signature:</strong>
-<%= @entity.signature %>
-</li>
+
 </br>
 <h4>Financial Reports</h4>
     <ul>

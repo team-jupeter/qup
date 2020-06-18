@@ -56,10 +56,13 @@ defmodule Demo.Accounts.User do
   
 
   # @required_fields [:type, :name, :email]
-  @fields [:name, :type, :nationality, :email, :birth_date, :password, :nation_signature]
+  @fields [
+    :name, :type, :nationality, :email, :birth_date, 
+    :password, :nation_signature, :nation_id,
+    :constitution_id, :supul_id
+  ]
 
   def changeset(user, attrs) do
-    IO.puts "hey"
     user
     |> cast(attrs, @fields)
     |> validate_required([])
@@ -81,13 +84,11 @@ defmodule Demo.Accounts.User do
     |> validate_required([:password])
     # |> cast_embed(:address) # error
     |> validate_length(:password, min: 5, max: 10)
-    |> IO.inspect
     # |> unique_constraint([:email]) # error
     |> put_pass_hash()
   end
 
   defp put_pass_hash(changeset) do
-    IO.puts "I am put_pass_hash"
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
         put_change(changeset, :password_hash, Pbkdf2.hash_pwd_salt(pass))

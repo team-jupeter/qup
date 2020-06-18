@@ -4,12 +4,13 @@ defmodule Demo.Repo.Migrations.CreateAccounts do
   def change do
     create table(:entities, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :nationality, :string
       add :company_prefix, :string
       add :registered_no, :string
       add :industry_classification, :string
       add :entity_address, :string
       add :entity_code, :string
-      add :name, :string
+      add :name, :string 
       add :email, :string
       add :founding_date, :date
 
@@ -21,6 +22,8 @@ defmodule Demo.Repo.Migrations.CreateAccounts do
 
       add :nation_id, references(:nations, type: :uuid)
       add :supul_id, references(:supuls, type: :uuid)
+      add :state_supul_id, references(:state_supuls, type: :uuid)
+      add :nation_supul_id, references(:nation_supuls, type: :uuid)
       add :taxation_id, references(:taxations, type: :uuid)
       add :invoice_id, references(:invoices, type: :uuid)
 

@@ -1,4 +1,4 @@
-<h3>Edit Constitution</h3>
+<h4>Edit Constitution</h4>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.constitution_path(@conn, :update, @constitution)) %>
 

@@ -6,6 +6,10 @@ defmodule Demo.Supuls.GlobalSupul do
   schema "global_supuls" do
     field :name, :string
 
+    field :global_signature, :string
+    field :private_key, :string
+    field :public_key, :string
+
     has_many :nation_supuls, Demo.Supuls.NationSupul
     has_many :schools, Demo.Schools.School, on_replace: :nilify
 
@@ -14,6 +18,10 @@ defmodule Demo.Supuls.GlobalSupul do
 
     timestamps()
   end
+
+  @fields [
+    :name, :global_signature, :private_key, :public_key, 
+  ]
 
   @doc false
   def changeset(global_supul, attrs) do

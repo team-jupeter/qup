@@ -59,8 +59,6 @@ defmodule Demo.Invoices.Invoice do
 
   defp get_items(params) do
     items = items_with_prices(params[:invoice_items] || params["invoice_items"])
-    IO.puts "items"
-    IO.inspect items
     Enum.map(items, fn(item)-> InvoiceItem.changeset(%InvoiceItem{}, item) end)
   end
 

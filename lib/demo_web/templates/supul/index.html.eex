@@ -1,0 +1,26 @@
+<h4>Listing Supuls</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for supul <- @supuls do %>
+    <tr>
+      <td><%= supul.name %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.supul_path(@conn, :show, supul) %></span>
+        <span><%= link "Edit", to: Routes.supul_path(@conn, :edit, supul) %></span>
+        <span><%= link "Delete", to: Routes.supul_path(@conn, :delete, supul), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Supul", to: Routes.supul_path(@conn, :new) %></span>

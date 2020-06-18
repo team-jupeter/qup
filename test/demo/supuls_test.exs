@@ -309,4 +309,63 @@ defmodule Demo.SupulsTest do
       assert %Ecto.Changeset{} = Supuls.change_continental_supul(continental_supul)
     end
   end
+
+  describe "supuls" do
+    alias Demo.Supuls.Supul
+
+    @valid_attrs %{type: "some type"}
+    @update_attrs %{type: "some updated type"}
+    @invalid_attrs %{type: nil}
+
+    def supul_fixture(attrs \\ %{}) do
+      {:ok, supul} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Supuls.create_supul()
+
+      supul
+    end
+
+    test "list_supuls/0 returns all supuls" do
+      supul = supul_fixture()
+      assert Supuls.list_supuls() == [supul]
+    end
+
+    test "get_supul!/1 returns the supul with given id" do
+      supul = supul_fixture()
+      assert Supuls.get_supul!(supul.id) == supul
+    end
+
+    test "create_supul/1 with valid data creates a supul" do
+      assert {:ok, %Supul{} = supul} = Supuls.create_supul(@valid_attrs)
+      assert supul.type == "some type"
+    end
+
+    test "create_supul/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Supuls.create_supul(@invalid_attrs)
+    end
+
+    test "update_supul/2 with valid data updates the supul" do
+      supul = supul_fixture()
+      assert {:ok, %Supul{} = supul} = Supuls.update_supul(supul, @update_attrs)
+      assert supul.type == "some updated type"
+    end
+
+    test "update_supul/2 with invalid data returns error changeset" do
+      supul = supul_fixture()
+      assert {:error, %Ecto.Changeset{}} = Supuls.update_supul(supul, @invalid_attrs)
+      assert supul == Supuls.get_supul!(supul.id)
+    end
+
+    test "delete_supul/1 deletes the supul" do
+      supul = supul_fixture()
+      assert {:ok, %Supul{}} = Supuls.delete_supul(supul)
+      assert_raise Ecto.NoResultsError, fn -> Supuls.get_supul!(supul.id) end
+    end
+
+    test "change_supul/1 returns a supul changeset" do
+      supul = supul_fixture()
+      assert %Ecto.Changeset{} = Supuls.change_supul(supul)
+    end
+  end
 end

@@ -1,4 +1,4 @@
-<h3>Edit Gab account</h3>
+<h4>Edit Gab account</h4>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.gab_account_path(@conn, :update, @gab_account)) %>
 

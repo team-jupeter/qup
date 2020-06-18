@@ -1,0 +1,42 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :type %>
+  <%= text_input f, :type %>
+  <%= error_tag f, :type %>
+
+  <%= label f, :supul_code %>
+  <%= text_input f, :supul_code %>
+  <%= error_tag f, :supul_code %>
+
+  <%= label f, :geographical_area %>
+  <%= text_input f, :geographical_area %>
+  <%= error_tag f, :geographical_area %>
+
+  <%= label f, :name %>
+  <%= text_input f, :name %>
+  <%= error_tag f, :name %>
+
+  <%= label f, :payload %>
+  <%= textarea f, :payload %>
+  <%= error_tag f, :payload %>
+
+
+    has_many :entities, Demo.Business.Entity, on_replace: :nilify </br>
+    has_many :payloads, Demo.Tickets.Payload, on_replace: :nilify </br>
+    has_many :schools, Demo.Schools.School, on_replace: :nilify </br>
+
+    has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify </br>
+    has_one :mulet, Demo.Mulets.Mulet </br>
+    has_one :gopang, Demo.Gopangs.Gopang </br>
+    
+    belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id </br>
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+<% end %>

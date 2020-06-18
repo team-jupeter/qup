@@ -1,4 +1,4 @@
-<h3>New School</h3>
+<h4>New School</h4>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.school_path(@conn, :create)) %>
 

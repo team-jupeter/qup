@@ -1,0 +1,26 @@
+<h4>Listing Global supuls</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for global_supul <- @global_supuls do %>
+    <tr>
+      <td><%= global_supul.name %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.global_supul_path(@conn, :show, global_supul) %></span>
+        <span><%= link "Edit", to: Routes.global_supul_path(@conn, :edit, global_supul) %></span>
+        <span><%= link "Delete", to: Routes.global_supul_path(@conn, :delete, global_supul), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Global supul", to: Routes.global_supul_path(@conn, :new) %></span>

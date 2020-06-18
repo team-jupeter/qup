@@ -6,6 +6,10 @@ defmodule Demo.Repo.Migrations.CreateGlobalSupuls do
       add :id, :uuid, primary_key: true
       add :name, :string
 
+      add :global_signature, :string
+      add :private_key, :string
+      add :public_key, :string
+
       timestamps()
     end
 

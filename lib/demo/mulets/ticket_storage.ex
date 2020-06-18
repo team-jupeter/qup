@@ -23,7 +23,7 @@ defmodule Demo.Mulets.TicketStorage do
     end
   
     defp archive_new_payload(ts_cs, new_payload) do #? ts_cs == ticket_storage changeset
-        IO.inspect new_payload
+        # IO.inspect new_payload
         %Demo.Mulets.TicketStorage{payload_history: [new_payload | ts_cs.data.payload_history]}
       end
   end

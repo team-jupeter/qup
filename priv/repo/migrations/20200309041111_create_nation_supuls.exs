@@ -6,6 +6,9 @@ defmodule Demo.Repo.Migrations.CreateNationSupuls do
       add :id, :uuid, primary_key: true
       add :name, :string
 
+      add :payload, :text
+      add :payload_hash, :text
+  
       add :global_supul_id, references(:global_supuls, type: :uuid, null: false)
 
       timestamps()

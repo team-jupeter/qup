@@ -37,7 +37,7 @@ defmodule Demo.Mulets.Mulet do
     |> Base.encode16()
     |> String.downcase()
 
-    IO.inspect [old_current_hash | mulet_cs.data.hash_history]
+    # IO.inspect [old_current_hash | mulet_cs.data.hash_history]
     %Demo.Mulets.Mulet{hash_history: [old_current_hash | mulet_cs.data.hash_history], current_hash: new_hash}
   end
 

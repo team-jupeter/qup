@@ -1,11 +1,9 @@
-<h3>Listing Constitutions</h3>
+<h4>Listing Constitutions</h4>
 
 <table>
   <thead>
     <tr>
-      <th>Hash</th>
-      <th>Private key</th>
-      <th>Text</th>
+      <th>Content</th>
 
       <th></th>
     </tr>
@@ -13,9 +11,7 @@
   <tbody>
 <%= for constitution <- @constitutions do %>
     <tr>
-      <td><%= constitution.hash %></td>
-      <td><%= constitution.private_key %></td>
-      <td><%= constitution.text %></td>
+      <td><%= constitution.nationality %></td>
 
       <td>
         <span><%= link "Show", to: Routes.constitution_path(@conn, :show, constitution) %></span>

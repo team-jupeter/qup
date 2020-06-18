@@ -1,0 +1,27 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+ 
+  <%= label f, :name %>
+  <%= text_input f, :name %>
+  <%= error_tag f, :name %>
+ 
+  <%= label f, :payload %>
+  <%= textarea f, :payload %>
+  <%= error_tag f, :payload %>
+
+
+    has_many :state_supuls, Demo.Supuls.StateSupul </br>
+    has_many :schools, Demo.Schools.School, on_replace: :nilify </br>
+
+    belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id </br>
+    has_one :financial_report, Demo.Reports.FinancialReport </br>
+    has_one :mulet, Demo.Mulets.Mulet </br>
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+<% end %>

@@ -78,7 +78,7 @@ defmodule Demo.Business.Entity do
     timestamps() #? inserted_at, updated_at
   end
 
-
+ 
 
   @fields [
     :nationality, :company_prefix, 
@@ -108,7 +108,6 @@ defmodule Demo.Business.Entity do
     |> validate_required([:password])
     # |> cast_embed(:address) # error
     |> validate_length(:password, min: 5, max: 10)
-    |> IO.inspect
     # |> unique_constraint([:email]) # error
     |> put_pass_hash()
   end

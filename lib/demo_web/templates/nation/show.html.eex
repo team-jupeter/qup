@@ -1,4 +1,4 @@
-<h3>Show Nation</h3>
+<h4>Show Nation</h4>
 
 <ul>
 
@@ -14,13 +14,9 @@
 
   <li>
     <strong>Constitution Signature:</strong>
-    <%= @nation.signature %>
+    <%= @nation.constitution_signature %>
   </li>
 
-  <li>
-    <strong>Empowered By:</strong>
-    <%= @nation.empowered_by %>
-  </li>
 
 
 </ul>

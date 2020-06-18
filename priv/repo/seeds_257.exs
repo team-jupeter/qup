@@ -20,7 +20,7 @@ korea_supul =
   |> Repo.insert!()
 
 jejudo_supul =
-  StateSupul.changeset(%StateSupul{}, %{name: "Jejudo State Supul", supul_code: 0x01434500}) \
+  StateSupul.changeset(%StateSupul{}, %{name: "Jejudo Supul", supul_code: 0x01434500}) \
   |> Repo.insert!()
 
 hankyung_supul =
@@ -31,52 +31,132 @@ hanlim_supul =
   Supul.changeset(%Supul{}, %{name: "Hanlim Supul", supul_code: 0x35434500}) \
   |> Repo.insert!()
 
-# ? init users
-alias Demo.Accounts.User
 
-# {ok, mr_hong} = User.changeset(%User{}, %{name: "Hong Gildong"}) |> Repo.insert
-mr_hong =
-  User.changeset(%User{}, %{
-    name: "Hong_Gildong", 
-    username: "mr_hong", 
-    email: "hong_gil_dong@82345.kr",
-    type: "Human",
-    ssn: "8010051898822kr",
-    birth_date: ~N[1990-05-05 06:14:09],
-    }) \
-  |> Repo.insert!()
- 
-ms_sung =
-  User.changeset(%User{}, %{
-    name: "Sung_Chunhyang", 
-    username: "ms_sung", 
-    email: "sung_chun_hyang@82345.kr",
-    type: "Human",
-    ssn: "8345051898822kr",
-    birth_date: ~N[2000-09-09 16:14:09],
-    }) \
-  |> Repo.insert!()
 
-mr_lim =
-  User.changeset(%User{}, %{
-    name: "Lim_Geukjung", 
-    username: "mr_lim", 
-    email: "limgeukjung@88889.kr",
-    type: "Human",
-    ssn: "5410051898822kr",
-    birth_date: ~N[1970-11-11 09:14:09],
-    }) \
-  |> Repo.insert!()
+  '''
 
-gab =
-  User.changeset(%User{}, %{
-    name: "GAB", 
-    username: "gab", 
-    email: "gab@000011.un",
-    type: "Bank",
-    founding_date: ~N[1990-05-24 06:14:09],
-    }) \
-  |> Repo.insert!()
+  CRYPTO
+  Both users and entities should have private and public keys for future transactions.
+  '''
+
+  # ? openssl genrsa -out jejudo_private_key.pem 2048
+  # ? openssl rsa -in jejudo_private_key.pem -pubout > jejudo_public_key.pem
+  global_rsa_priv_key = ExPublicKey.load!("./keys/global_private_key.pem")
+  global_rsa_pub_key = ExPublicKey.load!("./keys/global_public_key.pem")
+  
+  korea_rsa_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
+  korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
+  
+  jejudo_rsa_priv_key = ExPublicKey.load!("./keys/jejudo_private_key.pem")
+  jejudo_rsa_pub_key = ExPublicKey.load!("./keys/jejudo_public_key.pem")
+  
+  hankyung_rsa_priv_key = ExPublicKey.load!("./keys/hankyung_private_key.pem")
+  hankyung_rsa_pub_key = ExPublicKey.load!("./keys/hankyung_public_key.pem")
+     
+  hanlim_rsa_priv_key = ExPublicKey.load!("./keys/hanlim_private_key.pem")
+  hanlim_rsa_pub_key = ExPublicKey.load!("./keys/hanlim_public_key.pem")
+     
+#? SIGNATURES
+# import Poison
+
+#? global supul authorizes nation supuls and so on. 
+import Poison
+
+#? GLOBAL SUPUL
+#? global supul authorizes itself with its own private key.
+msg_serialized = Poison.encode!(global_supul)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, global_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+global_supul = change(global_supul) |> Ecto.Changeset.put_change(:global_signature, signature) |> Repo.update!
+
+#? NATION SUPULS
+#? global supul authorizes nation supuls with its private key.
+msg_serialized = Poison.encode!(korea_supul.name)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, global_signature} = ExPublicKey.sign(ts_msg_serialized, global_rsa_priv_key)
+{:ok, korea_signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+
+# combine payload
+payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64(global_signature)}|#{Base.url_encode64(korea_signature)}"
+payload_hash = Pbkdf2.hash_pwd_salt(payload)
+
+korea_supul = change(korea_supul) |> Ecto.Changeset.put_change(:payload, payload) |> Repo.update!
+korea_supul = change(korea_supul) |> Ecto.Changeset.put_change(:payload_hash, payload_hash) |> Repo.update!
+
+#? STATE SUPULS
+#? global supul and nation supul authorizes state supuls with their private keys.
+msg_serialized = Poison.encode!(jejudo_supul.name)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, global_signature} = ExPublicKey.sign(ts_msg_serialized, global_rsa_priv_key)
+{:ok, korea_signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+{:ok, jejudo_signature} = ExPublicKey.sign(ts_msg_serialized, jejudo_rsa_priv_key)
+
+# combine payload
+payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64(global_signature)}|#{Base.url_encode64(korea_signature)}|#{Base.url_encode64(jejudo_signature)}"
+payload_hash = Pbkdf2.hash_pwd_salt(payload)
+
+jejudo_supul = change(jejudo_supul) |> Ecto.Changeset.put_change(:payload, payload) |> Repo.update!
+jejudo_supul = change(jejudo_supul) |> Ecto.Changeset.put_change(:payload_hash, payload_hash) |> Repo.update!
+
+#? SUPULS
+#? global supul, nation supul, and state supul authorizes supuls with their private keys.
+#? Hankyung
+msg_serialized = Poison.encode!(hankyung_supul.name)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, global_signature} = ExPublicKey.sign(ts_msg_serialized, global_rsa_priv_key)
+{:ok, korea_signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+{:ok, jejudo_signature} = ExPublicKey.sign(ts_msg_serialized, jejudo_rsa_priv_key)
+{:ok, hankyung_signature} = ExPublicKey.sign(ts_msg_serialized, hankyung_rsa_priv_key)
+
+# combine payload
+payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64(global_signature)}|#{Base.url_encode64(korea_signature)}|#{Base.url_encode64(jejudo_signature)}|#{Base.url_encode64(hankyung_signature)}"
+payload_hash = Pbkdf2.hash_pwd_salt(payload)
+
+hankyung_supul = change(hankyung_supul) |> Ecto.Changeset.put_change(:payload, payload) |> Repo.update!
+hankyung_supul = change(hankyung_supul) |> Ecto.Changeset.put_change(:payload_hash, payload_hash) |> Repo.update!
+
+#? Hanlim
+msg_serialized = Poison.encode!(hankyung_supul.name)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, global_signature} = ExPublicKey.sign(ts_msg_serialized, global_rsa_priv_key)
+{:ok, korea_signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+{:ok, jejudo_signature} = ExPublicKey.sign(ts_msg_serialized, jejudo_rsa_priv_key)
+{:ok, hankyung_signature} = ExPublicKey.sign(ts_msg_serialized, hankyung_rsa_priv_key)
+
+# combine payload
+payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64(global_signature)}|#{Base.url_encode64(korea_signature)}|#{Base.url_encode64(jejudo_signature)}|#{Base.url_encode64(hankyung_signature)}"
+payload_hash = Pbkdf2.hash_pwd_salt(payload)
+
+hankyung_supul = change(hankyung_supul) |> Ecto.Changeset.put_change(:payload, payload) |> Repo.update!
+hankyung_supul = change(hankyung_supul) |> Ecto.Changeset.put_change(:payload_hash, payload_hash) |> Repo.update!
+
+
+'''
+
+CONSTITUTIONS AND NATIONS
+
+'''
+alias Demo.Votes.Constitution
+
+korea_constitution = Constitution.changeset(%Constitution{}, %{nationality: "South Korea", content: "대한민국은 민주공화국이다."}) |> Repo.insert!
+msg_serialized = Poison.encode!(korea_constitution)
+content_hash = Pbkdf2.hash_pwd_salt(msg_serialized)
+
+korea_constitution = change(korea_constitution) |> Ecto.Changeset.put_change(:content_hash, content_hash) |> Repo.update!
+
+
+# ? openssl genrsa -out constitution_private_key.pem 2048
+# ? openssl rsa -in constitution_private_key.pem -pubout > constitution_public_key.pem
+constitution_rsa_priv_key = ExPublicKey.load!("./keys/constitution_private_key.pem")
+constitution_rsa_pub_key = ExPublicKey.load!("./keys/constitution_public_key.pem")
+    
+#? KOREA
 
 alias Demo.Nations.Nation
 korea =
@@ -84,37 +164,7 @@ Nation.changeset(%Nation{}, %{
   name: "South_Korea", 
   }) |> Repo.insert!()
 
-alias Demo.Votes.Constitution
-constitution =
-  Constitution.changeset(%Constitution{}, %{
-    name: "The Constitution of South_Korea", 
-    }) |> Repo.insert!()
- 
 
-'''
-
-CRYPTO
-Both users and entities should have private and public keys for future transactions.
-'''
-lim_rsa_priv_key = ExPublicKey.load!("./keys/lim_private_key.pem")
-lim_rsa_pub_key = ExPublicKey.load!("./keys/lim_public_key.pem")
-
-hong_rsa_priv_key = ExPublicKey.load!("./keys/hong_private_key.pem")
-hong_rsa_pub_key = ExPublicKey.load!("./keys/hong_public_key.pem")
-
-tomi_rsa_priv_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
-tomi_rsa_pub_key = ExPublicKey.load!("./keys/tomi_public_key.pem")
-
-korea_rsa_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
-korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
-
-# ? openssl genrsa -out constitution_private_key.pem 2048
-# ? openssl rsa -in constitution_private_key.pem -pubout > constitution_public_key.pem
-constitution_rsa_priv_key = ExPublicKey.load!("./keys/constitution_private_key.pem")
-constitution_rsa_pub_key = ExPublicKey.load!("./keys/constitution_public_key.pem")
-    
-#? SIGNATURES
-import Poison
 
 #? Make a nation with the signature of her constitution.
 msg_serialized = Poison.encode!(korea)
@@ -127,67 +177,262 @@ korea = change(korea) |> Ecto.Changeset.put_change(:constitution_signature, sign
 
 
 
-#? constitutions
-alias Demo.Votes.Constitution
-const_kr = Constitution.changeset(%Constitution{}, )
 
 
-
-
-
-
-alias Demo.Repo
+# ? init users
 alias Demo.Accounts.User
+
+# {ok, mr_hong} = User.changeset(%User{}, %{name: "Hong Gildong"}) |> Repo.insert
+mr_hong =
+  User.changeset(%User{}, %{
+    name: "Hong_Gildong", 
+    nationality: "South Korea", 
+    username: "mr_hong", 
+    email: "hong_gil_dong@82345.kr",
+    type: "Human",
+    birth_date: ~N[1990-05-05 06:14:09],
+    nation_id: korea.id,
+    constitution_id: korea_constitution.id,
+    supul_id: hankyung_supul.id
+    }) \
+  |> Repo.insert!()
+
+msg_serialized = Poison.encode!(mr_hong)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+mr_hong = change(mr_hong) |> Ecto.Changeset.put_change(:ssn, signature) |> Repo.update!
+  
+   
+ms_sung =
+  User.changeset(%User{}, %{
+    nationality: "South Korea", 
+    name: "Sung_Chunhyang", 
+    username: "ms_sung", 
+    email: "sung_chun_hyang@82345.kr",
+    type: "Human",
+    birth_date: ~N[2000-09-09 16:14:09],
+    nation_id: korea.id,
+    constitution_id: korea_constitution.id,
+    supul_id: hanlim_supul.id
+    }) \
+  |> Repo.insert!()
+
+msg_serialized = Poison.encode!(ms_sung)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+ms_sung = change(ms_sung) |> Ecto.Changeset.put_change(:ssn, signature) |> Repo.update!
+
+  
+mr_lim =
+  User.changeset(%User{}, %{
+    nationality: "South Korea", 
+    name: "Lim_Geukjung", 
+    username: "mr_lim", 
+    email: "limgeukjung@88889.kr",
+    type: "Human",
+    ssn: "5410051898822kr",
+    birth_date: ~N[1970-11-11 09:14:09],
+    nation_id: korea.id,
+    constitution_id: korea_constitution.id, 
+    supul_id: hankyung_supul.id
+    }) \
+  |> Repo.insert!()
+
+msg_serialized = Poison.encode!(mr_lim)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+mr_lim = change(mr_lim) |> Ecto.Changeset.put_change(:ssn, signature) |> Repo.update!
+
+  
+
+
+'''
+
+SPECIAL USER == COREA
+corea will act as the representative of the nation Korea in 
+any transaction in which a governmental organization participates in.
+
+'''
+corea =
+  User.changeset(%User{}, %{
+    nationality: "South Korea", 
+    name: "COREA", 
+    username: "COREA", 
+    email: "corea@00000.kr",
+    type: "Nation",
+    nation_id: korea.id,
+    constitution_id: korea_constitution.id, 
+    nation_supul_id: korea_supul.id
+    }) \
+  |> Repo.insert!()
+
+msg_serialized = Poison.encode!(corea)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+corea = change(corea) |> Ecto.Changeset.put_change(:ssn, signature) |> Repo.update!
+
+#? Set passwords of all users
 for u <- Repo.all(User) do
   Repo.update!(User.registration_changeset(u, %{password: "temppass"}))
 end
 
+
+'''
+
+ENTITIES
+
+'''
+
 # ? init entities
 alias Demo.Business.Entity
 
-hong_entity =
+#? 국세청 Korea's Entity == a governmental organization  
+kts =
   Entity.changeset(%Entity{}, %{
-    name: "Hong Gildong Entity", 
-    email: "hong_gil_dong@8245.kr", 
-    entity_address: "제주시 한경면 20-1 해거름전망대",
+    nationality: "South Korea", 
+    name: "Korea Tax Service", 
+    email: "kts@000001.un",
+    user_id: corea.id,
+    nation_id: korea.id,
+    nation_supul_id: korea_supul.id
     }) \
   |> Repo.insert!()
 
+msg_serialized = Poison.encode!(kts)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+kts = change(kts) |> Ecto.Changeset.put_change(:registered_no, signature) |> Repo.update!
+
+
+#? 국가 금융 인프라 Korea's Entity == a governmental organization  
+gab_korea =
+  Entity.changeset(%Entity{}, %{
+    nationality: "South Korea", 
+    name: "GAB_Korea", 
+    email: "gab@000221.un",
+    user_id: corea.id,
+    nation_id: korea.id,
+    nation_supul_id: korea_supul.id,
+    }) \
+  |> Repo.insert!()
+
+msg_serialized = Poison.encode!(gab_korea)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+gab_korea = change(gab_korea) |> Ecto.Changeset.put_change(:registered_no, signature) |> Repo.update!
+
+#? 국가 교통물류 인프라 Korea's Entity == a governmental organization  
+gopang_korea =
+  Entity.changeset(%Entity{}, %{
+    nationality: "South Korea", 
+    name: "gopang_Korea", 
+    email: "gopang@000221.un",
+    user_id: corea.id,
+    nation_id: korea.id,
+    nation_supul_id: korea_supul.id,
+    }) \
+  |> Repo.insert!()
+
+msg_serialized = Poison.encode!(gopang_korea)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+gopang_korea = change(gopang_korea) |> Ecto.Changeset.put_change(:registered_no, signature) |> Repo.update!
+  
+
+#? 시민 홍길동의 비즈니스 :: Hong's Entity
+hong_entity =
+  Entity.changeset(%Entity{}, %{
+    nationality: "South Korea", 
+    name: "Hong Gildong Entity", 
+    email: "hong_gil_dong@8245.kr", 
+    entity_address: "제주시 한경면 20-1 해거름전망대",
+    user_id: mr_hong.id,
+    nation_id: korea.id,
+    supul_id: hankyung_supul.id,
+    }) \
+  |> Repo.insert!()
+
+msg_serialized = Poison.encode!(hong_entity)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+hong_entity = change(hong_entity) |> Ecto.Changeset.put_change(:registered_no, signature) |> Repo.update!
+ 
+  
+#? 시민 성춘향의 비즈니스 :: Sung's Entity
 sung_entity =
   Entity.changeset(%Entity{}, %{
     name: "Sung Chunhyang Entity", 
     email: "sung_gil_dong@8245.kr", 
     entity_address: "제주시 한경면 20-1 해거름전망대",
+    user_id: ms_sung.id,
+    nation_id: korea.id,
+    supul_id: hanlim_supul.id,
     }) \
   |> Repo.insert!()
 
+msg_serialized = Poison.encode!(sung_entity)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+sung_entity = change(sung_entity) |> Ecto.Changeset.put_change(:registered_no, signature) |> Repo.update!
+     
+
+#? 시민 임꺽정의 비즈니스 :: Lim's Entity
 lim_entity =
   Entity.changeset(%Entity{}, %{
     name: "Lim Geukjung Entity", 
     email: "limgeukjung@88889@8245.kr", 
     entity_address: "서귀포시 안덕면 77-1",
+    user_id: mr_lim.id,
+    nation_id: korea.id,
+    supul_id: hankyung_supul.id,
     }) \
   |> Repo.insert!()
 
+msg_serialized = Poison.encode!(lim_entity)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+lim_entity = change(lim_entity) |> Ecto.Changeset.put_change(:registered_no, signature) |> Repo.update!
+    
+
+#? 시민 성춘향의 또 하나의 비즈니스 
 tomi_entity =
   Entity.changeset(%Entity{}, %{
     name: "Tomi Lunch Box", 
     email: "tomi@3532.kr", 
     entity_address: "제주시 한림읍 11-1",
+    user_id: ms_sung.id,
+    nation_id: korea.id,
+    supul_id: hanlim_supul.id,
     }) \
   |> Repo.insert!()
 
-gopang =
-  Entity.changeset(%Entity{}, %{
-    name: "Gopang Hankyng", 
-    email: "gopang_hankyung@3435.kr",
-    }) |> Repo.insert!()
-
-kts =
-  Entity.changeset(%Entity{}, %{
-    name: "Korea Tax Service", 
-    email: "kts@1111.kr",
-    }) |> Repo.insert!()
+msg_serialized = Poison.encode!(tomi_entity)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+tomi_entity = change(tomi_entity) |> Ecto.Changeset.put_change(:registered_no, signature) |> Repo.update!
+   
 
 
 
@@ -217,29 +462,55 @@ gopang_rsa_pub_key = ExPublicKey.load!("./keys/gopang_public_key.pem")
 
 kts_rsa_priv_key = ExPublicKey.load!("./keys/kts_private_key.pem")
 kts_rsa_pub_key = ExPublicKey.load!("./keys/kts_public_key.pem")
-    
-# ? build_assoc user and entity
+
+
+
+'''   
+
+PUT_ASSOC 
+user and entity
+
+'''
+
+#? 홍길동과 그의 비즈니스
 mr_hong = User.changeset_update_entities(mr_hong, [hong_entity])
 hong_entity = Entity.changeset_update_users(hong_entity, [mr_hong])
 
+#? 임꺽정과 그의 비즈니스
 User.changeset_update_entities(mr_lim, [lim_entity])
 Entity.changeset_update_users(lim_entity, [mr_lim])
 
+#? 성춘향과 그녀의 비즈니스들
 User.changeset_update_entities(ms_sung, [tomi_entity,sung_entity])
 Entity.changeset_update_users(tomi_entity, [ms_sung])
 Entity.changeset_update_users(sung_entity, [ms_sung])
 
+#? Corea와 정부 또는 공공 기관들
+User.changeset_update_entities(corea, [kts, gab_korea, gopang_korea])
+Entity.changeset_update_users(kts, [corea])
+Entity.changeset_update_users(gab_korea, [corea])
+Entity.changeset_update_users(gopang_korea, [corea])
 
-User.changeset_update_entities(korea, [kts, gopang])
-Entity.changeset_update_users(kts, [korea])
-Entity.changeset_update_users(gopang, [korea])
 
 
+'''   
+
+PUT_ASSOC 
+entity and supul
+
+'''
 
 # ? make a gopang branch for Hangkyung Supul. Remember every supul has one, only one Gopang branch.
 gopang = Ecto.build_assoc(hankyung_supul, :gopang, gopang)
 
 
+
+'''   
+
+PUT_ASSOC 
+entity and supul
+
+'''
 # ? prepare financial statements for entities.
 alias Demo.Reports.FinancialReport
 alias Demo.Reports.BalanceSheet
@@ -431,7 +702,7 @@ ticket = Ecto.build_assoc(txn, :ticket, ticket)
 
 preloaded_ticket = Repo.preload(ticket, [:transaction])
 
-
+    
 
 '''
 
