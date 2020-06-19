@@ -14,7 +14,7 @@
 
   <li>
     <strong>nation_name:</strong>
-    <%= @supul.nation_name %>
+    <%= @state_supul.nation_name %>
   </li>
 
 </ul>

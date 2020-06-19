@@ -20,7 +20,7 @@ defmodule Demo.Reports.BalanceSheet do
     field :stock, :decimal, precision: 12, scale: 2
     field :taxes, :decimal, precision: 12, scale: 2
     field :treasury_stock, :decimal, precision: 12, scale: 2
-
+  
     embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
     embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
     embeds_many :t3s, Demo.ABC.T3, on_replace: :delete

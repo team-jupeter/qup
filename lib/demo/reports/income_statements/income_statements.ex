@@ -23,7 +23,7 @@ defmodule Demo.IncomeStatements do
   end
 
   defp entity_income_statements_query(query, entity_id) do    
-    from(f in query, where: f.entity_id == ^entity_id)
+    from(i in query, where: i.entity_id == ^entity_id)
   end
 
  

@@ -7,7 +7,7 @@ defmodule Demo.Reports.GopangBalanceSheet do
       field :monetary_unit, :string
       
       field :t1s, {:array, :map}
-      field :t2s, {:array, :map} 
+      field :t2s, {:array, :map}  
       field :t3s, {:array, :map} 
 
       field :cashes, {:array, :map} 

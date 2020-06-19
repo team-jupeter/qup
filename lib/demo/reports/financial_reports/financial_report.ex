@@ -9,7 +9,7 @@ defmodule Demo.Reports.FinancialReport do
     field :hash_history, {:array, :string}
 
     #? Summary
-    field :credit_rate, :integer #? 신용 등급
+    field :credit_rate, :integer #? 신용 등급 
     field :num_of_shares, :integer
     field :num_of_shares_issued, :integer
     field :num_of_treasury_stocks, :integer
@@ -24,9 +24,9 @@ defmodule Demo.Reports.FinancialReport do
 
 
     has_one :balance_sheet, Demo.Reports.BalanceSheet
-    has_one :gab_balance_sheet, Demo.Reports.GabBalanceSheet
-    has_one :gov_balance_sheet, Demo.Reports.GovBalanceSheet
-    has_one :supul_balance_sheet, Demo.Reports.SupulBalanceSheet
+    # has_one :gab_balance_sheet, Demo.Reports.GabBalanceSheet
+    # has_one :gov_balance_sheet, Demo.Reports.GovBalanceSheet
+    # has_one :supul_balance_sheet, Demo.Reports.SupulBalanceSheet
     has_one :income_statement, Demo.Reports.IncomeStatement
     has_one :cf_statement, Demo.Reports.CFStatement
     # has_one :equity_statement,
@@ -35,9 +35,9 @@ defmodule Demo.Reports.FinancialReport do
 
     belongs_to :entity, Demo.Business.Entity, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
-    belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
-    belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
-    belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id
+    # belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
+    # belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
+    # belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id
     
     timestamps()
   end

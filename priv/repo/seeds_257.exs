@@ -157,7 +157,7 @@ constitution_rsa_priv_key = ExPublicKey.load!("./keys/constitution_private_key.p
 constitution_rsa_pub_key = ExPublicKey.load!("./keys/constitution_public_key.pem")
     
 #? KOREA
-
+#? born but not authorized nation. 
 alias Demo.Nations.Nation
 korea =
 Nation.changeset(%Nation{}, %{
@@ -259,6 +259,7 @@ corea will act as the representative of the nation Korea in
 any transaction in which a governmental organization participates in.
 
 '''
+#? The representative citizen of a nation.
 corea =
   User.changeset(%User{}, %{
     nationality: "South Korea", 
@@ -495,35 +496,30 @@ Entity.changeset_update_users(gopang_korea, [corea])
 
 '''   
 
-PUT_ASSOC 
-entity and supul
-
-'''
-
-# ? make a gopang branch for Hangkyung Supul. Remember every supul has one, only one Gopang branch.
-gopang = Ecto.build_assoc(hankyung_supul, :gopang, gopang)
-
-
-
-'''   
-
-PUT_ASSOC 
-entity and supul
+Financial Reports
 
 '''
 # ? prepare financial statements for entities.
 alias Demo.Reports.FinancialReport
+alias Demo.Reports.IncomeStatement
+alias Demo.Reports.CFStatement
 alias Demo.Reports.BalanceSheet
-alias Demo.Reports.GabBalanceSheet
-alias Demo.Reports.GopangBalanceSheet
+# alias Demo.Reports.GabBalanceSheet
+# alias Demo.Reports.GopangBalanceSheet
+alias Demo.Reports.EquityStatement
 
-gopang_FR =
-  FinancialReport.changeset(%FinancialReport{}, %{entity_id: gopang.id}) |> Repo.insert!()
+#? Financial Report
+gab_korea_FR =
+  FinancialReport.changeset(%FinancialReport{}, %{entity_id: gab_korea.id}) |> Repo.insert!()
+
+gopang_korea_FR =
+  FinancialReport.changeset(%FinancialReport{}, %{entity_id: gopang_korea.id}) |> Repo.insert!()
 
 hong_entity_FR =
   FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong_entity.id}) |> Repo.insert!()
 
-
+sung_entity_FR =
+  FinancialReport.changeset(%FinancialReport{}, %{entity_id: sung_entity.id}) |> Repo.insert!()
 
 lim_entity_FR =
   FinancialReport.changeset(%FinancialReport{}, %{entity_id: lim_entity.id}) |> Repo.insert!()
@@ -532,13 +528,39 @@ tomi_entity_FR =
   FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi_entity.id}) |> Repo.insert!()
 
 
+#? Income Statement
+gab_korea_IS =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: gab_korea.id}) |> Repo.insert!()
+
+gopang_korea_IS =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: gopang_korea.id}) |> Repo.insert!()
+
+hong_entity_IS =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: hong_entity.id}) |> Repo.insert!()
+
+sung_entity_IS =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: sung_entity.id}) |> Repo.insert!()
+
+lim_entity_IS =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: lim_entity.id}) |> Repo.insert!()
+
+tomi_entity_IS =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: tomi_entity.id}) |> Repo.insert!()
 
 
-gopang_BS =
-  Ecto.build_assoc(gopang_FR, :gov_balance_sheet, %GopangBalanceSheet{
-    monetary_unit: "KRW",
-    t1s: [%{input: korea.id, output: gopang.id, amount: Decimal.from_float(10_000_000.00)}],
-    cashes: [%{KRW: Decimal.from_float(10_000_000_000.00)}]
+
+#? Balance Sheet
+gab_korea_BS =
+  Ecto.build_assoc(gab_korea, :balance_sheet, %BalanceSheet{
+    t1s: [%{input: korea.id, output: gab_korea.id, amount: Decimal.from_float(10_000_000.00)}],
+    cash: Decimal.from_float(500_000_000.00),
+  }) \
+  |> Repo.insert!()
+
+gopang_korea_BS =
+  Ecto.build_assoc(gopang_korea, :balance_sheet, %BalanceSheet{
+    t1s: [%{input: gab_korea.id, output: gopang_korea.id, amount: Decimal.from_float(10_000_000.00)}],
+    cash: Decimal.from_float(500_000_000.00),
   }) \
   |> Repo.insert!()
 
@@ -546,8 +568,8 @@ hong_entity_BS =
   Ecto.build_assoc(hong_entity, :balance_sheet, %BalanceSheet{
     cash: Decimal.from_float(50_000_000.00),
     t1s: [%{
-      input: korea.id, 
-      output: gopang.id, 
+      input: gab_korea.id, 
+      output: hong_entity.id, 
       amount: Decimal.from_float(10_000.00)}]}) \
   |> Repo.insert!()
 
@@ -555,8 +577,18 @@ lim_entity_BS =
   Ecto.build_assoc(lim_entity, :balance_sheet, %BalanceSheet{
     cash: Decimal.from_float(50_000_000.00),
     t1s: [%{
-      input: korea.id, 
-      output: gopang.id, 
+      input: gab_korea.id, 
+      output: lim_entity.id, 
+      amount: Decimal.from_float(10_000.00)}]}) \
+  |> Repo.insert!()
+
+
+sung_entity_BS =
+  Ecto.build_assoc(sung_entity, :balance_sheet, %BalanceSheet{
+    cash: Decimal.from_float(50_000_000.00),
+    t1s: [%{
+      input: gab_korea.id, 
+      output: sung_entity.id, 
       amount: Decimal.from_float(10_000.00)}]}) \
   |> Repo.insert!()
 
@@ -564,33 +596,53 @@ tomi_entity_BS =
   Ecto.build_assoc(tomi_entity, :balance_sheet, %BalanceSheet{
     fixed_assets: [%{building: 1.0}],
     t1s: [%{
-      input: korea.id, 
-      output: gopang.id, 
+      input: gab_korea.id, 
+      output: tomi_entity.id, 
       amount: Decimal.from_float(10_000.00)}]
     }) \
   |> Repo.insert!()
 
+#? Cash Flow Statement
+gab_korea_CF =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: gab_korea.id}) |> Repo.insert!()
+
+gopang_korea_CF =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: gopang_korea.id}) |> Repo.insert!()
+
+hong_entity_CF =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: hong_entity.id}) |> Repo.insert!()
+
+sung_entity_CF =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: sung_entity.id}) |> Repo.insert!()
+
+lim_entity_CF =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: lim_entity.id}) |> Repo.insert!()
+
+tomi_entity_CF =
+  IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: tomi_entity.id}) |> Repo.insert!()
+
+#? Equity Statement
+gab_korea_ES =
+  EquityStatement.changeset(%EquityStatement{}, %{entity_id: gab_korea.id}) |> Repo.insert!()
+
+gopang_korea_ES =
+  EquityStatement.changeset(%EquityStatement{}, %{entity_id: gopang_korea.id}) |> Repo.insert!()
+
+hong_entity_ES =
+  EquityStatement.changeset(%EquityStatement{}, %{entity_id: hong_entity.id}) |> Repo.insert!()
+
+sung_entity_ES =
+  EquityStatement.changeset(%EquityStatement{}, %{entity_id: sung_entity.id}) |> Repo.insert!()
+
+lim_entity_ES =
+  EquityStatement.changeset(%EquityStatement{}, %{entity_id: lim_entity.id}) |> Repo.insert!()
+
+tomi_entity_ES =
+  EquityStatement.changeset(%EquityStatement{}, %{entity_id: tomi_entity.id}) |> Repo.insert!()
 
 
-alias Demo.Reports.IncomeStatement
-
-hong_entity_IS =
-  Ecto.build_assoc(hong_entity, :income_statement, %IncomeStatement{
-    revenue: Decimal.from_float(20_000.00),
-    cost_of_goods_sold: Decimal.from_float(10_000.00),
-  }) \
-  |> Repo.insert!()
 
 
-
-alias Demo.Reports.CFStatement
-
-hong_entity_CFS =
-  Ecto.build_assoc(hong_entity, :cf_statement, %CFStatement{
-    debt_issuance: Decimal.from_float(20_000.00),
-    equity_issuance: Decimal.from_float(100_000.00),
-  }) \
-  |> Repo.insert!()
 
 '''
 

@@ -4,7 +4,7 @@ defmodule Demo.Reports.GabBalanceSheet do
   
     @primary_key {:id, :binary_id, autogenerate: true}
     schema "gab_balance_sheets" do
-      field :monetary_unit, :string
+      field :monetary_unit, :string 
       
       field :t1, :decimal, precision: 15, scale: 2
       field :t2, :decimal, precision: 15, scale: 2
@@ -13,7 +13,7 @@ defmodule Demo.Reports.GabBalanceSheet do
       field :cashes, {:array, :map}
       
   
-      belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
+      # belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
   
   
       timestamps()

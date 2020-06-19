@@ -1,7 +1,7 @@
 <h4>Monthly Income Statement</h4>
 
 <ul>
-
+  
   <li>
     <strong>compensation</strong>
     <%= @is.compensation %>

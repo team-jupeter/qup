@@ -4,7 +4,7 @@ defmodule Demo.Reports.IncomeStatement do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "income_statements" do
-    field :compensation, :decimal, precision: 12, scale: 2
+    field :compensation, :decimal, precision: 12, scale: 2, default: 0.0
     field :cost_of_goods_sold, :decimal, precision: 12, scale: 2
     field :depreciation_and_amortization, :decimal, precision: 12, scale: 2
     field :employee_benefits, :decimal, precision: 12, scale: 2
@@ -33,10 +33,31 @@ defmodule Demo.Reports.IncomeStatement do
     timestamps()
   end
 
+  @fields [
+    :compensation, 
+    :cost_of_goods_sold, 
+    :depreciation_and_amortization, 
+    :employee_benefits, 
+    :income_taxes, 
+    :insurance,  
+    :marketing, 
+    :office, 
+    :payroll, 
+    :professional_fees, 
+    :rent, 
+    :repair_and_maintenance, 
+    :revenue, 
+    :sales_discounts, 
+    :supplies, 
+    :taxes, 
+    :travel_and_entertainment, 
+    :utilities, 
+    :entity_id, 
+  ]
   @doc false
   def changeset(income_statement, attrs) do
     income_statement
-    |> cast(attrs, [:revenue, :sales_discounts, :cost_of_goods_sold, :compensation, :depreciation_and_amortization, :employee_benefits, :insurance, :marketing, :office, :supplies, :payroll, :professional_fees, :rent, :repair_and_maintenance, :taxes, :travel_and_entertainment, :utilities, :income_taxes])
-    |> validate_required([:revenue, :sales_discounts, :cost_of_goods_sold, :compensation, :depreciation_and_amortization, :employee_benefits, :insurance, :marketing, :office, :supplies, :payroll, :professional_fees, :rent, :repair_and_maintenance, :taxes, :travel_and_entertainment, :utilities, :income_taxes])
+    |> cast(attrs, @fields)
+    |> validate_required([])
   end
 end

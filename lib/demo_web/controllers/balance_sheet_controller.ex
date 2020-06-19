@@ -17,7 +17,7 @@ defmodule DemoWeb.BalanceSheetController do
   #   args = [conn, conn.params, conn.assigns.current_entity]
   #   apply(__MODULE__, action_name(conn), args)
   # end
-
+ 
   def show(conn, %{"id" => id}) do
     [balance_sheet] = BalanceSheets.get_entity_balance_sheet!(id) 
     case balance_sheet do

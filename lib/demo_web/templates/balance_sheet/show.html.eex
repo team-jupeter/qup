@@ -34,9 +34,9 @@
 
   <li>
     <strong>Fixed Assets</strong>
-    <%= @bs.fixed_assets %>
+    <%# <%= @bs.fixed_assets %> %>
   </li>
-
+ 
   <li>
     <strong>Inventory</strong>
     <%= @bs.inventory %>
