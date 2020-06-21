@@ -24,6 +24,8 @@
         <li><%= link "Health Report", to: Routes.user_path(@conn, :new) %></li>
         <li><%= link "Nation", to: Routes.user_path(@conn, :new) %></li>
         <li><%= link "Supul", to: Routes.user_path(@conn, :new) %></li>
+        <li><%= link "My Videos", to: Routes.video_path(@conn, :index) %></li>
+
     </ul>
 </nav>
 </section>

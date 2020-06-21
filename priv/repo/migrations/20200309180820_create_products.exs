@@ -15,6 +15,8 @@ defmodule Demo.Repo.Migrations.CreateProducts do
       add :comments, {:array, :map}
       add :pvr, :decimal
       
+      add :biz_category_id, references(:biz_categories, type: :uuid)
+      add :gpc_code_id, references(:gpc_codes, type: :uuid)
 
       timestamps()
     end

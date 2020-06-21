@@ -3,9 +3,19 @@ defmodule Demo.Business do
 
   alias Demo.Repo
   alias Demo.Business.Entity
+  alias Demo.Business.BizCategory
   alias Demo.Accounts.User
 
+  def create_biz_category!(%{standard: standard, name: name, code: code}) do
+    Repo.insert!(%BizCategory{standard: standard, name: name, code: code}, on_conflict: :nothing)
+  end
 
+  def list_alphabetical_biz_categories do
+   BizCategory
+    |> BizCategory.alphabetical()
+    |> Repo.all()
+  end
+  
   def list_user_entities(%User{} = user) do
     user = Repo.preload(user, :entities)
     user.entities

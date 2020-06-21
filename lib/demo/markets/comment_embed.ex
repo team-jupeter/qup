@@ -1,4 +1,4 @@
-defmodule Demo.Products.CommentEmbed do
+defmodule Demo.Business.CommentEmbed do
     use Ecto.Schema
     import Ecto.Changeset
   

@@ -59,7 +59,7 @@ defmodule Demo.Accounts.User do
   @fields [
     :name, :type, :nationality, :email, :birth_date, 
     :password, :nation_signature, :nation_id,
-    :constitution_id, :supul_id
+    :constitution_id, :supul_id, :username
   ]
 
   def changeset(user, attrs) do
@@ -67,6 +67,7 @@ defmodule Demo.Accounts.User do
     |> cast(attrs, @fields)
     |> validate_required([])
     |> validate_format(:email, ~r/@/)
+    |> unique_constraint(:username)
   end
 
   def changeset_update_entities(%User{} = user, entities) do

@@ -223,8 +223,8 @@ PRODUCTS, COMMENTS AND ENTITIES
 
 '''
 #? PRODUCTS
-alias Demo.Products.Product
-alias Demo.Products.CommentEmbed
+alias Demo.Business.Product
+alias Demo.Business.CommentEmbed
 
 hiv_test = Product.changeset(%Product{}, %{
   name: "HIV Test", 

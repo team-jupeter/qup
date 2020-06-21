@@ -181,8 +181,8 @@ PRODUCTS, COMMENTS AND ENTITIES
 
 '''
 #? PRODUCTS
-alias Demo.Products.Product
-alias Demo.Products.CommentEmbed
+alias Demo.Business.Product
+alias Demo.Business.CommentEmbed
 
 lunchbox_1 = Product.changeset(%Product{}, %{
   name: "갈비 도시락", 

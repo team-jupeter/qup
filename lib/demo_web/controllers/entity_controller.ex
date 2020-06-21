@@ -4,6 +4,11 @@ defmodule DemoWeb.EntityController do
   alias Demo.Business.Entity
 
   plug :authenticate_user when action in [:new, :create]
+  plug :load_biz_categories when action in [:new, :create, :edit, :update]
+
+  defp load_biz_categories(conn, _) do
+    assign(conn, :biz_categories, Business.list_alphabetical_biz_categories())
+  end
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_user]
@@ -57,6 +62,7 @@ defmodule DemoWeb.EntityController do
   end
 
   def new(conn, _params, _current_user) do
+    IO.puts "entity.new"
     changeset = Business.change_entity(%Entity{})
     render(conn, "new.html", changeset: changeset)
   end

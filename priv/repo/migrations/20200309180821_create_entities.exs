@@ -26,6 +26,7 @@ defmodule Demo.Repo.Migrations.CreateAccounts do
       add :nation_supul_id, references(:nation_supuls, type: :uuid)
       add :taxation_id, references(:taxations, type: :uuid)
       add :invoice_id, references(:invoices, type: :uuid)
+      add :biz_category_id, references(:biz_categories, type: :uuid)
 
       add(:business_embeds, {:array, :jsonb}, default: [])
 

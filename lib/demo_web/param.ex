@@ -6,17 +6,8 @@
 # We make no guarantees that this code is fit for any purpose.
 # Visit http://www.pragmaticprogrammer.com/titles/phoenix14 for more book information.
 #---
-defmodule DemoWeb.UserView do
-  use DemoWeb, :view
-  alias Demo.Accounts
-
-  def first_name(%Accounts.User{name: name}) do
-    name
-    |> String.split(" ")
-    |> Enum.at(0)
-  end
-
-  def render("user.json", %{user: user}) do
-    %{id: user.id, username: user.username}
+defimpl Phoenix.Param, for: Demo.Multimedia.Video do
+  def to_param(%{slug: slug, id: id}) do
+    "#{id}-#{slug}"
   end
 end

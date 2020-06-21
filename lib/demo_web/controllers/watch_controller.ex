@@ -6,17 +6,13 @@
 # We make no guarantees that this code is fit for any purpose.
 # Visit http://www.pragmaticprogrammer.com/titles/phoenix14 for more book information.
 #---
-defmodule DemoWeb.UserView do
-  use DemoWeb, :view
-  alias Demo.Accounts
+defmodule DemoWeb.WatchController do
+  use DemoWeb, :controller
 
-  def first_name(%Accounts.User{name: name}) do
-    name
-    |> String.split(" ")
-    |> Enum.at(0)
-  end
+  alias Demo.Multimedia
 
-  def render("user.json", %{user: user}) do
-    %{id: user.id, username: user.username}
+  def show(conn, %{"id" => id}) do
+    video = Multimedia.get_video!(id)
+    render(conn, "show.html", video: video)
   end
 end

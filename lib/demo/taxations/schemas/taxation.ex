@@ -11,6 +11,8 @@ defmodule Demo.Taxations.Taxation do
 
     has_many :entities, Demo.Business.Entity
     has_many :tax_rates, Demo.Taxations.TaxRate
+    has_many :transactons, Demo.Transactions.Transaction
+
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
 
     timestamps()

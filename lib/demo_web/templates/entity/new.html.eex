@@ -7,12 +7,19 @@
     </div>
   <% end %>
 
+  <%= label f, :biz_category_id, "Category"%>
+  <%= select f, :biz_category_id, category_select_options(@biz_categories),
+      prompt: "Choose a category" %>
+
+
   <div>
     <%= text_input f, :name, placeholder: "Name" %>
     <%= error_tag f, :name %>
-  </div>
+  </div> 
+
+
   <div>
-    <%= text_input f, :email, placeholder: "email" %>
+    <%= text_input f, :email, placeholder: "Email" %>
     <%= error_tag f, :email %>
   </div>
   <div>

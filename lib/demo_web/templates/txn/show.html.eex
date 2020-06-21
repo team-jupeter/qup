@@ -1,0 +1,8 @@
+<h1>Show Transaction</h1>
+
+<ul>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.transaction_path(@conn, :edit, @transaction) %></span>
+<span><%= link "Back", to: Routes.transaction_path(@conn, :index) %></span>

@@ -1,4 +1,4 @@
-defmodule Demo.Products.Product do
+defmodule Demo.Business.Product do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.Business.Entity
@@ -8,7 +8,6 @@ defmodule Demo.Products.Product do
 
   schema "products" do
     field :gopang_fee, :decimal
-    field :gpc_code, :string
     field :insurance, :string
     field :name, :string
     field :price, :decimal
@@ -16,7 +15,10 @@ defmodule Demo.Products.Product do
     field :tax, :decimal 
     field :pvr, :decimal #? price to value ratio 가성비 
 
-    embeds_many :comments, Demo.Products.CommentEmbed
+    embeds_many :comments, Demo.Business.CommentEmbed
+
+    belongs_to :gpc_code, Demo.Business.GPCCode
+    belongs_to :biz_category, Demo.Business.BizCategory
 
     many_to_many(
       :entities,
@@ -29,11 +31,17 @@ defmodule Demo.Products.Product do
     timestamps()
   end
 
+  @fields [
+    :name, :price, :gopang_fee, :tax, :insurance, :stars,
+    :biz_category_id
+  ]
   @doc false
-  def changeset(product, attrs) do
+  def changeset(product, attrs \\ %{}) do
     product
-    |> cast(attrs, [:name, :gpc_code, :price, :gopang_fee, :tax, :insurance, :stars])
+    |> cast(attrs, @fields)
     |> validate_required([])
     |> cast_embed(:comments)
+    |> assoc_constraint(:gpc_code)
+    |> assoc_constraint(:biz_category)
   end
 end

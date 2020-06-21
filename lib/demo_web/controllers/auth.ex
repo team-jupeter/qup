@@ -1,63 +1,48 @@
 defmodule DemoWeb.Auth do
   import Plug.Conn
+  import Phoenix.Controller
 
+  alias RumblWeb.Router.Helpers, as: Routes
+  
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    # IO.puts "call"
-    # IO.inspect conn
     user_id = get_session(conn, :user_id)
-    user = user_id && Demo.Accounts.get_user(user_id)
-    # a = assign(conn, :current_user, user)
-    # IO.inspect a
-    assign(conn, :current_user, user)
-  end
 
-  def login(conn, user) do
-    # IO.puts "login"
-    # IO.inspect conn
-    conn
-    |> assign(:current_user, user)
-    # |> IO.inspect
-    |> put_session(:user_id, user.id)
-    # |> IO.inspect
-    |> configure_session(renew: true)
-  end
+    cond do
+      user = conn.assigns[:current_user] ->
+        put_current_user(conn, user) 
 
-  def entity_login(conn, entity) do
-    IO.puts "entity_login"
-    # IO.inspect conn
-    conn
-    |> assign(:current_entity, entity)
-    # |> IO.inspect
-    |> put_session(:entity_id, entity.id)
-    # |> IO.inspect
-    |> configure_session(renew: true)
-    # |> IO.inspect
-  end
+      user = user_id && Demo.Accounts.get_user(user_id) ->
+        put_current_user(conn, user) 
 
-  def logout(conn) do
-    # IO.puts "logout"
-    # IO.inspect conn
-    configure_session(conn, drop: true) # initialize conn
-  end
-
-  import Phoenix.Controller
-  alias DemoWeb.Router.Helpers, as: Routes
-
-  def authenticate_user(conn, _opts) do
-    if conn.assigns.current_user do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You must be logged in to access that page")
-      |> redirect(to: Routes.page_path(conn, :index))
-      |> halt()
+      true ->
+        assign(conn, :current_user, nil)
     end
   end
 
-  def authenticate_entity(conn, _opts) do
-    if conn.assigns.current_entity do
+  def login(conn, user) do
+    conn
+    |> put_current_user(user) 
+    |> put_session(:user_id, user.id)
+    |> configure_session(renew: true)
+  end
+
+  defp put_current_user(conn, user) do
+    token = Phoenix.Token.sign(conn, "user socket", user.id)
+
+    conn
+    |> assign(:current_user, user)
+    |> assign(:user_token, token)
+  end
+
+  def logout(conn) do
+    configure_session(conn, drop: true)
+  end
+
+
+  def authenticate_user(conn, _opts) do
+    if conn.assigns.current_user do
       conn
     else
       conn

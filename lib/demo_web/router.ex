@@ -24,6 +24,7 @@ defmodule DemoWeb.Router do
     get "/", PageController, :index
     resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+    get "/watch/:id", WatchController, :show
 
     live "/presence_users/:name", UserLive.PresenceIndex
 
@@ -67,6 +68,8 @@ defmodule DemoWeb.Router do
     pipe_through [:browser, :authenticate_user]
 
     resources "/entities", EntityController
+    resources "/transactions", TransactionController
+
   end
 
   scope "/gab", DemoWeb do
@@ -108,6 +111,8 @@ defmodule DemoWeb.Router do
     resources "/supuls", SupulController
     get "/", GlobalSupulController, :index
   end
+
+
 
 
   # scope "/", DemoWeb do

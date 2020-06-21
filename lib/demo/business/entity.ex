@@ -4,7 +4,7 @@ defmodule Demo.Business.Entity do
   alias Demo.Invoices.Invoice
 
   alias Demo.Accounts.User 
-  alias Demo.Products.Product
+  alias Demo.Business.Product
   alias Demo.Business.Entity
   alias Demo.Repo
 
@@ -15,7 +15,6 @@ defmodule Demo.Business.Entity do
     field :nationality, :string
     field :company_prefix, :string
     field :registered_no, :string
-    field :industry_classification, :string
     field :entity_address, :string
     field :entity_code, :string 
     field :name, :string
@@ -45,6 +44,7 @@ defmodule Demo.Business.Entity do
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
+    belongs_to :biz_category, Demo.Taxations.Taxation, type: :binary_id
 
     has_many :reports, Demo.Reports.Report
     has_many :certificates, Demo.Certificates.Certificate
@@ -84,6 +84,7 @@ defmodule Demo.Business.Entity do
     :nationality, :company_prefix, 
     :nation_id, :email, :supul_id, :taxation_id, 
     :name, :entity_address, :nation_signature,
+    :biz_category_id, 
   ]
 
   def changeset(user, attrs) do
@@ -91,6 +92,10 @@ defmodule Demo.Business.Entity do
     |> cast(attrs, @fields)
     |> validate_required([])
     |> validate_format(:email, ~r/@/)
+    |> assoc_constraint(:biz_category)
+    |> assoc_constraint(:nation)
+    |> assoc_constraint(:supul)
+    |> assoc_constraint(:taxation)
   end
 
   def changeset_update_users(%Entity{} = entity, users) do

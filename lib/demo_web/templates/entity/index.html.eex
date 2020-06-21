@@ -7,5 +7,7 @@
       <td><%= link "View", to: Routes.entity_path(@conn, :show, entity.id) %></td>
     </tr>
   <% end %>
+  <span><%= link "New Entity", to: Routes.entity_path(@conn, :new) %></span>
+
 </table>
  

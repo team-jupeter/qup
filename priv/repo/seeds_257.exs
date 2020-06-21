@@ -193,7 +193,8 @@ mr_hong =
     birth_date: ~N[1990-05-05 06:14:09],
     nation_id: korea.id,
     constitution_id: korea_constitution.id,
-    supul_id: hankyung_supul.id
+    supul_id: hankyung_supul.id, 
+    username: "mr_hong"
     }) \
   |> Repo.insert!()
 
@@ -215,7 +216,8 @@ ms_sung =
     birth_date: ~N[2000-09-09 16:14:09],
     nation_id: korea.id,
     constitution_id: korea_constitution.id,
-    supul_id: hanlim_supul.id
+    supul_id: hanlim_supul.id,
+    username: "ms_sung"
     }) \
   |> Repo.insert!()
 
@@ -238,7 +240,8 @@ mr_lim =
     birth_date: ~N[1970-11-11 09:14:09],
     nation_id: korea.id,
     constitution_id: korea_constitution.id, 
-    supul_id: hankyung_supul.id
+    supul_id: hankyung_supul.id,
+    username: "mr_lim",
     }) \
   |> Repo.insert!()
 
@@ -269,7 +272,8 @@ corea =
     type: "Nation",
     nation_id: korea.id,
     constitution_id: korea_constitution.id, 
-    nation_supul_id: korea_supul.id
+    nation_supul_id: korea_supul.id,
+    username: "corea"
     }) \
   |> Repo.insert!()
 
@@ -557,9 +561,12 @@ gab_korea_BS =
   }) \
   |> Repo.insert!()
 
-gopang_korea_BS =
+gopang_korea_BS = #? 국가 교통물류 인프라 
   Ecto.build_assoc(gopang_korea, :balance_sheet, %BalanceSheet{
-    t1s: [%{input: gab_korea.id, output: gopang_korea.id, amount: Decimal.from_float(10_000_000.00)}],
+    t1s: [%{
+      input: gab_korea.id, 
+      output: gopang_korea.id, 
+      amount: Decimal.from_float(10_000_000.00)}],
     cash: Decimal.from_float(500_000_000.00),
   }) \
   |> Repo.insert!()
@@ -598,6 +605,7 @@ tomi_entity_BS =
     t1s: [%{
       input: gab_korea.id, 
       output: tomi_entity.id, 
+
       amount: Decimal.from_float(10_000.00)}]
     }) \
   |> Repo.insert!()
@@ -640,7 +648,101 @@ lim_entity_ES =
 tomi_entity_ES =
   EquityStatement.changeset(%EquityStatement{}, %{entity_id: tomi_entity.id}) |> Repo.insert!()
 
+ 
+'''
 
+BIZ_CATEGORY & GPC_CODE
+
+'''
+alias Demo.Business
+alias Demo.Business.BizCategory
+
+for category <- [%{name: "한식 일반 음식점업", standard: "한국표준산업분류표", code: "56111"}, %{name: "김밥 및 기타 간이 음식점업", standard: "한국표준산업분류표", code: "56194"}] do
+  Business.create_biz_category!(category)
+end
+
+import Ecto.Query
+query = from c in BizCategory,
+    select: c.name
+
+Repo.all query
+
+username = "mr_hong"
+Repo.one(from u in User, where: u.username == ^username)
+
+
+alias Demo.Business.GPCCode
+분식 = GPCCode.changeset(%GPCCode{name: "분식", code: "345445", standard: "GTIN"}) |> Repo.insert!
+한식 = GPCCode.changeset(%GPCCode{name: "한식", code: "345446", standard: "GTIN"}) |> Repo.insert!
+
+alias Demo.Business.Product
+김밥 = Product.changeset(%Product{name: "김밥", gpc_code_id: 분식.id, price: 1.0}) |> Repo.insert!
+떡볶이 = Product.changeset(%Product{name: "떡볶이", gpc_code_id: 분식.id, price: 1.5}) |> Repo.insert!
+우동 = Product.changeset(%Product{name: "우동", gpc_code_id: 분식.id, price: 1.5}) |> Repo.insert!
+한정식 = Product.changeset(%Product{name: "한정식", gpc_code_id: 한식.id, price: 5.0}) |> Repo.insert!
+육개장 = Product.changeset(%Product{name: "육개장", gpc_code_id: 한식.id, price: 3.5}) |> Repo.insert!
+갈비탕 = Product.changeset(%Product{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5}) |> Repo.insert!
+
+
+
+
+Repo.one from u in User,
+select: count(u.id),
+where: ilike(u.username, "s%") or ilike(u.username, "m%")
+
+users_count = from u in User, select: count(u.id)
+j_users = from u in users_count, where: ilike(u.username, ^"%h%")
+
+Repo.one j_users
+
+
+
+
+'''
+
+CERTIFICATE GRANT
+- 산업자원부는 성춘향에게 분식 조리사 자격증을 발급
+- 국세청은 성춘향이 개업한 Tomi_Kimbab에 음식점 영업허가를 발급
+
+'''
+
+
+alias Demo.Documents.Document
+
+ document = Document.changeset(
+    %Document{
+        title: "진단의학 전문의 자격증",
+        presented_to: sung_entity.id,
+        presented_by: [mohw.id],
+        summary: "위와 같이 자격을....",
+        attached_docs_list: ["졸업증명서.id", "의사_국가시험_합격증명서.id", "전학년_성적증명서.id"],
+        attached_docs_hashes: ["졸업증명서_hash", "의사_국가시험_합격증명서_hash", "전학년_성적증명서_hash"],
+        hash_of_attached_docs_hashes: "sha256(attached_docs_hashes)",
+    }) |> Repo.insert!
+
+alias Demo.Certificates.Certificate
+certificate = Certificate.changeset(%Certificate{name: "Diagnostic medicine specialist", document: document.id, issued_to: sung_entity.id, issued_date: Timex.to_date({2015, 6, 24})}) |> Repo.insert!
+
+ 
+'''
+
+License GRANT
+서울시 도봉구는 토미 클리닉을 관내 의료기관으로 등기
+
+'''
+ document = Document.changeset(
+    %Document{
+        title: "의료기관 등기",
+        presented_to: tomi_clinic.id,
+        presented_by: [seoul.id],
+        summary: "위와 같이 ....",
+        attached_docs_list: [],
+        attached_docs_hashes: [],
+        hash_of_attached_docs_hashes: "sha256(attached_docs_hashes)",
+    }) |> Repo.insert!
+
+alias Demo.Licenses.License
+license = License.changeset(%License{name: "Tomi Clinic", document: document.id, issued_to: sung_entity.id, issued_date: Timex.to_date({2015, 6, 24})}) |> Repo.insert!
 
 
 

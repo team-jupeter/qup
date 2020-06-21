@@ -3,6 +3,25 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket, debug} from "phoenix_live_view"
 
+
+import socket from "./socket"
+import Video from "./video"
+
+Video.init(socket, document.getElementById("video"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let Hooks = {}
 
 let scrollAt = () => {
