@@ -1,0 +1,30 @@
+<h1>Listing Assets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Owners</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for asset <- @assets do %>
+    <tr>
+      <td><%= asset.name %></td>
+      <td><%= asset.type %></td>
+      <td><%= asset.owners %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.asset_path(@conn, :show, asset) %></span>
+        <span><%= link "Edit", to: Routes.asset_path(@conn, :edit, asset) %></span>
+        <span><%= link "Delete", to: Routes.asset_path(@conn, :delete, asset), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Asset", to: Routes.asset_path(@conn, :new) %></span>

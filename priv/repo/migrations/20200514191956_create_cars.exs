@@ -29,8 +29,8 @@ defmodule Demo.Repo.Migrations.CreateCars do
       add :new_owner, :binary_id
       add :owner_history, {:array, :binary_id}, default: []
       add :current_legal_status, {:array, :string}, default: []
-      add :txn_history, {:array, :binary_id}, default: []
-      add :recent_txn_id, :binary_id
+      add :transaction_history, {:array, :binary_id}, default: []
+      add :recent_transaction_id, :binary_id
 
       timestamps()
     end

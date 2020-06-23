@@ -13,7 +13,7 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :abc_amount, :decimal, precision: 15, scale: 4
       add :items, {:array, :binary_id}
       add :fiat_currency, :decimal, precision: 15, scale: 4
-      add :txn_status, :string, default: "processing" 
+      add :transaction_status, :string, default: "processing" 
       add :if_only_item, :string
       add :fair?, :boolean, default: false
 

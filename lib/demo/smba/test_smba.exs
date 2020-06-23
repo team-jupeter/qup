@@ -210,7 +210,7 @@ Invoicies are stored by entities and transactions are stored by supuls.
 # tesla_bs = tesla_entity_preload.financial_report.balance_sheet
 # hong_entity_preload = Repo.preload(hong_entity, [financial_report: :balance_sheet])
 
-txn = Transaction.changeset(%Transaction{
+transaction = Transaction.changeset(%Transaction{
     abc_input: smba.id,
     abc_output: tesla_entity.id,
     abc_amount: invoice.total,
@@ -219,7 +219,7 @@ txn = Transaction.changeset(%Transaction{
     
 
 #? Association between Transaction and Invoice
-invoice = Ecto.build_assoc(txn, :invoice, invoice) 
+invoice = Ecto.build_assoc(transaction, :invoice, invoice) 
 
 '''
 
@@ -234,7 +234,7 @@ alias Demo.ABC.T1
 #? SMBA
 #? The code below NOT consider any other elements in the t1s list. We should find out just enough elements to pay the invoice total. 
 new_t1s = Enum.map(smba_BS.t1s, fn elem ->
-    Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, txn.abc_amount) end)
+    Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, transaction.abc_amount) end)
 end)
 
 smba_BS = change(smba_BS) |> \
@@ -243,7 +243,7 @@ smba_BS = change(smba_BS) |> \
 
         
 #? Tesla Korea
-t1s = [%T1{input: "smba_public_address", amount: txn.abc_amount, output: "smba_public_address"}]
+t1s = [%T1{input: "smba_public_address", amount: transaction.abc_amount, output: "smba_public_address"}]
 tesla_entity_BS = change(tesla_entity_BS) |> \
     Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 
@@ -261,12 +261,12 @@ in the openhash blockchain.
 #? 
 
 '''
-First, mr_hong makes the payload of txn, and send it to korea_supul's mulet.
+First, mr_hong makes the payload of transaction, and send it to korea_supul's mulet.
 '''
 import Poison
 
 # serialize the JSON
-msg_serialized = Poison.encode!(txn)
+msg_serialized = Poison.encode!(transaction)
 
 # generate time-stamp
 ts = DateTime.utc_now |> DateTime.to_unix
@@ -313,12 +313,12 @@ recv_msg_unserialized = Poison.Parser.parse!(recv_msg_serialized, %{})
 '''
 Third, the mulet of korea_supul openhashes the unserialized message. 
 '''
-txn_hash = 
+transaction_hash = 
     :crypto.hash(:sha256, recv_msg_serialized) \
     |> Base.encode16() \
     |> String.downcase() 
 
-korea_mulet = Mulet.changeset(korea_mulet, %{incoming_hash: txn_hash})
+korea_mulet = Mulet.changeset(korea_mulet, %{incoming_hash: transaction_hash})
 
 '''
 Fourth, send the new hash to the mulets of upper supuls. 

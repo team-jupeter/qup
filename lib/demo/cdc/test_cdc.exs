@@ -299,7 +299,7 @@ Tickets & Transactions
 # ? Write Transactions
 #? For HIV Test
 alias Demo.Transactions.Transaction
-txn =
+transaction =
   Transaction.changeset(%Transaction{
     abc_input: hong_entity.id,
     abc_output: tomi_clinic.id,
@@ -309,11 +309,11 @@ txn =
   |> Repo.insert!()
 
 # ? Association between Transaction and Invoice
-invoice = Ecto.build_assoc(txn, :invoice, invoice)
+invoice = Ecto.build_assoc(transaction, :invoice, invoice)
 
 
 #? TICKETS ARE FOR TXN ONLY
-ticket = Ecto.build_assoc(txn, :ticket, ticket)
+ticket = Ecto.build_assoc(transaction, :ticket, ticket)
 
 #? preload if necessary.
 preloaded_ticket = Repo.preload(ticket, [:transaction])

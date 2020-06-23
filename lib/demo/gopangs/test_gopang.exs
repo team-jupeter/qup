@@ -205,7 +205,7 @@ Route and Ticket
 
 # ? Write Transaction p
 alias Demo.Transactions.Transaction
-txn =
+transaction =
   Transaction.changeset(%Transaction{
     abc_input: hong_entity.id,
     abc_output: gopang.id,
@@ -215,8 +215,8 @@ txn =
   |> Repo.insert!()
 
 # ? Association between Transaction and Invoice
-invoice = Ecto.build_assoc(txn, :invoice, invoice)
-ticket = Ecto.build_assoc(txn, :ticket, ticket)
+invoice = Ecto.build_assoc(transaction, :invoice, invoice)
+ticket = Ecto.build_assoc(transaction, :ticket, ticket)
 
 
 preloaded_ticket = Repo.preload(ticket, [:transaction])
@@ -316,12 +316,12 @@ gopang_BS = change(gopang_BS) |> Ecto.Changeset.put_change(:t1s, new_t1s) |> Rep
 
 
 # ? mr_hong
-residual_amount = Decimal.sub(Enum.at(hong_entity_BS.t1s, 0).amount, txn.abc_amount)
+residual_amount = Decimal.sub(Enum.at(hong_entity_BS.t1s, 0).amount, transaction.abc_amount)
 new_t1s = [%T1{input: hong_entity.id, output: hong_entity.id, amount: residual_amount}]
 hong_entity_BS = change(hong_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
 
 # ? tomi
-new_t1s = [%T1{input: hong_entity.id, output: tomi_entity.id, amount: txn.abc_amount} | tomi_entity_BS.t1s]
+new_t1s = [%T1{input: hong_entity.id, output: tomi_entity.id, amount: transaction.abc_amount} | tomi_entity_BS.t1s]
 tomi_entity_BS = change(tomi_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
 
 

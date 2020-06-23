@@ -112,6 +112,19 @@ defmodule DemoWeb.Router do
     get "/", GlobalSupulController, :index
   end
 
+  scope "/asset", DemoWeb do
+    pipe_through [:browser]
+
+    resources "/real_estates", AssetController
+  end
+
+  scope "/transaction", DemoWeb do
+    pipe_through [:browser]
+
+    resources "/", TransactionController
+
+  end
+
 
 
 

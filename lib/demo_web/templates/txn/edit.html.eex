@@ -1,5 +1,0 @@
-<h1>Edit Transaction</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.txn_path(@conn, :update, @txn)) %>
-
-<span><%= link "Back", to: Routes.txn_path(@conn, :index) %></span>

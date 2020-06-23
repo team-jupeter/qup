@@ -35,9 +35,9 @@ defmodule Demo.Reports.FinancialReport do
 
     belongs_to :entity, Demo.Business.Entity, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
-    # belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
-    # belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
-    # belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id
+    belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
+    belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
+    belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id
     
     timestamps()
   end

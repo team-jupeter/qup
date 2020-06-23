@@ -1,0 +1,5 @@
+<h1>Edit Asset</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.asset_path(@conn, :update, @asset)) %>
+
+<span><%= link "Back", to: Routes.asset_path(@conn, :index) %></span>

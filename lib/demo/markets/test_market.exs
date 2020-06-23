@@ -352,7 +352,7 @@ Tickets & Transactions
 # ? Write Transactions
 #? For lunch box 1
 alias Demo.Transactions.Transaction
-txn_1 =
+transaction_1 =
   Transaction.changeset(%Transaction{
     abc_input: hong_entity.id,
     abc_output: tomi_entity.id,
@@ -362,10 +362,10 @@ txn_1 =
   |> Repo.insert!()
 
 # ? Association between Transaction and Invoice
-invoice_1 = Ecto.build_assoc(txn_1, :invoice, invoice_1)
+invoice_1 = Ecto.build_assoc(transaction_1, :invoice, invoice_1)
 
 #? For lunch box 2
-txn_2 =
+transaction_2 =
   Transaction.changeset(%Transaction{
     abc_input: lim_entity.id,
     abc_output: gopang.id,
@@ -374,19 +374,19 @@ txn_2 =
   }) \
   |> Repo.insert!()
 
-invoice_2 = Ecto.build_assoc(txn_2, :invoice, invoice_2)
+invoice_2 = Ecto.build_assoc(transaction_2, :invoice, invoice_2)
 
 
 # ? Association between Transaction and Invoice
-# invoice_1 = Ecto.build_assoc(txn_1, :invoice, invoice_1)
-# invoice_2 = Ecto.build_assoc(txn_2, :invoice, invoice_2)
+# invoice_1 = Ecto.build_assoc(transaction_1, :invoice, invoice_1)
+# invoice_2 = Ecto.build_assoc(transaction_2, :invoice, invoice_2)
 # preloaded_ticket_1 = Repo.preload(ticket_1, [:transaction])
 
 
 
 #? TICKETS ARE FOR TXN_1 ONLY
-ticket_1 = Ecto.build_assoc(txn_1, :ticket, ticket_1)
-ticket_2 = Ecto.build_assoc(txn_2, :ticket, ticket_2)
+ticket_1 = Ecto.build_assoc(transaction_1, :ticket, ticket_1)
+ticket_2 = Ecto.build_assoc(transaction_2, :ticket, ticket_2)
 
 #? preload if necessary.
 preloaded_ticket_1 = Repo.preload(ticket_1, [:transaction])

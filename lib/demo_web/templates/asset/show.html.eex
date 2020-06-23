@@ -1,0 +1,23 @@
+<h1>Show Asset</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @asset.name %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @asset.type %>
+  </li>
+
+  <li>
+    <strong>Owners:</strong>
+    <%= @asset.owners %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.asset_path(@conn, :edit, @asset) %></span>
+<span><%= link "Back", to: Routes.asset_path(@conn, :index) %></span>

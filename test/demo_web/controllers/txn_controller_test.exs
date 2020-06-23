@@ -7,82 +7,82 @@ defmodule DemoWeb.TxnControllerTest do
   @update_attrs %{}
   @invalid_attrs %{}
 
-  def fixture(:txn) do
-    {:ok, txn} = Txns.create_txn(@create_attrs)
-    txn
+  def fixture(:transaction) do
+    {:ok, transaction} = Txns.create_transaction(@create_attrs)
+    transaction
   end
 
   describe "index" do
-    test "lists all txns", %{conn: conn} do
-      conn = get(conn, Routes.txn_path(conn, :index))
+    test "lists all transactions", %{conn: conn} do
+      conn = get(conn, Routes.transaction_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Txns"
     end
   end
 
-  describe "new txn" do
+  describe "new transaction" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.txn_path(conn, :new))
+      conn = get(conn, Routes.transaction_path(conn, :new))
       assert html_response(conn, 200) =~ "New Txn"
     end
   end
 
-  describe "create txn" do
+  describe "create transaction" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.txn_path(conn, :create), txn: @create_attrs)
+      conn = post(conn, Routes.transaction_path(conn, :create), transaction: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.txn_path(conn, :show, id)
+      assert redirected_to(conn) == Routes.transaction_path(conn, :show, id)
 
-      conn = get(conn, Routes.txn_path(conn, :show, id))
+      conn = get(conn, Routes.transaction_path(conn, :show, id))
       assert html_response(conn, 200) =~ "Show Txn"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.txn_path(conn, :create), txn: @invalid_attrs)
+      conn = post(conn, Routes.transaction_path(conn, :create), transaction: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Txn"
     end
   end
 
-  describe "edit txn" do
-    setup [:create_txn]
+  describe "edit transaction" do
+    setup [:create_transaction]
 
-    test "renders form for editing chosen txn", %{conn: conn, txn: txn} do
-      conn = get(conn, Routes.txn_path(conn, :edit, txn))
+    test "renders form for editing chosen transaction", %{conn: conn, transaction: transaction} do
+      conn = get(conn, Routes.transaction_path(conn, :edit, transaction))
       assert html_response(conn, 200) =~ "Edit Txn"
     end
   end
 
-  describe "update txn" do
-    setup [:create_txn]
+  describe "update transaction" do
+    setup [:create_transaction]
 
-    test "redirects when data is valid", %{conn: conn, txn: txn} do
-      conn = put(conn, Routes.txn_path(conn, :update, txn), txn: @update_attrs)
-      assert redirected_to(conn) == Routes.txn_path(conn, :show, txn)
+    test "redirects when data is valid", %{conn: conn, transaction: transaction} do
+      conn = put(conn, Routes.transaction_path(conn, :update, transaction), transaction: @update_attrs)
+      assert redirected_to(conn) == Routes.transaction_path(conn, :show, transaction)
 
-      conn = get(conn, Routes.txn_path(conn, :show, txn))
+      conn = get(conn, Routes.transaction_path(conn, :show, transaction))
       assert html_response(conn, 200)
     end
 
-    test "renders errors when data is invalid", %{conn: conn, txn: txn} do
-      conn = put(conn, Routes.txn_path(conn, :update, txn), txn: @invalid_attrs)
+    test "renders errors when data is invalid", %{conn: conn, transaction: transaction} do
+      conn = put(conn, Routes.transaction_path(conn, :update, transaction), transaction: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Txn"
     end
   end
 
-  describe "delete txn" do
-    setup [:create_txn]
+  describe "delete transaction" do
+    setup [:create_transaction]
 
-    test "deletes chosen txn", %{conn: conn, txn: txn} do
-      conn = delete(conn, Routes.txn_path(conn, :delete, txn))
-      assert redirected_to(conn) == Routes.txn_path(conn, :index)
+    test "deletes chosen transaction", %{conn: conn, transaction: transaction} do
+      conn = delete(conn, Routes.transaction_path(conn, :delete, transaction))
+      assert redirected_to(conn) == Routes.transaction_path(conn, :index)
       assert_error_sent 404, fn ->
-        get(conn, Routes.txn_path(conn, :show, txn))
+        get(conn, Routes.transaction_path(conn, :show, transaction))
       end
     end
   end
 
-  defp create_txn(_) do
-    txn = fixture(:txn)
-    {:ok, txn: txn}
+  defp create_transaction(_) do
+    transaction = fixture(:transaction)
+    {:ok, transaction: transaction}
   end
 end
