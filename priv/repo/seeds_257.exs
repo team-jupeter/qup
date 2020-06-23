@@ -686,6 +686,10 @@ alias Demo.Business.Product
 
 
 
+
+
+
+
 Repo.one from u in User,
 select: count(u.id),
 where: ilike(u.username, "s%") or ilike(u.username, "m%")
