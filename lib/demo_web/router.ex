@@ -14,6 +14,10 @@ defmodule DemoWeb.Router do
     plug DemoWeb.Auth
   end
 
+  # pipeline :entity do
+  #   plug DemoWeb.EntityAuth
+  # end
+
   pipeline :bare do
     plug :put_root_layout, {DemoWeb.LayoutView, :bare}
   end
@@ -25,6 +29,9 @@ defmodule DemoWeb.Router do
     resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     get "/watch/:id", WatchController, :show
+    get "/product_watch/:id", ProductWatchController, :show
+
+
 
     live "/presence_users/:name", UserLive.PresenceIndex
 
@@ -62,6 +69,7 @@ defmodule DemoWeb.Router do
     pipe_through [:browser, :authenticate_user]
 
     resources "/videos", VideoController
+    resources "/product_videos", ProductVideoController
   end
 
   scope "/business", DemoWeb do
@@ -69,6 +77,7 @@ defmodule DemoWeb.Router do
 
     resources "/entities", EntityController
     resources "/transactions", TransactionController
+    resources "/product", ProductController
 
   end
 

@@ -12,15 +12,17 @@ defmodule Demo.Accounts.User do
 
   schema "users" do
     field :type, :string
+    # field :default_entity, :binary_id
     field :name, :string
+    field :gps, {:array, :map}
     field :nationality, :string
     field :username, :string
-    field :ssn, :string #? Social Security Number 
     field :email, :string # unique id of a human being
-    field :birth_date, :naive_datetime
     field :password, :string, virtual: true
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
+    field :ssn, :string #? Social Security Number 
+    field :birth_date, :naive_datetime
 
 
     field :nation_signature, :string

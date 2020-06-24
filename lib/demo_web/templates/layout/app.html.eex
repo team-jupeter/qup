@@ -14,7 +14,7 @@
           <ul>
             <%= if @current_user do %>
               <li><%= @current_user.username %></li>
-              <li><%= link "My Entities", to: Routes.entity_path(@conn, :index) %></li>
+              <li><%= link "Entities", to: Routes.entity_path(@conn, :index) %></li>
               <li>
               <li>
                 <%= link "Log out",

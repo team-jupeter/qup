@@ -6,8 +6,10 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add :id, :uuid, primary_key: true
       add :type, :string
       add :name, :string
-      add :nationality, :string
       add :username, :string
+      add :gps, {:array, :map}
+      add :default_entity, :binary_id
+      add :nationality, :string
       add :ssn, :string
       add :email, :string
       add :birth_date, :naive_datetime

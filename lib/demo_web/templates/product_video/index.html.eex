@@ -13,14 +13,14 @@
 <%= for video <- @videos do %>
     <tr>
       <td><%= video.title %></td>
-      <td><%= link "Edit", to: Routes.video_path(@conn, :edit, video) %></td>
+      <td><%= link "Edit", to: Routes.product_video_path(@conn, :edit, video) %></td>
       <td>
-        <%= link "Delete", to: Routes.video_path(@conn, :delete, video),
+        <%= link "Delete", to: Routes.product_video_path(@conn, :delete, video),
                            method: :delete,
                            data: [confirm: "Are you sure?"] %>
       </td>
       <td>
-        <%= link "Watch", to: Routes.watch_path(@conn, :show, video),
+        <%= link "Watch", to: Routes.product_watch_path(@conn, :show, video),
                           class: "button" %>
       </td>
     </tr>
@@ -28,4 +28,4 @@
   </tbody>
 </table>
 
-<span><%= link "New Video", to: Routes.video_path(@conn, :new) %></span>
+<span><%= link "New Video", to: Routes.product_video_path(@conn, :new) %></span>

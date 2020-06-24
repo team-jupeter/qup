@@ -1,6 +1,6 @@
 <div class="row">
   <div class="column column-60">
-    <h1><%= @video.title %></h1>
+    <h3><%= @video.title %></h3>
     <%= content_tag :div, id: "video",
         data: [id: @video.id, player_id: player_id(@video)] do %>
     <% end %>

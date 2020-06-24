@@ -1,35 +1,5 @@
 <h4>New Entity</h4>
 
-<%= form_for @changeset, Routes.entity_path(@conn, :create), fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
-    </div>
-  <% end %>
+<%= render "form.html", Map.put(assigns, :action, Routes.entity_path(@conn, :create)) %>
 
-  <%= label f, :biz_category_id, "Category"%>
-  <%= select f, :biz_category_id, category_select_options(@biz_categories),
-      prompt: "Choose a category" %>
-
-
-  <div>
-    <%= text_input f, :name, placeholder: "Name" %>
-    <%= error_tag f, :name %>
-  </div> 
-
-
-  <div>
-    <%= text_input f, :email, placeholder: "Email" %>
-    <%= error_tag f, :email %>
-  </div>
-  <div>
-    <%= password_input f, :password, placeholder: "Password" %>
-    <%= error_tag f, :password %>
-  </div>
-
-  <div>
-    <%= password_input f, :balance, placeholder: "Balance" %>
-    <%= error_tag f, :balance %>
-  </div>
-  <%= submit "Create User" %>
-<% end %>
+<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

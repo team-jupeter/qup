@@ -20,7 +20,7 @@ defmodule DemoWeb.Auth do
         assign(conn, :current_user, nil)
     end
   end
-
+ 
   def login(conn, user) do
     conn
     |> put_current_user(user) 

@@ -17,17 +17,19 @@ defmodule Demo.Business do
   end
   
   def list_user_entities(%User{} = user) do
+    IO.puts "hi"
     user = Repo.preload(user, :entities)
     user.entities
   end
 
-  def get_user_entity!(%User{} = user, id) do
+  def get_user_entity!(%User{} = _user, id) do
     Entity
     # |> user_entities_query(user)
     |> Repo.get!(id)
   end 
 
   def get_entity!(id), do: Repo.get!(Entity, id)
+  def get_product!(id), do: Repo.get!(Product, id)
 
   def update_entity(%Entity{} = entity, attrs) do
     entity

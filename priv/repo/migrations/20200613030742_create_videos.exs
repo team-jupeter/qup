@@ -9,6 +9,7 @@ defmodule Demo.Repo.Migrations.CreateVideos do
       add :slug, :string
 
       add :user_id, references(:users, type: :uuid, on_delete: :nothing)
+      add :product_id, references(:products, type: :uuid, on_delete: :nothing)
       add :category_id, references(:categories, type: :uuid, on_delete: :nothing)
 
       timestamps()

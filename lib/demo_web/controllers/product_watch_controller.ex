@@ -1,4 +1,4 @@
-defmodule DemoWeb.WatchController do
+defmodule DemoWeb.ProductWatchController do
   use DemoWeb, :controller
 
   alias Demo.Multimedia

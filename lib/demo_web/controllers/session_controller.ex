@@ -13,6 +13,7 @@ defmodule DemoWeb.SessionController do
         conn
         |> DemoWeb.Auth.login(user)
         |> put_flash(:info, "Welcome back!")
+        |> IO.inspect
         |> redirect(to: Routes.user_path(conn, :index))
 
       {:error, _reason} -> 

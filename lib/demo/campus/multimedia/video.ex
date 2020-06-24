@@ -10,6 +10,7 @@ defmodule Demo.Multimedia.Video do
     field :slug, :string
 
     belongs_to :user, Demo.Accounts.User, type: :binary_id
+    belongs_to :product, Demo.Business.Product, type: :binary_id
     belongs_to :category, Demo.Multimedia.Category, type: :binary_id
 
     has_many :annotations, Demo.Multimedia.Annotation

@@ -1,26 +1,26 @@
-defmodule DemoWeb.EntityAuth do
+defmodule DemoWeb.ProductAuth do
   import Plug.Conn
 
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    IO.puts "EntityAuth call"
+    IO.puts "ProductAuth call"
     IO.inspect conn
-    entity_id = get_session(conn, :entity_id)
-    entity = entity_id && Demo.Business.get_entity!(entity_id)
-    a = assign(conn, :current_entity, entity)
+    product_id = get_session(conn, :product_id)
+    product = product_id && Demo.Business.get_product!(product_id)
+    a = assign(conn, :current_product, product)
     IO.inspect a
-    assign(conn, :current_entity, entity)
+    assign(conn, :current_product, product)
   end
 
 
-  def entity_login(conn, entity) do
-    IO.puts "entity_login"
+  def product_login(conn, product) do
+    IO.puts "product_login"
     # IO.inspect conn
     conn
-    |> assign(:current_entity, entity)
+    |> assign(:current_product, product)
     # |> IO.inspect
-    |> put_session(:entity_id, entity.id)
+    |> put_session(:product_id, product.id)
     # |> IO.inspect
     |> configure_session(renew: true)
     # |> IO.inspect
@@ -35,8 +35,8 @@ defmodule DemoWeb.EntityAuth do
   import Phoenix.Controller
   alias DemoWeb.Router.Helpers, as: Routes
 
-  def authenticate_entity(conn, _opts) do
-    if conn.assigns.current_entity do
+  def authenticate_product(conn, _opts) do
+    if conn.assigns.current_product do
       conn
     else
       conn

@@ -5,6 +5,7 @@ defmodule Demo.Multimedia do
   alias Demo.Multimedia.Video
   alias Demo.Multimedia.Category
   alias Demo.Accounts.User
+  alias Demo.Business.Product
 
   def create_category!(name) do
     Repo.insert!(%Category{name: name}, on_conflict: :nothing)
@@ -20,17 +21,41 @@ defmodule Demo.Multimedia do
     |> Repo.all()
   end
 
+  def list_product_videos(%Product{} = product) do
+    Video
+    |> product_videos_query(product)
+    |> Repo.all()
+  end
+
+
+
   def get_user_video!(%User{} = user, id) do
     Video
     |> user_videos_query(user)
     |> Repo.get!(id)
   end 
 
+  def get_product_video!(%Product{} = product, id) do
+    Video
+    |> product_videos_query(product)
+    |> Repo.get!(id)
+  end 
+
+
+
   def get_video!(id), do: Repo.get!(Video, id)
+
+  
 
   defp user_videos_query(query, %User{id: user_id}) do
     from(v in query, where: v.user_id == ^user_id)
   end
+
+  defp product_videos_query(query, %Product{id: product_id}) do
+    from(v in query, where: v.product_id == ^product_id)
+  end
+
+
 
   def update_video(%Video{} = video, attrs) do
     video

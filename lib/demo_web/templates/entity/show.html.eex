@@ -14,6 +14,9 @@
 </br>
 
 </br>
+<h4>Products</h4>
+        <li><%= link "Products", to: Routes.product_path(@conn, :index) %></li>
+
 <h4>Financial Reports</h4>
     <ul>
         <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @entity.id) %></li>

@@ -685,7 +685,7 @@ alias Demo.Business.Product
 
 
 
-
+tomi_entity = Entity.changeset_update_products(tomi_entity, [김밥, 떡볶이, 우동])
 
 
 

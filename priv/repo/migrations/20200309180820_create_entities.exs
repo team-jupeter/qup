@@ -4,18 +4,25 @@ defmodule Demo.Repo.Migrations.CreateAccounts do
   def change do
     create table(:entities, primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :nationality, :string
-      add :company_prefix, :string
       add :registered_no, :string
       add :industry_classification, :string
-      add :entity_address, :string
-      add :entity_code, :string
       add :name, :string 
       add :email, :string
+      add :gps, {:array, :map}
+      add :nationality, :string
+      add :company_prefix, :string
+      add :entity_address, :string
+      add :entity_code, :string
       add :founding_date, :date
-
+      add :sic_code, :string 
+      add :legal_status, :string 
+      add :year_started, :integer
+      add :year_ended, :integer
+      add :num_of_shares, {:array, :map}
+      add :share_price, {:array, :map}
+      add :credit_rate, :string #? AAA, ..., FFF => 24 rates
+      
       add :locked, :boolean, default: false
-
       add :nation_signature, :text
 
       add :gab_balance, :decimal, default: 0.0

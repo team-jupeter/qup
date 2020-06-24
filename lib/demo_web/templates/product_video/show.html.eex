@@ -1,0 +1,23 @@
+<h4>Show Video</h4>
+
+<ul>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @video.url %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @video.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @video.description %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.product_video_path(@conn, :edit, @video) %></span>
+<span><%= link "Back", to: Routes.product_video_path(@conn, :index) %></span>

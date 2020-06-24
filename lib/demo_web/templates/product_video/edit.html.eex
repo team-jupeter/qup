@@ -1,0 +1,5 @@
+<h4>Edit Video</h4>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.product_video_path(@conn, :update, @video)) %>
+
+<span><%= link "Back", to: Routes.product_video_path(@conn, :index) %></span>
