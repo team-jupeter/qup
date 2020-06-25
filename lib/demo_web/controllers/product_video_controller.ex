@@ -3,24 +3,47 @@ defmodule DemoWeb.ProductVideoController do
 
   alias Demo.Multimedia
   alias Demo.Multimedia.Video
+  alias Demo.Business
 
-  def action(conn, _) do
-    args = [conn, conn.params, conn.assigns.current_product]
-    apply(__MODULE__, action_name(conn), args)
-  end
+  plug DemoWeb.ProductAuth when action in [:new, :edit, :create]
 
-  
+
+  # def action(conn, _) do
+  #   args = [conn, conn.params, conn.assigns.current_product]
+  #   apply(__MODULE__, action_name(conn), args)
+  # end
+
+   
   def index(conn, _params, current_product) do
-    videos = Multimedia.list_product_videos(current_product) 
-    render(conn, "index.html", videos: videos)
+    IO.puts "ProductVideoController index"
+    IO.inspect current_product
+    
+    # conn = conn
+    # |> DemoWeb.ProductAuth.product_login(current_product)
+    
+    # IO.inspect conn
+
+    # videos = Multimedia.list_product_videos(current_product) 
+    # render(conn, "index.html", videos: videos)
+    conn
   end
 
-  def show(conn, %{"id" => id}, current_product) do
+  def show(conn, %{"id" => id}) do
+    IO.puts "ProductVideoController show"
+    IO.inspect id
+    current_product = Business.get_product!(id)
+    IO.inspect current_product
+    
+    conn = conn
+    |> DemoWeb.ProductAuth.product_login(current_product)
+    
+
     video = Multimedia.get_product_video!(current_product, id) 
     render(conn, "show.html", video: video)
   end
 
   def edit(conn, %{"id" => id}, current_product) do
+
     video = Multimedia.get_product_video!(current_product, id) 
     changeset = Multimedia.change_video(video)
     render(conn, "edit.html", video: video, changeset: changeset)

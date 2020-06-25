@@ -676,16 +676,31 @@ alias Demo.Business.GPCCode
 한식 = GPCCode.changeset(%GPCCode{name: "한식", code: "345446", standard: "GTIN"}) |> Repo.insert!
 
 alias Demo.Business.Product
+#? 토미 김밥의 상품
 김밥 = Product.changeset(%Product{name: "김밥", gpc_code_id: 분식.id, price: 1.0}) |> Repo.insert!
 떡볶이 = Product.changeset(%Product{name: "떡볶이", gpc_code_id: 분식.id, price: 1.5}) |> Repo.insert!
 우동 = Product.changeset(%Product{name: "우동", gpc_code_id: 분식.id, price: 1.5}) |> Repo.insert!
+
+#? 산채의 상품
 한정식 = Product.changeset(%Product{name: "한정식", gpc_code_id: 한식.id, price: 5.0}) |> Repo.insert!
 육개장 = Product.changeset(%Product{name: "육개장", gpc_code_id: 한식.id, price: 3.5}) |> Repo.insert!
 갈비탕 = Product.changeset(%Product{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5}) |> Repo.insert!
 
 
-
+#? 토미 김밥
 tomi_entity = Entity.changeset_update_products(tomi_entity, [김밥, 떡볶이, 우동])
+
+#? 임꺽정의 산채 한정식
+lim_entity = Entity.changeset_update_products(lim_entity, [한정식, 육개장, 갈비탕])
+
+
+alias Demo.Multimedia.Video
+한정식_video = Video.changeset(%Video{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: "1dc965cb-b585-46e7-a945-54cf00bc8d9c", description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
+
+
+
+
+
 
 
 

@@ -3,6 +3,7 @@ defmodule Demo.Business do
 
   alias Demo.Repo
   alias Demo.Business.Entity
+  alias Demo.Business.Product
   alias Demo.Business.BizCategory
   alias Demo.Accounts.User
 

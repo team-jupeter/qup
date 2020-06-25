@@ -21,20 +21,20 @@ defmodule DemoWeb.EntityController do
   end
   
   def show(conn, %{"id" => id}, current_user) do
-    IO.puts "entity_controller show"
-    IO.inspect conn
-    IO.inspect id
-    IO.inspect current_user
+    # IO.puts "entity_controller show"
+    # IO.inspect conn
+    # IO.inspect id
+    # IO.inspect current_user
     
     entity = Business.get_user_entity!(current_user, id) 
 
-    IO.puts "entity"
-    IO.inspect entity
+    # IO.puts "entity"
+    # IO.inspect entity
 
     conn = conn
     |> DemoWeb.EntityAuth.entity_login(entity)
 
-    IO.inspect conn
+    # IO.inspect conn
 
     render(conn, "show.html", entity: entity)
 

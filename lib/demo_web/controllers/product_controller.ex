@@ -4,16 +4,17 @@ defmodule DemoWeb.ProductController do
 
   alias Demo.Business.Products
   alias Demo.Business.Product
-
+ 
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_entity]
-    apply(__MODULE__, action_name(conn), args)
+    apply(__MODULE__, action_name(conn), args)  
   end
 
   def index(conn, _params, current_entity) do
     products = Products.list_entity_products(current_entity) 
+    IO.puts "Product controller index"
     render(conn, "index.html", products: products)
   end 
 

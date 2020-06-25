@@ -1,11 +1,3 @@
-#---
-# Excerpted from "Programming Phoenix 1.4",
-# published by The Pragmatic Bookshelf.
-# Copyrights apply to this code. It may not be used to create training material,
-# courses, books, articles, and the like. Contact us if you are in doubt.
-# We make no guarantees that this code is fit for any purpose.
-# Visit http://www.pragmaticprogrammer.com/titles/phoenix14 for more book information.
-#---
 defmodule DemoWeb.VideoController do
   use DemoWeb, :controller
 
@@ -20,7 +12,7 @@ defmodule DemoWeb.VideoController do
   def index(conn, _params, current_user) do
     videos = Multimedia.list_user_videos(current_user) 
     render(conn, "index.html", videos: videos)
-  end
+  end 
 
   def show(conn, %{"id" => id}, current_user) do
     video = Multimedia.get_user_video!(current_user, id) 

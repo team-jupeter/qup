@@ -6,7 +6,7 @@ defmodule DemoWeb.ProductAuth do
   def call(conn, _opts) do
     IO.puts "ProductAuth call"
     IO.inspect conn
-    product_id = get_session(conn, :product_id)
+    product_id = get_session(conn, :product_id) 
     product = product_id && Demo.Business.get_product!(product_id)
     a = assign(conn, :current_product, product)
     IO.inspect a

@@ -21,7 +21,7 @@
                            data: [confirm: "Are you sure?"] %>
       </td>
       <td>
-        <%= link "Watch Product Videos", to: Routes.product_video_path(@conn, :index, product),
+        <%= link "Product Videos", to: Routes.product_watch_path(@conn, :show, product),
                           class: "button" %>
       </td>
     </tr>

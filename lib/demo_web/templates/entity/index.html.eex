@@ -10,4 +10,4 @@
   <span><%= link "New Entity", to: Routes.entity_path(@conn, :new) %></span>
 
 </table>
- 
+  

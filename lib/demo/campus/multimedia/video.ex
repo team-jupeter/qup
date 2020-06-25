@@ -19,10 +19,10 @@ defmodule Demo.Multimedia.Video do
   end
 
   @doc false
-  def changeset(video, attrs) do
+  def changeset(video, attrs \\ %{}) do
     video
     |> cast(attrs, [:url, :title, :description, :category_id])
-    |> validate_required([:url, :title, :description])
+    |> validate_required([:url, :title])
     |> assoc_constraint(:category)
     |> slugify_title()
   end
