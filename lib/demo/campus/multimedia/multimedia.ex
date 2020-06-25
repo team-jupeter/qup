@@ -35,10 +35,10 @@ defmodule Demo.Multimedia do
     |> Repo.get!(id)
   end 
 
-  def get_product_video!(%Product{} = product, id) do
+  def get_product_video!(%Product{} = product, _id) do
     Video
     |> product_videos_query(product)
-    |> Repo.get!(id)
+    |> Repo.one!()
   end 
 
 
@@ -52,6 +52,8 @@ defmodule Demo.Multimedia do
   end
 
   defp product_videos_query(query, %Product{id: product_id}) do
+    IO.inspect "product_id"
+    IO.inspect product_id
     from(v in query, where: v.product_id == ^product_id)
   end
 

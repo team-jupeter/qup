@@ -15,20 +15,20 @@ defmodule DemoWeb.EntityAuth do
 
  
   def entity_login(conn, entity) do
-    IO.puts "entity_login"
-    IO.inspect conn
+    # IO.puts "entity_login"
+    # IO.inspect conn
     conn
     |> assign(:current_entity, entity)
-    |> IO.inspect
+    # |> IO.inspect
     |> put_session(:entity_id, entity.id)
-    |> IO.inspect
+    # |> IO.inspect
     |> configure_session(renew: true)
-    |> IO.inspect
+    # |> IO.inspect
   end
 
   def logout(conn) do
-    IO.puts "logout"
-    IO.inspect conn
+    # IO.puts "logout"
+    # IO.inspect conn
     configure_session(conn, drop: true) # initialize conn
   end
 

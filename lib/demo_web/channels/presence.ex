@@ -4,8 +4,8 @@ defmodule DemoWeb.Presence do
     pubsub_server: Demo.PubSub
 
   def fetch(_topic, entries) do
-    IO.inspect "Presence.fetch"
-    IO.inspect entries
+    # IO.inspect "Presence.fetch"
+    # IO.inspect entries
     
     users =
     entries
@@ -15,7 +15,7 @@ defmodule DemoWeb.Presence do
       {to_string(user.id), %{username: user.username}} 
     end)
     
-    IO.inspect users
+    # IO.inspect users
     
     for {key, %{metas: metas}} <- entries, into: %{} do
       {key, %{metas: metas, user: users[key]}}

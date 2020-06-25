@@ -695,7 +695,13 @@ lim_entity = Entity.changeset_update_products(lim_entity, [한정식, 육개장,
 
 
 alias Demo.Multimedia.Video
-한정식_video = Video.changeset(%Video{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: "1dc965cb-b585-46e7-a945-54cf00bc8d9c", description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
+한정식_video = Video.changeset(%Video{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 한정식.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
+육개장_video = Video.changeset(%Video{title: "육개장", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 육개장.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
+갈비탕_video = Video.changeset(%Video{title: "갈비탕", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 갈비탕.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
+
+김밥_video = Video.changeset(%Video{title: "김밥", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 김밥.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
+떡볶이_video = Video.changeset(%Video{title: "떡볶이", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 떡볶이.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
+우동_video = Video.changeset(%Video{title: "우동", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 우동.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
 
 
 
