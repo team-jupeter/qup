@@ -1,7 +1,7 @@
-defmodule Demo.Invoices do
+defmodule Demo.Invoices.InvoiceItems do
     import Ecto.Query, warn: false
     alias Demo.Repo
-    alias Demo.Invoices.Invoice
+    alias Demo.Invoices.InvoiceItem
 
     @topic inspect(__MODULE__)
 
@@ -10,41 +10,41 @@ defmodule Demo.Invoices do
       Phoenix.PubSub.subscribe(Demo.PubSub, @topic)
     end
 
-    def subscribe(invoice_id) do
-      Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{invoice_id}")
+    def subscribe(invoice_item_id) do
+      Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{invoice_item_id}")
     end
 
-    def list_invoices, do: Repo.all(Invoice)
+    def list_invoice_items, do: Repo.all(InvoiceItem)
 
-    def list_invoices(current_page, per_page) do
+    def list_invoice_items(current_page, per_page) do
       Repo.all(
-        from u in Invoice,
+        from u in InvoiceItem,
           order_by: [asc: u.id],
           offset: ^((current_page - 1) * per_page),
           limit: ^per_page
       )
     end
 
-    def get_invoice!(id), do: Repo.get!(Invoice, id)
+    def get_invoice_item!(id), do: Repo.get!(InvoiceItem, id)
 
-    def change_invoice(invoice, attrs \\ %{}) do
-      Invoice.changeset(invoice, attrs)
+    def change_invoice_item(invoice_item, attrs \\ %{}) do
+      InvoiceItem.changeset(invoice_item, attrs)
     end
 
-    def create_invoice(attrs \\ %{}) do
-    %Invoice{}
-      |> Invoice.changeset(attrs)
+    def create_invoice_item(attrs \\ %{}) do
+    %InvoiceItem{}
+      |> InvoiceItem.changeset(attrs)
       |> Repo.insert()
-      |> notify_subscribers([:invoice, :created])
+      |> notify_subscribers([:invoice_item, :created])
     end
 
-    def delete_invoice(%Invoice{} = invoice) do
-      Repo.delete(invoice)
+    def delete_invoice_item(%InvoiceItem{} = invoice_item) do
+      Repo.delete(invoice_item)
     end 
 
-    def update_invoice(%Invoice{} = invoice, attrs) do
-      invoice
-      |> Invoice.changeset(attrs)
+    def update_invoice_item(%InvoiceItem{} = invoice_item, attrs) do
+      invoice_item
+      |> InvoiceItem.changeset(attrs)
       |> Repo.update()
     end
     # import Ecto.Changeset, only: [change: 2]

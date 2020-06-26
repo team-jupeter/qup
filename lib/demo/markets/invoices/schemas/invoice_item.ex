@@ -18,7 +18,7 @@ defmodule Demo.Invoices.InvoiceItem do
     timestamps()
   end
 
-  @fields [:item_id, :price, :quantity]
+  @fields [:item_name, :tax_per_unit, :tax_subtotal, :subtotal, :item_id, :invoice_id, :price, :quantity]
   @zero Decimal.new(0)
 
   def changeset(data, params \\ %{}) do

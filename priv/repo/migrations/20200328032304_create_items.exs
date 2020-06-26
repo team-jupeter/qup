@@ -13,7 +13,7 @@ defmodule Demo.Repo.Migrations.CreateItems do
       add :document_hash, :string
 
       # add :tax_rate, :decimal, precision: 15, scale: 4
-
+ 
       add :locking_use_area, {:array, :string}, default: []
       add :locking_use_until, :naive_datetime
       add :locking_output_entity_catetory, {:array, :string}, default: []

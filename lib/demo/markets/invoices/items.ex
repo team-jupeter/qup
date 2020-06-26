@@ -1,7 +1,7 @@
-defmodule Demo.Invoices do
+defmodule Demo.Items do
     import Ecto.Query, warn: false
     alias Demo.Repo
-    alias Demo.Invoices.Invoice
+    alias Demo.Invoices.Item
 
     @topic inspect(__MODULE__)
 
@@ -10,41 +10,41 @@ defmodule Demo.Invoices do
       Phoenix.PubSub.subscribe(Demo.PubSub, @topic)
     end
 
-    def subscribe(invoice_id) do
-      Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{invoice_id}")
+    def subscribe(item_id) do
+      Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{item_id}")
     end
 
-    def list_invoices, do: Repo.all(Invoice)
+    def list_items, do: Repo.all(Item)
 
-    def list_invoices(current_page, per_page) do
+    def list_items(current_page, per_page) do
       Repo.all(
-        from u in Invoice,
+        from u in Item,
           order_by: [asc: u.id],
           offset: ^((current_page - 1) * per_page),
           limit: ^per_page
       )
     end
 
-    def get_invoice!(id), do: Repo.get!(Invoice, id)
+    def get_item!(id), do: Repo.get!(Item, id)
 
-    def change_invoice(invoice, attrs \\ %{}) do
-      Invoice.changeset(invoice, attrs)
+    def change_item(item, attrs \\ %{}) do
+      Item.changeset(item, attrs)
     end
 
-    def create_invoice(attrs \\ %{}) do
-    %Invoice{}
-      |> Invoice.changeset(attrs)
+    def create_item(attrs \\ %{}) do
+    %Item{}
+      |> Item.changeset(attrs)
       |> Repo.insert()
-      |> notify_subscribers([:invoice, :created])
+      |> notify_subscribers([:item, :created])
     end
 
-    def delete_invoice(%Invoice{} = invoice) do
-      Repo.delete(invoice)
+    def delete_item(%Item{} = item) do
+      Repo.delete(item)
     end 
 
-    def update_invoice(%Invoice{} = invoice, attrs) do
-      invoice
-      |> Invoice.changeset(attrs)
+    def update_item(%Item{} = item, attrs) do
+      item
+      |> Item.changeset(attrs)
       |> Repo.update()
     end
     # import Ecto.Changeset, only: [change: 2]

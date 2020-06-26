@@ -1,104 +1,53 @@
-defmodule Demo.Tickets do
-  @moduledoc """
-  The Tickets context.
-  """
-
+defmodule Demo.Gopang.Tickets do
   import Ecto.Query, warn: false
+
   alias Demo.Repo
+  alias Demo.Gopang.Ticket
+  alias Demo.Business.Entity
 
-  alias Demo.Tickets.Ticket
 
-  @doc """
-  Returns the list of valid_until.
-
-  ## Examples
-
-      iex> list_valid_until()
-      [%Ticket{}, ...]
-
-  """
-  def list_valid_until do
+  def list_tickets do
     Repo.all(Ticket)
   end
 
-  @doc """
-  Gets a single ticket.
-
-  Raises `Ecto.NoResultsError` if the Ticket does not exist.
-
-  ## Examples
-
-      iex> get_ticket!(123)
-      %Ticket{}
-
-      iex> get_ticket!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_ticket!(id), do: Repo.get!(Ticket, id)
-
-  @doc """
-  Creates a ticket.
-
-  ## Examples
-
-      iex> create_ticket(%{field: value})
-      {:ok, %Ticket{}}
-
-      iex> create_ticket(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_ticket(attrs \\ %{}) do
-    %Ticket{}
-    |> Ticket.changeset(attrs)
-    |> Repo.insert()
+  def list_entity_tickets(%Entity{} = entity) do
+    Ticket
+    |> entity_tickets_query(entity)
+    |> Repo.all()
   end
 
-  @doc """
-  Updates a ticket.
+  def get_entity_ticket!(%Entity{} = entity, id) do
+    Ticket
+    |> entity_tickets_query(entity)
+    |> Repo.get!(id)
+  end 
 
-  ## Examples
+  def get_ticket!(id), do: Repo.get!(Ticket, id)
 
-      iex> update_ticket(ticket, %{field: new_value})
-      {:ok, %Ticket{}}
+  defp entity_tickets_query(query, %Entity{id: entity_id}) do
+    from(p in query, where: p.entity_id == ^entity_id)
+  end
 
-      iex> update_ticket(ticket, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def update_ticket(%Ticket{} = ticket, attrs) do
     ticket
     |> Ticket.changeset(attrs)
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a ticket.
-
-  ## Examples
-
-      iex> delete_ticket(ticket)
-      {:ok, %Ticket{}}
-
-      iex> delete_ticket(ticket)
-      {:error, %Ecto.Changeset{}}
-
-  """
   def delete_ticket(%Ticket{} = ticket) do
     Repo.delete(ticket)
+  end 
+
+  def create_ticket(%Entity{} = entity, attrs \\ %{}) do
+    %Ticket{}
+    |> Ticket.changeset(attrs)
+    |> IO.inspect
+    |> Ecto.Changeset.put_assoc(:entity, entity)
+    |> Repo.insert()
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking ticket changes.
-
-  ## Examples
-
-      iex> change_ticket(ticket)
-      %Ecto.Changeset{source: %Ticket{}}
-
-  """
   def change_ticket(%Ticket{} = ticket) do
     Ticket.changeset(ticket, %{})
   end
+
 end

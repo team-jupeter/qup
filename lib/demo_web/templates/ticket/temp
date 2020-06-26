@@ -1,0 +1,12 @@
+<% medals = [:gold, :silver, :bronze] %>
+<% default_medal = :bronze %>
+
+<%= form_for @changeset, options_path(@conn, :create), fn (f) -> %>
+  <%= label f, :options, "Choose your options" %>
+  
+  <%= for option <- options do %>
+    <%= label do %>
+      <%= radio_button f, :medal, checked: medal == default_medal %>
+    <% end %>
+  <% end %>
+<% end %> 

@@ -23,8 +23,6 @@ defmodule Demo.Transactions.Transaction do
     
     has_one :invoice, Demo.Invoices.Invoice, on_delete: :delete_all
     has_one :ticket, Demo.Tickets.Ticket, on_delete: :delete_all
-
-    belongs_to :taxation, Demo.Taxations.Taxation
     
     timestamps()
   end

@@ -1,0 +1,5 @@
+<h3>New InvoiceItem</h3>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.invoice_item_path(@conn, :create)) %>
+
+<span><%= link "Back", to: Routes.invoice_item_path(@conn, :index) %></span>

@@ -76,8 +76,11 @@ defmodule DemoWeb.Router do
     pipe_through [:browser, :authenticate_user]
 
     resources "/entities", EntityController
+    resources "/products", ProductController
+    resources "/items", ItemController
+    resources "/invoice_items", InvoiceItemController
+    resources "/invoices", InvoiceController
     resources "/transactions", TransactionController
-    resources "/product", ProductController
 
   end
 
@@ -109,7 +112,7 @@ defmodule DemoWeb.Router do
 
     resources "/constitutions", ConstitutionController
     resources "/", NationController
-  end
+  end 
 
   scope "/supul", DemoWeb do
     pipe_through [:browser]
@@ -127,12 +130,18 @@ defmodule DemoWeb.Router do
     resources "/real_estates", AssetController
   end
 
-  scope "/transaction", DemoWeb do
+  scope "/gopang", DemoWeb do
     pipe_through [:browser]
 
-    resources "/", TransactionController
-
+    resources "/tickets", TicketController
   end
+
+  # scope "/transaction", DemoWeb do
+  #   pipe_through [:browser]
+
+  #   resources "/", TransactionController
+
+  # end
 
 
 

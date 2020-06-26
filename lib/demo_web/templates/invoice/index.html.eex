@@ -1,0 +1,25 @@
+<h3>Invoices</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Buyer</th>
+      <th>Seller</th>
+      <th>Payment</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for invoice <- @invoices do %>
+    <tr>
+
+      <td>
+        <span><%= link "Show", to: Routes.invoice_path(@conn, :show, invoice) %></span>
+        <span><%= link "Edit", to: Routes.invoice_path(@conn, :edit, invoice) %></span>
+        <span><%= link "Delete", to: Routes.invoice_path(@conn, :delete, invoice), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Invoice", to: Routes.invoice_path(@conn, :new) %></span>

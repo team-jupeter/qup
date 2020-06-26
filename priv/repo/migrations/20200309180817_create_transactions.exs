@@ -17,6 +17,7 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :if_only_item, :string
       add :fair?, :boolean, default: false
 
+
       # add :locked, :boolean, default: false
       # add :locking_use_area, {:array, :string}, default: []
       # add :locking_use_until, :naive_datetime

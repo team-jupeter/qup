@@ -1,4 +1,4 @@
-defmodule Demo.Tickets.Ticket do
+defmodule Demo.Gopang.Ticket do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -33,7 +33,7 @@ defmodule Demo.Tickets.Ticket do
     embeds_one :deliverybox, Demo.Gopangs.DeliveryboxEmbed
 
     belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id
-    belongs_to :Entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id
     belongs_to :car, Demo.Cars.Car, type: :binary_id
 
     timestamps()

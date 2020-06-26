@@ -1,0 +1,31 @@
+<h3>Tickets</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Depature</th>
+      <th>Destination</th>
+      <th>Item ID</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for ticket <- @tickets do %>
+    <tr>
+      <td><%= ticket.departure %></td>
+      <td><%= ticket.destination %></td>
+      <td><%= ticket.item_id %></td>
+      <td><%= link "Edit", to: Routes.ticket_path(@conn, :edit, ticket) %></td>
+      <td><%= link "Show", to: Routes.ticket_path(@conn, :show, ticket) %></td>
+      <td>
+        <%= link "Delete", to: Routes.ticket_path(@conn, :delete, ticket),
+                           method: :delete,
+                           data: [confirm: "Are you sure?"] %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Ticket", to: Routes.ticket_path(@conn, :new) %></span>

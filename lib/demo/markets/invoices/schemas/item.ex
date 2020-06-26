@@ -20,7 +20,7 @@ defmodule Demo.Invoices.Item do
     field :document_hash, :string
     # field :tax_rate, :integer, precision: 5, scale: 2
     
-    embeds_one :item_locker, Demo.Invoices.ItemLockeEmbed
+    # embeds_one :item_locker, Demo.Invoices.ItemLockeEmbed
 
     has_many :invoice_items, InvoiceItem
 

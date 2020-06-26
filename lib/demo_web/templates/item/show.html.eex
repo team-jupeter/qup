@@ -1,0 +1,11 @@
+<h4>Item Detail</h4>
+<b>name</b> (<%= @item.name %>) </br>
+<b>product_uuid</b> (<%= @item.product_uuid %>) </br>
+<b>gpc_code</b> (<%= @item.gpc_code %>) </br>
+<b>category</b> (<%= @item.category %>) </br>
+<b>document</b> (<%= @item.document %>) </br>
+<b>document_hash</b> (<%= @item.document_hash %>) </br>
+ </br>
+
+<span><%= link "Edit", to: Routes.item_path(@conn, :edit, @item) %></span>
+<span><%= link "Back", to: Routes.item_path(@conn, :index) %></span>

@@ -1,0 +1,125 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+ 
+  <%= label f, :departure %>
+  <%= text_input f, :departure %>
+  <%= error_tag f, :departure %>
+  
+ 
+  <%= label f, :destination %>
+  <%= text_input f, :destination %>
+  <%= error_tag f, :destination %>
+ 
+  <%= label f, :input %>
+  <%= text_input f, :input %>
+  <%= error_tag f, :input %>
+ 
+  <%= label f, :output %>
+  <%= text_input f, :output %>
+  <%= error_tag f, :output %>
+
+  <%= label f, :transport_type %>
+  <%= text_input f, :transport_type %>
+  <%= error_tag f, :transport_type %>
+ 
+  <%= label f, :transport_id %>
+  <%= text_input f, :transport_id %>
+  <%= error_tag f, :transport_id %>
+ 
+  <%= label f, :valid_until %>
+  <%= text_input f, :valid_until %>
+  <%= error_tag f, :valid_until %>
+ 
+  <%= label f, :issued_by %>
+  <%= text_input f, :issued_by %>
+  <%= error_tag f, :issued_by %>
+ 
+  <%= label f, :user_id %>
+  <%= text_input f, :user_id %>
+  <%= error_tag f, :user_id %>
+ 
+  <%= label f, :departure_time %>
+  <%= text_input f, :departure_time %>
+  <%= error_tag f, :departure_time %>
+ 
+  <%= label f, :arrival_time %>
+  <%= text_input f, :arrival_time %>
+  <%= error_tag f, :arrival_time %>
+ 
+  <%= label f, :departing_terminal %>
+  <%= text_input f, :departing_terminal %>
+  <%= error_tag f, :departing_terminal %>
+ 
+  <%= label f, :arrival_terminal %>
+  <%= text_input f, :arrival_terminal %>
+  <%= error_tag f, :arrival_terminal %>
+ 
+  <%= label f, :gate %>
+  <%= text_input f, :gate %>
+  <%= error_tag f, :gate %>
+ 
+  <%= label f, :seat %>
+  <%= text_input f, :seat %>
+  <%= error_tag f, :seat %>
+ 
+  <%= label f, :item_id %>
+  <%= text_input f, :item_id %>
+  <%= error_tag f, :item_id %>
+ 
+  <%= label f, :item_size %>
+  <%= text_input f, :item_size %>
+  <%= error_tag f, :item_size %>
+ 
+  <%= label f, :item_weight %>
+  <%= text_input f, :item_weight %>
+  <%= error_tag f, :item_weight %>
+ 
+  <%= label f, :caution %>
+  <%= text_input f, :caution %>
+  <%= error_tag f, :caution %>
+ 
+  <%= label f, :gopang_fee %>
+  <%= text_input f, :gopang_fee %>
+  <%= error_tag f, :gopang_fee %>
+ 
+  <%= label f, :status %>
+  <%= text_input f, :status %>
+  <%= error_tag f, :status %>
+ 
+  <%= label f, :distance %>
+  <%= text_input f, :distance %>
+  <%= error_tag f, :distance %>
+ 
+  <%= label f, :transaction_id %>
+  <%= text_input f, :transaction_id %>
+  <%= error_tag f, :transaction_id %>
+
+  <%= label f, :entity_id %>
+  <%= text_input f, :entity_id %>
+  <%= error_tag f, :entity_id %>
+
+  <%= label f, :car_id %>
+  <%= text_input f, :car_id %>
+  <%= error_tag f, :car_id %>
+
+
+  
+    embeds_many :road_sections, Demo.Gopangs.RoadSectionEmbed </br>
+    embeds_many :stations, Demo.Gopangs.StationEmbed </br>
+    embeds_one :route, Demo.Gopangs.RouteEmbed  </br>
+    embeds_one :deliverybox, Demo.Gopangs.DeliveryboxEmbed  </br>
+
+    belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :car, Demo.Cars.Car, type: :binary_id
+
+
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+<% end %>

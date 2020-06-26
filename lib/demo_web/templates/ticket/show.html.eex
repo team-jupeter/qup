@@ -1,0 +1,137 @@
+<h4>Show Ticket</h4>
+
+<ul>
+  <li>
+    <strong>departure:</strong>
+    <%= @ticket.departure %>
+  </li>
+
+  <li>
+    <strong>destination:</strong>
+    <%= @ticket.destination %>
+  </li>
+
+  <li>
+    <strong>input:</strong>
+    <%= @ticket.input %>
+  </li>
+
+  <li>
+    <strong>output:</strong>
+    <%= @ticket.output %>
+  </li>
+
+  <li>
+    <strong>transport_type:</strong>
+    <%= @ticket.transport_type %>
+  </li>
+
+  <li>
+    <strong>transport_type:</strong>
+    <%= @ticket.input %>
+  </li>
+
+  <li>
+    <strong>transport_id:</strong>
+    <%= @ticket.transport_id %>
+  </li>
+
+  <li>
+    <strong>valid_until:</strong>
+    <%= @ticket.valid_until %>
+  </li>
+
+  <li>
+    <strong>issued_by:</strong>
+    <%= @ticket.issued_by %>
+  </li>
+
+  <li>
+    <strong>user_id:</strong>
+    <%= @ticket.user_id %>
+  </li>
+
+  <li>
+    <strong>departure_time:</strong>
+    <%= @ticket.departure_time %>
+  </li>
+
+  <li>
+    <strong>arrival_time:</strong>
+    <%= @ticket.arrival_time %>
+  </li>
+
+  <li>
+    <strong>departing_terminal:</strong>
+    <%= @ticket.departing_terminal %>
+  </li>
+
+  <li>
+    <strong>gate:</strong>
+    <%= @ticket.gate %>
+  </li>
+
+  <li>
+    <strong>seat:</strong>
+    <%= @ticket.seat %>
+  </li>
+
+  <li>
+    <strong>item_id:</strong>
+    <%= @ticket.item_id %>
+  </li>
+
+  <li>
+    <strong>item_size:</strong>
+    <%= @ticket.item_size %>
+  </li>
+
+  <li>
+    <strong>item_weight:</strong>
+    <%= @ticket.item_weight %>
+  </li>
+
+  <li>
+    <strong>caution:</strong>
+    <%= @ticket.caution %>
+  </li>
+
+  <li>
+    <strong>gopang_fee:</strong>
+    <%= @ticket.gopang_fee %>
+  </li>
+
+  <li>
+    <strong>status:</strong>
+    <%= @ticket.status %>
+  </li>
+
+  <li>
+    <strong>distance:</strong>
+    <%= @ticket.distance %>
+  </li>
+
+  <li>
+    <strong>transaction_id:</strong>
+    <%= @ticket.transaction_id %>
+  </li>
+
+  <li>
+    <strong>entity_id:</strong>
+    <%= @ticket.entity_id %>
+  </li>
+
+  <li>
+    <strong>car_id:</strong>
+    <%= @ticket.car_id %>
+  </li>
+
+    embeds_many :road_sections, Demo.Gopangs.RoadSectionEmbed </br>
+    embeds_many :stations, Demo.Gopangs.StationEmbed </br>
+    embeds_one :route, Demo.Gopangs.RouteEmbed </br>
+    embeds_one :deliverybox, Demo.Gopangs.DeliveryboxEmbed </br>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.ticket_path(@conn, :edit, @ticket) %></span>
+<span><%= link "Back", to: Routes.ticket_path(@conn, :index) %></span>

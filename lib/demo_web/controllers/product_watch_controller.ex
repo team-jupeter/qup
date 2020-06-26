@@ -9,12 +9,12 @@ defmodule DemoWeb.ProductWatchController do
     conn = conn
     |> DemoWeb.ProductAuth.product_login(current_product)
     
-    IO.inspect conn
+    # IO.inspect conn
 
-    IO.inspect current_product
+    # IO.inspect current_product
     video = Multimedia.get_product_video!(current_product, id) 
-    IO.puts "video"
-    IO.inspect video
+    # IO.puts "video"
+    # IO.inspect video
     render(conn, "show.html", video: video)
   end
 end

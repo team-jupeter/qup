@@ -1,5 +1,5 @@
 <h3>New Transaction</h3>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.transacton_path(@conn, :create)) %>
+<%= render "form.html", Map.put(assigns, :action, Routes.transaction_path(@conn, :create)) %>
 
-<span><%= link "Back", to: Routes.transacton_path(@conn, :index) %></span>
+<span><%= link "Back", to: Routes.transaction_path(@conn, :index) %></span>

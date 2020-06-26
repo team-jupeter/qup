@@ -681,7 +681,7 @@ alias Demo.Business.Product
 떡볶이 = Product.changeset(%Product{name: "떡볶이", gpc_code_id: 분식.id, price: 1.5}) |> Repo.insert!
 우동 = Product.changeset(%Product{name: "우동", gpc_code_id: 분식.id, price: 1.5}) |> Repo.insert!
 
-#? 산채의 상품
+#? 임꺽정 산채의 상품
 한정식 = Product.changeset(%Product{name: "한정식", gpc_code_id: 한식.id, price: 5.0}) |> Repo.insert!
 육개장 = Product.changeset(%Product{name: "육개장", gpc_code_id: 한식.id, price: 3.5}) |> Repo.insert!
 갈비탕 = Product.changeset(%Product{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5}) |> Repo.insert!
@@ -705,143 +705,221 @@ alias Demo.Multimedia.Video
 
 
 
-
-
-
-
-
-
-Repo.one from u in User,
-select: count(u.id),
-where: ilike(u.username, "s%") or ilike(u.username, "m%")
-
-users_count = from u in User, select: count(u.id)
-j_users = from u in users_count, where: ilike(u.username, ^"%h%")
-
-Repo.one j_users
-
-
-
-
 '''
+TRANSACTION 1
 
-CERTIFICATE GRANT
-- 산업자원부는 성춘향에게 분식 조리사 자격증을 발급
-- 국세청은 성춘향이 개업한 Tomi_Kimbab에 음식점 영업허가를 발급
+Transaction between hankyung_gab_entity and hong_entity.
 
+The price of ABC T1, T2, T3 will be updated every second.
+The code below is hard coded. We need write codes for invoice_items with only one item.
 '''
+alias Demo.Reports.Ledger
+alias Demo.Transactions.Transaction
+alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 
 
-alias Demo.Documents.Document
+#? write invoice for trade between mr_hong and hankyung_gab.
+item = Item.changeset(%Item{}, %{gpc_code: "ABCDE21111", category: "Fiat Currency", name: "KRW", price: Decimal.from_float(0.0012)}) |> Repo.insert!
+invoice_items = [%{item_id: item.id, quantity: 20000}, %{item_id: item.id, quantity: 0}]
 
- document = Document.changeset(
-    %Document{
-        title: "진단의학 전문의 자격증",
-        presented_to: sung_entity.id,
-        presented_by: [mohw.id],
-        summary: "위와 같이 자격을....",
-        attached_docs_list: ["졸업증명서.id", "의사_국가시험_합격증명서.id", "전학년_성적증명서.id"],
-        attached_docs_hashes: ["졸업증명서_hash", "의사_국가시험_합격증명서_hash", "전학년_성적증명서_hash"],
-        hash_of_attached_docs_hashes: "sha256(attached_docs_hashes)",
+
+params = %{
+  "buyer" => %{"entity_id" => hankyung_gab.id},
+  "seller" => %{"entity_id" => hong_entity.id},
+  "invoice_items" => invoice_items,
+#   "output" => hong_public_address
+}
+{:ok, invoice} = Invoice.create(params)
+invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
+
+#? Write Transaction
+transaction_1 = Transaction.changeset(%Transaction{
+    abc_input: hankyung_gab.id, 
+    abc_output: hong_entity.id,
+    abc_output_amount: 0,
+    
+    item_input: hong_entity.id, 
+    item_output: hankyung_gab.id,
+    item_output_quantity: 0,
+
+    locked: false,
     }) |> Repo.insert!
 
-alias Demo.Certificates.Certificate
-certificate = Certificate.changeset(%Certificate{name: "Diagnostic medicine specialist", document: document.id, issued_to: sung_entity.id, issued_date: Timex.to_date({2015, 6, 24})}) |> Repo.insert!
+transaction_1 = change(transaction_1) \
+    |> Ecto.Changeset.put_change(:abc_output_amount, invoice.total) \
+    |> Ecto.Changeset.put_change(:item_output_quantity, invoice.total) \
+    |> Ecto.Changeset.put_change(:abc_output_amount, invoice.total) \
+    |> Repo.update!
+
+#? Association between Transaction and Invoice
+invoice = Ecto.build_assoc(transaction_1, :invoice, invoice) 
+
+
+'''
+ISSUE:: ledger sometimes does and sometimes doesn't load its children and grand children. why???
+A child may preload its parent, but not the reverse. 
+
+Repo.preload(transaction, :invoices)
+Repo.preload(invoice, :transaction)
+''' 
+
+#? Adjust balance_sheet of both.
+#? Hankyung GAB
+hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_sheet]).financial_report
+
+hankyung_gab_BS = hankyung_gab_FR.gab_balance_sheet
+hankyung_gab_BS = change(hankyung_gab_BS) |> \
+    Ecto.Changeset.put_change(
+        :cash, Decimal.add(hankyung_gab_BS.cash, Decimal.mult(String.to_integer(item.name), 
+            Enum.at(invoice_items, 0).quantity))) |>  \
+    Ecto.Changeset.put_change(:t1, 
+        Decimal.sub(hankyung_gab_BS.t1, transaction_1.output_amount)) |> Repo.update!
+
+
+
+#? Hong Gil_Dong
+alias Demo.ABC.T1
+
+hong_entity_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financial_report
+
+hong_entity_BS = hong_entity_FR.balance_sheet
+hong_entity_BS = change(hong_entity_BS) |> \
+    Ecto.Changeset.put_change(
+        :cash, Decimal.sub(hong_entity_BS.cash, Decimal.mult(String.to_integer(item.name), 
+            Enum.at(invoice_items, 0).quantity))) |> Repo.update!
+
+t1s = [%T1{input: hankyung_gab_public_address, amount: transaction_1.output_amount, output: hong_public_address}]
+hong_entity_BS = change(hong_entity_BS) |> \
+    Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 
  
-'''
-
-License GRANT
-서울시 도봉구는 토미 클리닉을 관내 의료기관으로 등기
 
 '''
- document = Document.changeset(
-    %Document{
-        title: "의료기관 등기",
-        presented_to: tomi_clinic.id,
-        presented_by: [seoul.id],
-        summary: "위와 같이 ....",
-        attached_docs_list: [],
-        attached_docs_hashes: [],
-        hash_of_attached_docs_hashes: "sha256(attached_docs_hashes)",
+TRANSACTION 2
+Transaction between hong_entity and tomi_entity
+'''
+
+#? write invoice for trade between mr_hong and hankyung_gab.
+item_1 = Item.changeset(%Item{}, %{gpc_code: "ABCDE11133", category: "Food", name: "김밥", price: Decimal.from_float(0.01)}) |> Repo.insert!
+item_2 = Item.changeset(%Item{}, %{gpc_code: "ABCDE11134", category: "Food", name: "떡볶이", price: Decimal.from_float(0.02)}) |> Repo.insert!
+invoice_items = [%{item_id: item_1.id, quantity: 3}, %{item_id: item_2.id, quantity: 3}]
+
+
+params = %{
+  "buyer" => %{"entity_id" => hong_entity.id, "entity_address" => hong_public_address},
+  "seller" => %{"entity_id" => tomi_entity.id, "entity_address" => tomi_public_address},
+  "invoice_items" => invoice_items,
+}
+{:ok, invoice} = Invoice.create(params)
+invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
+#? hash_of_invoice = hong_public_sha256 = :crypto.hash(:sha256, invoice)
+
+
+
+
+
+
+
+
+#? Write Transaction 
+transaction_2 = Transaction.changeset(%Transaction{
+    hash_of_invoice: "dummy_hash_of_invoice",
+    input: hankyung_gab_public_address, 
+    output: hong_public_address,
+    output_amount: 0,
+    locked: false,
+    locking_use_area: ["jejudo_supul"],
+    locking_output_entity_catetory: ["food"],
+    locking_output_specific_entities: [tomi_public_address]
     }) |> Repo.insert!
 
-alias Demo.Licenses.License
-license = License.changeset(%License{name: "Tomi Clinic", document: document.id, issued_to: sung_entity.id, issued_date: Timex.to_date({2015, 6, 24})}) |> Repo.insert!
+transaction_2 = change(transaction_2) |> Ecto.Changeset.put_change(:output_amount, invoice.total) |> Repo.update!
 
-
-
-'''
-
-CERTIFICATE GRANT
-보건복지부는 성춘향에게 전문의 자격증을 발급
+#? Association between Transaction and Invoice
+invoice = Ecto.build_assoc(transaction_2, :invoice, invoice) 
 
 '''
-alias Demo.Documents.Document
+Adjust balance_sheet of both.
+''' 
+#? Hong Gil_Dong
+hong_entity_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financial_report
 
- document = Document.changeset(
-    %Document{
-        title: "진단의학 전문의 자격증",
-        presented_to: sung_entity.id,
-        presented_by: [mohw.id],
-        summary: "위와 같이 자격을....",
-        attached_docs_list: ["졸업증명서.id", "의사_국가시험_합격증명서.id", "전학년_성적증명서.id"],
-        attached_docs_hashes: ["졸업증명서_hash", "의사_국가시험_합격증명서_hash", "전학년_성적증명서_hash"],
-        hash_of_attached_docs_hashes: "sha256(attached_docs_hashes)",
-    }) |> Repo.insert!
+hong_entity_BS = hong_entity_FR.balance_sheet
+hong_t1s = hong_entity_BS.t1s
 
-alias Demo.Certificates.Certificate
-certificate = Certificate.changeset(%Certificate{name: "Diagnostic medicine specialist", document: document.id, issued_to: sung_entity.id, issued_date: Timex.to_date({2015, 6, 24})}) |> Repo.insert!
+# case Enum.at(hong_t1s, 0).output == hong_public_address do:
+    residual_amount = Decimal.sub(Enum.at(hong_t1s, 0).amount, invoice.total)
+    [head | hong_t1s] = hong_t1s
+    t1s = [%T1{input: hong_public_address, output: hong_public_address, amount: residual_amount}]
+    
+    hong_entity_BS = change(hong_entity_BS) |> \
+    Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
+    
+    
+    tomi_entity_FR = Repo.preload(tomi_entity, [financial_report: :balance_sheet]).financial_report
+    tomi_entity_BS = tomi_entity_FR.balance_sheet
+    
+    t1s = [%T1{input: hong_public_address, output: tomi_public_address, amount: invoice.total}]
+    
+    hong_entity_BS = change(hong_entity_BS) |> \
+        Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
+# end
 
- 
-'''
 
-License GRANT
-서울시 도봉구는 토미 클리닉을 관내 의료기관으로 등기
 
-'''
- document = Document.changeset(
-    %Document{
-        title: "의료기관 등기",
-        presented_to: tomi_clinic.id,
-        presented_by: [seoul.id],
-        summary: "위와 같이 ....",
-        attached_docs_list: [],
-        attached_docs_hashes: [],
-        hash_of_attached_docs_hashes: "sha256(attached_docs_hashes)",
-    }) |> Repo.insert!
 
-alias Demo.Licenses.License
-license = License.changeset(%License{name: "Tomi Clinic", document: document.id, issued_to: sung_entity.id, issued_date: Timex.to_date({2015, 6, 24})}) |> Repo.insert!
+
 
 
 
 '''
 
 TRANSACTION
-성춘향은 보건복지부에 전문의 자격증 발급 수수료를 지불
+Let's assume hong is selected as beneficiary of policy finance.
+Transaction between gopang and hong_entity.
 
 '''
+
 alias Demo.Transactions.Transaction
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 alias Demo.Tickets.Ticket
 
-# ? write invoice for trade between mr_sung and mohw.
-item = Item.changeset(%Item{}, %{product_uuid: certificate.id, price: Decimal.from_float(100.0),
-document: document.id}) |> Repo.insert!()
+# ? write invoice for trade between mr_hong and gopang.
+item =
+  Item.changeset(
+    %Item{},
+    %{
+      product_uuid: tomi_entity.id,
+      price: Decimal.from_float(1.0),
+    }
+  ) \
+  |> Repo.insert!()
 
 # ? issue an ticket
-ticket = Ticket.changeset(%Ticket{}, %{item_id: item.id}) |> Repo.insert!()
+
+ticket =
+  Ticket.changeset(%Ticket{}, %{
+    departure: tomi_entity.entity_address,
+    destination: hong_entity.entity_address,
+    departure_time: "2020-06-23 23:50:07",
+    arrival_time: "2020-06-24 00:20:07",
+    item_id: item.id,
+    item_size: [%{width: 10, height: 10, length: 30}],
+    item_weight: 980,
+    caution: "rotenable",
+    gopang_fee: Decimal.from_float(0.1),
+  }) \
+  |> Repo.insert!()
 
 
 invoice_items = [
-  %{item_id: item.id, quantity: 1.0, item_name: "Diagnostic Specialist Certificate"},
+  %{item_id: item.id, quantity: 5.0, item_name: "김밥"},
   %{item_id: item.id, quantity: 0.0}
 ]
 
 params = %{
-  "buyer" => %{"main" => sung_entity.id, "participants" => sung_entity.id},
-  "seller" => %{"main" => mohw.id, "participants" => mohw.id},
+  "buyer" => %{"main" => hong_entity.id, "participants" => hong_entity.id},
+  "seller" => %{"main" => tomi_entity.id, "participants" => tomi_entity.id},
   "invoice_items" => invoice_items
 }
 
@@ -849,15 +927,11 @@ params = %{
 
 # invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
 
-# ? hash_of_invoice = sung_public_sha256 = :crypto.hash(:sha256, invoice)
-
-
-
+# ? hash_of_invoice = hong_public_sha256 = :crypto.hash(:sha256, invoice)
 
 '''
 
-Ticket
-전문의 자격증 발급 사항을 보건복지부가 소속된 Korea Supul에 기록
+Route and Ticket
 
 '''
 # ? calculate route, then embed it on the ticket. 
@@ -867,10 +941,10 @@ Ticket
 alias Demo.Transactions.Transaction
 transaction =
   Transaction.changeset(%Transaction{
-    abc_input: sung_entity.id,
-    abc_output: mohw.id,
+    abc_input: hong_entity.id,
+    abc_output: gopang.id,
     abc_amount: invoice.total,
-    items: [certificate.id],
+    items: [%{김밥: 5}],
   }) \
   |> Repo.insert!()
 
@@ -881,7 +955,7 @@ ticket = Ecto.build_assoc(transaction, :ticket, ticket)
 
 preloaded_ticket = Repo.preload(ticket, [:transaction])
 
-    
+
 
 '''
 
@@ -901,8 +975,8 @@ ts = DateTime.utc_now() |> DateTime.to_unix()
 ts_msg_serialized = "#{ts}|#{msg_serialized}"
 
 # generate a secure hash using SHA256 and sign the message with the private key
-{:ok, buyer_signature} = ExPublicKey.sign(ts_msg_serialized, sung_rsa_priv_key)
-{:ok, seller_signature} = ExPublicKey.sign(ts_msg_serialized, mohw_rsa_priv_key)
+{:ok, buyer_signature} = ExPublicKey.sign(ts_msg_serialized, hong_rsa_priv_key)
+{:ok, seller_signature} = ExPublicKey.sign(ts_msg_serialized, tomi_rsa_priv_key)
 
 # combine payload
 payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64(buyer_signature)}|#{Base.url_encode64(seller_signature)}"
@@ -913,12 +987,12 @@ payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64(buyer_signature)}|#{Base.
 '''
 
 SUPUL
-Second, the supul_mulet verifies and unserialize the payload from mr_sung. 
+Second, the supul_mulet verifies and unserialize the payload from mr_hong. 
 
 '''
 
 alias Demo.Mulets.Mulet
-korea_mulet = Ecto.build_assoc(korea_supul, :mulet, %{current_hash: korea_supul.id})
+hankyung_mulet = Ecto.build_assoc(hankyung_supul, :mulet, %{current_hash: hankyung_supul.id})
 
 #? pretend transmit the message...
 #? pretend receive the message...
@@ -936,10 +1010,10 @@ recv_msg_serialized = Enum.fetch!(parts, 1)
 {:ok, recv_sig_seller} = Enum.fetch!(parts, 3) |> Base.url_decode64()
 
 {:ok, sig_valid_buyer} =
-  ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig_buyer, sung_rsa_pub_key)
+  ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig_buyer, hong_rsa_pub_key)
 
 {:ok, sig_valid_seller} =
-  ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig_seller, mohw_rsa_pub_key)
+  ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig_seller, tomi_rsa_pub_key)
 
 # assert(sig_valid)
 
@@ -947,7 +1021,7 @@ recv_msg_serialized = Enum.fetch!(parts, 1)
 alias Demo.Mulets.TicketStorage
 alias Demo.Tickets.Payload
 payload_archive = Payload.changeset(%Payload{payload: payload}) |> Repo.insert!
-payload_archive = Ecto.build_assoc(korea_supul, :payloads, payload_archive)
+payload_archive = Ecto.build_assoc(hankyung_supul, :payloads, payload_archive)
 
 payload_storage = TicketStorage.changeset(%TicketStorage{}, %{new_payload: payload_archive})
 
@@ -962,28 +1036,27 @@ payload_storage = TicketStorage.changeset(%TicketStorage{}, %{new_payload: paylo
 '''
 
 Adjust balance_sheet of both.
-성춘향과 보건복지부의 BS를 업데이트
 
 '''
 alias Demo.ABC.T1
 
-# ? mohw
+# ? gopang
 new_t1s =
-  Enum.map(mohw_BS.t1s, fn elem ->
-    Map.update!(elem, :amount, fn curr_value -> Decimal.add(curr_value, ticket.mohw_fee) end)
+  Enum.map(gopang_BS.t1s, fn elem ->
+    Map.update!(elem, :amount, fn curr_value -> Decimal.add(curr_value, ticket.gopang_fee) end)
   end)
 
-mohw_BS = change(mohw_BS) |> Ecto.Changeset.put_change(:t1s, new_t1s) |> Repo.update!()
+gopang_BS = change(gopang_BS) |> Ecto.Changeset.put_change(:t1s, new_t1s) |> Repo.update!()
 
 
-# ? mr_sung
-residual_amount = Decimal.sub(Enum.at(sung_entity_BS.t1s, 0).amount, transaction.abc_amount)
-new_t1s = [%T1{input: sung_entity.id, output: sung_entity.id, amount: residual_amount}]
-sung_entity_BS = change(sung_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
+# ? mr_hong
+residual_amount = Decimal.sub(Enum.at(hong_entity_BS.t1s, 0).amount, transaction.abc_amount)
+new_t1s = [%T1{input: hong_entity.id, output: hong_entity.id, amount: residual_amount}]
+hong_entity_BS = change(hong_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
 
-# ? mohw
-new_t1s = [%T1{input: sung_entity.id, output: mohw_entity.id, amount: transaction.abc_amount} | mohw_entity_BS.t1s]
-mohw_entity_BS = change(mohw_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
+# ? tomi
+new_t1s = [%T1{input: hong_entity.id, output: tomi_entity.id, amount: transaction.abc_amount} | tomi_entity_BS.t1s]
+tomi_entity_BS = change(tomi_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
 
 
 '''
@@ -995,13 +1068,20 @@ Third, the mulet of supul, state_supul, korea_supul and global_supul openhashes 
 #? Supul Mulet 
 #? pretend transmit the message...
 #? pretend receive the message...
-korea_mulet = Ecto.build_assoc(korea_supul, :mulet, %{current_hash: korea_supul.id}) 
+hankyung_mulet = Ecto.build_assoc(hankyung_supul, :mulet, %{current_hash: hankyung_supul.id}) 
 
 incoming_hash = :crypto.hash(:sha256, payload) \
   |> Base.encode16() \
   |> String.downcase()
-korea_mulet = Mulet.changeset(korea_mulet, %{incoming_hash: incoming_hash})
+hankyung_mulet = Mulet.changeset(hankyung_mulet, %{incoming_hash: incoming_hash})
 
+#? send every 10th payload to the state_supul of supul.
+
+#? StateSupul Mulet 
+#? pretend transmit the message...
+#? pretend receive the message...
+jejudo_mulet = Ecto.build_assoc(jejudo_supul, :mulet, %{current_hash: jejudo_supul.id}) 
+jejudo_mulet = Mulet.changeset(jejudo_mulet, %{incoming_hash: incoming_hash})
 
 #? send every 100th payload to the nation_supul of sate_supul.
 korea_mulet = Ecto.build_assoc(korea_supul, :mulet, %{current_hash: korea_supul.id}) 
@@ -1011,5 +1091,92 @@ korea_mulet = Mulet.changeset(korea_mulet, %{incoming_hash: incoming_hash})
 global_mulet = Ecto.build_assoc(global_supul, :mulet, %{current_hash: global_supul.id}) 
 global_mulet = Mulet.changeset(global_mulet, %{incoming_hash: incoming_hash})
 
+#? send every 1000th payload to the supuls of the world.
+hankyung_mulet = Mulet.changeset(hankyung_mulet, %{incoming_hash: incoming_hash})
 
+
+
+
+
+
+'''
+
+GOPANG
+
+'''
+#? assume the gopang of hankyung has calcuated the road sections to be inclued in the route.
+alias Demo.Gopangs.RoadSectionEmbed
+
+road_sections = [
+    %RoadSectionEmbed{
+    section_uid: "qt2453",
+    a_spot: %{lagitude: 35.89421911, longitude: 139.94637467, altitude: 39.9463},
+    b_spot: %{lagitude: 35.8925543, longitude: 139.94626565, altitude: 34.4567}
+    },
+    %RoadSectionEmbed{
+    section_uid: "qt2454",
+    a_spot: %{lagitude: 35.89421425, longitude: 139.946453, altitude: 32.9443},
+    b_spot: %{lagitude: 35.892552, longitude: 139.9462665, altitude: 32.455}
+    },
+    %RoadSectionEmbed{
+    section_uid: "qt2456",
+    a_spot: %{lagitude: 35.8942165, longitude: 139.9463745, altitude: 36.944},
+    b_spot: %{lagitude: 35.8925523, longitude: 139.94626563, altitude: 37.45434}
+    },
+]
+
+
+# ? build_assock: allocate a car or cars to the ticket
+alias Demo.Cars.Car
+car_1 = Car.changeset(%Car{}, %{name: "은하철도_999"}) |> Repo.insert!()
+ticket = Ecto.build_assoc(car_1, :tickets, ticket)
+
+#? put_embed
+ticket =
+  change(ticket) \
+  |> Ecto.Changeset.put_embed(:road_sections, road_sections) \
+  |> Repo.update!()
+
+
+
+'''
+
+SHOW TIME !!! 👻 👻 👻 👻 👻 👻
+
+'''
+#? Code machine learning module here !!!!
+
+ticket = change(ticket) \
+|> Ecto.Changeset.put_embed(:deliverybox, %{
+    code: "adfs3424",
+    status: "moving",
+    current_location: %{latitude: "위도", longitude: "경도"}}) \
+|> Repo.update!()
+
+
+
+alias Demo.Gopangs.RouteEmbed
+alias Demo.Gopangs.RoadSectionEmbed
+
+route = %RouteEmbed{
+    departure_spot: %{lagitude: 35.89421911, longitude: 139.94637467, altitude: 39.9463},
+    arrival_spot: %{lagitude: 35.8925543, longitude: 139.94626565, altitude: 34.4567}
+  }
+  
+ticket =
+  change(ticket) \
+  |> Ecto.Changeset.put_embed(:route, route) \
+  |> Repo.update!()
+
+
+
+  
+Repo.one from u in User,
+select: count(u.id),
+where: ilike(u.username, "s%") or ilike(u.username, "m%")
+
+users_count = from u in User, select: count(u.id)
+j_users = from u in users_count, where: ilike(u.username, ^"%h%")
+
+Repo.one j_users
 
