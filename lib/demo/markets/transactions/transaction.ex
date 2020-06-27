@@ -9,9 +9,12 @@ defmodule Demo.Transactions.Transaction do
     field :hash_of_invoice, :string
 
     #? who pays ABC? which t1s in his/her/its wallet?
-    field :buyer, :binary_id #? entity_id. 
-    field :seller, :binary_id #? entity_id. 
-    field :abc_input, :string #? public_address of buyer. 
+    field :buyer, :string 
+    field :seller, :string 
+    field :gps, {:array, :map} 
+    field :tax, :decimal, default: 0.0
+    field :insurance, :string
+    field :abc_input, :binary #? public_address of buyer. 
     field :abc_output, :string #? public_address of buyer. 
     field :abc_input_t1s, {:array, :map}, default: []
     field :abc_amount, :decimal, precision: 15, scale: 4
@@ -21,16 +24,35 @@ defmodule Demo.Transactions.Transaction do
     field :if_only_item, :string 
     field :fair?, :boolean, default: false
     
+    field :locked?, :boolean, default: false
+
     has_one :invoice, Demo.Invoices.Invoice, on_delete: :delete_all
-    has_one :ticket, Demo.Tickets.Ticket, on_delete: :delete_all
+    has_many :tickets, Demo.Gopang.Ticket, on_delete: :delete_all
     
     timestamps()
   end
 
+  @fields [
+    :hash_of_invoice,
+    :buyer,  
+    :seller,  
+    :gps, 
+    :tax, 
+    :insurance,
+    :abc_input,  
+    :abc_output,  
+    :abc_input_t1s, 
+    :abc_amount, 
+    :items, 
+    :fiat_currency, 
+    :transaction_status,
+    :if_only_item, 
+    :fair?, 
+  ]
   @doc false
   def changeset(transaction, attrs \\ %{}) do
     transaction
-    |> cast(attrs, [])
+    |> cast(attrs, @fields)
     |> validate_required([])
     # |> check_fair_trade(attrs)
   end

@@ -12,6 +12,8 @@ defmodule Demo.Documents.Document do
     field :attached_docs_hashes, {:array, :string}
     field :hash_of_attached_docs_hashes, :string
 
+    belongs_to :product, Demo.Business.Product, type: :binary_id
+
     timestamps()
   end
 

@@ -5,8 +5,11 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
     create table(:transactions, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :hash_of_invoice, :string
-      add :buyer, :binary_id  
-      add :seller, :binary_id  
+      add :buyer, :string  
+      add :seller, :string  
+      add :gps, {:array, :map}
+      add :tax, :decimal, default: 0.0
+      add :insurance, :string
       add :abc_input, :string 
       add :abc_output, :string 
       add :abc_input_t1s, {:array, :map}, default: []
@@ -16,6 +19,7 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :transaction_status, :string, default: "processing" 
       add :if_only_item, :string
       add :fair?, :boolean, default: false
+      add :locked?, :boolean, default: false
 
 
       # add :locked, :boolean, default: false

@@ -3,15 +3,13 @@ defmodule Demo.Repo.Migrations.CreateItems do
 
   def change do
     create table(:items, primary_key: false) do
-      add :id, :uuid, primary_key: true
-      add :gpc_code, :string
-      add :category, :string 
+      add :id, :uuid, primary_key: true 
       add :name, :string
       add :price, :decimal, precision: 15, scale: 4, default: 0.0
-      add :product_uuid, :binary_id
       add :document, :string
       add :document_hash, :string
-
+      
+      add :product_id, references(:products, type: :binary_id)
       # add :tax_rate, :decimal, precision: 15, scale: 4
  
       add :locking_use_area, {:array, :string}, default: []

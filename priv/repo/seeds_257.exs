@@ -183,6 +183,7 @@ korea = change(korea) |> Ecto.Changeset.put_change(:constitution_signature, sign
 alias Demo.Accounts.User
 
 # {ok, mr_hong} = User.changeset(%User{}, %{name: "Hong Gildong"}) |> Repo.insert
+#? A human being with nationality he or she claims.
 mr_hong =
   User.changeset(%User{}, %{
     name: "Hong_Gildong", 
@@ -198,6 +199,7 @@ mr_hong =
     }) \
   |> Repo.insert!()
 
+#? Korea authorizes mr_hong as her citizen.
 msg_serialized = Poison.encode!(mr_hong)
 ts = DateTime.utc_now() |> DateTime.to_unix()
 ts_msg_serialized = "#{ts}|#{msg_serialized}"
@@ -205,7 +207,7 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 mr_hong = change(mr_hong) |> Ecto.Changeset.put_change(:ssn, signature) |> Repo.update!
   
-   
+#? The same as above   
 ms_sung =
   User.changeset(%User{}, %{
     nationality: "South Korea", 
@@ -277,6 +279,7 @@ corea =
     }) \
   |> Repo.insert!()
 
+
 msg_serialized = Poison.encode!(corea)
 ts = DateTime.utc_now() |> DateTime.to_unix()
 ts_msg_serialized = "#{ts}|#{msg_serialized}"
@@ -311,6 +314,7 @@ kts =
     }) \
   |> Repo.insert!()
 
+#? Korea authorizes its governmental organizations.  
 msg_serialized = Poison.encode!(kts)
 ts = DateTime.utc_now() |> DateTime.to_unix()
 ts_msg_serialized = "#{ts}|#{msg_serialized}"
@@ -708,7 +712,7 @@ alias Demo.Multimedia.Video
 '''
 TRANSACTION 1
 
-Transaction between hankyung_gab_entity and hong_entity.
+Transaction between gab_korea_entity and hong_entity.
 
 The price of ABC T1, T2, T3 will be updated every second.
 The code below is hard coded. We need write codes for invoice_items with only one item.
@@ -716,40 +720,53 @@ The code below is hard coded. We need write codes for invoice_items with only on
 alias Demo.Reports.Ledger
 alias Demo.Transactions.Transaction
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
+alias Demo.Business.Product
 
 
-#? write invoice for trade between mr_hong and hankyung_gab.
-item = Item.changeset(%Item{}, %{gpc_code: "ABCDE21111", category: "Fiat Currency", name: "KRW", price: Decimal.from_float(0.0012)}) |> Repo.insert!
-invoice_items = [%{item_id: item.id, quantity: 20000}, %{item_id: item.id, quantity: 0}]
+#? write invoice for trade between mr_hong and gab_korea.
+krw = Product.changeset(%Product{name: "KRW", price: Decimal.from_float(0.0012)}) |> Repo.insert!
+
+#? krw is a product of hong_entity
+hong_entity = Entity.changeset_update_products(hong_entity, [krw])
+
+#? prepare transaction between hong_entity and gab_korea. gab_korea will buy krw from hong_entity. 
+#? Remember, in a transaction, the one paying ABC is buyer, and the other receiving ABC is seller. 
+
+#? There can be more than one items in an invoice like 짜장 2, 짬뽕 1, 탕수육 1 ...
+invoice_items = []
+invoice_item = InvoiceItem.changeset(%InvoiceItem{}, %{item_name: "KRW", product_id: krw.id, price: krw.price, quantity: 20000}) |> Repo.insert!
+invoice_items = [invoice_item | invoice_items]
 
 
 params = %{
-  "buyer" => %{"entity_id" => hankyung_gab.id},
-  "seller" => %{"entity_id" => hong_entity.id},
+  "buyer" => %{"main_name" => gab_korea.name, "main_id" => gab_korea.id},
+  "seller" => %{"main_name" => hong_entity.name,"main_id" => hong_entity.id},
   "invoice_items" => invoice_items,
-#   "output" => hong_public_address
 }
+
+
 {:ok, invoice} = Invoice.create(params)
-invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal)) |> Repo.update!
+
+'''
+NOT WORKING
+#? the invoice should be assoicated with both gab_korea and hong_entity for transaction archieve. 
+hong_entity = Entity.changeset_update_invoices(hong_entity, [invoice])
+gab_korea = Entity.changeset_update_invoices(gab_korea, [invoice])
+
+'''
+
 
 #? Write Transaction
 transaction_1 = Transaction.changeset(%Transaction{
-    abc_input: hankyung_gab.id, 
-    abc_output: hong_entity.id,
-    abc_output_amount: 0,
-    
-    item_input: hong_entity.id, 
-    item_output: hankyung_gab.id,
-    item_output_quantity: 0,
+    buyer: gab_korea.name,
+    seller: hong_entity.name,
+    abc_input: gab_korea.id, #? in real transaction, it should be a public addresss of buyer.
+    abc_output: hong_entity.id,  #? in real transaction, it should be a public addresss of seller.
+    abc_amount: invoice_item.quantity,
 
-    locked: false,
     }) |> Repo.insert!
 
-transaction_1 = change(transaction_1) \
-    |> Ecto.Changeset.put_change(:abc_output_amount, invoice.total) \
-    |> Ecto.Changeset.put_change(:item_output_quantity, invoice.total) \
-    |> Ecto.Changeset.put_change(:abc_output_amount, invoice.total) \
-    |> Repo.update!
+
 
 #? Association between Transaction and Invoice
 invoice = Ecto.build_assoc(transaction_1, :invoice, invoice) 
@@ -765,15 +782,15 @@ Repo.preload(invoice, :transaction)
 
 #? Adjust balance_sheet of both.
 #? Hankyung GAB
-hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_sheet]).financial_report
+gab_korea_FR = Repo.preload(gab_korea, [financial_report: :gab_balance_sheet]).financial_report
 
-hankyung_gab_BS = hankyung_gab_FR.gab_balance_sheet
-hankyung_gab_BS = change(hankyung_gab_BS) |> \
+gab_korea_BS = gab_korea_FR.gab_balance_sheet
+gab_korea_BS = change(gab_korea_BS) |> \
     Ecto.Changeset.put_change(
-        :cash, Decimal.add(hankyung_gab_BS.cash, Decimal.mult(String.to_integer(item.name), 
+        :cash, Decimal.add(gab_korea_BS.cash, Decimal.mult(String.to_integer(item.name), 
             Enum.at(invoice_items, 0).quantity))) |>  \
     Ecto.Changeset.put_change(:t1, 
-        Decimal.sub(hankyung_gab_BS.t1, transaction_1.output_amount)) |> Repo.update!
+        Decimal.sub(gab_korea_BS.t1, transaction_1.output_amount)) |> Repo.update!
 
 
 
@@ -788,7 +805,7 @@ hong_entity_BS = change(hong_entity_BS) |> \
         :cash, Decimal.sub(hong_entity_BS.cash, Decimal.mult(String.to_integer(item.name), 
             Enum.at(invoice_items, 0).quantity))) |> Repo.update!
 
-t1s = [%T1{input: hankyung_gab_public_address, amount: transaction_1.output_amount, output: hong_public_address}]
+t1s = [%T1{input: gab_korea.name, output: hong_entity.name, input_id: gab_korea_public_address, , output_id: hong_public_addressamount: transaction_1.output_amount}]
 hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 
@@ -799,7 +816,7 @@ TRANSACTION 2
 Transaction between hong_entity and tomi_entity
 '''
 
-#? write invoice for trade between mr_hong and hankyung_gab.
+#? write invoice for trade between mr_hong and gab_korea.
 item_1 = Item.changeset(%Item{}, %{gpc_code: "ABCDE11133", category: "Food", name: "김밥", price: Decimal.from_float(0.01)}) |> Repo.insert!
 item_2 = Item.changeset(%Item{}, %{gpc_code: "ABCDE11134", category: "Food", name: "떡볶이", price: Decimal.from_float(0.02)}) |> Repo.insert!
 invoice_items = [%{item_id: item_1.id, quantity: 3}, %{item_id: item_2.id, quantity: 3}]
@@ -824,7 +841,7 @@ invoice = change(invoice) |> Ecto.Changeset.put_change(:total, Decimal.add(Enum.
 #? Write Transaction 
 transaction_2 = Transaction.changeset(%Transaction{
     hash_of_invoice: "dummy_hash_of_invoice",
-    input: hankyung_gab_public_address, 
+    input: gab_korea_public_address, 
     output: hong_public_address,
     output_amount: 0,
     locked: false,

@@ -120,7 +120,15 @@ defmodule Demo.Business.Entity do
     entity 
     |> Repo.preload(:products)
     |> change()  \
-    |> put_assoc(:products, products) #? many to many between users and entities
+    |> put_assoc(:products, products) #? many to many between products and entities
+    |> Repo.update!()
+  end
+
+  def changeset_update_invoices(%Entity{} = entity, invoices) do
+    entity 
+    |> Repo.preload(:invoices)
+    |> change()  \
+    |> put_assoc(:invoices, invoices) #? many to many between invoices and entities
     |> Repo.update!()
   end
 

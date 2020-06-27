@@ -12,6 +12,8 @@ defmodule Demo.Repo.Migrations.CreateDocuments do
       add :attached_docs_hashes, {:array, :string}
       add :hash_of_attached_docs_hashes, :string
 
+      add :product_id, references(:products, type: :binary_id)
+
       timestamps()
     end
 

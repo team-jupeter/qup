@@ -5,7 +5,9 @@ defmodule Demo.ABC.T1 do
   
   embedded_schema do 
     field :input, :string
+    field :input_id, :string
     field :output, :string
+    field :output_id, :string
     field :amount, :decimal, precision: 12, scale: 2
 
     #? locking script and conditions of spending moneny by recipient.
@@ -14,7 +16,7 @@ defmodule Demo.ABC.T1 do
   end
 
   @fields [
-      :input, :output, :amount
+      :input, :output, :input_id, :output_id, :amount
   ]
   def changeset(t1, params) do
     t1

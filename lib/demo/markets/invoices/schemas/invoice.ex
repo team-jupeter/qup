@@ -1,11 +1,11 @@
 defmodule Demo.Invoices.Invoice do
   use Ecto.Schema
   import Ecto.Changeset
-  import Ecto.Query
   alias Demo.Repo
-  alias Demo.Invoices.{Item, Invoice, InvoiceItem}
+  alias Demo.Invoices.Invoice
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
   schema "invoices" do
     field :start_at, :naive_datetime
     field :end_at, :naive_datetime
@@ -13,7 +13,7 @@ defmodule Demo.Invoices.Invoice do
     field :tax_total, :decimal, precision: 5, scale: 2
     field :fiat_currency, :decimal, precision: 12, scale: 2
 
-    has_many :invoice_items, InvoiceItem, on_delete: :delete_all
+    has_many :invoice_items, Demo.Invoices.InvoiceItem, on_delete: :delete_all
     belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id
 
     embeds_one :buyer, Demo.Invoices.BuyerEmbed, on_replace: :delete
@@ -43,51 +43,56 @@ defmodule Demo.Invoices.Invoice do
 
   def create(params) do
     changeset(%Invoice{}, params)
-    |> validate_item_count(params)
-    |> put_assoc(:invoice_items, get_items(params))
-    |> Repo.insert #? {ok, Invoice}
+    |> put_assoc(:invoice_items, params["invoice_items"])
+    |> Repo.insert #? {ok, invoice}
     |> add_total
   end
 
 
-  def add_total({_ok, invoice}) do
-    invoice #? When we change a struct, change => put_change => update
-    |> change
-    |> put_change(:total, Decimal.add(Enum.at(invoice.invoice_items, 0).subtotal, Enum.at(invoice.invoice_items, 1).subtotal))
+  defp add_total({_ok, invoice}) do
+    total = Enum.reduce(invoice.invoice_items, 0, fn x, sum -> Decimal.add(x.subtotal, sum) end)
+    
+    #? When we change a struct, change => put_change => update
+    invoice 
+    |> change 
+    |> put_change(:total, total) 
     |> Repo.update
   end
 
-  defp get_items(params) do
-    items = items_with_prices(params[:invoice_items] || params["invoice_items"])
-    Enum.map(items, fn(item)-> InvoiceItem.changeset(%InvoiceItem{}, item) end)
-  end
 
 
-  defp items_with_prices(items) do
-    item_ids = Enum.map(items, fn(item) -> item[:item_id] || item["item_id"] end)
-    q = from(i in Item, select: %{id: i.id, price: i.price}, where: i.id in ^item_ids)
+  # defp get_items(params) do
+  #   IO.puts "get items"
+  #   items = items_with_prices(params[:invoice_items] || params["invoice_items"])
+  #   Enum.map(items, fn(item)-> InvoiceItem.changeset(%InvoiceItem{}, item) end)
+  # end
 
-    prices = Repo.all(q)
 
-    Enum.map(items, fn(item) ->
-      item_id = item[:item_id] || item["item_id"]
-      %{
-         item_id: item_id,
-         quantity: item[:quantity] || item["quantity"],
-         price: Enum.find(prices, fn(p) -> p[:id] == item_id end)[:price] || 0
-       }
-    end)
-  end
+  # defp items_with_prices(items) do
+  #   item_ids = Enum.map(items, fn(item) -> item[:item_id] || item["item_id"] end)
+  #   q = from(i in Item, select: %{id: i.id, price: i.price}, where: i.id in ^item_ids)
 
-  defp validate_item_count(cs, params) do
-    items = params[:invoice_items] || params["invoice_items"]
+  #   prices = Repo.all(q)
 
-    if Enum.count(items) <= 0 do
-      add_error(cs, :invoice_items, "Invalid number of items")
-    else
-      cs
-    end
-  end
+  #   Enum.map(items, fn(item) ->
+  #     item_id = item[:item_id] || item["item_id"]
+  #     %{
+  #        item_id: item_id,
+  #        quantity: item[:quantity] || item["quantity"],
+  #        price: Enum.find(prices, fn(p) -> p[:id] == item_id end)[:price] || 0
+  #      }
+  #   end)
+  # end
+
+  # defp validate_item_count(cs, params) do
+  #   items = params[:invoice_items] || params["invoice_items"]
+
+  #   if Enum.count(items) <= 0 do
+  #     add_error(cs, :invoice_items, "Invalid number of items")
+  #   else
+  #     cs
+  #   end
+  # end
 
 
 end

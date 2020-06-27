@@ -11,15 +11,14 @@ defmodule Demo.Business.Product do
   schema "products" do
     field :name, :string
     field :price, :decimal
-    field :gps, {:array, :map}
-    field :gopang_fee, :decimal
-    field :insurance, :string
     field :stars, :decimal
-    field :tax, :decimal 
     field :pvr, :decimal #? price to value ratio 가성비 
     field :description, :string 
+    field :document_hash, :string
 
-
+    has_many :items, Demo.Invoices.Item
+    has_many :documents, Demo.Documents.Document
+    
     embeds_many :comments, Demo.Business.CommentEmbed
 
     belongs_to :gpc_code, Demo.Business.GPCCode
@@ -38,8 +37,7 @@ defmodule Demo.Business.Product do
   end
 
   @fields [
-    :name, :price, :gopang_fee, :tax, :insurance, :stars,
-    :biz_category_id
+    :name, :price, :stars, :pvr, :description, :biz_category_id
   ]
   @doc false
   def changeset(product, attrs \\ %{}) do
