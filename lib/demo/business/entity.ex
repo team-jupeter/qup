@@ -13,6 +13,8 @@ defmodule Demo.Business.Entity do
 
   schema "entities" do 
     field :name, :string
+    field :project, :string
+    field :supul_name, :string
     field :email, :string
     field :gps, {:array, :map}
     field :nationality, :string
@@ -30,6 +32,10 @@ defmodule Demo.Business.Entity do
     field :share_price, {:array, :map}
     field :credit_rate, :string #? AAA, ..., FFF => 24 rates
 
+    field :password, :string, virtual: true
+    field :password_hash, :string
+    field :password_confirmation, :string, virtual: true
+    
     field :locked, :boolean, default: false
     field :nation_signature, :string
 
@@ -93,8 +99,8 @@ defmodule Demo.Business.Entity do
     :nation_id, :email, :supul_id, :taxation_id, 
     :name, :entity_address, :nation_signature,
     :biz_category_id, :sic_code, :legal_status, :year_started, 
-    :num_of_shares,
-    :share_price, :credit_rate 
+    :num_of_shares, :supul_name, :gab_balance,
+    :share_price, :credit_rate, :project
   ]
 
   def changeset(user, attrs) do

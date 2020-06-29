@@ -1,7 +1,5 @@
-<h4>Monthly Income Statement</h4>
-
+<h4><%= @is.entity_name %> I/S</h4>
 <ul>
-  
   <li>
     <strong>compensation</strong>
     <%= @is.compensation %>

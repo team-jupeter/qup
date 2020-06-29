@@ -1,7 +1,23 @@
-<h4>Show Balance Sheet</h4>
+<h4><%= @bs.entity_name %> B/S</h4>
 
 <ul>
+  <li>
+    <strong>T1</strong>
+  </li>
 
+  <li>
+    <strong>T2</strong>
+  </li>
+
+  <li>
+    <strong>T3</strong>
+  </li>
+
+  <li>
+    <strong>Cash</strong>
+    <%= @bs.cash %>
+  </li>
+  
   <li>
     <strong>Accounts Payable</strong>
     <%= @bs.accounts_payable %>
@@ -22,10 +38,7 @@
     <%= @bs.additional_paid_in_capital %>
   </li>
 
-  <li>
-    <strong>Cash</strong>
-    <%= @bs.cash %>
-  </li>
+
 
   <li>
     <strong>Customer Prepayments</strong>
@@ -82,17 +95,7 @@
     <%= @bs.treasury_stock %>
   </li>
 
-  <li>
-    <strong>t1s</strong>
-  </li>
 
-  <li>
-    <strong>t2s</strong>
-  </li>
-
-  <li>
-    <strong>t3s</strong>
-  </li>
 
 
 </ul>

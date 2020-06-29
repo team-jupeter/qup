@@ -14,8 +14,10 @@ defmodule Demo.Transactions.Transaction do
     field :gps, {:array, :map} 
     field :tax, :decimal, default: 0.0
     field :insurance, :string
-    field :abc_input, :binary #? public_address of buyer. 
-    field :abc_output, :string #? public_address of buyer. 
+    field :abc_input_id, :string #? public_address of buyer. 
+    field :abc_input_name, :string 
+    field :abc_output_id, :string #? public_address of buyer. 
+    field :abc_output_name, :string #? public_address of buyer. 
     field :abc_input_t1s, {:array, :map}, default: []
     field :abc_amount, :decimal, precision: 15, scale: 4
     field :items, {:array, :binary_id}
@@ -39,8 +41,10 @@ defmodule Demo.Transactions.Transaction do
     :gps, 
     :tax, 
     :insurance,
-    :abc_input,  
-    :abc_output,  
+    :abc_input_id,  
+    :abc_input_name,  
+    :abc_output_id,  
+    :abc_output_name,  
     :abc_input_t1s, 
     :abc_amount, 
     :items, 

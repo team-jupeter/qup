@@ -1,17 +1,21 @@
-<h4>Entity Detail</h4>
-<b>ID</b> (<%= @entity.id %>) </br>
-<b>Company Prefix</b> (<%= @entity.company_prefix %>) </br>
-<b>Registered No.</b> (<%= @entity.registered_no %>) </br>
-<%# <b>Business Category</b> (<%= @entity.biz_category %>) </br> %>
-<b>Name</b> (<%= @entity.name %>) </br>
-<b>Email</b> (<%= @entity.email %>) </br>
-<b>Address</b> (<%= @entity.entity_address %>) </br>
-<b>Founding Date</b> (<%= @entity.founding_date %>) </br>
-<b>Locked</b> (<%= @entity.locked %>) </br>
- </br> 
-<b>GAB Balance</b> (<%= @entity.gab_balance %>) </br>
-</br> 
-</br>
+<b><%= @entity.name %></b> <%= @entity.project %></b></br>
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>abc</th>
+      <th>Supul</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @entity.email %></td>
+      <td><%= @entity.gab_balance %></td>
+      <td><%= @entity.supul_name %></td>
+    </tr>
+  </tbody>
+</table>
+
 
 </br>
 <h4>Products</h4>

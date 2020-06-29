@@ -8,7 +8,7 @@ defmodule Demo.FinancialReports do
 
   def get_financial_report!(id), do: Repo.get!(FinancialReport, id)
 
-  def get_entity_financial_report!(entity_id) do
+  def get_entity_financial_report!(entity_id) do 
     FinancialReport
     |> entity_financial_reports_query(entity_id)
     |> Repo.all

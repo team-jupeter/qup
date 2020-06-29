@@ -4,6 +4,7 @@ defmodule Demo.Reports.CFStatement do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "cf_statements" do
+    field :entity_name, :string
     field :capital_expenditures, :decimal, precision: 12, scale: 2
     field :changes_in_working_capital, :decimal, precision: 12, scale: 2
     field :debt_issuance, :decimal, precision: 12, scale: 2
@@ -22,6 +23,6 @@ defmodule Demo.Reports.CFStatement do
   def changeset(cash_flow, attrs) do
     cash_flow
     |> cast(attrs, [:net_earnings, :depreciation_amortization, :changes_in_working_capital, :capital_expenditures, :debt_issuance, :equity_issuance, :opening_cash_balance])
-    |> validate_required([:net_earnings, :depreciation_amortization, :changes_in_working_capital, :capital_expenditures, :debt_issuance, :equity_issuance, :opening_cash_balance])
+    |> validate_required([])
   end
 end

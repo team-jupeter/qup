@@ -4,9 +4,9 @@ defmodule Demo.ABC.T1 do
   alias Demo.ABC.T1
   
   embedded_schema do 
-    field :input, :string
+    field :input_name, :string
     field :input_id, :string
-    field :output, :string
+    field :output_name, :string
     field :output_id, :string
     field :amount, :decimal, precision: 12, scale: 2
 

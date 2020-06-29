@@ -4,6 +4,7 @@ defmodule Demo.Repo.Migrations.CreateStateSupuls do
   def change do
     create table(:state_supuls, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :type, :string
       add :name, :string
       add :nation_name, :string
   

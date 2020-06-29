@@ -1,5 +1,3 @@
-<h4>Entities</h4>
-
 <table>
   <%= for entity <- @entities do %>
     <tr>
@@ -10,4 +8,4 @@
   <span><%= link "New Entity", to: Routes.entity_path(@conn, :new) %></span>
 
 </table>
-  
+

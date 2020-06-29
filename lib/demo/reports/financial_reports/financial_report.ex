@@ -4,6 +4,7 @@ defmodule Demo.Reports.FinancialReport do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "financial_reports" do
+    field :entity_name, :string
     field :locked, :boolean, default: false
     field :current_hash, :string
     field :hash_history, {:array, :string}

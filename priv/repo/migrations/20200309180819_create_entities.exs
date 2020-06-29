@@ -1,4 +1,4 @@
-defmodule Demo.Repo.Migrations.CreateAccounts do
+defmodule Demo.Repo.Migrations.CreateEntities do
   use Ecto.Migration
 
   def change do
@@ -7,6 +7,8 @@ defmodule Demo.Repo.Migrations.CreateAccounts do
       add :registered_no, :string
       add :industry_classification, :string
       add :name, :string 
+      add :project, :string 
+      add :supul_name, :string 
       add :email, :string
       add :gps, {:array, :map}
       add :nationality, :string
@@ -22,6 +24,8 @@ defmodule Demo.Repo.Migrations.CreateAccounts do
       add :share_price, {:array, :map}
       add :credit_rate, :string #? AAA, ..., FFF => 24 rates
       
+      add :password_hash, :string
+
       add :locked, :boolean, default: false
       add :nation_signature, :text
 

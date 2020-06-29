@@ -1,4 +1,4 @@
-<h4>Financial Report</h4>
+<h4><%= @fr.entity_name %> F/R</h4>
 <p>Notice: Values in this page are automatically calculated from other financial statements.</p>
 
 <ul>

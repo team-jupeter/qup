@@ -4,6 +4,7 @@ defmodule Demo.Repo.Migrations.CreateGlobalSupuls do
   def change do
     create table(:global_supuls, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :type, :string
       add :name, :string
 
       add :global_signature, :string

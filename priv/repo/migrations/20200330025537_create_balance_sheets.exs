@@ -3,6 +3,7 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
 
   def change do 
     create table(:balance_sheets, primary_key: false) do
+      add :entity_name, :string
       add :id, :uuid, primary_key: true
       add :cash, :decimal, precision: 12, scale: 2, default: 0.0
       add :marketable_securities, :decimal, precision: 12, scale: 2, default: 0.0
@@ -20,6 +21,8 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
       add :additional_paid_in_capital, :decimal, precision: 12, scale: 2, default: 0.0
       add :retained_earnings, :decimal, precision: 12, scale: 2, default: 0.0
       add :treasury_stock, :decimal, precision: 12, scale: 2, default: 0.0
+
+      add :gab_balance, :decimal, precision: 12, scale: 2
 
       add(:t1s, {:array, :map}, default: [])
       add(:t2s, {:array, :map}, default: []) 

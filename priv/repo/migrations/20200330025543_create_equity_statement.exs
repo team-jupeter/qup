@@ -4,6 +4,7 @@ defmodule Demo.Repo.Migrations.CreateEquityStatements do
   def change do
     create table(:equity_statements, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :entity_name, :string
       add :opening_balance, :decimal, precision: 12, scale: 2, default: 0.0
       add :net_income, :decimal, precision: 12, scale: 2, default: 0.0 
       add :other_income, :decimal, precision: 12, scale: 2, default: 0.0 

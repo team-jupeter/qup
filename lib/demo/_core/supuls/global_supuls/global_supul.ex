@@ -2,8 +2,10 @@ defmodule Demo.Supuls.GlobalSupul do
   use Ecto.Schema
   import Ecto.Changeset
 
+
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "global_supuls" do
+    field :type, :string
     field :name, :string
 
     field :global_signature, :string

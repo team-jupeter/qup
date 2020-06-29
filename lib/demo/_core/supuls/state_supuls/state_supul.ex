@@ -4,6 +4,7 @@ defmodule Demo.Supuls.StateSupul do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "state_supuls" do
+    field :type, :string
     field :name, :string
     field :nation_name, :string
 

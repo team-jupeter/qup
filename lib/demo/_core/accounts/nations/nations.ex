@@ -15,6 +15,7 @@ defmodule Demo.Nations do
   def create_nation(attrs \\ %{}) do
     %Nation{}
     |> Nation.changeset(attrs)
+    # |> Ecto.Changeset.put_assoc(:costitution, costitution)
     |> Repo.insert()
   end
 

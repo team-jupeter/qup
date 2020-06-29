@@ -2,8 +2,11 @@ defmodule Demo.Reports.BalanceSheet do
   use Ecto.Schema
   import Ecto.Changeset
 
+  # alias Demo.Reports.BalanceSheet
+
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "balance_sheets" do
+    field :entity_name, :string 
     field :accounts_payable, :decimal, precision: 12, scale: 2
     field :accounts_receivable, :decimal, precision: 12, scale: 2
     field :accrued_liabilities, :decimal, precision: 12, scale: 2
@@ -20,7 +23,9 @@ defmodule Demo.Reports.BalanceSheet do
     field :stock, :decimal, precision: 12, scale: 2
     field :taxes, :decimal, precision: 12, scale: 2
     field :treasury_stock, :decimal, precision: 12, scale: 2
-  
+    
+    field :gab_balance, :decimal, precision: 12, scale: 2
+
     embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
     embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
     embeds_many :t3s, Demo.ABC.T3, on_replace: :delete
@@ -49,12 +54,35 @@ defmodule Demo.Reports.BalanceSheet do
     :stock,
     :taxes,
     :treasury_stock,
-
+    :gab_balance,
   ]
   @doc false
   def changeset(balance_sheet, attrs \\ %{}) do
     balance_sheet
     |> cast(attrs, @fields)
-    # |> validate_required([:cash, :marketable_securities, :prepaid_expenses, :accounts_receivable, :inventory, :fixed_assets, :accounts_payable, :accrued_liabilities, :customer_prepayments, :taxes, :short_term_debt, :long_term_debt, :stock, :additional_paid_in_capital, :retained_earnings, :treasury_stock])
+  end
+  
+
+
+  def changeset_minus_abc(balance_sheet, attrs \\ %{}) do
+    balance_sheet
+    |> cast(attrs, @fields)
+    |> minus_abc(balance_sheet.gab_balance) 
+  end
+
+  defp minus_abc(changeset, gab_balance) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{amount: amount}} ->
+        put_change(changeset, :gab_balance, Decimal.sub(gab_balance, amount))
+
+      _ ->
+        changeset
+    end
+  end
+  
+  def changeset_plus_abc(balance_sheet, attrs \\ %{}) do
+    balance_sheet
+    |> cast(attrs, @fields)
+    |> put_change(:gab_balance, Decimal.add(balance_sheet.gab_balance, attrs.amount)) 
   end
 end

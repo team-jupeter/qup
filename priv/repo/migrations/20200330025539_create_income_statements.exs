@@ -4,7 +4,8 @@ defmodule Demo.Repo.Migrations.CreateIncomeStatements do
   def change do
     create table(:income_statements, primary_key: false) do
       add :id, :uuid, primary_key: true
-      
+      add :entity_name, :string
+
       add :gab_account_t1, :decimal, precision: 12, scale: 2, default: 0.0
       add :gab_account_t2, :decimal, precision: 12, scale: 2, default: 0.0
       add :gab_account_t3, :decimal, precision: 12, scale: 2, default: 0.0

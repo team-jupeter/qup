@@ -11,7 +11,7 @@ defmodule Demo.Accounts.User do
   @foreign_key_type :binary_id
 
   schema "users" do
-    field :type, :string
+    field :type, :string 
     # field :default_entity, :binary_id
     field :name, :string
     field :gps, {:array, :map}
@@ -77,7 +77,6 @@ defmodule Demo.Accounts.User do
     |> Repo.preload(:entities)
     |> change()  \
     |> put_assoc(:entities, entities) #? many to many between users and entities
-    |> Repo.update!()
   end
 
   def registration_changeset(user, params) do

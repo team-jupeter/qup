@@ -10,8 +10,10 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :gps, {:array, :map}
       add :tax, :decimal, default: 0.0
       add :insurance, :string
-      add :abc_input, :string 
-      add :abc_output, :string 
+      add :abc_input_id, :string 
+      add :abc_input_name, :string 
+      add :abc_output_id, :string 
+      add :abc_output_name, :string 
       add :abc_input_t1s, {:array, :map}, default: []
       add :abc_amount, :decimal, precision: 15, scale: 4
       add :items, {:array, :binary_id}

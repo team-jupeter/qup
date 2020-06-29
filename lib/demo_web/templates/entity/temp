@@ -1,0 +1,6 @@
+<b>ID</b> (<%= @entity.id %>) </br>
+<b>Company Prefix</b> (<%= @entity.company_prefix %>) </br>
+<b>Registered No.</b> (<%= @entity.registered_no %>) </br>
+<b>Business Category</b> (<%= @entity.biz_category %>) </br>
+<b>Founding Date</b> (<%= @entity.founding_date %>) </br>
+

@@ -12,7 +12,7 @@ defmodule Demo.Constitutions do
 
   def create_constitution(attrs \\ %{}) do
     %Constitution{}
-    |> Constitution.changeset(attrs)
+    |> Constitution.changeset(attrs)  
     |> Repo.insert()
   end
 

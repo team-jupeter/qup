@@ -4,6 +4,7 @@ defmodule Demo.Repo.Migrations.CreateCFStatements do
   def change do
     create table(:cf_statements, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :entity_name, :string
       add :net_earnings, :decimal, precision: 12, scale: 2, default: 0.0
       add :depreciation_amortization, :decimal, precision: 12, scale: 2, default: 0.0
       add :changes_in_working_capital, :decimal, precision: 12, scale: 2, default: 0.0

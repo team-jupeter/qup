@@ -9,7 +9,7 @@ defmodule Demo.Supuls.Supul do
     field :geographical_area, :string
     field :name, :string
     field :state_name, :string
-    field :nation_name, :string
+    field :nation_name, :string 
 
     field :payload, :string
     field :payload_hash, :string

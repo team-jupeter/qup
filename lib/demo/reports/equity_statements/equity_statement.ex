@@ -6,6 +6,7 @@ defmodule Demo.Reports.EquityStatement do
 
     @primary_key {:id, :binary_id, autogenerate: true}
     schema "equity_statements" do
+      field :entity_name, :string
       field :opening_balance, :decimal, precision: 12, scale: 2 
       field :net_income, :decimal, precision: 12, scale: 2 
       field :other_income, :decimal, precision: 12, scale: 2 

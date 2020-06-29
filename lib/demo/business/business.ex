@@ -45,7 +45,20 @@ defmodule Demo.Business do
   def create_entity(%User{} = user, attrs \\ %{}) do
     %Entity{}
     |> Entity.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:user, user)
+    |> Ecto.Changeset.put_assoc(:users, [user])
+    |> Repo.insert()
+  end
+
+  def create_product(%Entity{} = entity, attrs \\ %{}) do
+    %Product{}
+    |> Product.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:entity, entity)
+    |> Repo.insert()
+  end
+
+  def create_GPCCode(attrs \\ %{}) do
+    %Entity{}
+    |> Entity.changeset(attrs)
     |> Repo.insert()
   end
 

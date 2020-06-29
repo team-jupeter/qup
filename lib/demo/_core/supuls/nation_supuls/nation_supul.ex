@@ -4,6 +4,7 @@ defmodule Demo.Supuls.NationSupul do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "nation_supuls" do
+    field :type, :string
     field :name, :string
 
     field :payload, :string

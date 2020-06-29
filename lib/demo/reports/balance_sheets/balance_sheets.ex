@@ -26,11 +26,18 @@ defmodule Demo.BalanceSheets do
     |> Repo.insert()
   end
 
-
   def update_balance_sheet(%BalanceSheet{} = balance_sheet, attrs) do
-    balance_sheet
-    |> BalanceSheet.changeset(attrs)
+    BalanceSheet.changeset(balance_sheet, attrs) 
+    |> Repo.update!()
+  end
+
+  def minus_abc(%BalanceSheet{} = balance_sheet, amount) do
+    balance_sheet 
+    |> BalanceSheet.changeset_minus_abc(amount)
     |> Repo.update()
+
+    entity = Demo.Business.get_entity!(balance_sheet.entity_id)
+    Demo.Business.update_entity(entity, balance_sheet.gab_balance)
   end
 
   def change_balance_sheet(%BalanceSheet{} = balance_sheet) do

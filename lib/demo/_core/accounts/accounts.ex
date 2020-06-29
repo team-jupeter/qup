@@ -104,6 +104,12 @@ defmodule Demo.Accounts do
     |> Repo.insert()
   end
 
+  def update_entities(%User{} = user, entities) do
+    user
+    |> User.changeset_update_entities(entities)
+    |> Repo.update!()
+  end
+
 
 
   defp notify_subscribers({:ok, result}, event) do

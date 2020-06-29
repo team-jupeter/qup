@@ -1,4 +1,4 @@
-<h4>Show Equity Statement</h4>
+<h4><%= @es.entity_name %> Equity</h4>
 
 <ul>
 

@@ -69,10 +69,10 @@ defmodule Demo.Multimedia do
     Repo.delete(video)
   end 
 
-  def create_video(%User{} = user, attrs \\ %{}) do
+  def create_video(%Product{} = product, attrs \\ %{}) do
     %Video{}
     |> Video.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:user, user)
+    |> Ecto.Changeset.put_assoc(:product, product)
     |> Repo.insert()
   end
 

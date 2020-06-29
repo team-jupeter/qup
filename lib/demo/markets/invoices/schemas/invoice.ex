@@ -31,7 +31,7 @@ defmodule Demo.Invoices.Invoice do
   end
 
 
-  @fields [:total, :start_at, :end_at, :tax_total]
+  @fields [:total, :start_at, :end_at, :tax_total, :fiat_currency]
 
   def changeset(data, params \\ %{}) do
     data
@@ -58,6 +58,7 @@ defmodule Demo.Invoices.Invoice do
     |> put_change(:total, total) 
     |> Repo.update
   end
+
 
 
 

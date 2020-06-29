@@ -1,4 +1,4 @@
-<h4>Show Monthly Cash Flow Statement</h4>
+<h4><%= @cf.entity_name %> Cash Flow</h4>
 
 <ul>
 

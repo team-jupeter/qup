@@ -4,6 +4,7 @@ defmodule Demo.Repo.Migrations.CreateFinancialReports do
   def change do
     create table(:financial_reports, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :entity_name, :string
       add :locked, :boolean, default: false
       add :current_hash, :string
       add :hash_history, {:array, :string}

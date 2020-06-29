@@ -1,0 +1,6 @@
+<b>ID</b> (<%= @user.id %>) </br>
+<b>Nation ID</b> (<%= @user.nation_id %>) </br> 
+<b>Constitution ID</b> (<%= @user.constitution_id %>) </br> 
+<b>Supul ID</b> (<%= @user.supul_id %>) </br> 
+<b>Social Secutiry Number</b> (<%= @user.ssn %>) </br> 
+<b>Birth Date</b> (<%= @user.birth_date %>) </br>

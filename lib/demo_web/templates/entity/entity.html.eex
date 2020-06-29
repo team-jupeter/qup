@@ -1,1 +1,1 @@
-<b>Entity Name</b> (<%= @entity.name %>)
+<b><%= @entity.name %></b>
