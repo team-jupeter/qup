@@ -1,101 +1,85 @@
-<h4><%= @bs.entity_name %> B/S</h4>
-
-<ul>
-  <li>
-    <strong>T1</strong>
-  </li>
-
-  <li>
-    <strong>T2</strong>
-  </li>
-
-  <li>
-    <strong>T3</strong>
-  </li>
-
-  <li>
-    <strong>Cash</strong>
-    <%= @bs.cash %>
-  </li>
-  
-  <li>
-    <strong>Accounts Payable</strong>
-    <%= @bs.accounts_payable %>
-  </li>
-
-  <li>
-    <strong>Accounts Receivable </strong>
-    <%= @bs.accounts_receivable %>
-  </li>
-
-  <li>
-    <strong>Accrued Liabilities</strong>
-    <%= @bs.accrued_liabilities %>
-  </li>
-
-  <li>
-    <strong>Additional Paid_in Capital</strong>
-    <%= @bs.additional_paid_in_capital %>
-  </li>
-
-
-
-  <li>
-    <strong>Customer Prepayments</strong>
-    <%= @bs.customer_prepayments %>
-  </li>
-
-  <li>
-    <strong>Fixed Assets</strong>
-    <%# <%= @bs.fixed_assets %> %>
-  </li>
- 
-  <li>
-    <strong>Inventory</strong>
-    <%= @bs.inventory %>
-  </li>
-
-  <li>
-    <strong>Long_term Debt</strong>
-    <%= @bs.long_term_debt %>
-  </li>
-
-  <li>
-    <strong>Marketable Securities</strong>
-    <%= @bs.marketable_securities %>
-  </li>
-
-  <li>
-    <strong>Prepaid Expenses</strong>
-    <%= @bs.prepaid_expenses %>
-  </li>
-
-  <li>
-    <strong>Retained Earnings</strong>
-    <%= @bs.retained_earnings %>
-  </li>
-
-  <li>
-    <strong>Short_term Debt</strong>
-    <%= @bs.short_term_debt %>
-  </li>
-
-  <li>
-    <strong>Stock</strong>
-    <%= @bs.stock %>
-  </li>
-
-  <li>
-    <strong>Taxes</strong>
-    <%= @bs.taxes %>
-  </li>
-
-  <li>
-    <strong>Treasury Stock</strong>
-    <%= @bs.treasury_stock %>
-  </li>
-
-
+<table >
+  <thead>
+    <tr>
+    <th>Account</th>
+    <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td>T1</td>
+    <td></td>
+    </tr>
+    <tr>
+    <td>T2</td>
+    <td></td>
+    </tr>
+    <tr>
+    <td>T3</td>
+    <td></td>
+    </tr>
+    <tr>
+    <td>Cash</td>
+    <td><%= @bs.cash %></td>
+    </tr>
+    <tr>
+    <td>Accounts Payable</td>
+    <td><%= @bs.accounts_payable %></td>
+    </tr>
+    <tr>
+    <td>Accounts Receivable</td>
+    <td><%= @bs.accounts_receivable %></td>
+    </tr>
+    <tr>
+    <td>Accrued Liabilities</td>
+    <td><%= @bs.accrued_liabilities %></td>
+    </tr>
+    <tr>
+    <td>Add. Paid_in Cap.</td> 
+    <td><%= @bs.additional_paid_in_capital%></td>
+    </tr>
+    <tr>
+    <td>Customer Prepayments</td>
+    <td><%= @bs.customer_prepayments%></td>
+    </tr>
+    <tr>
+    <td>Fixed Assets</td>
+    <td><%= @bs.inventory %></td>
+    </tr>
+    <tr>
+    <td>Long_term Debt</td>
+    <td><%= @bs.long_term_debt %></td>
+    </tr>
+    <tr>
+    <td>Marketable Securities</td>
+    <td><%= @bs.marketable_securities %></td>
+    </tr>
+    <tr>
+    <td>Prepaid Expenses</td>
+    <td><%= @bs.prepaid_expenses %></td>
+    </tr>
+    <tr>
+    <td>Retained Earnings</td>
+    <td><%= @bs.retained_earnings %></td>
+    </tr>
+    <tr>
+    <td>Short_term Debt</td>
+    <td><%= @bs.short_term_debt %></td>
+    </tr>
+    <tr>
+    <td>Stock</td>
+    <td><%= @bs.stock %></td>
+    </tr>
+    <tr>
+    <td>Taxes</td>
+    <td><%= @bs.taxes %></td>
+    </tr>
+    <tr>
+    <td>Treasury Stock</td>
+    <td><%= @bs.treasury_stock %></td>
+    </tr>
+  </tbody>
+</table>
 
 
 </ul>

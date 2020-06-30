@@ -1,97 +1,103 @@
-<h4><%= @is.entity_name %> I/S</h4>
-<ul>
-  <li>
-    <strong>compensation</strong>
-    <%= @is.compensation %>
-  </li>
+<table>
+  <thead>
+    <tr>
+    <th>Account</th>
+    <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>compensation</td>
+    <td><%= @is.compensation %></td>
+  </tr>
 
-  <li>
-    <strong>cost_of_goods_sold</strong>
-    <%= @is.cost_of_goods_sold %>
-  </li>
+  <tr>
+    <td>cost_of_goods_sold</td>
+    <td><%= @is.cost_of_goods_sold %></td>
+  </tr>
 
-  <li>
-    <strong>depreciation_and_amortization</strong>
-    <%= @is.depreciation_and_amortization %>
-  </li>
+  <tr>
+    <td>depreciation_and_amortization</td>
+    <td><%= @is.depreciation_and_amortization %></td>
+  </tr>
 
-  <li>
-    <strong>employee_benefits</strong>
-    <%= @is.employee_benefits %>
-  </li>
+  <tr>
+    <td>employee_benefits</td>
+    <td><%= @is.employee_benefits %></td>
+  </tr>
 
-  <li>
-    <strong>income_taxes</strong>
-    <%= @is.income_taxes %>
-  </li>
+  <tr>
+    <td>income_taxes</td>
+    <td><%= @is.income_taxes %></td>
+  </tr>
 
-  <li>
-    <strong>insurance</strong>
-    <%= @is.insurance %>
-  </li>
+  <tr>
+    <td>insurance</td>
+    <td><%= @is.insurance %></td>
+  </tr>
 
-  <li>
-    <strong>marketing</strong>
-    <%= @is.marketing %>
-  </li>
+  <tr>
+    <td>marketing</td>
+    <td><%= @is.marketing %></td>
+  </tr>
 
-  <li>
-    <strong>office</strong>
-    <%= @is.office %>
-  </li>
+  <tr>
+    <td>office</td>
+    <td><%= @is.office %></td>
+  </tr>
 
-  <li>
-    <strong>payroll</strong>
-    <%= @is.payroll %>
-  </li>
+  <tr>
+    <td>payroll</td>
+    <td><%= @is.payroll %></td>
+  </tr>
 
-  <li>
-    <strong>professional_fees</strong>
-    <%= @is.professional_fees %>
-  </li>
+  <tr>
+    <td>professional_fees</td>
+    <td><%= @is.professional_fees %></td>
+  </tr>
 
-  <li>
-    <strong>rent</strong>
-    <%= @is.rent %>
-  </li>
+  <tr>
+    <td>rent</td>
+    <td><%= @is.rent %></td>
+  </tr>
  
-  <li>
-    <strong>repair_and_maintenance</strong>
-    <%= @is.repair_and_maintenance %>
-  </li>
+  <tr>
+    <td>repair_and_maintenance</td>
+    <td><%= @is.repair_and_maintenance %></td>
+  </tr>
  
-  <li>
-    <strong>revenue</strong>
-    <%= @is.revenue %>
-  </li>
+  <tr>
+    <td>revenue</td>
+    <td><%= @is.revenue %></td>
+  </tr>
  
-  <li>
-    <strong>sales_discounts</strong>
-    <%= @is.sales_discounts %>
-  </li>
+  <tr>
+    <td>sales_discounts</td>
+    <td><%= @is.sales_discounts %></td>
+  </tr>
  
-  <li>
-    <strong>supplies</strong>
-    <%= @is.supplies %>
-  </li>
+  <tr>
+    <td>supplies</td>
+    <td><%= @is.supplies %></td>
+  </tr>
  
-  <li>
-    <strong>taxes</strong>
-    <%= @is.taxes %>
-  </li>
+  <tr>
+    <td>taxes</td>
+    <td><%= @is.taxes %></td>
+  </tr>
  
-  <li>
-    <strong>travel_and_entertainment</strong>
-    <%= @is.travel_and_entertainment %>
-  </li>
+  <tr>
+    <td>travel_and_entertainment</td>
+    <td><%= @is.travel_and_entertainment %></td>
+  </tr>
  
-  <li>
-    <strong>utilities</strong>
-    <%= @is.utilities %>
-  </li>
- 
+  <tr>
+    <td>utilities</td>
+    <td><%= @is.utilities %></td>
+  </tr>
+ </tbody>
 
-</ul>
+</table>
 
 <span><%= link "Edit", to: Routes.income_statement_path(@conn, :edit, @is) %></span>
 <span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

@@ -1,8 +1,74 @@
-<h3>Show Transaction</h3>
 
-<ul>
-
-</ul>
+<table>
+   <tr>
+    <td>Hash_of_invoice:</td>
+    <td><%= @transaction.hash_of_invoice %></td>
+  </tr>
+   <tr>
+    <td>Buyer:</td>
+    <td><%= @transaction.buyer %></td>
+  </tr>
+   <tr>
+    <td>Seller:</td>
+    <td><%= @transaction.seller %></td>
+  </tr>
+   <tr>
+    <td>GPS:</td>
+    <td><%= @transaction.gps %></td>
+  </tr>
+   <tr>
+    <td>Tax:</td>
+    <td><%= @transaction.tax %></td>
+  </tr>
+   <tr>
+    <td>Insurance:</td>
+    <td><%= @transaction.insurance %></td>
+  </tr>
+   <tr>
+    <td>ABC_input_id:</td>
+    <td><%= @transaction.abc_input_id %></td>
+  </tr>
+   <tr>
+    <td>ABC_input_name:</td>
+    <td><%= @transaction.abc_input_name %></td>
+  </tr>
+   <tr>
+    <td>ABC_output_id:</td>
+    <td><%= @transaction.abc_output_id %></td>
+  </tr>
+   <tr>
+    <td>ABC_output_name:</td>
+    <td><%= @transaction.abc_output_name %></td>
+  </tr>
+   <tr>
+    <td>ABC_input_t1s:</td>
+    <td><%= @transaction.abc_input_t1s %></td>
+  </tr>
+   <tr>
+    <td>ABC_amount:</td>
+    <td><%= @transaction.abc_amount %></td>
+  </tr>
+   <tr>
+    <td>Items:</td>
+    <td><%= @transaction.items %></td>
+  </tr>
+   <tr>
+    <td>Fiat Currency:</td>
+    <td><%= @transaction.fiat_currency %></td>
+  </tr>
+   <tr>
+    <td>Transaction Status:</td>
+    <td><%= @transaction.transaction_status %></td>
+  </tr>
+   <tr>
+    <td>If_only_item:</td>
+    <td><%= @transaction.if_only_item %></td>
+  </tr>
+   <tr>
+    <td>Fair?:</td>
+    <td><%= @transaction.fair? %></td>
+  </tr>
+</table>
 
 <span><%= link "Edit", to: Routes.transaction_path(@conn, :edit, @transaction) %></span>
 <span><%= link "Back", to: Routes.transaction_path(@conn, :index) %></span>

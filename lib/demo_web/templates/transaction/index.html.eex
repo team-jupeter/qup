@@ -1,15 +1,19 @@
-<h3>Listing Transactions</h3>
+<h4>Transactions</h4>
 
 <table>
   <thead>
     <tr>
-
-      <th></th>
+      <th>Input</th>
+      <th>Output</th>
+      <th>Amount</th>
     </tr>
   </thead>
   <tbody>
 <%= for transaction <- @transactions do %>
-    <tr>
+    <tr> 
+      <td><%= transaction.abc_input_name %></td>
+      <td><%= transaction.abc_output_name %></td>
+      <td><%= transaction.abc_amount %></td>
 
       <td>
         <span><%= link "Show", to: Routes.transaction_path(@conn, :show, transaction) %></span>

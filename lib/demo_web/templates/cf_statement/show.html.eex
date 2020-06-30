@@ -1,44 +1,49 @@
-<h4><%= @cf.entity_name %> Cash Flow</h4>
 
-<ul>
+<table>
+  <thead>
+    <tr>
+    <th>Account</th>
+    <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>capital_expenditures:</td>
+    <td><%= @cf.capital_expenditures %></td>
+  </tr>
 
-  <li>
-    <strong>capital_expenditures:</strong>
-    <%= @cf.capital_expenditures %>
-  </li>
+  <tr>
+    <td>changes_in_working_capital:</td>
+    <td><%= @cf.changes_in_working_capital %></td>
+  </tr>
 
-  <li>
-    <strong>changes_in_working_capital:</strong>
-    <%= @cf.changes_in_working_capital %>
-  </li>
+  <tr>
+    <td>debt_issuance:</td>
+    <td><%= @cf.debt_issuance %></td>
+  </tr>
 
-  <li>
-    <strong>debt_issuance:</strong>
-    <%= @cf.debt_issuance %>
-  </li>
+  <tr>
+    <td>depreciation_amortization:</td>
+    <td><%= @cf.depreciation_amortization %></td>
+  </tr>
 
-  <li>
-    <strong>depreciation_amortization:</strong>
-    <%= @cf.depreciation_amortization %>
-  </li>
+  <tr>
+    <td>equity_issuance:</td>
+    <td><%= @cf.equity_issuance %></td>
+  </tr>
 
-  <li>
-    <strong>equity_issuance:</strong>
-    <%= @cf.equity_issuance %>
-  </li>
+  <tr>
+    <td>net_earnings:</td>
+    <td><%= @cf.net_earnings %></td>
+  </tr>
 
-  <li>
-    <strong>net_earnings:</strong>
-    <%= @cf.net_earnings %>
-  </li>
+  <tr>
+    <td>opening_cash_balance:</td>
+    <td><%= @cf.opening_cash_balance %></td>
+  </tr>
+</tbody>
 
-  <li>
-    <strong>opening_cash_balance:</strong>
-    <%= @cf.opening_cash_balance %>
-  </li>
-
-
-</ul>
+</table>
 
 <span><%= link "Edit", to: Routes.cf_statement_path(@conn, :edit, @cf) %></span>
 <span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

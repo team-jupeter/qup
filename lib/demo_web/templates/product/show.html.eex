@@ -1,51 +1,58 @@
-<h4>Show Product</h4>
-
-<ul>
-  <li>
-    <strong>name:</strong>
-    <%= @product.name %>
-  </li>
-
-  <li>
-    <strong>price:</strong>
-    <%= @product.price %>
-  </li>
-
-  <li>
-    <strong>gopang_fee:</strong>
-    <%= @product.gopang_fee %>
-  </li>
-
-  <li>
-    <strong>insurance:</strong>
-    <%= @product.insurance %>
-  </li>
-
-  <li>
-    <strong>stars:</strong>
-    <%= @product.stars %>
-  </li>
-
-  <li>
-    <strong>tax:</strong>
-    <%= @product.tax %>
-  </li>
-
-  <li>
-    <strong>price_to_value ratio:</strong>
-    <%= @product.pvr %>
-  </li>
-
-  <li>
-    <strong>Description:</strong>
-    <%= @product.description %>
-  </li>
-  <li>
-    <strong>comments:</strong>
-    <%= @product.comments %>
-  </li>
-
-</ul>
+<table >
+  <thead> 
+      <tr>
+    <th>Account</th>
+    <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    </tr>
+    </tr>
+      <td>Type</td>
+      <td><%= @product.type %></td>
+    </tr>
+    </tr>
+      <td>GPC</td>
+      <td><%= @product.gpc_code_id %></td>
+    </tr>
+      <td>Name</td>
+      <td><%= @product.name %></td>
+    </tr>
+      <td>Price</td>
+      <td><%= @product.price %></td>
+    </tr>
+      <td>Stars</td>
+      <td><%= @product.stars %></td>
+    </tr>
+    </tr>
+      <td>Price/value</td>
+      <td><%= @product.pvr %></td>
+    </tr>
+    </tr>
+      <td>Description</td>
+      <td><%= @product.description %></td>
+    </tr>
+    </tr>
+      <td>Comments</td>
+      <td><%= @product.comments %></td>
+    </tr>
+    </tr>
+      <td>Product Logs</td>
+      <td><%= @product.product_logs %></td>
+    </tr>
+  </tbody>
+</table>
 
 <span><%= link "Edit", to: Routes.product_path(@conn, :edit, @product) %></span>
 <span><%= link "Back", to: Routes.product_path(@conn, :index) %></span>
+
+
+<table >
+  <thead>
+  </thead>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>

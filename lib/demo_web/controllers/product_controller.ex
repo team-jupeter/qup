@@ -10,7 +10,7 @@ defmodule DemoWeb.ProductController do
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_entity]
     apply(__MODULE__, action_name(conn), args)  
-  end
+  end 
 
   def index(conn, _params, current_entity) do
     products = Products.list_entity_products(current_entity) 

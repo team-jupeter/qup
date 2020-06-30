@@ -9,17 +9,26 @@ defmodule Demo.Business.Product do
   @foreign_key_type :binary_id
 
   schema "products" do
+    field :type, :string
     field :name, :string
     field :price, :decimal
     field :stars, :decimal
     field :pvr, :decimal #? price to value ratio 가성비 
     field :description, :string 
     field :document_hash, :string
+    field :owner, {:array, :string}
+
+    field :arrived_when, :naive_datetime #? when arrived to the entity
+    field :stored_at, :string #? unique warehouse or device name
+    field :managed_by, :string #? unique user name
+    field :expiration_date, :naive_datetime
+    field :produced_by, :string #? entity name
 
     has_many :items, Demo.Invoices.Item
     has_many :documents, Demo.Documents.Document
     
     embeds_many :comments, Demo.Business.CommentEmbed
+    embeds_many :product_logs, Demo.Business.ProductLogEmbed
 
     belongs_to :gpc_code, Demo.Business.GPCCode
     belongs_to :biz_category, Demo.Business.BizCategory
@@ -37,6 +46,7 @@ defmodule Demo.Business.Product do
   end
 
   @fields [
+    :type, :name, :arrived_when, :stored_at, :managed_by, :expiration_date, :produced_by, 
     :name, :price, :stars, :pvr, :description, :biz_category_id
   ]
   @doc false

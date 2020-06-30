@@ -28,7 +28,7 @@ defmodule Demo.Invoices.Invoice do
       )
 
     timestamps()
-  end
+  end 
 
 
   @fields [:total, :start_at, :end_at, :tax_total, :fiat_currency]
@@ -41,9 +41,10 @@ defmodule Demo.Invoices.Invoice do
   end
 
 
-  def create(params) do
+  def create(_invoice, params) do
     changeset(%Invoice{}, params)
     |> put_assoc(:invoice_items, params["invoice_items"])
+    # |> put_assoc(:entities, [params["buyer"]["main"], params["seller"]["main"]])
     |> Repo.insert #? {ok, invoice}
     |> add_total
   end

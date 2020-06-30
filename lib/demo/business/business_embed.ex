@@ -33,6 +33,6 @@ defmodule Demo.Business.BusinessEmbed do
   def changeset(buyer_embed, params) do
     buyer_embed
     |> cast(params, @fields)
-    |> validate_required(@fields)
+    |> validate_required([])
   end
 end

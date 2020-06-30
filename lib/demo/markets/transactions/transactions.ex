@@ -8,96 +8,44 @@ defmodule Demo.Transactions do
 
   alias Demo.Transactions.Transaction
 
-  @doc """
-  Returns the list of transactions.
-
-  ## Examples
-
-      iex> list_transactions()
-      [%Transaction{}, ...]
-
-  """
   def list_transactions do
     Repo.all(Transaction)
   end
 
-  @doc """
-  Gets a single transaction.
 
-  Raises `Ecto.NoResultsError` if the Transaction does not exist.
-
-  ## Examples
-
-      iex> get_transaction!(123)
-      %Transaction{}
-
-      iex> get_transaction!(456)
-      ** (Ecto.NoResultsError)
-
-  """
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
-  @doc """
-  Creates a transaction.
 
-  ## Examples
+  def create_transaction(invoice \\ %{}) do
+    attrs = %{
+      buyer: invoice.buyer.main_name,
+      seller: invoice.seller.main_name,
+      abc_input_id: invoice.buyer.main_id, #? in real transaction, it should be a public addresss of buyer.
+      abc_input_name: invoice.buyer.main_name, 
+      abc_output_id: invoice.seller.main_id,  #? in real transaction, it should be a public addresss of seller.
+      abc_output_name: invoice.seller.main_name,  
+      abc_amount: invoice.total,
+      fiat_currency: invoice.fiat_currency
+    }
 
-      iex> create_transaction(%{field: value})
-      {:ok, %Transaction{}}
-
-      iex> create_transaction(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_transaction(attrs \\ %{}) do
     %Transaction{}
     |> Transaction.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:invoice, invoice)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a transaction.
 
-  ## Examples
-
-      iex> update_transaction(transaction, %{field: new_value})
-      {:ok, %Transaction{}}
-
-      iex> update_transaction(transaction, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def update_transaction(%Transaction{} = transaction, attrs) do
     transaction
     |> Transaction.changeset(attrs)
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a transaction.
 
-  ## Examples
-
-      iex> delete_transaction(transaction)
-      {:ok, %Transaction{}}
-
-      iex> delete_transaction(transaction)
-      {:error, %Ecto.Changeset{}}
-
-  """
   def delete_transaction(%Transaction{} = transaction) do
     Repo.delete(transaction)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking transaction changes.
-
-  ## Examples
-
-      iex> change_transaction(transaction)
-      %Ecto.Changeset{source: %Transaction{}}
-
-  """
   def change_transaction(%Transaction{} = transaction) do
     Transaction.changeset(transaction, %{})
   end

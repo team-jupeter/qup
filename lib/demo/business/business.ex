@@ -48,7 +48,7 @@ defmodule Demo.Business do
     |> Ecto.Changeset.put_assoc(:users, [user])
     |> Repo.insert()
   end
-
+ 
   def create_product(%Entity{} = entity, attrs \\ %{}) do
     %Product{}
     |> Product.changeset(attrs)

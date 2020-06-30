@@ -754,61 +754,57 @@ The code below is hard coded. We need write codes for invoice_items with only on
 alias Demo.Transactions.Transaction
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
 alias Demo.Business.Product
+alias Demo.Business
 
 
-#? write invoice for trade between mr_hong and gab_korea.
-krw = Product.changeset(%Product{name: "KRW", price: Decimal.from_float(0.0012)}) |> Repo.insert!
-
-#? krw is a product of hong_entity
-hong_entity = Entity.changeset_update_products(hong_entity, [krw])
+#? From now on, let's write invoice for trade between mr_hong and gab_korea.
+#? First, let "krw" a product of hong_entity
+{:ok, krw} = Business.create_product(hong_entity, %{
+  name: "KRW", price: Decimal.from_float(0.0012)}) 
+  
+# hong_entity = Entity.changeset_update_products(hong_entity, [krw])
 
 #? prepare transaction between hong_entity and gab_korea. gab_korea will buy krw from hong_entity. 
 #? Remember, in a transaction, the one paying ABC is buyer, and the other receiving ABC is seller. 
 
 #? There can be more than one items in an invoice like 짜장 2, 짬뽕 1, 탕수육 1 ...
 invoice_items = []
-invoice_item = InvoiceItem.changeset(%InvoiceItem{}, %{item_name: "KRW", product_id: krw.id, price: krw.price, quantity: 20000}) |> Repo.insert!
+
+# invoice_item = InvoiceItem.changeset(%InvoiceItem{}, %{item_name: "KRW", product_id: krw.id, price: krw.price, quantity: 20000}) |> Repo.insert!
+alias Demo.InvoiceItems
+{:ok, invoice_item} = InvoiceItems.create_invoice_item(%{item_name: "KRW", product_id: krw.id, price: krw.price, quantity: 20000})
+
 invoice_items = [invoice_item | invoice_items]
 
 
-params = %{
+alias Demo.Invoices
+{:ok, invoice} = Invoices.create_invoice(%{
   "buyer" => %{"main_name" => gab_korea.name, "main_id" => gab_korea.id},
   "seller" => %{"main_name" => hong_entity.name,"main_id" => hong_entity.id},
   "invoice_items" => invoice_items,
   "fiat_currency" => invoice_item.quantity
-}
-
-
-{:ok, invoice} = Invoice.create(params)
-
-'''
-NOT WORKING
-#? the invoice should be assoicated with both gab_korea and hong_entity for transaction archieve. 
-hong_entity = Entity.changeset_update_invoices(hong_entity, [invoice])
-gab_korea = Entity.changeset_update_invoices(gab_korea, [invoice])
-
-'''
+})
 
 
 #? Write Transaction
 alias Demo.Transactions
 alias Demo.Transactions.Transaction
 
-{ok, transaction_1} = Transactions.create_transaction(%{
-    buyer: gab_korea.name,
-    seller: hong_entity.name,
-    abc_input_id: gab_korea.id, #? in real transaction, it should be a public addresss of buyer.
-    abc_input_name: gab_korea.name, 
-    abc_output_id: hong_entity.id,  #? in real transaction, it should be a public addresss of seller.
-    abc_output_name: hong_entity.name,  
-    abc_amount: invoice.total,
-    fiat_currency: invoice.fiat_currency
-    }) 
+# {ok, transaction_1} = Transactions.create_transaction(%{
+#     buyer: gab_korea.name,
+#     seller: hong_entity.name,
+#     abc_input_id: gab_korea.id, #? in real transaction, it should be a public addresss of buyer.
+#     abc_input_name: gab_korea.name, 
+#     abc_output_id: hong_entity.id,  #? in real transaction, it should be a public addresss of seller.
+#     abc_output_name: hong_entity.name,  
+#     abc_amount: invoice.total,
+#     fiat_currency: invoice.fiat_currency
+#     }) 
 
+{ok, transaction_1} = Transactions.create_transaction(invoice) 
 
-
-#? Association between Transaction and Invoice
-invoice = Ecto.build_assoc(transaction_1, :invoice, invoice) 
+# #? Association between Transaction and Invoice
+# invoice = Ecto.build_assoc(transaction_1, :invoice, invoice) 
 
 
 '''

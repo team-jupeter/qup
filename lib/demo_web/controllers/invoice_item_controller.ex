@@ -1,7 +1,7 @@
 defmodule DemoWeb.InvoiceItemController do
   use DemoWeb, :controller
 
-  alias Demo.Invoices.InvoiceItems
+  alias Demo.InvoiceItems
   alias Demo.Invoices.InvoiceItem 
 
   def index(conn, _params) do

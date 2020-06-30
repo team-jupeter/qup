@@ -20,8 +20,6 @@
 </br>
 <h4>Products</h4>
         <li><%= link "Products", to: Routes.product_path(@conn, :index) %></li>
-        <li><%= link "Items", to: Routes.item_path(@conn, :index) %></li>
-        <li><%= link "InvoiceItems", to: Routes.invoice_item_path(@conn, :index) %></li>
         <li><%= link "Invoices", to: Routes.invoice_path(@conn, :index) %></li>
         <li><%= link "Transactions", to: Routes.transaction_path(@conn, :index) %></li>
 

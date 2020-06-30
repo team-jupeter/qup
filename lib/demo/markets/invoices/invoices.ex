@@ -5,7 +5,7 @@ defmodule Demo.Invoices do
 
     @topic inspect(__MODULE__)
 
-
+ 
     def subscribe do
       Phoenix.PubSub.subscribe(Demo.PubSub, @topic)
     end
@@ -33,8 +33,7 @@ defmodule Demo.Invoices do
 
     def create_invoice(attrs \\ %{}) do
     %Invoice{}
-      |> Invoice.changeset(attrs)
-      |> Repo.insert()
+      |> Invoice.create(attrs)
       |> notify_subscribers([:invoice, :created])
     end
 

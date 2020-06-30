@@ -1,4 +1,4 @@
-defmodule Demo.Invoices.InvoiceItems do
+defmodule Demo.InvoiceItems do
     import Ecto.Query, warn: false
     alias Demo.Repo
     alias Demo.Invoices.InvoiceItem

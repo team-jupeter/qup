@@ -1,26 +1,34 @@
-<h4>User Detail</h4>
-<b>Type</b> (<%= @user.type %>) </br>
-<b>Nationlity</b> (<%= @user.nationality %>) </br>
-<b>Name</b> (<%= @user.name %>) </br>
-<b>Username</b> (<%= @user.username %>) </br>
-<b>Email</b> (<%= @user.email %>) </br>
-
- </br>
-
+<table >
+  <thead>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Type</td>
+      <td><%= @user.type %></td>
+    </tr>
+      <td>Nationality</td>
+      <td><%= @user.nationality %></td>
+    </tr>
+    </tr>
+      <td>Name</td>
+      <td><%= @user.name %></td>
+    </tr>
+    </tr>
+      <td>UserName</td>
+      <td><%= @user.username %></td>
+    </tr>
+    </tr>
+      <td>Email</td>
+      <td><%= @user.email %></td>
+    </tr>
+  </tbody>
+</table>
 
 <section class="container">
 <nav role="navigation">
-<h4>Register</h4>
     <ul>
-        <li><%= link "Entity", to: Routes.entity_path(@conn, :index) %></li>
-        <li><%= link "Student", to: Routes.user_path(@conn, :new) %></li>
-        <li><%= link "Mentor", to: Routes.user_path(@conn, :new) %></li>
-        <li><%= link "Certificate", to: Routes.user_path(@conn, :new) %></li>
-        <li><%= link "Health Report", to: Routes.user_path(@conn, :new) %></li>
-        <li><%= link "Nation", to: Routes.user_path(@conn, :new) %></li>
-        <li><%= link "Supul", to: Routes.user_path(@conn, :new) %></li>
-        <li><%= link "My Videos", to: Routes.video_path(@conn, :index) %></li>
-
+        <li><%= link "Entities", to: Routes.entity_path(@conn, :index) %></li>
     </ul>
 </nav>
 </section>
+

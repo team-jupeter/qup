@@ -1,75 +1,74 @@
 <h4><%= @fr.entity_name %> F/R</h4>
 <p>Notice: Values in this page are automatically calculated from other financial statements.</p>
 
-<ul>
+<table>
+  <tr>
+    <td>Current Hash:</td>
+    <td><%= @fr.current_hash %></td>
+  </tr>
 
-  <li>
-    <strong>Current Hash:</strong>
-    <%= @fr.current_hash %>
-  </li>
+  <tr>
+    <td>Description:</td>
+    <td><%= @fr.hash_history %></td>
+  </tr>
 
-  <li>
-    <strong>Description:</strong>
-    <%= @fr.hash_history %>
-  </li>
+  <tr>
+    <td>Credit Rate:</td>
+    <td><%= @fr.credit_rate %></td>
+  </tr>
 
-  <li>
-    <strong>Credit Rate:</strong>
-    <%= @fr.credit_rate %>
-  </li>
+  <tr>
+    <td>Number of Shares:</td>
+    <td><%= @fr.num_of_shares %></td>
+  </tr>
 
-  <li>
-    <strong>Number of Shares:</strong>
-    <%= @fr.num_of_shares %>
-  </li>
+  <tr>
+    <td>Number of Shares Issued:</td>
+    <td><%= @fr.num_of_shares_issued %></td>
+  </tr>
 
-  <li>
-    <strong>Number of Shares Issued:</strong>
-    <%= @fr.num_of_shares_issued %>
-  </li>
+  <tr>
+    <td>Number of Treasury Stocks:</td>
+    <td><%= @fr.num_of_treasury_stocks %></td>
+  </tr>
 
-  <li>
-    <strong>Number of Treasury Stocks:</strong>
-    <%= @fr.num_of_treasury_stocks %>
-  </li>
+  <tr>
+    <td>Market Capitalization:</td>
+    <td><%= @fr.market_capitalization %></td>
+  </tr>
 
-  <li>
-    <strong>Market Capitalization:</strong>
-    <%= @fr.market_capitalization %>
-  </li>
+  <tr>
+    <td>Stock Price:</td>
+    <td><%= @fr.stock_price %></td>
+  </tr>
 
-  <li>
-    <strong>Stock Price:</strong>
-    <%= @fr.stock_price %>
-  </li>
+  <tr>
+    <td>Intrinsic Value:</td>
+    <td><%= @fr.intrinsic_value %></td>
+  </tr>
 
-  <li>
-    <strong>Intrinsic Value:</strong>
-    <%= @fr.intrinsic_value %>
-  </li>
+  <tr>
+    <td>Estimated Fair Marke Value:</td>
+    <td><%= @fr.re_fmv %></td>
+  </tr>
 
-  <li>
-    <strong>Estimated Fair Marke Value:</strong>
-    <%= @fr.re_fmv %>
-  </li>
+  <tr>
+    <td>Debt Interest Rate:</td>
+    <td><%= @fr.debt_int_rate %></td>
+  </tr>
 
-  <li>
-    <strong>Debt Interest Rate:</strong>
-    <%= @fr.debt_int_rate %>
-  </li>
+  <tr>
+    <td>Entity ID:</td>
+    <td><%= @fr.entity_id %></td>
+  </tr>
 
-  <li>
-    <strong>Entity ID:</strong>
-    <%= @fr.entity_id %>
-  </li>
-
-  <li>
-    <strong>Supul ID:</strong>
-    <%= @fr.supul_id %>
-  </li>
+  <tr>
+    <td>Supul ID:</td>
+    <td><%= @fr.supul_id %></td>
+  </tr>
 
 
-</ul>
+</table>
 
 <span><%= link "Edit", to: Routes.financial_report_path(@conn, :edit, @fr.id) %></span>
 <span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>
