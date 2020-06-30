@@ -33,7 +33,7 @@ defmodule Demo.IncomeStatements do
     |> Ecto.Changeset.put_assoc(:entity, entity)
     |> Repo.insert()
   end
-
+ 
 
   def update_income_statement(%IncomeStatement{} = income_statement, attrs) do
     income_statement
@@ -44,6 +44,17 @@ defmodule Demo.IncomeStatements do
   def change_income_statement(%IncomeStatement{} = income_statement) do
     IncomeStatement.changeset(income_statement, %{})
   end
+
+  def add_expense(%IncomeStatement{} = income_statement, %{amount: amount}) do
+    accrued_expense = Decimal.add(income_statement.expense, amount)
+    update_income_statement(income_statement, %{expense: accrued_expense})
+  end
+
+  def add_revenue(%IncomeStatement{} = income_statement, %{amount: amount}) do
+    accrued_revenue = Decimal.add(income_statement.revenue, amount)
+    update_income_statement(income_statement, %{revenue: accrued_revenue})
+  end
+
   
 '''
   def delete_income_statement(%IncomeStatement{} = income_statement) do

@@ -577,7 +577,7 @@ alias Demo.EquityStatements
 #   }) \
 #   |> Repo.insert!()
 
-{:ok, gopang_korea_BS} = BalanceSheets.create_balance_sheet(gab_korea, %{ 
+{:ok, gopang_korea_BS} = BalanceSheets.create_balance_sheet(gopang_korea, %{ 
     gab_balance: Decimal.from_float(10_000.0),
     entity_name: gopang_korea.name,
     t1s: [%{
@@ -603,8 +603,9 @@ alias Demo.EquityStatements
       cash: Decimal.from_float(500_000_000.00),
     }) 
 
-{:ok, kts_BS} = BalanceSheets.create_balance_sheet(gab_korea, %{
-    gab_balance: Decimal.from_float(10_000.0),
+{:ok, kts_BS} = BalanceSheets.create_balance_sheet(kts, %{
+  entity_name: kts.name,
+  gab_balance: Decimal.from_float(10_000.0),
     t1s: [%{
       input_name: gab_korea.name, 
       input_id: gab_korea.id, 
@@ -790,21 +791,8 @@ alias Demo.Invoices
 alias Demo.Transactions
 alias Demo.Transactions.Transaction
 
-# {ok, transaction_1} = Transactions.create_transaction(%{
-#     buyer: gab_korea.name,
-#     seller: hong_entity.name,
-#     abc_input_id: gab_korea.id, #? in real transaction, it should be a public addresss of buyer.
-#     abc_input_name: gab_korea.name, 
-#     abc_output_id: hong_entity.id,  #? in real transaction, it should be a public addresss of seller.
-#     abc_output_name: hong_entity.name,  
-#     abc_amount: invoice.total,
-#     fiat_currency: invoice.fiat_currency
-#     }) 
-
 {ok, transaction_1} = Transactions.create_transaction(invoice) 
 
-# #? Association between Transaction and Invoice
-# invoice = Ecto.build_assoc(transaction_1, :invoice, invoice) 
 
 
 '''
@@ -815,23 +803,9 @@ Supul
 #? let's pretend the transaction data has been sent to the supuls of traders respectively.
 #? Adjust balance_sheet of both.
 #? HONG & GAB KOREA
-# gab_korea_FR = Repo.preload(gab_korea, [financial_report: :balance_sheet]).financial_report
 
-# gab_korea_BS = gab_korea_FR.balance_sheet
-alias Demo.Reports.BalanceSheet
-alias Demo.BalanceSheets
-gab_korea_BS = BalanceSheet.minus_abc(gab_korea_BS, transaction_1.abc_amount) 
-
-
-
-|> \
-#     Ecto.Changeset.put_change(
-#         # :cash, Decimal.add(gab_korea_BS.cash, Decimal.mult(String.to_integer(item.name), 
-#         #     Enum.at(invoice_items, 0).quantity))) |>  \
-#         :cash, Decimal.add(gab_korea_BS.cash, transaction_1.fiat_currency) |>  \
-#     Ecto.Changeset.put_change(:t1, 
-#         Decimal.sub(gab_korea_BS.t1, transaction_1.abc_amount)) |> Repo.update!
-
+alias Demo.Supuls
+Supuls.process_transaction(transaction_1)
 
 
 #? Hong Gil_Dong

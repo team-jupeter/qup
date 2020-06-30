@@ -38,6 +38,16 @@ defmodule Demo.Business do
     |> Repo.update()
   end
 
+  def minus_gab_balance(%Entity{} = entity, %{amount: amount}) do
+    minus_gab_balance = Decimal.sub(entity.gab_balance, amount)
+    update_entity(entity, %{gab_balance: minus_gab_balance})
+  end
+
+  def plus_gab_balance(%Entity{} = entity, %{amount: amount}) do
+    plus_gab_balance = Decimal.add(entity.gab_balance, amount)
+    update_entity(entity, %{gab_balance: plus_gab_balance})
+  end
+
   def delete_entity(%Entity{} = entity) do
     Repo.delete(entity)
   end 

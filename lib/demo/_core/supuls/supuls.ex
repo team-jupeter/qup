@@ -34,4 +34,63 @@ defmodule Demo.Supuls do
   def change_supul(%Supul{} = supul) do
     Supul.changeset(supul, %{})
   end
+
+  import Ecto.Query, only: [from: 2]
+  alias Demo.IncomeStatements
+  alias Demo.BalanceSheets
+  alias Demo.IncomeStatements
+  alias Demo.Reports.IncomeStatement
+  alias Demo.Reports.BalanceSheet
+  alias Demo.Business
+  alias Demo.Business.Entity
+
+  def process_transaction(transaction) do
+    #? Update IS of buyer.
+    buyer_id = transaction.invoice.buyer.main_id
+    query = from i in IncomeStatement,
+    where: i.entity_id == ^buyer_id
+    
+    buyer_IS = Repo.one(query)
+    IncomeStatements.add_expense(buyer_IS, %{amount: transaction.abc_amount})
+    
+    #? Update BS of buyer.
+    query = from b in BalanceSheet,
+          where: b.entity_id == ^buyer_id
+
+    buyer_BS = Repo.one(query)
+    BalanceSheets.minus_gab_balance(buyer_BS, %{amount: transaction.abc_amount})
+    
+    #? Update IS of seller.
+    seller_id = transaction.invoice.seller.main_id
+    query = from i in IncomeStatement,
+    where: i.entity_id == ^seller_id
+    
+    seller_IS = Repo.one(query)
+    IncomeStatements.add_revenue(seller_IS, %{amount: transaction.abc_amount})
+    
+    #? Update BS of seller.
+    query = from b in BalanceSheet,
+          where: b.entity_id == ^seller_id
+
+    seller_BS = Repo.one(query)
+    BalanceSheets.plus_gab_balance(seller_BS, %{amount: transaction.abc_amount})
+
+   #? Update gab_balance of both buyer and seller.
+   #? Buyer
+   query = from b in Entity,
+   where: b.id == ^buyer_id
+
+   buyer = Repo.one(query)
+   Business.minus_gab_balance(buyer, %{amount: transaction.abc_amount}) 
+  
+   #? Seller
+   query = from s in Entity,
+   where: s.id == ^seller_id
+
+   seller = Repo.one(query)
+   Business.plus_gab_balance(seller, %{amount: transaction.abc_amount}) 
+  
+  
+  
+  end
 end

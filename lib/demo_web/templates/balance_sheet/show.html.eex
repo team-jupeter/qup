@@ -7,6 +7,10 @@
   </thead>
   <tbody>
     <tr>
+    <td>GAB Balance</td>
+    <td><%= @bs.gab_balance %></td>
+    </tr>
+    <tr>
     <td>T1</td>
     <td></td>
     </tr>

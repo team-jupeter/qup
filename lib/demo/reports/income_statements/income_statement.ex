@@ -4,11 +4,12 @@ defmodule Demo.Reports.IncomeStatement do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "income_statements" do
-    field :entity_name, :string
     field :compensation, :decimal, precision: 12, scale: 2, default: 0.0
     field :cost_of_goods_sold, :decimal, precision: 12, scale: 2
     field :depreciation_and_amortization, :decimal, precision: 12, scale: 2
     field :employee_benefits, :decimal, precision: 12, scale: 2
+    field :entity_name, :string
+    field :expense, :decimal, precision: 12, scale: 2 
     field :income_taxes, :decimal, precision: 12, scale: 2
     field :insurance, :decimal, precision: 12, scale: 2 
     field :marketing, :decimal, precision: 12, scale: 2
@@ -54,6 +55,7 @@ defmodule Demo.Reports.IncomeStatement do
     :travel_and_entertainment, 
     :utilities, 
     :entity_id, 
+    :expense,
   ]
   @doc false
   def changeset(income_statement, attrs) do

@@ -31,14 +31,16 @@ defmodule Demo.BalanceSheets do
     |> Repo.update!()
   end
 
-  def minus_abc(%BalanceSheet{} = balance_sheet, amount) do
-    balance_sheet 
-    |> BalanceSheet.changeset_minus_abc(amount)
-    |> Repo.update()
-
-    entity = Demo.Business.get_entity!(balance_sheet.entity_id)
-    Demo.Business.update_entity(entity, balance_sheet.gab_balance)
+  def minus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
+    minus_gab_balance = Decimal.sub(balance_sheet.gab_balance, amount)
+    update_balance_sheet(balance_sheet, %{gab_balance: minus_gab_balance})
   end
+
+  def plus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
+    plus_gab_balance = Decimal.add(balance_sheet.gab_balance, amount)
+    update_balance_sheet(balance_sheet, %{gab_balance: plus_gab_balance})
+  end
+
 
   def change_balance_sheet(%BalanceSheet{} = balance_sheet) do
     BalanceSheet.changeset(balance_sheet, %{})

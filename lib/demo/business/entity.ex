@@ -122,6 +122,12 @@ defmodule Demo.Business.Entity do
     |> Repo.update!()
   end
 
+  def changeset_update_entity(%Entity{} = entity, attrs) do
+    entity 
+    |> cast(attrs, @fields)
+    |> Repo.update!()
+  end
+
   def changeset_update_products(%Entity{} = entity, products) do
     entity 
     |> Repo.preload(:products)

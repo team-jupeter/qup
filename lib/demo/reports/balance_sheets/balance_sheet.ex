@@ -60,27 +60,17 @@ defmodule Demo.Reports.BalanceSheet do
   def changeset(balance_sheet, attrs \\ %{}) do
     balance_sheet
     |> cast(attrs, @fields)
-  end
+  end 
   
 
 
-  def changeset_minus_abc(balance_sheet, attrs \\ %{}) do
+  def changeset_minus_gab_balance(balance_sheet, attrs \\ %{}) do
     balance_sheet
     |> cast(attrs, @fields)
-    |> minus_abc(balance_sheet.gab_balance) 
-  end
-
-  defp minus_abc(changeset, gab_balance) do
-    case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{amount: amount}} ->
-        put_change(changeset, :gab_balance, Decimal.sub(gab_balance, amount))
-
-      _ ->
-        changeset
-    end
+    |> put_change(:gab_balance, Decimal.sub(balance_sheet.gab_balance, attrs.amount)) 
   end
   
-  def changeset_plus_abc(balance_sheet, attrs \\ %{}) do
+  def changeset_plus_gab_balance(balance_sheet, attrs \\ %{}) do
     balance_sheet
     |> cast(attrs, @fields)
     |> put_change(:gab_balance, Decimal.add(balance_sheet.gab_balance, attrs.amount)) 

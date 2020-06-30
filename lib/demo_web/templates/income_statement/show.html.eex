@@ -6,6 +6,15 @@
     </tr>
   </thead>
   <tbody>
+   
+  <tr>
+    <td>revenue</td>
+    <td><%= @is.revenue %></td>
+  </tr>
+  <tr>
+    <td>expense</td>
+    <td><%= @is.expense %></td>
+  </tr>
   <tr>
     <td>compensation</td>
     <td><%= @is.compensation %></td>
@@ -64,11 +73,6 @@
   <tr>
     <td>repair_and_maintenance</td>
     <td><%= @is.repair_and_maintenance %></td>
-  </tr>
- 
-  <tr>
-    <td>revenue</td>
-    <td><%= @is.revenue %></td>
   </tr>
  
   <tr>
