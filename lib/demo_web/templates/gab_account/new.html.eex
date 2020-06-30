@@ -1,5 +1,0 @@
-<h4>New Gab account</h4>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.gab_account_path(@conn, :create)) %>
-
-<span><%= link "Back", to: Routes.gab_account_path(@conn, :index) %></span>

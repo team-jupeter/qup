@@ -62,7 +62,12 @@ defmodule Demo.Reports.BalanceSheet do
     |> cast(attrs, @fields)
   end 
   
-
+  def changeset_t1s(balance_sheet, attrs \\ %{}) do
+    balance_sheet
+    |> cast(attrs, @fields)
+    |> cast_embed(:t1s, attrs.t1)
+  end 
+  
 
   def changeset_minus_gab_balance(balance_sheet, attrs \\ %{}) do
     balance_sheet

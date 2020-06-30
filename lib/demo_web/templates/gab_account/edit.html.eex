@@ -1,5 +1,0 @@
-<h4>Edit Gab account</h4>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.gab_account_path(@conn, :update, @gab_account)) %>
-
-<span><%= link "Back", to: Routes.gab_account_path(@conn, :index) %></span>

@@ -84,11 +84,6 @@ defmodule DemoWeb.Router do
 
   end
 
-  scope "/gab", DemoWeb do
-    pipe_through [:browser, :authenticate_user]
-
-    resources "/gab_accounts", GabAccountController
-  end
 
   scope "/reports", DemoWeb do
     pipe_through [:browser, :authenticate_user]

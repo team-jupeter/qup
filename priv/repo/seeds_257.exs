@@ -563,104 +563,126 @@ alias Demo.EquityStatements
 
 
 #? Balance Sheet
-# gopang_korea_BS = #? 국가 교통물류 인프라 
-#   Ecto.build_assoc(gopang_korea, :balance_sheet, %BalanceSheet{
-#     gab_balance: Decimal.from_float(10_000.0),
-#     entity_name: gopang_korea.name,
-#     t1s: [%{
-#       input_name: gab_korea.name, 
-#       input_id: gab_korea.id, 
-#       output_name: gopang_korea.name, 
-#       output_id: gopang_korea.id, 
-#       amount: Decimal.from_float(10_000.00)}],
-#     cash: Decimal.from_float(500_000.00),
-#   }) \
-#   |> Repo.insert!()
+alias Demo.ABC.T1
 
+#? 국가 물류 인프라
 {:ok, gopang_korea_BS} = BalanceSheets.create_balance_sheet(gopang_korea, %{ 
     gab_balance: Decimal.from_float(10_000.0),
     entity_name: gopang_korea.name,
-    t1s: [%{
-      input_name: gab_korea.name, 
-      input_id: gab_korea.id, 
-      output_name: gopang_korea.name, 
-      output_id: gopang_korea.id, 
-      amount: Decimal.from_float(10_000.00)}],
-    cash: Decimal.from_float(500_000.00),
-  })
-
-
-{:ok, gab_korea_BS} = BalanceSheets.create_balance_sheet(gab_korea, %{
-      entity_name: gab_korea.name,
-      gab_balance: Decimal.from_float(1_000_000.0),
-      t1s: [%{
-        input_name: korea.name, 
-        input_id: korea.id, 
-        output_name: gab_korea.name, 
-        output_id: gab_korea.id, 
-        amount: Decimal.from_float(1_000_000.0),
-        }],
-      cash: Decimal.from_float(500_000_000.00),
-    }) 
-
-{:ok, kts_BS} = BalanceSheets.create_balance_sheet(kts, %{
-  entity_name: kts.name,
-  gab_balance: Decimal.from_float(10_000.0),
-    t1s: [%{
-      input_name: gab_korea.name, 
-      input_id: gab_korea.id, 
-      output_name: kts.name, 
-      output_id: kts.id, 
-      amount: Decimal.from_float(10_000.0)
-      }],
     cash: Decimal.from_float(500_000.00),
   })
   
+new_t1s = %{t1s: %T1{
+  input_name: gab_korea.name, 
+  input_id: gab_korea.id, 
+  output_name: gopang_korea.name, 
+  output_id: gopang_korea.id, 
+  amount: Decimal.from_float(10_000.00)}}
 
-{:ok, hong_entity_BS} = BalanceSheets.create_balance_sheet(hong_entity, %{
-    entity_name: hong_entity.name,
-    cash: Decimal.from_float(50_000.00),
-    gab_balance: Decimal.from_float(10_000.0),
-    t1s: [%{
-      input_name: gab_korea.name, 
-      input_id: gab_korea.id, 
-      output_name: hong_entity.name, 
-      output_id: hong_entity.id, 
-      amount: Decimal.from_float(10_000.00)}]}) 
+BalanceSheets.add_t1s(gopang_korea_BS, new_t1s)  
 
-{:ok, lim_entity_BS} = BalanceSheets.create_balance_sheet(lim_entity, %{
-    entity_name: lim_entity.name,
-    cash: Decimal.from_float(50_000.00),
-    gab_balance: Decimal.from_float(10_000.0),
-    t1s: [%{
-      input_name: gab_korea.name, 
-      input_id: gab_korea.id, 
-      output_name: lim_entity.name, 
-      output_id: lim_entity.id, 
-      amount: Decimal.from_float(10_000.00)}]})
-
-{:ok, sung_entity_BS} = BalanceSheets.create_balance_sheet(sung_entity, %{
-    entity_name: sung_entity.name,
-    cash: Decimal.from_float(50_000_000.00),
-    gab_balance: Decimal.from_float(10_000.0),
-    t1s: [%{
-      input_name: gab_korea.name, 
-      input_id: gab_korea.id, 
-      output_name: sung_entity.name, 
-      output_id: sung_entity.id, 
-      amount: Decimal.from_float(10_000.00)}]}) 
-
-{:ok, tomi_entity_BS} = BalanceSheets.create_balance_sheet(tomi_entity, %{
-    entity_name: tomi_entity.name,
-    fixed_assets: [%{building: 1.0}],
-    gab_balance: Decimal.from_float(10_000.0),
-    t1s: [%{
-      input_name: gab_korea.name, 
-      input_id: gab_korea.id, 
-      output_name: tomi_entity.name, 
-      output_id: tomi_entity.id, 
-      amount: Decimal.from_float(10_000.00)}]
+#? 국가 금융 인프라
+{:ok, gab_korea_BS} = BalanceSheets.create_balance_sheet(gab_korea, %{
+      entity_name: gab_korea.name,
+      gab_balance: Decimal.from_float(1_000_000.0),
+      cash: Decimal.from_float(0.00),
     }) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: gab_korea.name, 
+  output_id: gab_korea.id, 
+  amount: Decimal.from_float(1_000_000.0),
+  }}
+
+BalanceSheets.add_t1s(gab_korea_BS, new_t1s)  
+
+#? 반자동 국세청
+{:ok, kts_BS} = BalanceSheets.create_balance_sheet(kts, %{
+  entity_name: kts.name,
+  cash: Decimal.from_float(5_000.00),
+  gab_balance: Decimal.from_float(1_000.0),
+  })
+ 
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: kts.name, 
+  output_id: kts.id, 
+  amount: Decimal.from_float(1_000.0),
+  }}
+
+BalanceSheets.add_t1s(kts_BS, new_t1s)  
+
+#? 홍길동 1인 법인
+{:ok, hong_entity_BS} = BalanceSheets.create_balance_sheet(hong_entity, %{
+  entity_name: hong_entity.name,
+  cash: Decimal.from_float(50_000.00),
+  gab_balance: Decimal.from_float(0.0),
+  }) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: hong_entity.name, 
+  output_id: hong_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_t1s(hong_entity_BS, new_t1s)  
+
+#? 임꺽정 1인 법인
+{:ok, lim_entity_BS} = BalanceSheets.create_balance_sheet(lim_entity, %{
+  entity_name: lim_entity.name,
+  cash: Decimal.from_float(50_000.00),
+  gab_balance: Decimal.from_float(100.0),
+  }) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: lim_entity.name, 
+  output_id: lim_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_t1s(lim_entity_BS, new_t1s)  
+
+#? 성춘향 1인 법인
+{:ok, sung_entity_BS} = BalanceSheets.create_balance_sheet(sung_entity, %{
+  entity_name: sung_entity.name,
+  cash: Decimal.from_float(50_000.00),
+  gab_balance: Decimal.from_float(1_000.0),
+  }) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: sung_entity.name, 
+  output_id: sung_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_t1s(sung_entity_BS, new_t1s)  
+
+#? 토미 도시락 일반 법인
+{:ok, tomi_entity_BS} = BalanceSheets.create_balance_sheet(tomi_entity, %{
+  entity_name: tomi_entity.name,
+  cash: Decimal.from_float(50_000.00),
+  gab_balance: Decimal.from_float(10_000.0),
+  }) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: tomi_entity.name, 
+  output_id: tomi_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_t1s(tomi_entity_BS, new_t1s)  
+
     
 
 #? Cash Flow Statement
@@ -803,9 +825,11 @@ Supul
 #? let's pretend the transaction data has been sent to the supuls of traders respectively.
 #? Adjust balance_sheet of both.
 #? HONG & GAB KOREA
-
+#? 홍길동은 자신의 고향 수풀(한경면 수풀)로 Transaction_1 데이터를 전달하고, gab_korea 역시 자신의 고향 수풀(한국 수풀)
 alias Demo.Supuls
 Supuls.process_transaction(transaction_1)
+
+
 
 
 #? Hong Gil_Dong
@@ -873,9 +897,7 @@ invoice = Ecto.build_assoc(transaction_2, :invoice, invoice)
 Adjust balance_sheet of both.
 ''' 
 #? Hong Gil_Dong
-hong_entity_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financial_report
 
-hong_entity_BS = hong_entity_FR.balance_sheet
 hong_t1s = hong_entity_BS.t1s
 
 # case Enum.at(hong_t1s, 0).output == hong_public_address do:
