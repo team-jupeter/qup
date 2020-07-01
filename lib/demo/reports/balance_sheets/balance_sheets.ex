@@ -36,6 +36,49 @@ defmodule Demo.BalanceSheets do
     |> update_gab_balance()
   end
 
+  alias Demo.ABC.T1
+  def renew_t1s(attrs, buyer, seller) do
+    #? Find buyer's BS
+    query = from b in BalanceSheet,
+    where: b.entity_id == ^buyer.id
+
+    buyer_BS = Repo.one(query)
+    
+    #? renew Buyer's BS
+    t1_change = Decimal.sub(buyer_BS.gab_balance, attrs.amount)
+    t1s = [%T1{
+      # input: buyer_BS.t1s, #? if no input, output entity is same to input entity.
+      output_id: buyer.id,
+      output_name: buyer.name,
+      amount: t1_change,
+    }]
+
+    buyer_BS
+    |> change
+    |> Ecto.Changeset.put_embed(:t1s, t1s) 
+    |> Repo.update!()
+    |> update_gab_balance()
+
+
+   #? renew Seller's BS
+   #? prepare t1 struct to pay.
+    t1_payment = %{t1s: %T1{
+      input_name: buyer.name,
+      input_id: buyer.id,
+      output_name: seller.name,
+      output_id: seller.id,
+      amount: attrs.amount,
+    }}
+
+    #? Find seller's BS
+    query = from b in BalanceSheet,
+    where: b.entity_id == ^seller.id
+
+    seller_BS = Repo.one(query)
+      
+    add_t1s(seller_BS, t1_payment)
+  end
+
   def update_gab_balance(bs) do
     amount_list = Enum.map(bs.t1s, fn item -> item.amount end) 
     gab_balance = Enum.reduce(amount_list, 0, fn amount, sum -> Decimal.add(amount, sum) end)

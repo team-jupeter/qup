@@ -681,7 +681,7 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(100.0),
   }}
 
-BalanceSheets.add_t1s(tomi_entity_BS, new_t1s)  
+tomi_entity_BS = BalanceSheets.add_t1s(tomi_entity_BS, new_t1s)  
 
     
 
@@ -814,6 +814,9 @@ alias Demo.Transactions
 alias Demo.Transactions.Transaction
 
 {ok, transaction_1} = Transactions.create_transaction(invoice) 
+{ok, transaction_2} = Transactions.create_transaction(invoice) 
+{ok, transaction_3} = Transactions.create_transaction(invoice) 
+{ok, transaction_4} = Transactions.create_transaction(invoice) 
 
 
 
@@ -828,16 +831,16 @@ Supul
 #? 홍길동은 자신의 고향 수풀(한경면 수풀)로 Transaction_1 데이터를 전달하고, gab_korea 역시 자신의 고향 수풀(한국 수풀)
 alias Demo.Supuls
 Supuls.process_transaction(transaction_1)
+Supuls.process_transaction(transaction_2)
 
 
+BalanceSheets.add_t1s(gopang_korea_BS, new_t1s)  
 
 
 #? Hong Gil_Dong
 alias Demo.ABC.T1
 
-hong_entity_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financial_report
 
-hong_entity_BS = hong_entity_FR.balance_sheet
 hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_change(
         :cash, Decimal.sub(hong_entity_BS.cash, Decimal.mult(String.to_integer(item.name), 

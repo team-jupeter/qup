@@ -4,6 +4,8 @@ defmodule Demo.ABC.T1 do
   alias Demo.ABC.T1
   
   embedded_schema do 
+    field :input, {:array, :map}
+
     field :input_name, :string
     field :input_id, :string
     field :output_name, :string
@@ -16,7 +18,7 @@ defmodule Demo.ABC.T1 do
   end
 
   @fields [
-      :input, :output, :input_id, :output_id, :amount
+      :input, :input_name, :output_name, :input_id, :output_id, :amount
   ]
   def changeset(t1, params) do
     t1
