@@ -100,7 +100,7 @@ defmodule Demo.Business.Entity do
     :name, :entity_address, :nation_signature,
     :biz_category_id, :sic_code, :legal_status, :year_started, 
     :num_of_shares, :supul_name, :gab_balance,
-    :share_price, :credit_rate, :project
+    :share_price, :credit_rate, :project, 
   ]
 
   def changeset(user, attrs) do

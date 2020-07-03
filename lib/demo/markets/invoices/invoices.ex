@@ -2,6 +2,7 @@ defmodule Demo.Invoices do
     import Ecto.Query, warn: false
     alias Demo.Repo
     alias Demo.Invoices.Invoice
+    alias Demo.Transactions
 
     @topic inspect(__MODULE__)
 
@@ -32,10 +33,12 @@ defmodule Demo.Invoices do
     end
 
     def create_invoice(attrs \\ %{}) do
-    %Invoice{}
+      %Invoice{}
       |> Invoice.create(attrs)
-      |> notify_subscribers([:invoice, :created])
-    end
+      # |> notify_subscribers([:transaction, :created])
+    
+    end 
+
 
     def delete_invoice(%Invoice{} = invoice) do
       Repo.delete(invoice)

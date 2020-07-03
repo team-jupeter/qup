@@ -44,7 +44,7 @@ defmodule Demo.BalanceSheets do
 
     buyer_BS = Repo.one(query)
     
-    #? renew Buyer's BS
+    #? renew Buyer's BS T1
     t1_change = Decimal.sub(buyer_BS.gab_balance, attrs.amount)
     t1s = [%T1{
       # input: buyer_BS.t1s, #? if no input, output entity is same to input entity.

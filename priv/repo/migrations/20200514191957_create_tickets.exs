@@ -4,6 +4,10 @@ defmodule Demo.Repo.Migrations.CreateTickets do
   def change do
     create table(:tickets, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :invoice_id, :binary_id
+      add :package_size, {:array, :map}
+      add :package_weight, :integer
+      add :box_type, :string
       add :departure, :string
       add :destination, :string
       add :input, {:array, :map}, default: []
@@ -19,9 +23,6 @@ defmodule Demo.Repo.Migrations.CreateTickets do
       add :arrival_terminal, :string #? terminal_name
       add :gate, :string
       add :seat, :string
-      add :item_id, :binary_id
-      add :item_size, {:array, :map}
-      add :item_weight, :integer
       add :caution, :string
       add :gopang_fee, :decimal, precision: 15, scale: 4
       add :status, :string, default: "ticket accepted"

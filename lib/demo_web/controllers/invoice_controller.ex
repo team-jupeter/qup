@@ -14,7 +14,7 @@ defmodule DemoWeb.InvoiceController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"invoice" => invoice_params}) do
+  def create(conn, %{"invoice" => invoice_params}, buyer_rsa_priv_key, sender_rsa_priv_key) do
     case Invoices.create_invoice(invoice_params) do
       {:ok, invoice} ->
         conn

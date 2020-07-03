@@ -12,7 +12,7 @@ defmodule Demo.InvoiceItems do
 
     def subscribe(invoice_item_id) do
       Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{invoice_item_id}")
-    end
+    end 
 
     def list_invoice_items, do: Repo.all(InvoiceItem)
 

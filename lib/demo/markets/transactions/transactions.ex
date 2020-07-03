@@ -5,7 +5,7 @@ defmodule Demo.Transactions do
 
   import Ecto.Query, warn: false
   alias Demo.Repo
-
+  alias Demo.Supuls
   alias Demo.Transactions.Transaction
 
   def list_transactions do
@@ -16,7 +16,7 @@ defmodule Demo.Transactions do
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
 
-  def create_transaction(invoice \\ %{}) do
+  def create_transaction({:ok, invoice}, buyer_rsa_priv_key, sender_rsa_priv_key) do
     attrs = %{
       buyer: invoice.buyer.main_name,
       seller: invoice.seller.main_name,
@@ -32,8 +32,29 @@ defmodule Demo.Transactions do
     |> Transaction.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:invoice, invoice)
     |> Repo.insert()
-  end
+    |> make_payload_and_send_to_supul(buyer_rsa_priv_key, sender_rsa_priv_key) #? if fail, the code below is not called.
+  end 
 
+  defp make_payload_and_send_to_supul({:ok, transaction}, buyer_rsa_priv_key, sender_rsa_priv_key) do
+    msg_serialized = Poison.encode!(transaction)
+    ts = DateTime.utc_now() |> DateTime.to_unix()
+    ts_msg_serialized = "#{ts}|#{msg_serialized}"
+
+    {:ok, buyer_signature} = ExPublicKey.sign(ts_msg_serialized, buyer_rsa_priv_key)
+    {:ok, seller_signature} = ExPublicKey.sign(ts_msg_serialized, sender_rsa_priv_key)
+
+    payload = "#{ts}|#{msg_serialized}|#{Base.url_encode64(buyer_signature)}|#{Base.url_encode64(seller_signature)}"
+    
+    #? check whether the payload is correct or not
+    #? if the payload is correct, update financial reports of both parties by 
+    #? returning {:ok, transaction} and calling the next code line.
+    
+    IO.puts "Hi, I am here...smile ^^*"
+
+    transaction
+    |> Supuls.check_archive_payload(payload) #? if pass the check, return transaction
+    |> Supuls.process_transaction() #? executed only if the code above succeeds.
+  end
 
   def update_transaction(%Transaction{} = transaction, attrs) do
     transaction

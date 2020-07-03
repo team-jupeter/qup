@@ -4,6 +4,7 @@ defmodule Demo.Gopang.Tickets do
   alias Demo.Repo
   alias Demo.Gopang.Ticket
   alias Demo.Business.Entity
+  # alias Demo.Invoices
 
 
   def list_tickets do
@@ -41,7 +42,6 @@ defmodule Demo.Gopang.Tickets do
   def create_ticket(%Entity{} = entity, attrs \\ %{}) do
     %Ticket{}
     |> Ticket.changeset(attrs)
-    |> IO.inspect
     |> Ecto.Changeset.put_assoc(:entity, entity)
     |> Repo.insert()
   end

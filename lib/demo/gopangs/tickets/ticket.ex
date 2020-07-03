@@ -4,6 +4,10 @@ defmodule Demo.Gopang.Ticket do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "tickets" do
+    field :invoice_id, :binary_id
+    field :package_size, {:array, :map}
+    field :package_weight, :integer
+    field :box_type, :string
     field :departure, :string
     field :destination, :string
     field :input, {:array, :map}, default: []
@@ -19,9 +23,6 @@ defmodule Demo.Gopang.Ticket do
     field :arrival_terminal, :string #? terminal_name
     field :gate, :string
     field :seat, :string
-    field :item_id, :binary_id
-    field :item_size, {:array, :map}
-    field :item_weight, :integer
     field :caution, :string
     field :gopang_fee, :decimal, precision: 15, scale: 4
     field :status, :string, default: "ticket accepted"
@@ -41,15 +42,16 @@ defmodule Demo.Gopang.Ticket do
   
 
     @fields [
+      :invoice_id, 
+      :package_size, 
+      :package_weight, 
+      :box_type, 
       :departure,
       :destination,
       :input, 
       :output, 
       :departure_time, 
       :arrival_time, 
-      :item_id, 
-      :item_size, 
-      :item_weight, 
       :caution, 
       :gopang_fee,
     ]

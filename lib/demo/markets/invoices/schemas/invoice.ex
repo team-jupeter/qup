@@ -1,17 +1,22 @@
 defmodule Demo.Invoices.Invoice do
   use Ecto.Schema
   import Ecto.Changeset
+  # import Poison
   alias Demo.Repo
   alias Demo.Invoices.Invoice
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "invoices" do
+    field :openhash, :string
     field :start_at, :naive_datetime
     field :end_at, :naive_datetime
     field :total, :decimal, precision: 12, scale: 2
     field :tax_total, :decimal, precision: 5, scale: 2
     field :fiat_currency, :decimal, precision: 12, scale: 2
+
+    field :buyer_supul_id,  :string
+    field :seller_supul_id, :string
 
     has_many :invoice_items, Demo.Invoices.InvoiceItem, on_delete: :delete_all
     belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id
@@ -31,7 +36,10 @@ defmodule Demo.Invoices.Invoice do
   end 
 
 
-  @fields [:total, :start_at, :end_at, :tax_total, :fiat_currency]
+  @fields [
+    :openhash, :total, :start_at, :end_at, :tax_total, 
+    :fiat_currency, :buyer_supul_id, :seller_supul_id
+  ]
 
   def changeset(data, params \\ %{}) do
     data
@@ -44,9 +52,9 @@ defmodule Demo.Invoices.Invoice do
   def create(_invoice, params) do
     changeset(%Invoice{}, params)
     |> put_assoc(:invoice_items, params["invoice_items"])
-    # |> put_assoc(:entities, [params["buyer"]["main"], params["seller"]["main"]])
     |> Repo.insert #? {ok, invoice}
     |> add_total
+    |> add_openhash
   end
 
 
@@ -57,6 +65,26 @@ defmodule Demo.Invoices.Invoice do
     invoice 
     |> change 
     |> put_change(:total, total) 
+    |> Repo.update
+  end
+
+  defp add_openhash({_ok, invoice}) do
+    #? serialize the JSON
+    msg_serialized = Poison.encode!(invoice)
+
+    #? generate time-stamp
+    ts = DateTime.utc_now() |> DateTime.to_unix()
+
+    #? add a time-stamp
+    ts_msg_serialized = "#{ts}|#{msg_serialized}"
+
+    openhash = :crypto.hash(:sha256, ts_msg_serialized) 
+      |> Base.encode16() 
+      |> String.downcase()
+
+    invoice 
+    |> change 
+    |> put_change(:openhash, openhash) 
     |> Repo.update
   end
 
