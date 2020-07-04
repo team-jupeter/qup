@@ -1,11 +1,9 @@
-<h4>Transactions</h4>
-
 <table>
   <thead>
     <tr>
       <th>Input</th>
       <th>Output</th>
-      <th>Amount</th>
+      <th>Amount</th> 
     </tr>
   </thead>
   <tbody>
@@ -17,8 +15,6 @@
 
       <td>
         <span><%= link "Show", to: Routes.transaction_path(@conn, :show, transaction) %></span>
-        <span><%= link "Edit", to: Routes.transaction_path(@conn, :edit, transaction) %></span>
-        <span><%= link "Delete", to: Routes.transaction_path(@conn, :delete, transaction), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
     </tr>
 <% end %>

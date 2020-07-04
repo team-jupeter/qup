@@ -7,19 +7,56 @@ defmodule Demo.Transactions do
   alias Demo.Repo
   alias Demo.Supuls
   alias Demo.Transactions.Transaction
+  alias Demo.Business.Entity
 
-  def list_transactions do
-    Repo.all(Transaction)
+  def list_transactions(%Entity{} = entity) do
+    Transaction
+    |> entity_transactions_query(entity)
+    |> Repo.all()
   end
 
-
+  
+  def get_entity_transaction!(entity, id) do
+    Transaction
+    |> entity_transactions_query(entity)
+    |> Repo.get!(id)
+  end
+  defp entity_transactions_query(query, entity) do
+    from(t in query, 
+    where: t.buyer_id == ^entity.id or t.seller_id == ^entity.id)
+  end
+  
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
 
-  def create_transaction({:ok, invoice}, buyer_rsa_priv_key, sender_rsa_priv_key) do
+
+
+  # def get_buyer_transaction!(entity, id) do
+  #   BuyerEmbed
+  #   |> buyer_transactions_query(entity)
+  #   |> Repo.get!(id)
+  # end
+  # defp buyer_transactions_query(query, %Entity{id: entity_id}) do
+  #   from(b in query, where: b.main_id == ^entity_id)
+  # end
+
+
+  # def get_seller_transaction!(entity, id) do
+  #   SellerEmbed
+  #   |> seller_transactions_query(entity)
+  #   |> Repo.get!(id)
+  # end
+  # defp seller_transactions_query(query, %Entity{id: entity_id}) do
+  #   from(s in query, where: s.main_id == ^entity_id)
+  # end
+
+
+  def create_transaction(_entity, {:ok, invoice}, buyer_rsa_priv_key, sender_rsa_priv_key) do
     attrs = %{
       buyer: invoice.buyer.main_name,
       seller: invoice.seller.main_name,
+      buyer_id: invoice.buyer.main_id,
+      seller_id: invoice.seller.main_id,
       abc_input_id: invoice.buyer.main_id, #? in real transaction, it should be a public addresss of buyer.
       abc_input_name: invoice.buyer.main_name, 
       abc_output_id: invoice.seller.main_id,  #? in real transaction, it should be a public addresss of seller.
@@ -27,7 +64,7 @@ defmodule Demo.Transactions do
       abc_amount: invoice.total,
       fiat_currency: invoice.fiat_currency
     }
-
+ 
     %Transaction{}
     |> Transaction.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:invoice, invoice)
@@ -63,9 +100,9 @@ defmodule Demo.Transactions do
   end
 
 
-  def delete_transaction(%Transaction{} = transaction) do
-    Repo.delete(transaction)
-  end
+  # def delete_transaction(%Transaction{} = transaction) do
+  #   Repo.delete(transaction)
+  # end
 
   def change_transaction(%Transaction{} = transaction) do
     Transaction.changeset(transaction, %{})

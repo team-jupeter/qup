@@ -72,29 +72,27 @@ defmodule Demo.Supuls do
   alias Demo.Mulets.Payload
   alias Demo.Mulets
   defp archive_payload(transaction, payload) do
+    IO.inspect transaction
 
     IO.puts "smile again 2  ^^*"
     #? Archieve Payload
     {:ok, archived_payload} = Mulets.create_payload_archive(%{payload: payload}) 
+    # {:ok, archived_payload} = Demo.Mulets.create_payload_archive(%{payload: payload}) 
     
     IO.puts "smile again 3 ^^*"
     IO.inspect archived_payload.payload_hash
 
     #? Openhash 
     openhash = Mulets.openhash(%{payload_hash: archived_payload.payload_hash})
+    openhash = Demo.Mulets.openhash(%{payload_hash: archived_payload.payload_hash})
 
 
-
-
-    
     #? Send archived_payload.payload_hash to buyer and seller for them to store it.
+    #? The payload_hash should be signed by the private key of the supul.
     #? insert code below
     
     
 
-
-    #? Send openhash to randomly selected other supuls.
-    #? insert code below
 
 
 

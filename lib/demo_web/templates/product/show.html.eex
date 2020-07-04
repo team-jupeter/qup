@@ -1,45 +1,27 @@
 <table >
   <thead> 
-      <tr>
-    <th>Account</th>
-    <th>Amount</th>
-    </tr>
+
   </thead>
   <tbody>
     <tr>
-    </tr>
-    </tr>
-      <td>Type</td>
-      <td><%= @product.type %></td>
-    </tr>
-    </tr>
-      <td>GPC</td>
-      <td><%= @product.gpc_code_id %></td>
-    </tr>
       <td>Name</td>
       <td><%= @product.name %></td>
     </tr>
+    <tr>
       <td>Price</td>
       <td><%= @product.price %></td>
     </tr>
+    <tr>
       <td>Stars</td>
       <td><%= @product.stars %></td>
     </tr>
-    </tr>
+    <tr>
       <td>Price/value</td>
       <td><%= @product.pvr %></td>
     </tr>
-    </tr>
+    <tr>
       <td>Description</td>
       <td><%= @product.description %></td>
-    </tr>
-    </tr>
-      <td>Comments</td>
-      <td><%= @product.comments %></td>
-    </tr>
-    </tr>
-      <td>Product Logs</td>
-      <td><%= @product.product_logs %></td>
     </tr>
   </tbody>
 </table>

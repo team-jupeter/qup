@@ -32,17 +32,17 @@ defmodule Demo.Mulets do
   end 
 
   def openhash(params) do
-    IO.puts "I am here Mulets.openhash"
-    IO.inspect params
+    # IO.puts "I am here Mulets.openhash"
+    # IO.inspect params
 
     
     %Openhash{}
     |> Openhash.changeset(params)
     |> Repo.insert()
-    |> IO.inspect
+    # |> IO.inspect
     |> put_openhash()
     |> Repo.update()
-    |> IO.inspect
+    # |> IO.inspect
   end
   
   defp put_openhash({:ok, openhash}) do

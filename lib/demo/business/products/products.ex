@@ -2,7 +2,7 @@ defmodule Demo.Business.Products do
   import Ecto.Query, warn: false
 
   alias Demo.Repo
-  alias Demo.Business.Product
+  alias Demo.Business.Product 
   alias Demo.Business.GPCCode
   alias Demo.Business.Entity
 

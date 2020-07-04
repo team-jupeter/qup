@@ -807,8 +807,10 @@ params = %{
   "fiat_currency" => invoice_item.quantity
 }
 
-Invoices.create_invoice(params, hong_entity_rsa_priv_key, tomi_rsa_priv_key)
+invoice = Invoices.create_invoice(params)
 
+alias Demo.Transactions
+transaction = Transactions.create_transaction(hong_entity, invoice, hong_entity_rsa_priv_key, tomi_rsa_priv_key)
 
 
 
@@ -840,9 +842,7 @@ params = %{
 
 #? invoice => transaction => supul (1) update financial reports, (2) archieve, (3) openhash
 invoice = Invoices.create_invoice(params)
-
-alias Demo.Transactions
-transaction = Transactions.create_transaction(invoice, hong_entity_rsa_priv_key, tomi_rsa_priv_key)
+transaction = Transactions.create_transaction(hong_entity, invoice, hong_entity_rsa_priv_key, tomi_rsa_priv_key)
 
 
 

@@ -11,6 +11,8 @@ defmodule Demo.Transactions.Transaction do
     #? who pays ABC? which t1s in his/her/its wallet?
     field :buyer, :string 
     field :seller, :string 
+    field :buyer_id, :string
+    field :seller_id, :string
     field :gps, {:array, :map} 
     field :tax, :decimal, default: 0.0
     field :insurance, :string
@@ -35,22 +37,10 @@ defmodule Demo.Transactions.Transaction do
   end
 
   @fields [
-    :hash_of_invoice,
-    :buyer,  
-    :seller,  
-    :gps, 
-    :tax, 
-    :insurance,
-    :abc_input_id,  
-    :abc_input_name,  
-    :abc_output_id,  
-    :abc_output_name,  
-    :abc_input_t1s, 
-    :abc_amount, 
-    :items, 
-    :fiat_currency, 
-    :transaction_status,
-    :if_only_item, 
+    :hash_of_invoice, :buyer, :seller, :buyer_id, :seller_id,  
+    :gps, :tax, :insurance, :abc_input_id, :abc_input_name,  
+    :abc_output_id, :abc_output_name, :abc_input_t1s, :abc_amount, 
+    :items, :fiat_currency, :transaction_status, :if_only_item, 
     :fair?, 
   ]
   @doc false

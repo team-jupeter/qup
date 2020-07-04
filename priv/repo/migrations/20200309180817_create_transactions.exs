@@ -7,6 +7,8 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :hash_of_invoice, :string
       add :buyer, :string  
       add :seller, :string  
+      add :buyer_id, :string
+      add :seller_id, :string
       add :gps, {:array, :map}
       add :tax, :decimal, default: 0.0
       add :insurance, :string

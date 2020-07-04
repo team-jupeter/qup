@@ -1,9 +1,7 @@
 
 <table>
-   <tr>
-    <td>Hash_of_invoice:</td>
-    <td><%= @transaction.hash_of_invoice %></td>
-  </tr>
+
+  <tbody>
    <tr>
     <td>Buyer:</td>
     <td><%= @transaction.buyer %></td>
@@ -19,7 +17,7 @@
    <tr>
     <td>Tax:</td>
     <td><%= @transaction.tax %></td>
-  </tr>
+  </tr> 
    <tr>
     <td>Insurance:</td>
     <td><%= @transaction.insurance %></td>
@@ -68,6 +66,7 @@
     <td>Fair?:</td>
     <td><%= @transaction.fair? %></td>
   </tr>
+ <tbody>
 </table>
 
 <span><%= link "Edit", to: Routes.transaction_path(@conn, :edit, @transaction) %></span>
