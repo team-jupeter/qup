@@ -1,0 +1,26 @@
+<h1>Listing Jangs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Cart</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for jang <- @jangs do %>
+    <tr>
+      <td><%= jang.cart %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.jang_path(@conn, :show, jang) %></span>
+        <span><%= link "Edit", to: Routes.jang_path(@conn, :edit, jang) %></span>
+        <span><%= link "Delete", to: Routes.jang_path(@conn, :delete, jang), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Jang", to: Routes.jang_path(@conn, :new) %></span>

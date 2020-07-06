@@ -14,6 +14,7 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add :email, :string
       add :birth_date, :naive_datetime
       add :password_hash, :string
+      add :supul_code, :binary_id
 
       add :nation_signature, :text
       
@@ -21,7 +22,7 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add :constitution_id, references(:constitutions, type: :uuid, null: false)
       
       add :entity_id, references(:entities, type: :uuid, null: false)
-      add :supul_id, references(:supuls, type: :uuid, null: false)
+      # add :supul_id, references(:supuls, type: :uuid, null: false)
       add :school_id, references(:schools, type: :uuid)
 
   

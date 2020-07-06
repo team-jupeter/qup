@@ -1,4 +1,4 @@
-<h3>Invoice Items</h3>
+<h3>[Cart] Invoice Items</h3>
 
 <table>
   <thead>
@@ -25,4 +25,4 @@
   </tbody>
 </table>
 
-<span><%= link "New Invoice", to: Routes.invoice_item_path(@conn, :new) %></span>
+<span><%= link "[Payment] New Invoice", to: Routes.invoice_path(@conn, :new) %></span>

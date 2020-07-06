@@ -1,8 +1,11 @@
 defmodule DemoWeb.TransactionController do
   use DemoWeb, :controller
-
+  import Ecto.Query, only: [from: 2]
   alias Demo.Transactions
   alias Demo.Transactions.Transaction
+  alias Demo.Business.Entity
+  alias Demo.InvoiceItems
+  alias Demo.Repo
 
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
 
@@ -16,13 +19,35 @@ defmodule DemoWeb.TransactionController do
     render(conn, "index.html", transactions: transactions)
   end
 
-  def new(conn, _params, _current_entity) do
-    changeset = Transactions.change_transaction(%Transaction{})
-    render(conn, "new.html", changeset: changeset)
-  end
+  def new(conn, _params, current_entity) do
+    buyer = current_entity #? buyer ID
 
-  def create(conn, %{"transaction" => transaction_params}, current_entity, buyer_rsa_priv_key, sender_rsa_priv_key) do
-    case Transactions.create_transaction(current_entity, transaction_params, buyer_rsa_priv_key, sender_rsa_priv_key) do
+    invoice_items = InvoiceItems.list_invoice_items(current_entity.id)
+    seller_id = Enum.at(invoice_items, 0).seller_id
+
+    IO.inspect Enum.at(invoice_items, 0)
+    IO.inspect seller_id
+
+    seller = Repo.one(
+      from e in Entity,
+        where: e.id == ^seller_id
+    )
+
+    IO.inspect seller
+
+    transaction_params = %{
+      buyer_name: buyer.name, 
+      buyer_id: buyer.id,
+      buyer_supul_id: buyer.supul_id,
+      buyer_supul_name: buyer.supul_name,
+
+      # seller_name: seller.name, 
+      # seller_id: seller.id,
+      # seller_supul_id: seller.supul_id,
+      # seller_supul_name: seller.supul_name,
+    }
+
+    case Transactions.create_transaction(transaction_params) do
       {:ok, transaction} ->
         conn
         |> put_flash(:info, "Transaction created successfully.")
@@ -31,15 +56,15 @@ defmodule DemoWeb.TransactionController do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
+    
   end
 
-  def show(conn, %{"id" => id}, _current_entity) do
-    IO.inspect id
+  def create(conn, invoice, current_entity, buyer_rsa_priv_key, sender_rsa_priv_key) do
+    conn
+  end
 
-    transaction = Transactions.get_transaction!(id)
-
-    IO.inspect transaction
-    
+  def show(conn, %{"id" => id}, current_entity) do
+    transaction = Transactions.get_entity_transaction!(current_entity, id) 
     render(conn, "show.html", transaction: transaction)
   end
 

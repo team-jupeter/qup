@@ -1,10 +1,33 @@
-<h4>Item Detail</h4>
-<b>name</b> (<%= @item.name %>) </br>
-<b>price</b> (<%= @item.price %>) </br>
-<b>product_id</b> (<%= @item.product_id %>) </br>
-<b>document</b> (<%= @item.document %>) </br>
-<b>document_hash</b> (<%= @item.document_hash %>) </br>
+<table >
+  <thead> 
+    <th>Product Detail</th>
+    <th>Content</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td><%= @item.name %></td>
+    </tr>
+    <tr>
+      <td>Price</td>
+      <td><%= @item.price %></td>
+    </tr>
+    <tr>
+      <td>Stars</td>
+      <td><%= @item.stars %></td>
+    </tr>
+    <tr>
+      <td>Price/value</td>
+      <td><%= @item.pvr %></td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td><%= @item.description %></td>
+    </tr>
+  </tbody>
+</table>
  </br>
-
 <span><%= link "Edit", to: Routes.item_path(@conn, :edit, @item) %></span>
 <span><%= link "Back", to: Routes.item_path(@conn, :index) %></span>
+
+

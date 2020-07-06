@@ -6,12 +6,12 @@ defmodule Demo.Supuls do
   alias Demo.Mulets
   alias Demo.Mulets.Payload
   alias Demo.IncomeStatements
-  alias Demo.BalanceSheets
+  alias Demo.BalanceSheets 
   alias Demo.IncomeStatements
   alias Demo.Reports.IncomeStatement
   alias Demo.Business
   alias Demo.Business.Entity
-
+ 
   def list_supuls do
     Repo.all(Supul)
   end
@@ -83,24 +83,32 @@ defmodule Demo.Supuls do
     IO.inspect archived_payload.payload_hash
 
     #? Openhash 
-    openhash = Mulets.openhash(%{payload_hash: archived_payload.payload_hash})
-    openhash = Demo.Mulets.openhash(%{payload_hash: archived_payload.payload_hash})
+    openhash = Mulets.openhash(%{
+      buyer_id: transaction.buyer_id, 
+      buyer_name: transaction.buyer_name, 
+      seller_id: transaction.seller_id, 
+      seller_name: transaction.seller_name, 
+      
+      input_id: transaction.buyer_supul_code,
+      input_name: transaction.buyer_supul_name,
+      output_id: transaction.seller_supul_code,
+      output_name: transaction.seller_supul_name,
 
+      payload_hash: archived_payload.payload_hash, 
+      
+      })
 
-    #? Send archived_payload.payload_hash to buyer and seller for them to store it.
-    #? The payload_hash should be signed by the private key of the supul.
-    #? insert code below
+    # send_openhash_to_upper_supul(openhash) 
     
-    
+    # Supuls.return_openhash_to_buyer_and_seller(openhash) 
 
-
-
-
-
-
-    #? Return transaction to process_transaction() of Supuls.ex
     {:ok, transaction}
   end
+
+  defp send_openhash_to_upper_supul() do
+  end
+
+
 
   def process_transaction({:ok, transaction}) do
     update_IS(transaction)

@@ -8,22 +8,28 @@ defmodule Demo.Invoices.Invoice do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "invoices" do
-    field :openhash, :string
+    field :openhash, :string 
     field :start_at, :naive_datetime
     field :end_at, :naive_datetime
-    field :total, :decimal, precision: 12, scale: 2
-    field :tax_total, :decimal, precision: 5, scale: 2
+    field :total, :decimal, precision: 12, scale: 4
+    field :tax_total, :decimal, precision: 5, scale: 4
     field :fiat_currency, :decimal, precision: 12, scale: 2
 
-    field :buyer_supul_id,  :string
-    field :seller_supul_id, :string
+    field :buyer_id, :binary_id
+    field :buyer_name, :string
+    field :buyer_supul_id, :binary_id
+    field :buyer_supul_name, :string
+    field :seller_id, :binary_id
+    field :seller_name, :string
+    field :seller_supul_id, :binary_id
+    field :seller_supul_name, :string
 
     has_many :invoice_items, Demo.Invoices.InvoiceItem, on_delete: :delete_all
     belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id
 
-    embeds_one :buyer, Demo.Invoices.BuyerEmbed, on_replace: :delete
-    embeds_one :seller, Demo.Invoices.SellerEmbed, on_replace: :delete
-    embeds_many :payments, Demo.Invoices.Payment, on_replace: :delete
+    # embeds_one :buyer, Demo.Invoices.BuyerEmbed, on_replace: :delete
+    # embeds_one :seller, Demo.Invoices.SellerEmbed, on_replace: :delete
+    # embeds_many :payments, Demo.Invoices.Payment, on_replace: :delete
 
     many_to_many(
       :entities,
@@ -37,28 +43,38 @@ defmodule Demo.Invoices.Invoice do
 
 
   @fields [
-    :openhash, :total, :start_at, :end_at, :tax_total, 
-    :fiat_currency, :buyer_supul_id, :seller_supul_id
+    :openhash, :total, :start_at, :end_at, :tax_total, :fiat_currency, 
+    :buyer_id,
+    :buyer_name, 
+    :buyer_supul_id, 
+    :buyer_supul_name, 
+    :seller_id, 
+    :seller_name,
+    :seller_supul_id,
+    :seller_supul_name,
   ]
 
   def changeset(data, params \\ %{}) do
     data
     |> cast(params, @fields)
-    |> cast_embed(:buyer)
-    |> cast_embed(:seller)
+    # |> cast_embed(:buyer)
+    # |> cast_embed(:seller)
   end
 
 
   def create(_invoice, params) do
     changeset(%Invoice{}, params)
-    |> put_assoc(:invoice_items, params["invoice_items"])
+    |> put_assoc(:invoice_items, params.invoice_items)
     |> Repo.insert #? {ok, invoice}
-    |> add_total
-    |> add_openhash
+    |> put_total
+    # |> put_buyer_data
+    # |> put_seller_data
+    # |> put_supul_codes
+    # |> put_openhash
   end
 
 
-  defp add_total({_ok, invoice}) do
+  defp put_total({_ok, invoice}) do
     total = Enum.reduce(invoice.invoice_items, 0, fn x, sum -> Decimal.add(x.subtotal, sum) end)
     
     #? When we change a struct, change => put_change => update
@@ -68,25 +84,47 @@ defmodule Demo.Invoices.Invoice do
     |> Repo.update
   end
 
-  defp add_openhash({_ok, invoice}) do
-    #? serialize the JSON
-    msg_serialized = Poison.encode!(invoice)
+  # defp put_buyer_data(cs) do
+  #   cs
+  # end
 
-    #? generate time-stamp
-    ts = DateTime.utc_now() |> DateTime.to_unix()
+  # defp put_seller_data(cs) do
+  #   seller_id = cs.data.invoice_item.entity_id
+  #   seller_name = cs.data.invoice_item.entity_name
 
-    #? add a time-stamp
-    ts_msg_serialized = "#{ts}|#{msg_serialized}"
+  #   cs
+  #   |> put_change(:seller_id, seller_id)
+  #   |> put_change(:seller_name, seller_name)
+  # end
 
-    openhash = :crypto.hash(:sha256, ts_msg_serialized) 
-      |> Base.encode16() 
-      |> String.downcase()
+  # defp put_supul_codes(cs) do
+  #   # buyer_supul_code = invoice.buyer.supul_code
+  #   seller_supul_code = invoice.seller.supul_code
 
-    invoice 
-    |> change 
-    |> put_change(:openhash, openhash) 
-    |> Repo.update
-  end
+  #   cs 
+  #   |> put_change(:buyer_supul_code, buyer_supul_code) 
+  #   |> put_change(:buyer_supul_code, buyer_supul_code) 
+  # end
+
+  # defp put_openhash({_ok, invoice}) do
+  #   #? serialize the JSON
+  #   msg_serialized = Poison.encode!(invoice)
+
+  #   #? generate time-stamp
+  #   ts = DateTime.utc_now() |> DateTime.to_unix()
+
+  #   #? add a time-stamp
+  #   ts_msg_serialized = "#{ts}|#{msg_serialized}"
+
+  #   openhash = :crypto.hash(:sha256, ts_msg_serialized) 
+  #     |> Base.encode16() 
+  #     |> String.downcase()
+
+  #   invoice 
+  #   |> change 
+  #   |> put_change(:openhash, openhash) 
+  #   |> Repo.update
+  # end
 
 
 

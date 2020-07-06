@@ -1,69 +1,24 @@
-<h4>Show Supul</h4>
-
+<h4><%= @supul.name %></h4>
 <ul>
-
-  <li>
-    <strong>ID:</strong>
-    <%= @supul.id %>
-  </li>
-
   <li>
     <strong>Type:</strong>
     <%= @supul.type %>
   </li>
   
   <li>
-    <strong>supul_code:</strong>
+    <strong>Supul Code:</strong>
     <%= @supul.supul_code %>
   </li>
-  
-  <li>
-    <strong>geographical_area:</strong>
-    <%= @supul.geographical_area %>
-  </li>
-  
-  <li>
-    <strong>name:</strong>
-    <%= @supul.name %>
-  </li>
-  
-  <li>
-    <strong>state_name:</strong>
-    <%= @supul.state_name %>
-  </li>
-  
-  <li>
-    <strong>nation_name:</strong>
-    <%= @supul.nation_name %>
-  </li>
-  
-  
-  <li>
-    <strong>state_supul:</strong>
-    <%= @supul.state_supul_id %>
-  </li>
-
-  <li>
-    <strong>financial_report:</strong>
-  </li>
-  <li>
-    <strong>schools:</strong>
-  </li>
-  
-  <li>
-    <strong>financial_report:</strong>
-  </li>
-  <li>
-    <strong>mulet:</strong>
-  </li>
-  <li>
-    <strong>gopang:</strong>
-  </li>
-  <li>
-    <strong>gopang:</strong>
-  </li>
-
 </ul>
 
-<span><%= link "Edit", to: Routes.supul_path(@conn, :edit, @supul) %></span>
+
+<h4>Financial Reports</h4>
+  <ul>
+      <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @supul.id) %></li>
+      <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :show, @supul.id) %></li>
+      <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @supul.id) %></li>
+      <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :show, @supul.id) %></li>
+      <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :show, @supul.id) %></li>
+  </ul>
+
 <span><%= link "Back", to: Routes.supul_path(@conn, :index) %></span>

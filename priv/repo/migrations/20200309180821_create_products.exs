@@ -7,11 +7,17 @@ defmodule Demo.Repo.Migrations.CreateProducts do
       add :id, :uuid, primary_key: true
       add :name, :string 
       add :price, :decimal
+      add :quantity, :decimal
       add :stars, :decimal
       add :pvr, :decimal
       add :description, :text 
       add :document_hash, :string
       add :owner, {:array, :string}
+
+      add :seller_id, :binary_id
+      add :seller_name, :string
+      add :seller_supul_id, :binary_id
+      add :seller_supul_name, :string
       
       add :arrived_when, :naive_datetime #? when arrived to the entity
       add :stored_at, :string #? unique warehouse or device name

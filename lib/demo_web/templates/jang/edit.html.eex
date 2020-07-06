@@ -1,0 +1,5 @@
+<h1>Edit Jang</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.jang_path(@conn, :update, @jang)) %>
+
+<span><%= link "Back", to: Routes.jang_path(@conn, :index) %></span>

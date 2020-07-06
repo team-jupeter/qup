@@ -1,12 +1,11 @@
 <table>
-   <tr>
-    <td>Buyer:</td>
-    <td><%= @invoice.buyer.main_name %></td>
+<thead>
+  <tr>
+  <th>Title</th>
+  <th>Contentd</th>
   </tr>
-   <tr>
-    <td>Seller:</td>
-    <td><%= @invoice.seller.main_name %></td>
-  </tr>
+</thead>
+<tbody>
    <tr>
     <td>start_at:</td>
     <td><%= @invoice.start_at %></td>
@@ -27,6 +26,8 @@
     <td>fiat_currency:</td>
     <td><%= @invoice.fiat_currency %></td>
   </tr>
+  </tbody>
 </table> 
 
-<span><%= link "Back", to: Routes.invoice_path(@conn, :index) %></span>
+<span><%= link "Start Transaction", to: Routes.transaction_path(@conn, :new) %></span>
+<span><%= link "[Payment] New Invoice", to: Routes.invoice_path(@conn, :new) %></span>

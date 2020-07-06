@@ -31,7 +31,7 @@ defmodule DemoWeb.ProductController do
 
   def update(conn, %{"id" => id, "product" => product_params}, current_entity) do
     product = Products.get_entity_product!(current_entity, id) 
-
+ 
     case Products.update_product(product, product_params) do
       {:ok, product} ->
         conn
@@ -58,6 +58,8 @@ defmodule DemoWeb.ProductController do
   end
 
   def create(conn, %{"product" => product_params}, current_entity) do
+    IO.inspect current_entity
+    
     case Products.create_product(current_entity, product_params) do
       {:ok, product} ->
         conn

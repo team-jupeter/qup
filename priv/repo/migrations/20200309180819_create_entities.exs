@@ -4,7 +4,8 @@ defmodule Demo.Repo.Migrations.CreateEntities do
   def change do
     create table(:entities, primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :registered_no, :string
+      add :type, :string
+      add :auth_code, :string
       add :industry_classification, :string
       add :name, :string 
       add :project, :string 
@@ -23,7 +24,9 @@ defmodule Demo.Repo.Migrations.CreateEntities do
       add :num_of_shares, {:array, :map}
       add :share_price, {:array, :map}
       add :credit_rate, :string #? AAA, ..., FFF => 24 rates
-      
+      add :supul_code, :binary_id 
+      add :taxation_code, :binary_id 
+
       add :password_hash, :string
 
       add :locked, :boolean, default: false

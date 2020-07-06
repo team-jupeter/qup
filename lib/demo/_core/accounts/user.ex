@@ -12,7 +12,7 @@ defmodule Demo.Accounts.User do
 
   schema "users" do
     field :type, :string 
-    # field :default_entity, :binary_id
+    field :default_entity, :binary_id
     field :name, :string
     field :gps, {:array, :map}
     field :nationality, :string
@@ -23,6 +23,7 @@ defmodule Demo.Accounts.User do
     field :password_confirmation, :string, virtual: true
     field :ssn, :string #? Social Security Number 
     field :birth_date, :naive_datetime
+    field :supul_code, :binary_id
 
 
     field :nation_signature, :string
@@ -38,7 +39,7 @@ defmodule Demo.Accounts.User do
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id #? 고국
     belongs_to :constitution,  Demo.Votes.Constitution, type: :binary_id #? 고향 
-    belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id #? 고향 
+    # belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id #? 고향 
     
     many_to_many(
       :entities,
@@ -61,7 +62,7 @@ defmodule Demo.Accounts.User do
   @fields [
     :name, :type, :nationality, :email, :birth_date, 
     :password, :nation_signature, :nation_id,
-    :constitution_id, :supul_id, :username
+    :constitution_id, :supul_code, :username, :default_entity
   ]
 
   def changeset(user, attrs) do

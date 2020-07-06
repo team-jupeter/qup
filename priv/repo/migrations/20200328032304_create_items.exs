@@ -10,6 +10,7 @@ defmodule Demo.Repo.Migrations.CreateItems do
       add :document_hash, :string
       
       add :product_id, references(:products, type: :binary_id)
+      add :entity_id, references(:entities, type: :binary_id)
       # add :tax_rate, :decimal, precision: 15, scale: 4
  
       add :locking_use_area, {:array, :string}, default: []

@@ -51,28 +51,18 @@ defmodule Demo.Transactions do
   # end
 
 
-  def create_transaction(_entity, {:ok, invoice}, buyer_rsa_priv_key, sender_rsa_priv_key) do
-    attrs = %{
-      buyer: invoice.buyer.main_name,
-      seller: invoice.seller.main_name,
-      buyer_id: invoice.buyer.main_id,
-      seller_id: invoice.seller.main_id,
-      abc_input_id: invoice.buyer.main_id, #? in real transaction, it should be a public addresss of buyer.
-      abc_input_name: invoice.buyer.main_name, 
-      abc_output_id: invoice.seller.main_id,  #? in real transaction, it should be a public addresss of seller.
-      abc_output_name: invoice.seller.main_name,  
-      abc_amount: invoice.total,
-      fiat_currency: invoice.fiat_currency
-    }
+  def create_transaction(attrs) do
+    IO.inspect attrs
  
     %Transaction{}
     |> Transaction.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:invoice, invoice)
+    # |> Ecto.Changeset.put_assoc(:invoice, invoice)
     |> Repo.insert()
-    |> make_payload_and_send_to_supul(buyer_rsa_priv_key, sender_rsa_priv_key) #? if fail, the code below is not called.
+    # |> make_payload_and_send_to_supul(buyer_rsa_priv_key, sender_rsa_priv_key) #? if fail, the code below is not called.
   end 
 
-  defp make_payload_and_send_to_supul({:ok, transaction}, buyer_rsa_priv_key, sender_rsa_priv_key) do
+  def payload(transaction, buyer_rsa_priv_key, sender_rsa_priv_key) do
+  # defp make_payload_and_send_to_supul({:ok, transaction}, buyer_rsa_priv_key, sender_rsa_priv_key) do
     msg_serialized = Poison.encode!(transaction)
     ts = DateTime.utc_now() |> DateTime.to_unix()
     ts_msg_serialized = "#{ts}|#{msg_serialized}"

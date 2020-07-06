@@ -1,16 +1,13 @@
 <table>
   <thead>
     <tr> 
-      <th>Buyer</th>
-      <th>Seller</th>
-      <th>Payment</th>
+      <th>Invoice</th>
+      <th>Inv. Total</th>
     </tr>
   </thead>
   <tbody>
 <%= for invoice <- @invoices do %>
     <tr>
-      <td><%= invoice.buyer.main_name %></td>
-      <td><%= invoice.seller.main_name %></td>
       <td><%= invoice.total %></td>
 
       <td>
@@ -23,4 +20,4 @@
   </tbody>
 </table>
 
-<span><%= link "New Invoice", to: Routes.invoice_path(@conn, :new) %></span>
+<span><%= link "New Transaction", to: Routes.invoice_path(@conn, :new) %></span>

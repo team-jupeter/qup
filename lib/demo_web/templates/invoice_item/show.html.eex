@@ -1,13 +1,30 @@
-<h4>Invoice Item Detail</h4>
-<b>item_name</b> (<%= @invoice_item.item_name %>) </br>
-<b>quantity</b> (<%= @invoice_item.quantity %>) </br>
-<b>price</b> (<%= @invoice_item.price %>) </br>
-<b>tax_per_unit</b> (<%= @invoice_item.tax_per_unit %>) </br>
-<b>tax_subtotal</b> (<%= @invoice_item.tax_subtotal %>) </br>
-<b>subtotal</b> (<%= @invoice_item.subtotal %>) </br>
-<b>invoice_id</b> (<%= @invoice_item.invoice_id %>) </br>
-<b>item_id</b> (<%= @invoice_item.item_id %>) </br>
-
+<table >
+  <thead> 
+    <th>Invoice Item Detail</th>
+    <th>Value</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td><%= @invoice_item.item_name %></td>
+    </tr>
+    <tr>
+      <td>Price</td>
+      <td><%= @invoice_item.price %></td>
+    </tr>
+    <tr>
+      <td>Quantity</td>
+      <td><%= @invoice_item.quantity %></td>
+    </tr>
+    <tr>
+      <td>Subtotal</td>
+      <td><%= @invoice_item.subtotal %></td>
+    </tr>
+  </tbody>
+</table>
  </br>
+
+<span><%= link "Go to Cart", to: Routes.invoice_item_path(@conn, :index) %></span>
+</br>
 <span><%= link "Edit", to: Routes.invoice_item_path(@conn, :edit, @invoice_item) %></span>
 <span><%= link "Back", to: Routes.invoice_item_path(@conn, :index) %></span>

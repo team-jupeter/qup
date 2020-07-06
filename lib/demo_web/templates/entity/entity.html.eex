@@ -1,1 +1,1 @@
-<b><%= @entity.name %></b>
+<li><%= @entity.name %></li>

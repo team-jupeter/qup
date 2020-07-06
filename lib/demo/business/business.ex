@@ -7,6 +7,7 @@ defmodule Demo.Business do
   alias Demo.Business.BizCategory
   alias Demo.Accounts.User
 
+
   def create_biz_category!(%{standard: standard, name: name, code: code}) do
     Repo.insert!(%BizCategory{standard: standard, name: name, code: code}, on_conflict: :nothing)
   end
@@ -16,6 +17,7 @@ defmodule Demo.Business do
     |> BizCategory.alphabetical()
     |> Repo.all()
   end
+
   
   def list_user_entities(%User{} = user) do
     IO.puts "hi"
@@ -60,6 +62,8 @@ defmodule Demo.Business do
   end
  
   def create_product(%Entity{} = entity, attrs \\ %{}) do
+    IO.inspect entity
+
     %Product{}
     |> Product.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, entity)

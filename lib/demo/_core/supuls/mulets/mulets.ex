@@ -8,7 +8,7 @@ defmodule Demo.Mulets do
 
   alias Demo.Mulets.Mulet
   alias Demo.Mulets.PayloadArchive
-  alias Demo.Mulets.Payload
+  # alias Demo.Mulets.Payload
   alias Demo.Mulets.Openhash
 
   def list_mulets do
@@ -32,17 +32,11 @@ defmodule Demo.Mulets do
   end 
 
   def openhash(params) do
-    # IO.puts "I am here Mulets.openhash"
-    # IO.inspect params
-
-    
-    %Openhash{}
+   %Openhash{}
     |> Openhash.changeset(params)
     |> Repo.insert()
-    # |> IO.inspect
     |> put_openhash()
     |> Repo.update()
-    # |> IO.inspect
   end
   
   defp put_openhash({:ok, openhash}) do

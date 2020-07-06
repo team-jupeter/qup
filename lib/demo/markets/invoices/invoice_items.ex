@@ -2,6 +2,7 @@ defmodule Demo.InvoiceItems do
     import Ecto.Query, warn: false
     alias Demo.Repo
     alias Demo.Invoices.InvoiceItem
+    import Ecto.Query, only: [from: 2]
 
     @topic inspect(__MODULE__)
 
@@ -14,7 +15,12 @@ defmodule Demo.InvoiceItems do
       Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{invoice_item_id}")
     end 
 
-    def list_invoice_items, do: Repo.all(InvoiceItem)
+    def list_invoice_items(buyer_id) do 
+      Repo.all(
+        from u in InvoiceItem,
+          where: u.buyer_id == ^buyer_id
+      )
+    end
 
     def list_invoice_items(current_page, per_page) do
       Repo.all(
@@ -28,14 +34,19 @@ defmodule Demo.InvoiceItems do
     def get_invoice_item!(id), do: Repo.get!(InvoiceItem, id)
 
     def change_invoice_item(invoice_item, attrs \\ %{}) do
+      IO.inspect invoice_item
+      
       InvoiceItem.changeset(invoice_item, attrs)
     end
 
-    def create_invoice_item(attrs \\ %{}) do
+     # alias Demo.Business.Product
+
+    def create_invoice_item(attrs) do 
     %InvoiceItem{}
       |> InvoiceItem.changeset(attrs)
       |> Repo.insert()
-      |> notify_subscribers([:invoice_item, :created])
+      |> IO.inspect
+      # |> notify_subscribers([:invoice_item, :created])
     end
 
     def delete_invoice_item(%InvoiceItem{} = invoice_item) do

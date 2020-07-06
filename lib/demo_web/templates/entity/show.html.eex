@@ -12,14 +12,16 @@
       <td><%= @entity.email %></td>
       <td><%= @entity.gab_balance %></td>
       <td><%= @entity.supul_name %></td>
-    </tr>
+    </tr> 
   </tbody>
 </table>
 
 
 </br>
 <h4>Products</h4>
-        <li><%= link "Products", to: Routes.product_path(@conn, :index) %></li>
+        <li><%= link "My Products", to: Routes.product_path(@conn, :index) %></li>
+        <li><%= link "Market", to: Routes.item_path(@conn, :index) %></li>
+        <li><%= link "Invoice Items", to: Routes.invoice_item_path(@conn, :index) %></li>
         <li><%= link "Invoices", to: Routes.invoice_path(@conn, :index) %></li>
         <li><%= link "Transactions", to: Routes.transaction_path(@conn, :index) %></li>
 

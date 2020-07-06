@@ -9,10 +9,16 @@ defmodule Demo.Transactions.Transaction do
     field :hash_of_invoice, :string
 
     #? who pays ABC? which t1s in his/her/its wallet?
-    field :buyer, :string 
-    field :seller, :string 
+    field :buyer_name, :string 
     field :buyer_id, :string
+    field :buyer_supul_name, :string
+    field :buyer_supul_id, :binary_id
+    
+    field :seller_name, :string 
     field :seller_id, :string
+    field :seller_supul_name, :string
+    field :seller_supul_id, :binary_id
+
     field :gps, {:array, :map} 
     field :tax, :decimal, default: 0.0
     field :insurance, :string
@@ -28,16 +34,19 @@ defmodule Demo.Transactions.Transaction do
     field :if_only_item, :string 
     field :fair?, :boolean, default: false
     
+    field :supul_code, :binary_id
+
     field :locked?, :boolean, default: false
 
     has_one :invoice, Demo.Invoices.Invoice, on_delete: :delete_all
     has_many :tickets, Demo.Gopang.Ticket, on_delete: :delete_all
-    
+        
     timestamps()
   end
 
   @fields [
-    :hash_of_invoice, :buyer, :seller, :buyer_id, :seller_id,  
+    :hash_of_invoice, :buyer_name, :seller_name, :buyer_id, :seller_id, 
+    :buyer_supul_name, :buyer_supul_id, :seller_supul_name, :seller_supul_id,  
     :gps, :tax, :insurance, :abc_input_id, :abc_input_name,  
     :abc_output_id, :abc_output_name, :abc_input_t1s, :abc_amount, 
     :items, :fiat_currency, :transaction_status, :if_only_item, 

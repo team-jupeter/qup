@@ -12,11 +12,17 @@ defmodule Demo.Business.Product do
     field :type, :string
     field :name, :string
     field :price, :decimal
+    field :quantity, :decimal
     field :stars, :decimal
     field :pvr, :decimal #? price to value ratio 가성비 
     field :description, :string 
     field :document_hash, :string
     field :owner, {:array, :string}
+
+    field :seller_id, :binary_id
+    field :seller_name, :string
+    field :seller_supul_id, :binary_id
+    field :seller_supul_name, :string
 
     field :arrived_when, :naive_datetime #? when arrived to the entity
     field :stored_at, :string #? unique warehouse or device name
@@ -47,7 +53,8 @@ defmodule Demo.Business.Product do
 
   @fields [
     :type, :name, :arrived_when, :stored_at, :managed_by, :expiration_date, :produced_by, 
-    :name, :price, :stars, :pvr, :description, :biz_category_id
+    :name, :price, :quantity, :stars, :pvr, :description, :biz_category_id,
+    :seller_name, :seller_id, :seller_supul_name, :seller_supul_id
   ]
   @doc false
   def changeset(product, attrs \\ %{}) do

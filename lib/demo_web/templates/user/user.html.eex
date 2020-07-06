@@ -1,1 +1,2 @@
-<b><%= first_name(@user) %></b>
+<li><%= first_name(@user) %></li>
+ 

@@ -10,7 +10,7 @@ defmodule Demo.Business.Products do
     Repo.insert!(%GPCCode{name: name}, on_conflict: :nothing)
   end
   
-  def list_products do
+  def list_products() do
     Repo.all(Product)
   end
 
@@ -45,7 +45,6 @@ defmodule Demo.Business.Products do
   def create_product(%Entity{} = entity, attrs \\ %{}) do
     %Product{}
     |> Product.changeset(attrs)
-    |> IO.inspect
     |> Ecto.Changeset.put_assoc(:entity, entity)
     |> Repo.insert()
   end

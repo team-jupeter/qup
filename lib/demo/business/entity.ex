@@ -12,6 +12,7 @@ defmodule Demo.Business.Entity do
   @foreign_key_type :binary_id
 
   schema "entities" do 
+    field :type, :string
     field :name, :string
     field :project, :string
     field :supul_name, :string
@@ -19,7 +20,7 @@ defmodule Demo.Business.Entity do
     field :gps, {:array, :map}
     field :nationality, :string
     field :company_prefix, :string
-    field :registered_no, :string
+    field :auth_code, :string
     field :entity_address, :string
     field :entity_code, :string 
     field :founding_date, :date
@@ -31,6 +32,8 @@ defmodule Demo.Business.Entity do
     field :num_of_shares, {:array, :map}
     field :share_price, {:array, :map}
     field :credit_rate, :string #? AAA, ..., FFF => 24 rates
+    field :supul_code, :binary_id 
+    field :taxation_code, :binary_id 
 
     field :password, :string, virtual: true
     field :password_hash, :string
@@ -95,15 +98,15 @@ defmodule Demo.Business.Entity do
  
 
   @fields [
-    :nationality, :company_prefix, 
-    :nation_id, :email, :supul_id, :taxation_id, 
+    :type, :nationality, :company_prefix, :auth_code,
+    :nation_id, :email, :taxation_id, 
     :name, :entity_address, :nation_signature,
     :biz_category_id, :sic_code, :legal_status, :year_started, 
     :num_of_shares, :supul_name, :gab_balance,
     :share_price, :credit_rate, :project, 
   ]
 
-  def changeset(user, attrs) do
+  def changeset(user, attrs \\ %{}) do
     user
     |> cast(attrs, @fields)
     |> validate_required([])

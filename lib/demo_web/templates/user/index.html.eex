@@ -7,5 +7,5 @@
       <td><%= link "View", to: Routes.user_path(@conn, :show, user.id) %></td>
     </tr>
   <% end %>
-</table>
+</table> 
  

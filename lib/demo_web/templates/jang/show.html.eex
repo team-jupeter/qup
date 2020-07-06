@@ -1,0 +1,13 @@
+<h1>Show Jang</h1>
+
+<ul>
+
+  <li>
+    <strong>Cart:</strong>
+    <%= @jang.cart %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.jang_path(@conn, :edit, @jang) %></span>
+<span><%= link "Back", to: Routes.jang_path(@conn, :index) %></span>

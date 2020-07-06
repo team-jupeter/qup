@@ -6,7 +6,7 @@ defmodule DemoWeb.SupulController do
 
   def index(conn, _params) do
     supuls = Supuls.list_supuls()
-    render(conn, "index.html", supuls: supuls)
+    render(conn, "index.html", supuls: supuls) 
   end 
 
   def new(conn, _params) do

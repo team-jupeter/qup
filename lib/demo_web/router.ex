@@ -81,6 +81,7 @@ defmodule DemoWeb.Router do
     resources "/invoice_items", InvoiceItemController
     resources "/invoices", InvoiceController
     resources "/transactions", TransactionController
+    resources "/jangs", JangController
 
   end
 
@@ -103,20 +104,20 @@ defmodule DemoWeb.Router do
   end
 
   scope "/nation", DemoWeb do
-    pipe_through [:browser]
+    pipe_through [:browser] 
 
     resources "/constitutions", ConstitutionController
     resources "/", NationController
   end 
 
-  scope "/supul", DemoWeb do
+  scope "/supuls", DemoWeb do
     pipe_through [:browser]
 
-    resources "/global_supuls", GlobalSupulController
-    resources "/nation_supuls", NationSupulController
-    resources "/state_supuls", StateSupulController
-    resources "/supuls", SupulController
-    get "/", GlobalSupulController, :index
+    resources "/global", GlobalSupulController
+    resources "/nations", NationSupulController
+    resources "/states", StateSupulController
+    resources "/units", SupulController
+    get "/", SupulController, :index
   end
 
   scope "/asset", DemoWeb do
