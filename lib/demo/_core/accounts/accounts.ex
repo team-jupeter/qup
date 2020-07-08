@@ -71,10 +71,10 @@ defmodule Demo.Accounts do
     |> notify_subscribers([:user, :created])
   end
 
-
+  
   def update_user(%User{} = user, attrs) do
     user
-    |> User.changeset(attrs)
+    |> User.update_changeset(attrs)
     |> Repo.update()
     |> notify_subscribers([:user, :updated])
   end

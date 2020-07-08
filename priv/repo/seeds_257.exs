@@ -28,9 +28,9 @@ alias Demo.Accounts
   nation: korea,
   }) 
 
-#? private and pulbic key of korea
-korea_rsa_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
-korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
+# #? private and pulbic key of korea
+# korea_rsa_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
+# korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
    
 
 
@@ -202,7 +202,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 '''
 
-ENTITIES
+ENTITIES & OTHERS
 
 '''
 alias Demo.Taxations
@@ -221,7 +221,7 @@ alias Demo.Taxations
   {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
   signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
   # kts = change(kts) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
-  kts = Taxations.update_taxation(kts, %{auth_code: signature}) 
+  {:ok, kts} = Taxations.update_taxation(kts, %{auth_code: signature}) 
   
   
 alias Demo.Business
@@ -482,6 +482,11 @@ alias Demo.EquityStatements
 
 
 
+
+
+
+
+
 #? Income Statement
 {:ok, kts_is} = IncomeStatements.create_income_statement(%{entity: kts}) 
 {:ok, gab_korea_is} = IncomeStatements.create_income_statement(gab_korea, %{entity: gab_korea.id}) 
@@ -639,7 +644,8 @@ global_supul_BS = BalanceSheets.add_t1s(global_supul_BS, new_t1s)
 
     
 #? Korea Supul
-{:ok, korea_supul_BS} = BalanceSheets.create_balance_sheet(korea_supul, %{
+{:ok, korea_supul_BS} = BalanceSheets.create_balance_sheet(%{
+  supul: korea_supul,
   entity_name: korea_supul.name,
   cash: Decimal.from_float(0.0),
   gab_balance: Decimal.from_float(0.0),

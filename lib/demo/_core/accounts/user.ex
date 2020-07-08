@@ -74,6 +74,11 @@ defmodule Demo.Accounts.User do
     |> unique_constraint(:username)
   end
 
+  def update_changeset(user, attrs) do
+    user
+    |> cast(attrs, @fields)
+  end
+
   def changeset_update_entities(%User{} = user, entities) do
     user 
     |> Repo.preload(:entities)

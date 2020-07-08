@@ -31,6 +31,5 @@ defmodule Demo.Taxations.Taxation do
     |> cast(attrs, @fields)
     |> validate_required([])
     |> put_assoc(:nation, attrs.nation)
-    |> put_change(:auth_code, attrs.auth)
   end
 end
