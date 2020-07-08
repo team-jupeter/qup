@@ -66,12 +66,11 @@ defmodule Demo.Accounts do
 
   def create_user(attrs \\ %{}) do
     %User{}
-    # |> User.changeset(attrs)
-    # |> IO.inspect
     |> User.registration_changeset(attrs)
     |> Repo.insert()
     |> notify_subscribers([:user, :created])
   end
+
 
   def update_user(%User{} = user, attrs) do
     user

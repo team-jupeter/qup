@@ -9,9 +9,9 @@ korea = Nation.changeset(%Nation{}, %{name: "South Korea"}) |> Repo.insert!()
 usa = Nation.changeset(%Nation{}, %{name: "USA"}) |> Repo.insert!()
 
 # ? init supuls. For example, Korea will have about 5,000 supuls.
-alias Demo.Supuls.GlobalSupul
-alias Demo.Supuls.NationSupul
-alias Demo.Supuls.StateSupul
+alias Demo.GlobalSupuls.GlobalSupul
+alias Demo.NationSupuls.NationSupul
+alias Demo.StateSupuls.StateSupul
 alias Demo.Supuls.Supul
 
 global_supul =

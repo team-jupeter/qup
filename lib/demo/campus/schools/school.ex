@@ -12,9 +12,9 @@ defmodule Demo.Schools.School do
     embeds_many :graduates, Demo.Schools.GraduateEmbed
 
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
-    belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
-    belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
-    belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id
+    belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
+    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
+    belongs_to :global_supul, Demo.GlobalSupuls.GlobalSupul, type: :binary_id
 
     many_to_many(
       :mentors,

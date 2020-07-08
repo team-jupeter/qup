@@ -4,7 +4,7 @@ defmodule DemoWeb.InvoiceItemController do
   alias Demo.InvoiceItems
 alias Demo.Invoices.InvoiceItem 
 
-  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
+  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show, :delete]
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_entity]
@@ -28,6 +28,7 @@ alias Demo.Invoices.InvoiceItem
   end
 
   def create(conn, %{"invoice_item" => invoice_item_params}) do
+    IO.puts "create"
     case InvoiceItems.create_invoice_item(invoice_item_params) do 
       {:ok, invoice_item} -> 
         conn
@@ -45,6 +46,7 @@ alias Demo.Invoices.InvoiceItem
   end
 
   def edit(conn, %{"id" => id}, current_entity) do
+    IO.puts "edit"
     invoice_item = InvoiceItems.get_invoice_item!(id)
     buyer_id = current_entity.id
 
@@ -52,13 +54,19 @@ alias Demo.Invoices.InvoiceItem
     render(conn, "edit.html", invoice_item: invoice_item, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "invoice_item" => invoice_item_params}) do
+  def update(conn, %{"id" => id, "invoice_item" => invoice_item_params}, current_entity) do
+    IO.puts "update"
+    IO.inspect invoice_item_params
+    IO.inspect id
+
+    # invoice_item = InvoiceItems.get_buyer_invoice_item!(current_entity, id)
     invoice_item = InvoiceItems.get_invoice_item!(id)
+    IO.inspect invoice_item
 
     case InvoiceItems.update_invoice_item(invoice_item, invoice_item_params) do
       {:ok, invoice_item} ->
         conn
-        |> put_flash(:info, "InvoiceItem updated successfully.")
+        |> put_flash(:info, "updated.")
         |> redirect(to: Routes.invoice_item_path(conn, :show, invoice_item))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -66,12 +74,12 @@ alias Demo.Invoices.InvoiceItem
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id}, _current_entity) do
     invoice_item = InvoiceItems.get_invoice_item!(id)
     {:ok, _invoice_item} = InvoiceItems.delete_invoice_item(invoice_item)
 
     conn
-    |> put_flash(:info, "InvoiceItem deleted successfully.")
+    |> put_flash(:info, "deleted.")
     |> redirect(to: Routes.invoice_item_path(conn, :index))
   end
 end

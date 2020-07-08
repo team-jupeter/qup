@@ -10,9 +10,9 @@ usa = Nation.changeset(%Nation{}, %{name: "USA"}) |> Repo.insert!
 
 
 #? init supuls. For example, Korea will have about 5,000 supuls.
-alias Demo.Supuls.GlobalSupul
-alias Demo.Supuls.NationSupul
-alias Demo.Supuls.StateSupul
+alias Demo.GlobalSupuls.GlobalSupul
+alias Demo.NationSupuls.NationSupul
+alias Demo.StateSupuls.StateSupul
 alias Demo.Supuls.Supul
 
 global_supul = GlobalSupul.changeset(%GlobalSupul{}, %{name: "Global Supul", supul_code: 0x00000000}) |> Repo.insert!
@@ -262,7 +262,7 @@ buyer_supul_IS = change(buyer_supul_IS) |> Ecto.Changeset.put_change(:travel_and
 StateSupul
 '''
 #? find the seller state_supul and the buyer state_supul, and adjust their accounts.
-alias Demo.Supuls.StateSupul
+alias Demo.StateSupuls.StateSupul
 
 seller_state_supul = Repo.one from state_supul in StateSupul,
   where: state_supul.id == ^seller_supul.state_supul_id
@@ -287,7 +287,7 @@ NationSupul
 '''
 
 #? find the seller nation_supul and the buyer nation_supul, and adjust their accounts.
-alias Demo.Supuls.NationSupul
+alias Demo.NationSupuls.NationSupul
 
 seller_nation_supul = Repo.one from nation_supul in NationSupul,
   where: nation_supul.id == ^seller_state_supul.nation_supul_id

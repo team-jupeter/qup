@@ -19,10 +19,34 @@ defmodule Demo.FinancialReports do
   end
 
  
-  def create_financial_report(%Entity{} = entity, attrs \\ %{}) do
-    %FinancialReport{}
-    |> FinancialReport.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:entity, entity)
+  def create_financial_report(attrs) do
+    FinancialReport.changeset(attrs)
+    |> Repo.insert()
+  end
+ 
+  def create_nation_supul_financial_report(attrs) do
+    FinancialReport.nation_supul_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_state_supul_financial_report(attrs) do
+    FinancialReport.state_supul_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_supul_financial_report(attrs) do
+    FinancialReport.supul_changeset(attrs)
+    |> Repo.insert()
+  end
+ 
+  def create_tax_financial_report(attrs) do
+    FinancialReport.tax_changeset(attrs)
+    |> Repo.insert()
+  end
+ 
+  def create_entity_financial_report(entity, attrs) do
+    entity
+    |> FinancialReport.entity_changeset(attrs)
     |> Repo.insert()
   end
 
@@ -33,8 +57,8 @@ defmodule Demo.FinancialReports do
     |> Repo.update()
   end
 
-  def change_financial_report(%FinancialReport{} = financial_report) do
-    FinancialReport.changeset(financial_report, %{})
+  def change_financial_report(attrs) do
+    FinancialReport.changeset(attrs)
   end
   
 '''

@@ -1,6 +1,8 @@
 defmodule Demo.Reports.FinancialReport do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Demo.Reports.FinancialReport
+  alias Demo.Business.Entity
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "financial_reports" do
@@ -35,10 +37,11 @@ defmodule Demo.Reports.FinancialReport do
     # has_one :consolidated_FS
 
     belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
-    belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
-    belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
-    belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id
+    belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
+    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
+    belongs_to :global_supul, Demo.GlobalSupuls.GlobalSupul, type: :binary_id
     
     timestamps()
   end
@@ -50,11 +53,55 @@ defmodule Demo.Reports.FinancialReport do
     :intrinsic_value, :debt_int_rate, :re_fmv,
     :entity_id, :supul_id, 
   ]
+
+  
   @doc false
-  def changeset(report, attrs) do
+  def changeset(%FinancialReport{} = report, attrs) do
     report
     |> cast(attrs, @fields)
-    |> validate_required([])
-    # |> cast_embed([:fr_embed_a, :fr_embed_b])
   end
+
+  def changeset(attrs) do
+    %FinancialReport{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
+  end
+
+  @doc false
+  def nation_supul_changeset(attrs) do
+    %FinancialReport{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> put_assoc(:nation_supul, attrs.nation_supul)
+  end
+  @doc false
+  def state_supul_changeset(attrs) do
+    %FinancialReport{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> put_assoc(:state_supul, attrs.state_supul)
+  end
+  @doc false
+  def supul_changeset(attrs) do
+    %FinancialReport{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> put_assoc(:supul, attrs.supul)
+  end
+
+  def tax_changeset(attrs) do
+    %FinancialReport{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> put_assoc(:taxation, attrs.taxation)
+  end
+  @doc false
+  def entity_changeset(%Entity{} = entity, attrs) do
+    %FinancialReport{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> put_assoc(:supul, attrs.supul)
+    |> put_assoc(:entity, entity)
+  end
+
 end

@@ -126,7 +126,7 @@ defmodule Demo.SupulsTest do
   end
 
   describe "state_supuls" do
-    alias Demo.Supuls.StateSupul
+    alias Demo.StateSupuls.StateSupul
 
     @valid_attrs %{geographical_area: "some geographical_area", name: "some name", nationality: "some nationality"}
     @update_attrs %{geographical_area: "some updated geographical_area", name: "some updated name", nationality: "some updated nationality"}
@@ -189,7 +189,7 @@ defmodule Demo.SupulsTest do
   end
 
   describe "national_supuls" do
-    alias Demo.Supuls.NationalSupul
+    alias Demo.NationSupuls.NationalSupul
 
     @valid_attrs %{geographical_area: "some geographical_area", name: "some name"}
     @update_attrs %{geographical_area: "some updated geographical_area", name: "some updated name"}

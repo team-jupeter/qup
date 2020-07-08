@@ -25,4 +25,6 @@
   </tbody>
 </table>
 
-<span><%= link "[Payment] New Invoice", to: Routes.invoice_path(@conn, :new) %></span>
+<span><%= link "Keep Shopping", to: Routes.item_path(@conn, :index) %></span>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<span><%= link "Make Invoice", to: Routes.invoice_path(@conn, :new) %></span>

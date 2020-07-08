@@ -12,7 +12,7 @@ defmodule Demo.Business.Products do
   
   def list_products() do
     Repo.all(Product)
-  end
+  end 
 
   def list_entity_products(%Entity{} = entity) do
     Product

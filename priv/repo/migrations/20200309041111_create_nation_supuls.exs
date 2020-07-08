@@ -7,6 +7,7 @@ defmodule Demo.Repo.Migrations.CreateNationSupuls do
       add :type, :string
       add :name, :string
 
+      add :auth_code, :text
       add :payload, :text
       add :payload_hash, :text
   

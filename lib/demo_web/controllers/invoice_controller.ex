@@ -24,12 +24,21 @@ defmodule DemoWeb.InvoiceController do
 
   def new(conn, _params, current_entity) do
     invoice_items = InvoiceItems.list_invoice_items(current_entity.id)
+
+    IO.puts "new"
+    IO.inspect Enum.at(invoice_items, 0)
+
+
     seller_id = Enum.at(invoice_items, 0).seller_id
+    seller_name = Enum.at(invoice_items, 0).seller_name
     buyer_id = Enum.at(invoice_items, 0).buyer_id
+    buyer_name = Enum.at(invoice_items, 0).buyer_name
 
     invoice_params = %{
       buyer_id: buyer_id,
+      buyer_name: buyer_name,
       seller_id: seller_id, 
+      seller_name: seller_name, 
       invoice_items: invoice_items
     }
 

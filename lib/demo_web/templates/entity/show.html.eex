@@ -1,4 +1,4 @@
-<b><%= @entity.name %></b> <%= @entity.project %></b></br>
+<b><%= @entity.name  %></b> <%=  @entity.project %></br>
 <table>
   <thead>
     <tr>

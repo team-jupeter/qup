@@ -2,7 +2,7 @@ defmodule DemoWeb.GlobalSupulController do
   use DemoWeb, :controller
 
   alias Demo.GlobalSupuls
-  alias Demo.Supuls.GlobalSupul
+  alias Demo.GlobalSupuls.GlobalSupul
 
   def index(conn, _params) do
     global_supuls = GlobalSupuls.list_global_supuls()

@@ -6,7 +6,7 @@ defmodule Demo.GlobalSupuls do
   import Ecto.Query, warn: false
   alias Demo.Repo
 
-  alias Demo.Supuls.GlobalSupul
+  alias Demo.GlobalSupuls.GlobalSupul
 
 
   def list_global_supuls do

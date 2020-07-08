@@ -34,7 +34,7 @@ defmodule DemoWeb.ProductController do
  
     case Products.update_product(product, product_params) do
       {:ok, product} ->
-        conn
+        conn 
         |> put_flash(:info, "Product updated successfully.")
         |> redirect(to: Routes.product_path(conn, :show, product))
 

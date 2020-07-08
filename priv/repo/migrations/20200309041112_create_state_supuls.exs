@@ -8,6 +8,7 @@ defmodule Demo.Repo.Migrations.CreateStateSupuls do
       add :name, :string
       add :nation_name, :string
   
+      add :auth_code, :text
       add :payload, :text
       add :payload_hash, :text
       

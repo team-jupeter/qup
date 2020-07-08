@@ -8,11 +8,11 @@
   <tbody>
 <%= for invoice <- @invoices do %>
     <tr>
+      <td><%= invoice.seller_name %></td>
       <td><%= invoice.total %></td>
 
       <td>
         <span><%= link "Show", to: Routes.invoice_path(@conn, :show, invoice) %></span>
-        <span><%= link "Edit", to: Routes.invoice_path(@conn, :edit, invoice) %></span>
         <span><%= link "Delete", to: Routes.invoice_path(@conn, :delete, invoice), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
     </tr>

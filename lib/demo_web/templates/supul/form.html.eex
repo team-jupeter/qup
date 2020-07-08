@@ -34,7 +34,7 @@
     has_one :mulet, Demo.Mulets.Mulet </br>
     has_one :gopang, Demo.Gopangs.Gopang </br>
     
-    belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id </br>
+    belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id </br>
 
   <div>
     <%= submit "Save" %>

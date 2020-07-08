@@ -4,7 +4,10 @@ defmodule DemoWeb.ItemController do
   alias Demo.Items
   alias Demo.Invoices.Item
   alias Demo.Business.Products
+  alias Demo.Business.Entity
   alias DemoWeb.InvoiceItemController
+  alias Demo.Repo
+  import Ecto.Query, only: [from: 2]
 
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
 
@@ -44,20 +47,30 @@ defmodule DemoWeb.ItemController do
   def edit(conn, %{"id" => id}, current_entity) do
     item = Products.get_product!(id)
 
-    IO.inspect item
-
     buyer_id = current_entity.id 
-    seller_id = item.entity_id
- 
-    IO.inspect seller_id
-
+    buyer_name = Repo.one(from e in Entity, where: e.id == ^buyer_id, select: e.name) 
+    buyer_supul_id = Repo.one(from e in Entity, where: e.id == ^buyer_id, select: e.supul_id) 
+    buyer_supul_name = Repo.one(from e in Entity, where: e.id == ^buyer_id, select: e.supul_name) 
     
+    seller_id = item.entity_id
+    seller_name = Repo.one(from e in Entity, where: e.id == ^seller_id, select: e.name) 
+    seller_supul_name = Repo.one(from e in Entity, where: e.id == ^seller_id, select: e.supul_name) 
+    seller_supul_id = Repo.one(from e in Entity, where: e.id == ^seller_id, select: e.supul_id) 
+    
+    IO.inspect current_entity
+
     params = %{ "invoice_item" => %{
       buyer_id: buyer_id,
+      buyer_name: buyer_name,
+      buyer_supul_name: buyer_supul_name,
+      buyer_supul_id: buyer_supul_id,
       seller_id: seller_id,
+      seller_name: seller_name,
+      seller_supul_id: seller_supul_id,
+      seller_supul_name: seller_supul_name,
       item_name: item.name,
       price: item.price,
-      quantity: 3} 
+      quantity: 1} 
     }
     
     InvoiceItemController.create(conn, params)

@@ -36,7 +36,7 @@ defmodule Demo.Business do
 
   def update_entity(%Entity{} = entity, attrs) do
     entity
-    |> Entity.changeset(attrs)
+    |> Entity.changeset_update_entity(attrs)
     |> Repo.update()
   end
 
@@ -54,10 +54,33 @@ defmodule Demo.Business do
     Repo.delete(entity)
   end 
 
-  def create_entity(%User{} = user, attrs \\ %{}) do
+  # def create_entity(current_user, attrs \\ %{}) do
+  #   %Entity{current_user, attrs}
+  #   |> Entity.create_entity(attrs)
+  #   |> Repo.insert()
+  # end
+
+  def create_private_entity(attrs) do
     %Entity{}
-    |> Entity.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:users, [user])
+    |> Entity.create_private_entity(attrs)
+    |> Repo.insert()
+  end
+
+  def create_private_entity(current_user, attrs) do
+    %Entity{}
+    |> Entity.create_private_entity(current_user, attrs)
+    |> Repo.insert()
+  end
+
+  def create_public_entity(attrs) do
+    %Entity{}
+    |> Entity.create_public_entity(attrs)
+    |> Repo.insert()
+  end
+
+  def create_public_entity(current_user, attrs) do
+    %Entity{}
+    |> Entity.create_public_entity(current_user, attrs)
     |> Repo.insert()
   end
  

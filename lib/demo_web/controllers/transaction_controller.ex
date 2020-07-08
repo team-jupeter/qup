@@ -2,7 +2,6 @@ defmodule DemoWeb.TransactionController do
   use DemoWeb, :controller
   import Ecto.Query, only: [from: 2]
   alias Demo.Transactions
-  alias Demo.Transactions.Transaction
   alias Demo.Business.Entity
   alias Demo.InvoiceItems
   alias Demo.Repo
@@ -59,9 +58,9 @@ defmodule DemoWeb.TransactionController do
     
   end
 
-  def create(conn, invoice, current_entity, buyer_rsa_priv_key, sender_rsa_priv_key) do
-    conn
-  end
+  # def create(conn, invoice, current_entity, buyer_rsa_priv_key, sender_rsa_priv_key) do
+  #   conn
+  # end
 
   def show(conn, %{"id" => id}, current_entity) do
     transaction = Transactions.get_entity_transaction!(current_entity, id) 

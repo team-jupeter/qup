@@ -7,7 +7,7 @@ defmodule Demo.Taxations.Taxation do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "taxations" do
     field :name, :string
-    field :nation_signature, :string
+    field :auth_code, :string
 
     has_many :entities, Demo.Business.Entity
     has_many :tax_rates, Demo.Taxations.TaxRate
@@ -18,11 +18,19 @@ defmodule Demo.Taxations.Taxation do
     timestamps()
   end
 
-  @fields [:name, :nation_signature]
+  @fields [:name, :auth_code]
+
+  def changeset(taxation, attrs = %{auth_code: auth_code}) do
+    taxation
+    |> cast(attrs, @fields)
+    |> put_change(:auth_code, attrs.auth_code)
+  end
   @doc false
   def changeset(taxation, attrs) do
     taxation
     |> cast(attrs, @fields)
     |> validate_required([])
+    |> put_assoc(:nation, attrs.nation)
+    |> put_change(:auth_code, attrs.auth)
   end
 end

@@ -11,7 +11,10 @@ defmodule Demo.Repo.Migrations.CreateInvoiceItems do
       add :subtotal, :decimal, precision: 16, scale: 6, default: 0.0
       
       add :buyer_id, :binary_id
-
+      add :buyer_name, :string
+      add :buyer_supul_id, :binary_id
+      add :buyer_supul_name, :string
+  
       add :seller_id, :binary_id
       add :seller_name, :string
       add :seller_supul_id, :binary_id

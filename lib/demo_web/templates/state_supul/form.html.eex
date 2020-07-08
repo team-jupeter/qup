@@ -21,7 +21,7 @@
     has_one :financial_report, Demo.Reports.FinancialReport </br>
     has_one :mulet, Demo.Mulets.Mulet </br>
     
-    belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id </br>
+    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id </br>
     
   <div>
     <%= submit "Save" %>

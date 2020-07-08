@@ -9,8 +9,8 @@ alias Demo.Nations.Nation
 korea = Nation.changeset(%Nation{}, %{name: "South Korea"}) |> Repo.insert!()
 
 #? init supuls
-alias Demo.Supuls.NationSupul
-alias Demo.Supuls.StateSupul
+alias Demo.NationSupuls.NationSupul
+alias Demo.StateSupuls.StateSupul
 
 korea_supul = NationSupul.changeset(%NationSupul{}, %{name: "Korea Supul", supul_code: 0x52000000}) |> Repo.insert!
 seoul_supul = StateSupul.changeset(%StateSupul{}, %{name: "Seoul Supul", supul_code: 0x52000000}) |> Repo.insert!

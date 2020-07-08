@@ -59,6 +59,8 @@ defmodule Demo.Business.Entity do
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
+    belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
+    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
     belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
     belongs_to :biz_category, Demo.Taxations.Taxation, type: :binary_id
 
@@ -102,8 +104,8 @@ defmodule Demo.Business.Entity do
     :nation_id, :email, :taxation_id, 
     :name, :entity_address, :nation_signature,
     :biz_category_id, :sic_code, :legal_status, :year_started, 
-    :num_of_shares, :supul_name, :gab_balance,
-    :share_price, :credit_rate, :project, 
+    :num_of_shares, :supul_name, :gab_balance, :supul_id,
+    :share_price, :credit_rate, :project,  
   ]
 
   def changeset(user, attrs \\ %{}) do
@@ -114,8 +116,39 @@ defmodule Demo.Business.Entity do
     |> assoc_constraint(:biz_category)
     |> assoc_constraint(:nation)
     |> assoc_constraint(:supul)
+    |> put_assoc(:nation, attrs.nation)
+  end
+  
+  def create_private_entity(entity, current_user, attrs) do
+    changeset(entity, attrs)
+    |> put_assoc(:supul, attrs.supul)
+    |> put_assoc(:users, [current_user])
+    |> put_assoc(:taxation, attrs.taxation)
     |> assoc_constraint(:taxation)
   end
+
+  def create_private_entity(entity, attrs) do
+    changeset(entity, attrs)
+    |> put_assoc(:users, [attrs.user])
+    |> put_assoc(:supul, attrs.supul)
+    |> put_assoc(:taxation, attrs.taxation)
+    |> assoc_constraint(:taxation)
+  end
+
+
+  def create_public_entity(entity, current_user, attrs) do
+    changeset(entity, attrs)
+    |> put_assoc(:nation_supul, attrs.supul)
+    |> put_assoc(:users, [current_user])
+  end
+
+  def create_public_entity(entity, attrs) do
+    changeset(entity, attrs)
+    |> put_assoc(:users, [attrs.user])
+    |> put_assoc(:nation_supul, attrs.supul)
+  end
+
+
 
   def changeset_update_users(%Entity{} = entity, users) do
     entity 
@@ -128,7 +161,6 @@ defmodule Demo.Business.Entity do
   def changeset_update_entity(%Entity{} = entity, attrs) do
     entity 
     |> cast(attrs, @fields)
-    |> Repo.update!()
   end
 
   def changeset_update_products(%Entity{} = entity, products) do

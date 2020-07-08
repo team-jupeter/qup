@@ -23,7 +23,7 @@
   <%= error_tag f, :public_key %>
 
 
-    has_many :nation_supuls, Demo.Supuls.NationSupul </br>
+    has_many :nation_supuls, Demo.NationSupuls.NationSupul </br>
     has_many :schools, Demo.Schools.School, on_replace: :nilify </br>
 
     has_one :financial_report, Demo.Reports.FinancialReport </br>

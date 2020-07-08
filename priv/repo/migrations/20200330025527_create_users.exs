@@ -10,7 +10,7 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add :gps, {:array, :map}
       add :default_entity, :binary_id
       add :nationality, :string
-      add :ssn, :string
+      add :auth_code, :string
       add :email, :string
       add :birth_date, :naive_datetime
       add :password_hash, :string
@@ -18,6 +18,7 @@ defmodule Demo.Repo.Migrations.CreateUsers do
 
       add :nation_signature, :text
       
+      add :supul_id, references(:supuls, type: :uuid, null: false)
       add :nation_id, references(:nations, type: :uuid, null: false)
       add :constitution_id, references(:constitutions, type: :uuid, null: false)
       

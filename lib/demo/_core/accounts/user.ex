@@ -21,7 +21,7 @@ defmodule Demo.Accounts.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
-    field :ssn, :string #? Social Security Number 
+    field :auth_code, :string #? Social Security Number 
     field :birth_date, :naive_datetime
     field :supul_code, :binary_id
 
@@ -37,6 +37,7 @@ defmodule Demo.Accounts.User do
 
     timestamps()
 
+    belongs_to :supul, Demo.Supuls.Supul
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id #? 고국
     belongs_to :constitution,  Demo.Votes.Constitution, type: :binary_id #? 고향 
     # belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id #? 고향 
@@ -61,7 +62,7 @@ defmodule Demo.Accounts.User do
   # @required_fields [:type, :name, :email]
   @fields [
     :name, :type, :nationality, :email, :birth_date, 
-    :password, :nation_signature, :nation_id,
+    :password, :nation_signature, :nation_id, :auth_code,
     :constitution_id, :supul_code, :username, :default_entity
   ]
 
@@ -80,15 +81,16 @@ defmodule Demo.Accounts.User do
     |> put_assoc(:entities, entities) #? many to many between users and entities
   end
 
-  def registration_changeset(user, params) do
+
+  def registration_changeset(user, attrs) do
     user
-    |> changeset(params)
-    |> cast(params, [:email, :password])
+    |> changeset(attrs)
+    |> cast(attrs, [:email, :password])
     |> validate_required([:password])
-    # |> cast_embed(:address) # error
     |> validate_length(:password, min: 5, max: 10)
-    # |> unique_constraint([:email]) # error
     |> put_pass_hash()
+    |> put_assoc(:supul, attrs.supul)
+    |> put_assoc(:nation, attrs.nation) 
   end
 
   defp put_pass_hash(changeset) do

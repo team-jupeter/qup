@@ -12,9 +12,9 @@ defmodule Demo.Mulets.Mulet do
     has_one :ticket_storage, Demo.Mulets.TicketStorage
 
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
-    belongs_to :state_supul, Demo.Supuls.StateSupul, type: :binary_id
-    belongs_to :nation_supul, Demo.Supuls.NationSupul, type: :binary_id
-    belongs_to :global_supul, Demo.Supuls.GlobalSupul, type: :binary_id
+    belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
+    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
+    belongs_to :global_supul, Demo.GlobalSupuls.GlobalSupul, type: :binary_id
 
     timestamps()
   end

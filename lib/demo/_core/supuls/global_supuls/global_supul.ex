@@ -1,4 +1,4 @@
-defmodule Demo.Supuls.GlobalSupul do
+defmodule Demo.GlobalSupuls.GlobalSupul do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -12,7 +12,7 @@ defmodule Demo.Supuls.GlobalSupul do
     field :private_key, :string
     field :public_key, :string
 
-    has_many :nation_supuls, Demo.Supuls.NationSupul
+    has_many :nation_supuls, Demo.NationSupuls.NationSupul
     has_many :schools, Demo.Schools.School, on_replace: :nilify
 
     has_one :financial_report, Demo.Reports.FinancialReport

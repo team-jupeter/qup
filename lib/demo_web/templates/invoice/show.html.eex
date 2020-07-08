@@ -7,27 +7,36 @@
 </thead>
 <tbody>
    <tr>
-    <td>start_at:</td>
+    <td>Seller:</td>
+    <td><%= @invoice.seller_name %></td>
+  </tr>
+   <tr>
+    <td>Buyer:</td>
+    <td><%= @invoice.buyer_name %></td>
+  </tr>
+   <tr>
+    <td>Start_at:</td>
     <td><%= @invoice.start_at %></td>
   </tr>
    <tr>
-    <td>end_at:</td>
+    <td>End_at:</td>
     <td><%= @invoice.end_at %></td>
   </tr>
    <tr>
-    <td>total:</td>
+    <td>Total:</td>
     <td><%= @invoice.total %></td>
   </tr>
    <tr>
-    <td>tax_total:</td>
+    <td>Tax_total:</td>
     <td><%= @invoice.tax_total %></td>
   </tr>
    <tr>
-    <td>fiat_currency:</td>
+    <td>Fiat_currency:</td>
     <td><%= @invoice.fiat_currency %></td>
   </tr>
   </tbody>
 </table> 
 
 <span><%= link "Start Transaction", to: Routes.transaction_path(@conn, :new) %></span>
-<span><%= link "[Payment] New Invoice", to: Routes.invoice_path(@conn, :new) %></span>
+
+<span><%= link "Back", to: Routes.invoice_path(@conn, :index) %></span>

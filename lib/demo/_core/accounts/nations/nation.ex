@@ -25,10 +25,4 @@ defmodule Demo.Nations.Nation do
     |> cast(attrs, @fields)
     |> validate_required([:name])
   end
-
-  # def create(params) do
-  #   changeset(%Nation{}, params)
-  #   |> put_assoc(:users, params[:nation_id])
-  #   |> Repo.insert
-  # end
 end

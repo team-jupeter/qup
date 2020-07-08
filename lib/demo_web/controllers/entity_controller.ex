@@ -75,8 +75,20 @@ defmodule DemoWeb.EntityController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"entity" => entity_params}, current_user) do
-    case Business.create_entity(current_user, entity_params) do
+  def create_private_entity(conn, %{"entity" => entity_params}, current_user) do
+    case Business.create_private_entity(current_user, entity_params) do
+      {:ok, entity} ->
+        conn
+        |> put_flash(:info, "Entity created successfully.")
+        |> redirect(to: Routes.entity_path(conn, :show, entity))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
+  end
+
+  def create_public_entity(conn, %{"entity" => entity_params}, current_user) do
+    case Business.create_public_entity(current_user, entity_params) do
       {:ok, entity} ->
         conn
         |> put_flash(:info, "Entity created successfully.")

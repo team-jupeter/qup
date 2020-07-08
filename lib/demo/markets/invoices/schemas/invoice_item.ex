@@ -9,6 +9,9 @@ defmodule Demo.Invoices.InvoiceItem do
     field :price, :decimal, precision: 16, scale: 6
  
     field :buyer_id, :binary_id
+    field :buyer_name, :string
+    field :buyer_supul_id, :binary_id
+    field :buyer_supul_name, :string
 
     field :seller_id, :binary_id
     field :seller_name, :string
@@ -29,7 +32,8 @@ defmodule Demo.Invoices.InvoiceItem do
   @fields [
     :item_name, :price, :product_id, :quantity, 
     :tax_subtotal, :subtotal, :entity_id, 
-    :seller_id, :buyer_id
+    :seller_id, :seller_name, :seller_supul_id, :seller_supul_name, 
+    :buyer_id, :buyer_name, :buyer_supul_id, :buyer_supul_name, 
   ]
   # @zero Decimal.new(0)
 

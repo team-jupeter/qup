@@ -56,7 +56,7 @@ defmodule DemoWeb.FinancialReportController do
   end
 
   def create(conn, %{"financial_report" => financial_report_params}, current_entity) do
-    case FinancialReports.create_financial_report(current_entity, financial_report_params) do
+    case FinancialReports.create_entity_financial_report(current_entity, financial_report_params) do
       {:ok, financial_report} ->
         conn
         |> put_flash(:info, "FinancialReport created successfully.")

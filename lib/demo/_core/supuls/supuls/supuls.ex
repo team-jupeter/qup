@@ -4,14 +4,14 @@ defmodule Demo.Supuls do
 
   alias Demo.Supuls.Supul
   alias Demo.Mulets
-  alias Demo.Mulets.Payload
   alias Demo.IncomeStatements
   alias Demo.BalanceSheets 
   alias Demo.IncomeStatements
   alias Demo.Reports.IncomeStatement
   alias Demo.Business
   alias Demo.Business.Entity
- 
+  alias Demo.Supuls.Supul
+
   def list_supuls do
     Repo.all(Supul)
   end
@@ -19,8 +19,7 @@ defmodule Demo.Supuls do
   def get_supul!(id), do: Repo.get!(Supul, id)
 
   def create_supul(attrs \\ %{}) do
-    %Supul{}
-    |> Supul.changeset(attrs)
+    Supul.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -69,7 +68,6 @@ defmodule Demo.Supuls do
     end
   end
 
-  alias Demo.Mulets.Payload
   alias Demo.Mulets
   defp archive_payload(transaction, payload) do
     IO.inspect transaction
@@ -105,7 +103,7 @@ defmodule Demo.Supuls do
     {:ok, transaction}
   end
 
-  defp send_openhash_to_upper_supul() do
+  defp send_openhash_to_state_supul() do
   end
 
 

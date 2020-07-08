@@ -67,10 +67,8 @@ defmodule Demo.Invoices.Invoice do
     |> put_assoc(:invoice_items, params.invoice_items)
     |> Repo.insert #? {ok, invoice}
     |> put_total
-    # |> put_buyer_data
-    # |> put_seller_data
-    # |> put_supul_codes
-    # |> put_openhash
+    |> Repo.update
+
   end
 
 
@@ -81,7 +79,6 @@ defmodule Demo.Invoices.Invoice do
     invoice 
     |> change 
     |> put_change(:total, total) 
-    |> Repo.update
   end
 
   # defp put_buyer_data(cs) do
