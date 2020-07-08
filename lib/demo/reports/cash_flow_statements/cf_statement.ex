@@ -1,5 +1,5 @@
 defmodule Demo.Reports.CFStatement do
-  use Ecto.Schema
+  use Ecto.Schema 
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -15,14 +15,23 @@ defmodule Demo.Reports.CFStatement do
 
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
     belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
+    belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
+    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
+    belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
 
     timestamps()
   end
 
+  @fields [
+    :net_earnings, :depreciation_amortization, 
+    :changes_in_working_capital, :capital_expenditures, 
+    :debt_issuance, :equity_issuance, :opening_cash_balance
+  ]
   @doc false
   def changeset(cash_flow, attrs) do
     cash_flow
-    |> cast(attrs, [:net_earnings, :depreciation_amortization, :changes_in_working_capital, :capital_expenditures, :debt_issuance, :equity_issuance, :opening_cash_balance])
+    |> cast(attrs, @fields)
     |> validate_required([])
   end
 end

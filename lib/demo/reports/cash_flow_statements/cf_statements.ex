@@ -19,10 +19,54 @@ defmodule Demo.CFStatements do
   end
 
  
-  def create_cf_statement(%Entity{} = entity, attrs \\ %{}) do
+  def create_cf_statement(%Entity{} = entity, attrs) do
     %CFStatement{}
     |> CFStatement.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:entity, entity)
+    |> Repo.insert()
+  end
+
+  def create_public_cf_statement(attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:nation_supul, attrs.nation_supul)
+    |> Ecto.Changeset.put_assoc(:entity, attrs.entity)
+    |> Repo.insert()
+  end
+
+  def create_private_cf_statement(attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:supul, attrs.supul)
+    |> Ecto.Changeset.put_assoc(:entity, attrs.entity)
+    |> Repo.insert()
+  end
+
+  def create_supul_cf_statement(attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:supul, attrs.supul)
+    |> Repo.insert()
+  end
+
+  def create_state_supul_cf_statement(attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:state_supul, attrs.state_supul)
+    |> Repo.insert()
+  end
+
+  def create_nation_supul_cf_statement(attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:nation_supul, attrs.nation_supul)
+    |> Repo.insert()
+  end
+
+  def create_tax_cf_statement(attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:taxation, attrs.taxation)
+    |> Ecto.Changeset.put_assoc(:nation_supul, attrs.nation_supul)
     |> Repo.insert()
   end
 

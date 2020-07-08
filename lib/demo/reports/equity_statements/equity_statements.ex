@@ -4,7 +4,6 @@ defmodule Demo.EquityStatements do
     alias Demo.Repo
   
     alias Demo.Reports.EquityStatement
-    # alias Demo.Reports.Report
     alias Demo.Business.Entity
   
   
@@ -21,12 +20,63 @@ defmodule Demo.EquityStatements do
     end
   
   
-    def create_equity_statement(%Entity{} = entity, attrs \\ %{}) do
+    def create_equity_statement(attrs) do
+      %EquityStatement{}
+      |> EquityStatement.changeset(attrs)
+      |> Repo.insert()
+    end
+
+    def create_equity_statement(%Entity{} = entity, attrs) do
       %EquityStatement{}
       |> EquityStatement.changeset(attrs)
       |> Ecto.Changeset.put_assoc(:entity, entity)
       |> Repo.insert()
     end
+  
+    def create_private_equity_statement(attrs) do
+      %EquityStatement{}
+      |> EquityStatement.changeset(attrs)
+      |> Ecto.Changeset.put_assoc(:entity, attrs.entity)
+      |> Ecto.Changeset.put_assoc(:supul, attrs.supul)
+      |> Repo.insert()
+    end
+  
+    def create_public_equity_statement(attrs) do
+      %EquityStatement{}
+      |> EquityStatement.changeset(attrs)
+      |> Ecto.Changeset.put_assoc(:entity, attrs.entity)
+      |> Ecto.Changeset.put_assoc(:nation_supul, attrs.nation_supul)
+      |> Repo.insert()
+    end
+    
+    def create_supul_equity_statement(attrs) do
+      %EquityStatement{}
+      |> EquityStatement.changeset(attrs)
+      |> Ecto.Changeset.put_assoc(:supul, attrs.supul)
+      |> Repo.insert()
+    end
+    
+    def create_state_supul_equity_statement(attrs) do
+      %EquityStatement{}
+      |> EquityStatement.changeset(attrs)
+      |> Ecto.Changeset.put_assoc(:state_supul, attrs.state_supul)
+      |> Repo.insert()
+    end
+  
+    def create_nation_supul_equity_statement(attrs) do
+      %EquityStatement{}
+      |> EquityStatement.changeset(attrs)
+      |> Ecto.Changeset.put_assoc(:nation_supul, attrs.nation_supul)
+      |> Repo.insert()
+    end
+  
+    def create_tax_equity_statement(attrs) do
+      %EquityStatement{}
+      |> EquityStatement.changeset(attrs)
+      |> Ecto.Changeset.put_assoc(:taxation, attrs.taxation)
+      |> Repo.insert()
+    end
+  
   
   
     def update_equity_statement(%EquityStatement{} = equity_statement, attrs) do

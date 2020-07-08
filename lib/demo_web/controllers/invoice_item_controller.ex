@@ -54,7 +54,7 @@ alias Demo.Invoices.InvoiceItem
     render(conn, "edit.html", invoice_item: invoice_item, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "invoice_item" => invoice_item_params}, current_entity) do
+  def update(conn, %{"id" => id, "invoice_item" => invoice_item_params}, _current_entity) do
     IO.puts "update"
     IO.inspect invoice_item_params
     IO.inspect id

@@ -19,10 +19,56 @@ defmodule Demo.BalanceSheets do
   end
 
  
-  def create_balance_sheet(%Entity{} = entity, attrs \\ %{}) do
+  def create_balance_sheet(attrs) do
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:entity, attrs.entity)
+    |> Ecto.Changeset.put_assoc(:supul, attrs.supul)
+    |> Repo.insert()
+  end
+
+  def create_balance_sheet(%Entity{} = entity, attrs) do
     %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, entity)
+    |> Ecto.Changeset.put_assoc(:supul, attrs.supul)
+    |> Repo.insert()
+  end
+ 
+  def create_public_balance_sheet(attrs) do
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:entity, attrs.entity)
+    |> Ecto.Changeset.put_assoc(:nation_supul, attrs.nation_supul)
+    |> Repo.insert()
+  end
+ 
+  def create_tax_balance_sheet(attrs \\ %{}) do
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:taxation, attrs.taxation)
+    |> Ecto.Changeset.put_assoc(:nation_supul, attrs.nation_supul)
+    |> Repo.insert()
+  end
+ 
+  def create_state_supul_balance_sheet(attrs \\ %{}) do
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:state_supul, attrs.state_supul)
+    |> Repo.insert()
+  end
+
+  def create_nation_supul_balance_sheet(attrs \\ %{}) do
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:nation_supul, attrs.nation_supul)
+    |> Repo.insert()
+  end
+
+  def create_supul_balance_sheet(attrs \\ %{}) do
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:supul, attrs.supul)
     |> Repo.insert()
   end
 

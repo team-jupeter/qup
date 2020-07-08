@@ -32,6 +32,10 @@ defmodule Demo.Reports.BalanceSheet do
  
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
     belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
+    belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
+    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
+    belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
 
 
     timestamps()
@@ -61,6 +65,7 @@ defmodule Demo.Reports.BalanceSheet do
     balance_sheet
     |> cast(attrs, @fields)
   end 
+  
   
   def changeset_t1s(balance_sheet, attrs \\ %{}) do
     balance_sheet
