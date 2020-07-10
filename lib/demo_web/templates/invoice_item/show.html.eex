@@ -29,8 +29,6 @@
 
 <span><%= link "Edit", to: Routes.invoice_item_path(@conn, :edit, @invoice_item) %></span>
 </br>
-<span><%= link "Back", to: Routes.invoice_item_path(@conn, :index) %></span>
-</br>
 <span><%= link "Keep Shopping", to: Routes.item_path(@conn, :index) %></span>
 </br>
 <span><%= link "Go to Cart", to: Routes.invoice_item_path(@conn, :index) %></span>

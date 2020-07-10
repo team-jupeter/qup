@@ -21,6 +21,7 @@ defmodule Demo.Transactions.Transaction do
 
     field :gps, {:array, :map} 
     field :tax, :decimal, default: 0.0
+    field :gopang_fee, :decimal, default: 0.0
     field :insurance, :string
     field :abc_input_id, :string #? public_address of buyer. 
     field :abc_input_name, :string 
@@ -57,7 +58,7 @@ defmodule Demo.Transactions.Transaction do
     :gps, :tax, :insurance, :abc_input_id, :abc_input_name,  
     :abc_output_id, :abc_output_name, :abc_input_t1s, :abc_amount, 
     :items, :fiat_currency, :transaction_status, :if_only_item, 
-    :fair?, 
+    :fair?, :gopang_fee
   ]
   @doc false
   def changeset(transaction, attrs) do 

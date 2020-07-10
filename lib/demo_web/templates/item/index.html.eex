@@ -16,10 +16,10 @@
     <tr>
       <td><%= item.name %></td>    
       <td>
-        <span><%= link "Show", to: Routes.item_path(@conn, :show, item) %></span>
+        <span><%= link "Show", to: Routes.item_watch_path(@conn, :show, item) %></span>
       </td>
       <td>
-        <span><%= link "담기", to: Routes.item_path(@conn, :edit, item) %></span>
+        <span><%= link "담기", to: Routes.item_cart_path(@conn, :cart, item) %></span>
       </td>
     </tr> 
 <% end %>

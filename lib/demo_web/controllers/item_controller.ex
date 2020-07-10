@@ -9,7 +9,7 @@ defmodule DemoWeb.ItemController do
   alias Demo.Repo
   import Ecto.Query, only: [from: 2]
 
-  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
+  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :cart, :create, :show]
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_entity]
@@ -39,13 +39,23 @@ defmodule DemoWeb.ItemController do
   end
 
   def show(conn, %{"id" => id}, _current_entity) do
-    item = Products.get_product!(id)
-    render(conn, "show.html", item: item)
+    item = Products.get_product!(id) 
+    product = Products.get_product!(id)
+    render(conn, "show.html", item: item, product: product)
   end 
 
-  def edit(conn, %{"id" => id}, current_entity) do
+  def edit(conn, %{"id" => id}, _current_entity) do
+    item = Products.get_product!(id) 
+    changeset = Items.change_item(item)
+    render(conn, "edit.html", item: item, changeset: changeset)
+  end
+
+  def cart(conn, %{"item_id" => id}, current_entity) do
+    # %{"item_id" => "f2117537-c5f5-438c-a066-eadedbdda1c8"}
     item = Products.get_product!(id)
- 
+
+    IO.inspect item
+
     buyer_id = current_entity.id 
     buyer_name = Repo.one(from e in Entity, where: e.id == ^buyer_id, select: e.name) 
     buyer_supul_id = Repo.one(from e in Entity, where: e.id == ^buyer_id, select: e.supul_id) 

@@ -71,6 +71,7 @@ defmodule DemoWeb.Router do
     resources "/product_videos", ProductVideoController
     get "/watch/:id", WatchController, :show
     get "/product_watch/:id", ProductWatchController, :show
+    get "/item_watch/:id", ItemWatchController, :show
 
   end
 
@@ -79,7 +80,9 @@ defmodule DemoWeb.Router do
 
     resources "/entities", EntityController
     resources "/products", ProductController
-    resources "/items", ItemController
+    resources "/items", ItemController do
+      get "/cart", ItemController, :cart, as: :cart
+    end
     resources "/invoice_items", InvoiceItemController
     resources "/invoices", InvoiceController
     resources "/transactions", TransactionController

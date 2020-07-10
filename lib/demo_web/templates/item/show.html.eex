@@ -1,3 +1,4 @@
+  
 <table >
   <thead> 
     <th>Product Detail</th>
@@ -27,7 +28,5 @@
   </tbody>
 </table>
  </br>
-<span><%= link "Edit", to: Routes.item_path(@conn, :edit, @item) %></span>
-<span><%= link "Back", to: Routes.item_path(@conn, :index) %></span>
 
 

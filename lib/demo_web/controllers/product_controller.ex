@@ -5,7 +5,7 @@ defmodule DemoWeb.ProductController do
   alias Demo.Business.Products
   alias Demo.Business.Product
  
-  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show, :delete]
+  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show, :delete, :update]
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_entity]
@@ -27,7 +27,7 @@ defmodule DemoWeb.ProductController do
     product = Products.get_entity_product!(current_entity, id) 
     changeset = Products.change_product(product)
     render(conn, "edit.html", product: product, changeset: changeset)
-  end
+  end 
 
   def update(conn, %{"id" => id, "product" => product_params}, current_entity) do
     product = Products.get_entity_product!(current_entity, id) 

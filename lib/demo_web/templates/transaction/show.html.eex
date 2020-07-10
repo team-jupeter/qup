@@ -15,6 +15,10 @@
     <td><%= @transaction.tax %></td>
   </tr> 
    <tr>
+    <td>Gopang Fee:</td>
+    <td><%= @transaction.gopang_fee %></td>
+  </tr> 
+   <tr>
     <td>Insurance:</td>
     <td><%= @transaction.insurance %></td>
   </tr>
