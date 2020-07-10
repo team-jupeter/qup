@@ -13,16 +13,6 @@
   <%= textarea f, :payload %>
   <%= error_tag f, :payload %>
 
-
-
-    has_many :supuls, Demo.Supuls.Supul </br>
-    has_many :schools, Demo.Schools.School, on_replace: :nilify </br>
-
-    has_one :financial_report, Demo.Reports.FinancialReport </br>
-    has_one :mulet, Demo.Mulets.Mulet </br>
-    
-    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id </br>
-    
   <div>
     <%= submit "Save" %>
   </div>

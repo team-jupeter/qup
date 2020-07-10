@@ -40,7 +40,7 @@ defmodule Demo.Business.Entity do
     field :password_confirmation, :string, virtual: true
     
     field :locked, :boolean, default: false
-    field :nation_signature, :string
+    field :nation_signature, :string 
 
     #? A user must have only one entity, and An entity may have several business_embeds. 
     # embeds_many :business_embeds, Demo.Business.BusinessEmbed, on_replace: :delete
@@ -76,6 +76,13 @@ defmodule Demo.Business.Entity do
       join_through: "entities_invoices",
       on_replace: :delete
     )
+    
+    many_to_many(
+      :transactions,
+      Invoice,
+      join_through: Demo.Transactions.EntitiesTransactions,
+      on_replace: :delete
+    )
 
     many_to_many(
       :users,
@@ -108,8 +115,8 @@ defmodule Demo.Business.Entity do
     :share_price, :credit_rate, :project,  
   ]
 
-  def changeset(user, attrs \\ %{}) do
-    user
+  def changeset(entity, attrs \\ %{}) do
+    entity
     |> cast(attrs, @fields)
     |> validate_required([])
     |> validate_format(:email, ~r/@/)
@@ -119,6 +126,19 @@ defmodule Demo.Business.Entity do
     |> put_assoc(:nation, attrs.nation)
   end
   
+  def new_changeset(entity, attrs \\ %{}) do 
+    entity
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> validate_format(:email, ~r/@/)
+    # |> assoc_constraint(:biz_category)
+    # |> assoc_constraint(:nation)
+    # |> assoc_constraint(:supul)
+    # |> put_assoc(:nation, attrs.nation)
+  end
+  
+
+
   def create_private_entity(entity, current_user, attrs) do
     changeset(entity, attrs)
     |> put_assoc(:supul, attrs.supul)

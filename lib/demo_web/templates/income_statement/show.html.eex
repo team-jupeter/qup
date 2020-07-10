@@ -8,95 +8,95 @@
   <tbody>
    
   <tr>
-    <td>revenue</td>
+    <td>Revenue</td>
     <td><%= @is.revenue %></td>
   </tr>
   <tr>
-    <td>expense</td>
+    <td>Expense</td>
     <td><%= @is.expense %></td>
   </tr>
   <tr>
-    <td>compensation</td>
+    <td>Compensation</td>
     <td><%= @is.compensation %></td>
   </tr>
 
   <tr>
-    <td>cost_of_goods_sold</td>
+    <td>Cost of goods sold</td>
     <td><%= @is.cost_of_goods_sold %></td>
   </tr>
 
   <tr>
-    <td>depreciation_and_amortization</td>
+    <td>Depreciation and amortization</td>
     <td><%= @is.depreciation_and_amortization %></td>
   </tr>
 
   <tr>
-    <td>employee_benefits</td>
+    <td>Employee benefits</td>
     <td><%= @is.employee_benefits %></td>
   </tr>
 
   <tr>
-    <td>income_taxes</td>
+    <td>Income taxes</td>
     <td><%= @is.income_taxes %></td>
   </tr>
 
   <tr>
-    <td>insurance</td>
+    <td>Insurance</td>
     <td><%= @is.insurance %></td>
   </tr>
 
   <tr>
-    <td>marketing</td>
+    <td>Marketing</td>
     <td><%= @is.marketing %></td>
   </tr>
 
   <tr>
-    <td>office</td>
+    <td>Office</td>
     <td><%= @is.office %></td>
   </tr>
 
   <tr>
-    <td>payroll</td>
+    <td>Payroll</td>
     <td><%= @is.payroll %></td>
   </tr>
 
   <tr>
-    <td>professional_fees</td>
+    <td>Professional fees</td>
     <td><%= @is.professional_fees %></td>
   </tr>
 
   <tr>
-    <td>rent</td>
+    <td>Rent</td>
     <td><%= @is.rent %></td>
   </tr>
  
   <tr>
-    <td>repair_and_maintenance</td>
+    <td>Repair and maintenance</td>
     <td><%= @is.repair_and_maintenance %></td>
   </tr>
  
   <tr>
-    <td>sales_discounts</td>
+    <td>Sales discounts</td>
     <td><%= @is.sales_discounts %></td>
   </tr>
  
   <tr>
-    <td>supplies</td>
+    <td>Supplies</td>
     <td><%= @is.supplies %></td>
   </tr>
  
   <tr>
-    <td>taxes</td>
+    <td>Taxes</td>
     <td><%= @is.taxes %></td>
   </tr>
  
   <tr>
-    <td>travel_and_entertainment</td>
+    <td>Travel and entertainment</td>
     <td><%= @is.travel_and_entertainment %></td>
   </tr>
  
   <tr>
-    <td>utilities</td>
+    <td>Utilities</td>
     <td><%= @is.utilities %></td>
   </tr>
  </tbody>

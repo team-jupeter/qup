@@ -3,7 +3,7 @@
     <tr>
       <th>Input</th>
       <th>Output</th>
-      <th>Amount</th> 
+      <th>Amount</th>
     </tr>
   </thead>
   <tbody>
@@ -12,7 +12,6 @@
       <td><%= transaction.abc_input_name %></td>
       <td><%= transaction.abc_output_name %></td>
       <td><%= transaction.abc_amount %></td>
-
       <td>
         <span><%= link "Show", to: Routes.transaction_path(@conn, :show, transaction) %></span>
       </td>
@@ -21,4 +20,3 @@
   </tbody>
 </table>
 
-<span><%= link "New Transaction", to: Routes.transaction_path(@conn, :new) %></span>

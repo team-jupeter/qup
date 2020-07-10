@@ -28,12 +28,19 @@ defmodule Demo.StateSupuls.StateSupul do
   @fields [
     :name, :nation_name, :auth_code, :payload, :payload_hash
   ]
+
+  def changeset(attrs = %{nation_supul: nation_supul}) do
+    IO.puts "StateSupul changeset"
+    %StateSupul{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> put_assoc(:nation_supul, attrs.nation_supul)
+  end 
   @doc false
   def changeset(attrs) do
     %StateSupul{}
     |> cast(attrs, @fields)
     |> validate_required([:name])
-    |> put_assoc(:nation_supul, attrs.nation_supul)
   end
 
   def changeset(%StateSupul{} = state_supul, attrs = %{auth_code: auth_code}) do
@@ -43,4 +50,10 @@ defmodule Demo.StateSupuls.StateSupul do
     |> put_change(:auth_code, attrs.auth_code)
   end
 
+  def changeset(%StateSupul{} = state_supul, attrs) do
+    # IO.puts "StateSupul changeset"
+    state_supul
+    |> cast(attrs, @fields)
+    |> validate_required([])
+  end
 end

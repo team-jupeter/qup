@@ -1,4 +1,4 @@
-<h4>Edit State supul</h4>
+<h4>Edit State Supul</h4>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.state_supul_path(@conn, :update, @state_supul)) %>
 

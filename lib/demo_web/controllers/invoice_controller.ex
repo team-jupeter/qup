@@ -35,6 +35,8 @@ defmodule DemoWeb.InvoiceController do
     buyer_name = Enum.at(invoice_items, 0).buyer_name
 
     invoice_params = %{
+      entity: current_entity,
+      
       buyer_id: buyer_id,
       buyer_name: buyer_name,
       seller_id: seller_id, 

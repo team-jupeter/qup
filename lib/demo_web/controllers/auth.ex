@@ -2,7 +2,7 @@ defmodule DemoWeb.Auth do
   import Plug.Conn
   import Phoenix.Controller
 
-  alias RumblWeb.Router.Helpers, as: Routes
+  alias DemoWeb.Router.Helpers, as: Routes
   
   def init(opts), do: opts
 

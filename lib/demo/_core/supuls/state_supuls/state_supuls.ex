@@ -10,14 +10,14 @@ defmodule Demo.StateSupuls do
 
 
   def get_state_supul!(id), do: Repo.get!(StateSupul, id)
+ 
 
-
-  def create_state_supul(attrs \\ %{}) do
+  def create_state_supul(attrs) do
     StateSupul.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert() 
   end
 
-
+ 
   def update_state_supul(%StateSupul{} = state_supul, attrs) do
     state_supul
     |> StateSupul.changeset(attrs)
@@ -30,6 +30,7 @@ defmodule Demo.StateSupuls do
   end
 
   def change_state_supul(%StateSupul{} = state_supul) do
+    # IO.inspect "change_state_supul"
     StateSupul.changeset(state_supul, %{})
   end
 end

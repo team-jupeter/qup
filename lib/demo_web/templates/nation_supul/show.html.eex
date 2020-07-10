@@ -1,18 +1,11 @@
-<h4>Show Nation supul</h4>
+<h4><%= @nation_supul.name %></h4>
 
 <ul>
-
   <li>
-    <strong>ID:</strong>
-    <%= @nation_supul.id %>
-  </li>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @nation_supul.name %>
+    <strong>payload_hash:</strong>
+    <%= @nation_supul.payload_hash %>
   </li>
 
 </ul>
 
-<span><%= link "Edit", to: Routes.nation_supul_path(@conn, :edit, @nation_supul) %></span>
 <span><%= link "Back", to: Routes.nation_supul_path(@conn, :index) %></span>

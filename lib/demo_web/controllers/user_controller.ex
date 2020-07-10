@@ -4,30 +4,27 @@ defmodule DemoWeb.UserController do
   alias Demo.Accounts
   alias Demo.Accounts.User
 
-  plug :authenticate_user when action in [:index, :show]
+  plug :authenticate_user when action in [:index, :show, :edit]
 
 
   def index(conn, _params) do
-    # IO.inspect conn
+    IO.puts "user index"
     users = Accounts.list_users()
-    # IO.inspect conn
     render(conn, "index.html", users: users)
   end
 
   def show(conn, %{"id" => id}) do
     user = Accounts.get_user(id)
-    # IO.inspect conn
     render(conn, "show.html", user: user)
   end
  
   def new(conn, _params) do
-    # IO.inspect conn
     changeset = Accounts.change_user(%User{})
-    # IO.inspect conn
+
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"user" => user_params}) do
+  def create(conn, %{"user" => user_params}) do 
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         conn
@@ -40,5 +37,27 @@ defmodule DemoWeb.UserController do
     end
   end
 
+
+  def edit(conn, %{"id" => id}) do
+    IO.inspect "user edit"
+    user = User |> Demo.Repo.get!(id) 
+    changeset = Accounts.change_user(user)
+    render(conn, "edit.html", user: user, changeset: changeset)
+  end
+
+  def update(conn, %{"id" => id, "user" => user_params}) do
+    user = User |> Demo.Repo.get!(id) 
+
+    case Accounts.update_user(user, user_params) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "User updated successfully.")
+        # |> redirect(to: Routes.user_path(conn, :show, user))
+        render(conn, "show.html", user: user)
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "edit.html", user: user, changeset: changeset)
+    end
+  end
 
 end

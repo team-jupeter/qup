@@ -1,6 +1,6 @@
 defmodule Demo.Business.Product do
   use Ecto.Schema
-  import Ecto.Changeset
+  import Ecto.Changeset 
   # alias Demo.Business.Entity
   alias Demo.Business.Product
   alias Demo.Repo
@@ -61,9 +61,9 @@ defmodule Demo.Business.Product do
     product
     |> cast(attrs, @fields)
     |> validate_required([])
-    |> cast_embed(:comments)
-    |> assoc_constraint(:gpc_code)
-    |> assoc_constraint(:biz_category)
+    # |> cast_embed(:comments)
+    # |> assoc_constraint(:gpc_code)
+    # |> assoc_constraint(:biz_category)
   end
 
   def changeset_update_entities(%Product{} = product, entities) do

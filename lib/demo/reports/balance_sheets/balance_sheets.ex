@@ -19,7 +19,7 @@ defmodule Demo.BalanceSheets do
   end
 
  
-  def create_balance_sheet(attrs) do
+  def create_balance_sheet(attrs) do #? 사기업 
     %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, attrs.entity)
@@ -27,7 +27,7 @@ defmodule Demo.BalanceSheets do
     |> Repo.insert()
   end
 
-  def create_balance_sheet(%Entity{} = entity, attrs) do
+  def create_balance_sheet(%Entity{} = entity, attrs) do #? 사기업 
     %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, entity)
@@ -35,7 +35,7 @@ defmodule Demo.BalanceSheets do
     |> Repo.insert()
   end
  
-  def create_public_balance_sheet(attrs) do
+  def create_public_balance_sheet(attrs) do #? 공기업 또는 정부 기관
     %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, attrs.entity)
@@ -43,7 +43,7 @@ defmodule Demo.BalanceSheets do
     |> Repo.insert()
   end
  
-  def create_tax_balance_sheet(attrs \\ %{}) do
+  def create_tax_balance_sheet(attrs \\ %{}) do #? 국세청 
     %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:taxation, attrs.taxation)

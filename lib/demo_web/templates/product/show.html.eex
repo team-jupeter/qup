@@ -1,6 +1,9 @@
 <table >
   <thead> 
-
+  <tr> 
+    <th>Title</th>
+    <th>Content</th>
+  </tr>
   </thead>
   <tbody>
     <tr>
@@ -12,29 +15,12 @@
       <td><%= @product.price %></td>
     </tr>
     <tr>
-      <td>Stars</td>
-      <td><%= @product.stars %></td>
-    </tr>
-    <tr>
-      <td>Price/value</td>
-      <td><%= @product.pvr %></td>
-    </tr>
-    <tr>
       <td>Description</td>
       <td><%= @product.description %></td>
     </tr>
   </tbody>
-</table>
-
 <span><%= link "Edit", to: Routes.product_path(@conn, :edit, @product) %></span>
-<span><%= link "Back", to: Routes.product_path(@conn, :index) %></span>
-
-
-<table >
-  <thead>
-  </thead>
-  <tbody>
-    <tr>
-    </tr>
-  </tbody>
 </table>
+
+
+

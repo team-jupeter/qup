@@ -1,7 +1,7 @@
 defmodule DemoWeb.ProductWatchController do
   use DemoWeb, :controller
 
-  alias Demo.Multimedia
+  alias Demo.Multimedia 
   alias Demo.Business
 
   def show(conn, %{"id" => id}) do
@@ -15,6 +15,6 @@ defmodule DemoWeb.ProductWatchController do
     video = Multimedia.get_product_video!(current_product, id) 
     # IO.puts "video"
     # IO.inspect video
-    render(conn, "show.html", video: video)
+    render(conn, "show.html", video: video, product: current_product)
   end
 end

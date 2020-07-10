@@ -22,7 +22,7 @@ alias Demo.Accounts
 {:ok, corea} = Accounts.create_user(%{
   name: "COREA", 
   username: "corea", 
-  password: "temppass",
+  password: "p",
   email: "corea@un",
   supul: nil, 
   nation: korea,
@@ -48,7 +48,7 @@ alias Demo.Supuls
 
 {:ok, global_supul} = GlobalSupuls.create_global_supul(%{
   name: "글로벌 수풀", 
-  pasword: "temppass",
+  pasword: "p",
   email: "golobal@un", 
   gab_balance: Decimal.from_float(0.0),
   }) 
@@ -134,12 +134,12 @@ HUMAN USER
 #? A human being with nationality he or she claims.
 {:ok, mr_hong} = Accounts.create_user(%{
   type: "Human",
-  name: "홍 길동", 
+  name: "홍길동", 
   nation: korea,
   supul: hankyung_supul, 
   username: "mr_hong", 
-  password: "temppass",
-  email: "hong_gil_dong@0001.kr",
+  password: "p",
+  email: "hong@0000.kr",
   birth_date: ~N[1990-05-05 06:14:09],
   username: "mr_hong"
   })
@@ -154,12 +154,12 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   
 #? 성춘향   
 {:ok, ms_sung} = Accounts.create_user(%{
-  name: "성 춘향", 
+  name: "성춘향", 
   nation: korea, 
   supul: hanlim_supul,
   username: "ms_sung", 
-  email: "sung_chunhyang@82345.kr",
-  password: "temppass",
+  email: "sung@0000.kr",
+  password: "p",
   type: "Human",
   birth_date: ~N[2000-09-09 16:14:09],
   username: "ms_sung"
@@ -175,12 +175,12 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 #? 임꺽정  
 {:ok, mr_lim} = Accounts.create_user(%{
-  name: "임 꺽정", 
+  name: "임꺽정", 
   nation: korea,
   supul: hankyung_supul,
   username: "mr_lim", 
-  password: "temppass",
-  email: "limgeukjung@8889.kr",
+  password: "p",
+  email: "lim@0000.kr",
   type: "Human",
   auth_code: "5410051898822kr",
   birth_date: ~N[1970-11-11 09:14:09],
@@ -210,7 +210,9 @@ alias Demo.Taxations
 #? 국세청 korea's Entity == a governmental organization  
 {:ok, kts} = Taxations.create_taxation(%{
   name: "Korea Tax Service", 
-  nation: korea
+  nation: korea,
+  nation_supul: korea_supul,
+  supul_anme: "korea_supul",
   }) 
   
   
@@ -234,7 +236,7 @@ alias Demo.Business
   nation: korea,
   supul: korea_supul, 
   project: "반자동 금융 인프라", 
-  supul_name: "한국",
+  supul_name: "korea_supul",
   pasword: "temppass",
   email: "gab_korea@krd",
   gab_balance: Decimal.from_float(1000.0),
@@ -256,7 +258,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   nation: korea,
   supul: korea_supul, 
   project: "반자동 물류 인프라",
-  supul_name: "한국",
+  supul_name: "korea_supul",
   pasword: "temppass",
   email: "gopang_korea@kr",
   gab_balance: Decimal.from_float(0.0),
@@ -279,7 +281,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   nation: korea,
   supul: hankyung_supul, 
   taxation: kts,
-  supul_name: "한경면",
+  supul_name: "hankyung_supul",
   pasword: "temppass",
   email: "hong@0001.kr", 
   entity_address: "제주시 한경면 20-1 해거름전망대",
@@ -303,7 +305,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   supul: hanlim_supul,
   nation: korea,
   taxation: kts,
-  supul_name: "한림읍",
+  supul_name: "hanlim_supul",
   email: "sung@0002.kr", 
   pasword: "temppass",
   gab_balance: Decimal.from_float(0.0),
@@ -326,7 +328,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   nation: korea,
   supul: hanlim_supul,
   taxation: kts,
-  supul_name: "한림읍",
+  supul_name: "hankyung_supul",
   email: "lim@0001.kr", 
   pasword: "temppass",
   user_id: mr_lim.id,
@@ -351,7 +353,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   nation: korea,
   taxation: kts,
   project: "일반 법인", 
-  supul_name: "한림읍",
+  supul_name: "hanlim_supul",
   pasword: "temppass",
   email: "tomi@3532.kr", 
   entity_address: "제주시 한림읍 11-1",
@@ -465,14 +467,13 @@ alias Demo.EquityStatements
 #? Financial Report
 # gab_korea_FR =
 #   FinancialReport.changeset(%FinancialReport{}, %{entity_id: gab_korea.id}) |> Repo.insert!()
-{:ok, gopang_korea_FR} = FinancialReports.create_financial_report(%{entity: gopang_korea, nation_supul: korea_supul}) 
-{:ok, kts_FR} = FinancialReports.create_tax_financial_report(%{taxation: kts}) 
-{:ok, gab_korea_FR} = FinancialReports.create_financial_report(%{entity: gab_korea, nation_supul: korea_supul}) 
+{:ok, kts_FR} = FinancialReports.create_tax_financial_report(%{taxation: kts, nation: korea, nation_supul: korea_supul}) 
+{:ok, gopang_korea_FR} = FinancialReports.create_public_financial_report(%{entity: gopang_korea, nation_supul: korea_supul}) 
+{:ok, gab_korea_FR} = FinancialReports.create_public_financial_report(%{entity: gab_korea, nation_supul: korea_supul}) 
 
 {:ok, hong_entity_FR} = FinancialReports.create_financial_report(%{entity: hong_entity, supul: hankyung_supul}) 
 {:ok, sung_entity_FR} = FinancialReports.create_financial_report(%{entity: sung_entity, supul: hanlim_supul}) 
 {:ok, lim_entity_FR} = FinancialReports.create_financial_report(%{entity: lim_entity, supul: hankyung_supul}) 
-
 {:ok, tomi_entity_FR} = FinancialReports.create_financial_report(%{entity: tomi_entity, supul: hanlim_supul}) 
 
 {:ok, korea_supul_FR} = FinancialReports.create_nation_supul_financial_report(%{nation_supul: korea_supul}) 
@@ -488,14 +489,14 @@ alias Demo.EquityStatements
 
 
 #? Income Statement
-{:ok, kts_is} = IncomeStatements.create_tax_income_statement(%{taxation: kts}) 
-{:ok, gab_korea_is} = IncomeStatements.create_public_income_statement(%{nation_supul: korea_supul, entity: gab_korea}) 
-{:ok, gopang_korea_is} = IncomeStatements.create_public_income_statement(%{nation_supul: korea_supul, entity: gopang_korea}) 
+{:ok, kts_IS} = IncomeStatements.create_tax_income_statement(%{taxation: kts}) 
+{:ok, gab_korea_IS} = IncomeStatements.create_public_income_statement(%{nation_supul: korea_supul, entity: gab_korea}) 
+{:ok, gopang_korea_IS} = IncomeStatements.create_public_income_statement(%{nation_supul: korea_supul, entity: gopang_korea}) 
 
-{:ok, hong_entity_is} = IncomeStatements.create_income_statement(%{supul: hankyung_supul, entity: hong_entity}) 
-{:ok, sung_entity_is} = IncomeStatements.create_income_statement(%{supul: hanlim_supul, entity: sung_entity}) 
-{:ok, lim_entity_is} = IncomeStatements.create_income_statement(%{supul: hankyung_supul, entity: lim_entity}) 
-{:ok, tomi_entity_is} = IncomeStatements.create_income_statement(%{supul: hanlim_supul, entity: tomi_entity}) 
+{:ok, hong_entity_IS} = IncomeStatements.create_income_statement(%{supul: hankyung_supul, entity: hong_entity}) 
+{:ok, sung_entity_IS} = IncomeStatements.create_income_statement(%{supul: hanlim_supul, entity: sung_entity}) 
+{:ok, lim_entity_IS} = IncomeStatements.create_income_statement(%{supul: hankyung_supul, entity: lim_entity}) 
+{:ok, tomi_entity_IS} = IncomeStatements.create_income_statement(%{supul: hanlim_supul, entity: tomi_entity}) 
 
 {:ok, korea_supul_IS} = IncomeStatements.create_nation_supul_income_statement(%{nation_supul: korea_supul, entity: korea_supul}) 
 {:ok, jejudo_supul_IS} = IncomeStatements.create_state_supul_income_statement(%{state_supul: jejudo_supul, entity: jejudo_supul}) 
@@ -771,6 +772,7 @@ hanlim_supul_BS = BalanceSheets.add_t1s(hanlim_supul_BS, new_t1s)
 
 
 
+
 '''
 TRANSACTION 1
 
@@ -791,7 +793,7 @@ alias Demo.Business
   name: "KRW", 
   seller_id: hong_entity.id,
   seller_name: hong_entity.name,
-  seller_supul_name: "한림 수플",
+  seller_supul_name: "hanlim_supul",
   seller_supul_id: hanlim_supul.id,
   price: Decimal.from_float(0.0012),
   }) 
@@ -802,46 +804,6 @@ alias Demo.Business
 
 
 
-
-# hong_entity = Entity.changeset_update_products(hong_entity, [krw])
-
-#? prepare transaction between hong_entity and gab_korea. gab_korea will buy krw from hong_entity. 
-#? Remember, in a transaction, the one paying ABC is buyer, and the other receiving ABC is seller. 
-#? There can be more than one items in an invoice like 짜장 2, 짬뽕 1, 탕수육 1 ...
-
-
-#? Use Web UI instead of the commented out code block below
-'''
-invoice_items = []
-
-# invoice_item = InvoiceItem.changeset(%InvoiceItem{}, %{item_name: "KRW", product_id: krw.id, price: krw.price, quantity: 20000}) |> Repo.insert!
-alias Demo.InvoiceItems
-{:ok, invoice_item} = InvoiceItems.create_invoice_item(%{
-  "product_id" => product.id,
-  "quantity" => 20000})
-
-invoice_items = [invoice_item | invoice_items]
-
-
-alias Demo.Invoices
-attrs = %{
-  invoice_items: invoice_items
-}
-{:ok, invoice} = Invoices.create_invoice(attrs)
-
-
-alias Demo.Transactions
-{:ok, transaction} = Transactions.create_transaction(hong_entity, invoice, hong_entity_rsa_priv_key, tomi_rsa_priv_key)
-
-payload(transaction, buyer_rsa_priv_key, sender_rsa_priv_key)
-'''
-
-
-'''
-
-BIZ_CATEGORY & GPC_CODE
-
-'''
 alias Demo.Business
 alias Demo.Business.BizCategory
 
@@ -874,7 +836,7 @@ alias Demo.Business.Product
 {:ok, 육개장} = Business.create_product(lim_entity, %{name: "육개장", gpc_code_id: 한식.id, price: 3.5})
 {:ok, 갈비탕} = Business.create_product(lim_entity, %{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5})
 
-
+ 
 # #? 토미 김밥
 # tomi_entity = Entity.changeset_update_products(tomi_entity, [김밥, 떡볶이, 우동])
 
@@ -915,14 +877,14 @@ alias Demo.Invoices
 invoice_items = [invoice_item_1, invoice_item_2]
 
 params = %{
-  "buyer" => %{"main_id" => hong_entity.id, "main_name" => hong_entity.name},
-  "seller" => %{"main_id" => tomi_entity.id, "main_name" => tomi_entity.name},
-  "invoice_items" => invoice_items,
+  buyer: %{"main_id" => hong_entity.id, "main_name" => hong_entity.name},
+  seller: %{"main_id" => tomi_entity.id, "main_name" => tomi_entity.name},
+  invoice_items: invoice_items,
 }
 
 #? invoice => transaction => supul (1) update financial reports, (2) archieve, (3) openhash
-invoice = Invoices.create_invoice(params)
-transaction = Transactions.create_transaction(tomi_entity, invoice, hong_entity_rsa_priv_key, tomi_rsa_priv_key)
+{:ok, invoice} = Invoices.create_invoice(params)
+transaction = Transactions.create_transaction()
 
 
 

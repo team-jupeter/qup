@@ -34,7 +34,7 @@ defmodule Demo.Invoices.Invoice do
     many_to_many(
       :entities,
       Demo.Business.Entity,
-      join_through: "entities_invoices",
+      join_through: Demo.Products.EntitiesInvoices,
       on_replace: :delete
       )
 
@@ -62,22 +62,21 @@ defmodule Demo.Invoices.Invoice do
   end
 
 
-  def create(_invoice, params) do
-    changeset(%Invoice{}, params)
-    |> put_assoc(:invoice_items, params.invoice_items)
+  def create(_invoice, attrs) do
+    changeset(%Invoice{}, attrs)
+    |> put_assoc(:invoice_items, attrs.invoice_items)
+    |> put_assoc(:entities, [attrs.entity])
+    |> put_total(attrs)
     |> Repo.insert #? {ok, invoice}
-    |> put_total
-    |> Repo.update
 
   end
 
 
-  defp put_total({_ok, invoice}) do
-    total = Enum.reduce(invoice.invoice_items, 0, fn x, sum -> Decimal.add(x.subtotal, sum) end)
+  defp put_total(cs, attrs) do
+    total = Enum.reduce(attrs.invoice_items, 0, fn x, sum -> Decimal.add(x.subtotal, sum) end)
     
     #? When we change a struct, change => put_change => update
-    invoice 
-    |> change 
+    cs 
     |> put_change(:total, total) 
   end
 

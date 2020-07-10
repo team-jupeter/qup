@@ -2,43 +2,43 @@
 <table>
   <thead>
     <tr>
-    <th>Account</th>
-    <th>Amount</th>
+        <th>Account</th>
+        <th>Amount</th>
     </tr>
   </thead>
   <tbody>
   <tr>
-    <td>capital_expenditures:</td>
+    <td>Capital expenditures:</td>
     <td><%= @cf.capital_expenditures %></td>
   </tr>
 
   <tr>
-    <td>changes_in_working_capital:</td>
+    <td>Changes in working capital:</td>
     <td><%= @cf.changes_in_working_capital %></td>
   </tr>
 
   <tr>
-    <td>debt_issuance:</td>
+    <td>Debt issuance:</td>
     <td><%= @cf.debt_issuance %></td>
   </tr>
 
   <tr>
-    <td>depreciation_amortization:</td>
+    <td>Depreciation amortization:</td>
     <td><%= @cf.depreciation_amortization %></td>
   </tr>
 
   <tr>
-    <td>equity_issuance:</td>
+    <td>Equity issuance:</td>
     <td><%= @cf.equity_issuance %></td>
   </tr>
 
   <tr>
-    <td>net_earnings:</td>
+    <td>Net earnings:</td>
     <td><%= @cf.net_earnings %></td>
   </tr>
 
   <tr>
-    <td>opening_cash_balance:</td>
+    <td>Opening cash balance:</td>
     <td><%= @cf.opening_cash_balance %></td>
   </tr>
 </tbody>

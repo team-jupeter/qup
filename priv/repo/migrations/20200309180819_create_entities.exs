@@ -39,11 +39,13 @@ defmodule Demo.Repo.Migrations.CreateEntities do
       add :state_supul_id, references(:state_supuls, type: :uuid)
       add :nation_supul_id, references(:nation_supuls, type: :uuid)
       add :taxation_id, references(:taxations, type: :uuid)
-      add :invoice_id, references(:invoices, type: :uuid)
       add :biz_category_id, references(:biz_categories, type: :uuid)
-
+      
       add(:business_embeds, {:array, :jsonb}, default: [])
-
+      
+      #? many to many
+      # add :invoice_id, references(:invoices, type: :uuid)
+      # add :transaction_id, references(:invoices, type: :uuid)
 
       timestamps()
     end

@@ -1,0 +1,36 @@
+<h1>Listing Certificates</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Issued by</th>
+      <th>Issued on</th>
+      <th>Valid until</th>
+      <th>Auth code</th>
+      <th>Granted to</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for certificate <- @certificates do %>
+    <tr>
+      <td><%= certificate.name %></td>
+      <td><%= certificate.issued_by %></td>
+      <td><%= certificate.issued_on %></td>
+      <td><%= certificate.valid_until %></td>
+      <td><%= certificate.auth_code %></td>
+      <td><%= certificate.granted_to %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.certificate_path(@conn, :show, certificate) %></span>
+        <span><%= link "Edit", to: Routes.certificate_path(@conn, :edit, certificate) %></span>
+        <span><%= link "Delete", to: Routes.certificate_path(@conn, :delete, certificate), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Certificate", to: Routes.certificate_path(@conn, :new) %></span>

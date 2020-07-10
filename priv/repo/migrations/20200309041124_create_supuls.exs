@@ -5,7 +5,7 @@ defmodule Demo.Repo.Migrations.CreateSupuls do
     create table(:supuls, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :type, :string
-      add :supul_code, :integer
+      add :supul_code, :string
       add :name, :string
       add :state_name, :string
       add :nation_name, :string

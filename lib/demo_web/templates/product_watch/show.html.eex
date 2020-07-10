@@ -1,5 +1,7 @@
+<%= render(DemoWeb.ProductView, "show.html", assigns) %>
+
 <div class="row">
-  <div class="column column-60">
+  <div class="column column-60"> 
     <h3><%= @video.title %></h3>
     <%= content_tag :div, id: "video",
         data: [id: @video.id, player_id: player_id(@video)] do %>
@@ -8,7 +10,7 @@
 
   <div class="column annotations">
     <h3>Annotations</h3>
-
+ 
     <div id="msg-container">
     </div>
 

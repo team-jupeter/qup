@@ -27,12 +27,18 @@ defmodule Demo.NationSupuls.NationSupul do
   @fields [
     :name, :payload, :payload_hash, :auth_code
   ]
-  @doc false
-  def changeset(attrs) do
+  @doc false 
+  def changeset(attrs = %{global_supul: global_supul}) do
     %NationSupul{}
     |> cast(attrs, @fields)
     |> validate_required([:name])
     |> put_assoc(:global_supul, attrs.global_supul)
+  end
+
+  def changeset(attrs) do
+    %NationSupul{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
   end
 
   def changeset(%NationSupul{} = nation_supul, attrs = %{auth_code: auth_code}) do
@@ -40,5 +46,11 @@ defmodule Demo.NationSupuls.NationSupul do
     |> cast(attrs, @fields)
     |> validate_required([:name])
     |> put_change(:auth_code, attrs.auth_code)
+  end
+
+  def changeset(%NationSupul{} = nation_supul, attrs) do
+    nation_supul
+    |> cast(attrs, @fields)
+    |> validate_required([])
   end
 end

@@ -4,6 +4,7 @@ defmodule Demo.Business do
   alias Demo.Repo
   alias Demo.Business.Entity
   alias Demo.Business.Product
+  alias Demo.Business.GPCCode
   alias Demo.Business.BizCategory
   alias Demo.Accounts.User
 
@@ -71,7 +72,7 @@ defmodule Demo.Business do
     |> Entity.create_private_entity(current_user, attrs)
     |> Repo.insert()
   end
-
+ 
   def create_public_entity(attrs) do
     %Entity{}
     |> Entity.create_public_entity(attrs)
@@ -94,12 +95,16 @@ defmodule Demo.Business do
   end
 
   def create_GPCCode(attrs \\ %{}) do
-    %Entity{}
-    |> Entity.changeset(attrs)
+    %GPCCode{}
+    |> GPCCode.changeset(attrs)
     |> Repo.insert()
   end
 
   def change_entity(%Entity{} = entity) do
-    Entity.changeset(entity, %{})
+    Entity.changeset(entity, %{}) 
+  end
+
+  def new_entity(%Entity{} = entity) do
+    Entity.new_changeset(entity, %{}) 
   end
 end

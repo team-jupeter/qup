@@ -27,15 +27,11 @@
 </table>
  </br>
 
-
-<span><%= link "Keep Shopping", to: Routes.item_path(@conn, :index) %></span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<span><%= link "Go to Cart", to: Routes.invoice_item_path(@conn, :index) %></span>
-</br>
-</br>
 <span><%= link "Edit", to: Routes.invoice_item_path(@conn, :edit, @invoice_item) %></span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</br>
 <span><%= link "Back", to: Routes.invoice_item_path(@conn, :index) %></span>
+</br>
+<span><%= link "Keep Shopping", to: Routes.item_path(@conn, :index) %></span>
+</br>
+<span><%= link "Go to Cart", to: Routes.invoice_item_path(@conn, :index) %></span>
+

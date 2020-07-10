@@ -8,11 +8,11 @@ defmodule Demo.NationSupuls do
   def list_nation_supuls do
     Repo.all(NationSupul)
   end
-
+ 
 
   def get_nation_supul!(id), do: Repo.get!(NationSupul, id)
 
-  def create_nation_supul(attrs \\ %{}) do
+  def create_nation_supul(attrs) do
     NationSupul.changeset(attrs)
     |> Repo.insert()
   end

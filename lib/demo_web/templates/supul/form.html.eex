@@ -4,6 +4,19 @@
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
+  <%#
+  <%= label f, :nation_supul_id, "Nation"%>
+
+  <%#
+  <%= select f, :nation_supul_id, nation_select_options(@nation_supuls),
+      prompt: "Choose a nation supul" %>
+
+  <%#
+  <%= label f, :state_supul_id, "State Supul"%>
+  <%#
+  <%= select f, :state_supul_id, state_select_options(@state_supuls),
+      prompt: "Choose a state supul" %>
+
 
   <%= label f, :type %>
   <%= text_input f, :type %>
@@ -24,17 +37,6 @@
   <%= label f, :payload %>
   <%= textarea f, :payload %>
   <%= error_tag f, :payload %>
-
-
-    has_many :entities, Demo.Business.Entity, on_replace: :nilify </br>
-    has_many :payloads, Demo.Tickets.Payload, on_replace: :nilify </br>
-    has_many :schools, Demo.Schools.School, on_replace: :nilify </br>
-
-    has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify </br>
-    has_one :mulet, Demo.Mulets.Mulet </br>
-    has_one :gopang, Demo.Gopangs.Gopang </br>
-    
-    belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id </br>
 
   <div>
     <%= submit "Save" %>

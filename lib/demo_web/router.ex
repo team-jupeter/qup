@@ -26,11 +26,9 @@ defmodule DemoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
-    get "/watch/:id", WatchController, :show
-    get "/product_watch/:id", ProductWatchController, :show
-
+    resources "/users", UserController
+    resources "/certificates", CertificateController
 
 
     live "/presence_users/:name", UserLive.PresenceIndex
@@ -60,16 +58,20 @@ defmodule DemoWeb.Router do
     live "/aviation/:id", Aviation.Show
     live "/aviation/:id/edit", Aviation.Edit
 
-    # If enabling the LiveDashboard in prod,
-    # put it behind proper authentication.
+    # # If enabling the LiveDashboard in prod,
+    # # put it behind proper authentication.
     live_dashboard "/dashboard", metrics: DemoWeb.Telemetry
   end
 
-  scope "/manage", DemoWeb do
+
+  scope "/vid", DemoWeb do
     pipe_through [:browser, :authenticate_user]
 
     resources "/videos", VideoController
     resources "/product_videos", ProductVideoController
+    get "/watch/:id", WatchController, :show
+    get "/product_watch/:id", ProductWatchController, :show
+
   end
 
   scope "/business", DemoWeb do
@@ -113,11 +115,10 @@ defmodule DemoWeb.Router do
   scope "/supuls", DemoWeb do
     pipe_through [:browser]
 
-    resources "/global", GlobalSupulController
-    resources "/nations", NationSupulController
-    resources "/states", StateSupulController
-    resources "/units", SupulController
-    get "/", SupulController, :index
+    resources "/global_supul", GlobalSupulController
+    resources "/nation_supuls", NationSupulController
+    resources "/state_supuls", StateSupulController
+    resources "/", SupulController
   end
 
   scope "/asset", DemoWeb do
@@ -131,6 +132,8 @@ defmodule DemoWeb.Router do
 
     resources "/tickets", TicketController
   end
+
+
 
   # scope "/transaction", DemoWeb do
   #   pipe_through [:browser]

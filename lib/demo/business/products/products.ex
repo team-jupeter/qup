@@ -14,10 +14,11 @@ defmodule Demo.Business.Products do
     Repo.all(Product)
   end 
 
-  def list_entity_products(%Entity{} = entity) do
-    Product
-    |> entity_products_query(entity)
-    |> Repo.all()
+  def list_entity_products(%Entity{} = entity) do 
+    Repo.preload(entity, :products).products
+    # Product
+    # |> entity_products_query(entity)
+    # |> Repo.all()
   end
 
   def get_entity_product!(%Entity{} = entity, id) do
@@ -39,10 +40,13 @@ defmodule Demo.Business.Products do
   end
 
   def delete_product(%Product{} = product) do
+    IO.puts "delete_product"
+    
     Repo.delete(product)
   end 
 
   def create_product(%Entity{} = entity, attrs \\ %{}) do
+    IO.inspect "create_product"
     %Product{}
     |> Product.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, entity)

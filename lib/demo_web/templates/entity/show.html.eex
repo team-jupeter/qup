@@ -2,15 +2,19 @@
 <table>
   <thead>
     <tr>
-      <th>Email</th>
-      <th>abc</th>
-      <th>Supul</th>
     </tr>
   </thead>
   <tbody>
     <tr>
+      <td>Email</td>
       <td><%= @entity.email %></td>
+    </tr> 
+    <tr>
+      <td>abc</td>
       <td><%= @entity.gab_balance %></td>
+    </tr> 
+    <tr>
+      <td>Supul</td>
       <td><%= @entity.supul_name %></td>
     </tr> 
   </tbody>
@@ -18,14 +22,14 @@
 
 
 </br>
-<h4>Products</h4>
+<b>Products</b>
         <li><%= link "My Products", to: Routes.product_path(@conn, :index) %></li>
         <li><%= link "Market", to: Routes.item_path(@conn, :index) %></li>
         <li><%= link "Invoice Items", to: Routes.invoice_item_path(@conn, :index) %></li>
         <li><%= link "Invoices", to: Routes.invoice_path(@conn, :index) %></li>
         <li><%= link "Transactions", to: Routes.transaction_path(@conn, :index) %></li>
 
-<h4>Financial Reports</h4>
+<b>Financial Reports</b>
     <ul>
         <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @entity.id) %></li>
         <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :show, @entity.id) %></li>

@@ -15,7 +15,7 @@ defmodule DemoWeb.SupulController do
   end
 
   def create(conn, %{"supul" => supul_params}) do
-    case Supuls.create_supul(supul_params) do
+    case Supuls.create_supul(supul_params) do 
       {:ok, supul} ->
         conn
         |> put_flash(:info, "Supul created successfully.")

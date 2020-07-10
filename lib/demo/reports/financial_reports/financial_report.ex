@@ -65,7 +65,26 @@ defmodule Demo.Reports.FinancialReport do
     %FinancialReport{}
     |> cast(attrs, @fields)
     |> validate_required([])
+    |> put_assoc(:supul, attrs.supul)
+    |> put_assoc(:entity, attrs.entity)
   end
+  
+  def tax_changeset(attrs) do
+    %FinancialReport{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> put_assoc(:taxation, attrs.taxation)
+    |> put_assoc(:nation_supul, attrs.nation_supul)
+  end
+
+  def public_changeset(attrs) do
+    %FinancialReport{}
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> put_assoc(:entity, attrs.entity)
+    |> put_assoc(:nation_supul, attrs.nation_supul)
+  end
+
 
   @doc false
   def nation_supul_changeset(attrs) do
@@ -82,19 +101,13 @@ defmodule Demo.Reports.FinancialReport do
     |> put_assoc(:state_supul, attrs.state_supul)
   end
   @doc false
-  def supul_changeset(attrs) do
+  def supul_changeset(attrs) do 
     %FinancialReport{}
     |> cast(attrs, @fields)
     |> validate_required([])
     |> put_assoc(:supul, attrs.supul)
   end
 
-  def tax_changeset(attrs) do
-    %FinancialReport{}
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:taxation, attrs.taxation)
-  end
   @doc false
   def entity_changeset(%Entity{} = entity, attrs) do
     %FinancialReport{}

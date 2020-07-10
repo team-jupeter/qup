@@ -41,31 +41,31 @@ defmodule Demo.IncomeStatements do
     |> Repo.insert()
   end
  
-  def create_public_income_statement(attrs) do
+  def create_public_income_statement(attrs) do #? 공기업 재무제표
     %IncomeStatement{}
     |> IncomeStatement.public_changeset(attrs)
     |> Repo.insert()
   end
  
-  def create_tax_income_statement(attrs) do
+  def create_tax_income_statement(attrs) do #? 국세청 재무제표
     %IncomeStatement{}
     |> IncomeStatement.tax_changeset(attrs)
     |> Repo.insert()
   end
  
-  def create_supul_income_statement(attrs) do
+  def create_supul_income_statement(attrs) do #? 수풀
     %IncomeStatement{}
     |> IncomeStatement.supul_changeset(attrs)
     |> Repo.insert()
   end
  
-  def create_state_supul_income_statement(attrs) do
+  def create_state_supul_income_statement(attrs) do #? 광역 수풀
     %IncomeStatement{}
     |> IncomeStatement.state_supul_changeset(attrs)
     |> Repo.insert()
   end
  
-  def create_nation_supul_income_statement(attrs) do
+  def create_nation_supul_income_statement(attrs) do #? 국가 
     %IncomeStatement{}
     |> IncomeStatement.nation_supul_changeset(attrs)
     |> Repo.insert()

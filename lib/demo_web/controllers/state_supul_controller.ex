@@ -1,7 +1,7 @@
 defmodule DemoWeb.StateSupulController do
   use DemoWeb, :controller
 
-  alias Demo.StateSupuls
+  alias Demo.StateSupuls 
   alias Demo.StateSupuls.StateSupul
 
   def index(conn, _params) do

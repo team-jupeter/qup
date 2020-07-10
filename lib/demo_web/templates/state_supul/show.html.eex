@@ -1,15 +1,9 @@
-<h4>Show State supul</h4>
-
+<h4><%= @state_supul.name %></h4>
+ 
 <ul>
-
   <li>
-    <strong>ID:</strong>
-    <%= @state_supul.id %>
-  </li>
-
-  <li>
-    <strong>name:</strong>
-    <%= @state_supul.name %>
+    <strong>Type:</strong>
+    <%= @supul.type %>
   </li>
 
   <li>

@@ -13,6 +13,7 @@ defmodule Demo.Accounts.User do
   schema "users" do
     field :type, :string 
     field :default_entity, :binary_id
+    field :default_entity_name, :string
     field :name, :string
     field :gps, {:array, :map}
     field :nationality, :string
@@ -23,10 +24,12 @@ defmodule Demo.Accounts.User do
     field :password_confirmation, :string, virtual: true
     field :auth_code, :string #? Social Security Number 
     field :birth_date, :naive_datetime
-    field :supul_code, :binary_id
+    field :supul_code, :string
+    field :supul_name, :string
 
 
-    field :nation_signature, :string
+
+    # field :nation_signature, :string
     
     # field :entity_names, {:array, :string}
 
@@ -61,8 +64,8 @@ defmodule Demo.Accounts.User do
 
   # @required_fields [:type, :name, :email]
   @fields [
-    :name, :type, :nationality, :email, :birth_date, 
-    :password, :nation_signature, :nation_id, :auth_code,
+    :name, :type, :nationality, :email, :birth_date, :default_entity_name, 
+    :password, :nation_id, :auth_code, :supul_name, 
     :constitution_id, :supul_code, :username, :default_entity
   ]
 
@@ -89,10 +92,11 @@ defmodule Demo.Accounts.User do
 
   def registration_changeset(user, attrs) do
     user
+    |> IO.inspect
     |> changeset(attrs)
     |> cast(attrs, [:email, :password])
     |> validate_required([:password])
-    |> validate_length(:password, min: 5, max: 10)
+    # |> validate_length(:password, min: 5, max: 10)
     |> put_pass_hash()
     |> put_assoc(:supul, attrs.supul)
     |> put_assoc(:nation, attrs.nation) 

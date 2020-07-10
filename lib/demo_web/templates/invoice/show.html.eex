@@ -2,7 +2,7 @@
 <thead>
   <tr>
   <th>Title</th>
-  <th>Contentd</th>
+  <th>Content</th>
   </tr>
 </thead>
 <tbody>
@@ -39,4 +39,3 @@
 
 <span><%= link "Start Transaction", to: Routes.transaction_path(@conn, :new) %></span>
 
-<span><%= link "Back", to: Routes.invoice_path(@conn, :index) %></span>

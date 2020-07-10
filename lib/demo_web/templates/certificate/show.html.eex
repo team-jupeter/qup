@@ -1,0 +1,38 @@
+<h1>Show Certificate</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @certificate.name %>
+  </li>
+
+  <li>
+    <strong>Issued by:</strong>
+    <%= @certificate.issued_by %>
+  </li>
+
+  <li>
+    <strong>Issued on:</strong>
+    <%= @certificate.issued_on %>
+  </li>
+
+  <li>
+    <strong>Valid until:</strong>
+    <%= @certificate.valid_until %>
+  </li>
+
+  <li>
+    <strong>Auth code:</strong>
+    <%= @certificate.auth_code %>
+  </li>
+
+  <li>
+    <strong>Granted to:</strong>
+    <%= @certificate.granted_to %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.certificate_path(@conn, :edit, @certificate) %></span>
+<span><%= link "Back", to: Routes.certificate_path(@conn, :index) %></span>

@@ -1,9 +1,6 @@
 defmodule Demo.Accounts do
-
-
   import Ecto.Query, warn: false
   alias Demo.Repo
-
   alias Demo.Accounts.User
 
   @topic inspect(__MODULE__)
@@ -16,15 +13,6 @@ defmodule Demo.Accounts do
     Phoenix.PubSub.subscribe(Demo.PubSub, @topic <> "#{user_id}")
   end
 
-  @doc """
-  Returns the list of users.
-
-  ## Examples
-
-      iex> list_users()
-      [%User{}, ...]
-
-  """
   def list_users, do: Repo.all(User)
 
   def list_users(current_page, per_page) do
@@ -81,8 +69,6 @@ defmodule Demo.Accounts do
 
 
   def delete_user(%User{} = user) do
-    # IO.puts "delete_user"
-    # IO.inspect user
     user
     |> Repo.delete()
     |> notify_subscribers([:user, :deleted])

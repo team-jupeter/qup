@@ -2,7 +2,7 @@ defmodule DemoWeb.NationSupulController do
   use DemoWeb, :controller
 
   alias Demo.NationSupuls
-  alias Demo.NationSupuls.NationSupul
+  alias Demo.NationSupuls.NationSupul 
 
   def index(conn, _params) do
     nation_supuls = NationSupuls.list_nation_supuls()

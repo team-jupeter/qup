@@ -17,22 +17,6 @@
   <%= text_input f, :insurance %>
   <%= error_tag f, :insurance %>
 
-  <%= label f, :gopang_fee %>
-  <%# <%= select f, :gopang_fee, 1..10 %> %>
-  <%# <%= error_tag f, :gopang_fee %> %>
-
-  <%= label f, :stars %>
-  <%= select f, :stars, 1..5 %>
-  <%= error_tag f, :stars %>
-
-  <%= label f, :tax %>
-  <%= text_input f, :tax %>
-  <%= error_tag f, :tax %>
-
-  <%= label f, :pvr %>
-  <%= text_input f, :pvr %>
-  <%= error_tag f, :pvr %>
-
   <%= label f, :description %>
   <%= textarea f, :description %>
   <%= error_tag f, :description %>

@@ -10,12 +10,12 @@ defmodule Demo.Transactions.Transaction do
 
     #? who pays ABC? which t1s in his/her/its wallet?
     field :buyer_name, :string 
-    field :buyer_id, :string
-    field :buyer_supul_name, :string
+    field :buyer_id, :binary_id
+    field :buyer_supul_name, :string 
     field :buyer_supul_id, :binary_id
     
     field :seller_name, :string 
-    field :seller_id, :string
+    field :seller_id, :binary_id
     field :seller_supul_name, :string
     field :seller_supul_id, :binary_id
 
@@ -38,9 +38,16 @@ defmodule Demo.Transactions.Transaction do
 
     field :locked?, :boolean, default: false
 
-    has_one :invoice, Demo.Invoices.Invoice, on_delete: :delete_all
+    has_many :invoices, Demo.Invoices.Invoice, on_delete: :delete_all
     has_many :tickets, Demo.Gopang.Ticket, on_delete: :delete_all
         
+    many_to_many(
+      :entities,
+      Demo.Business.Entity,
+      join_through: Demo.Transactions.EntitiesTransactions,
+      on_replace: :delete
+      )
+
     timestamps()
   end
 
@@ -53,12 +60,24 @@ defmodule Demo.Transactions.Transaction do
     :fair?, 
   ]
   @doc false
-  def changeset(transaction, attrs \\ %{}) do
+  def changeset(transaction, attrs) do 
     transaction
     |> cast(attrs, @fields)
     |> validate_required([])
+    # |> put_assoc(:invoices, [attrs.invoices])
+    |> put_assoc(:entities, [attrs.entity])
+    |> put_abc_amount(attrs)
     # |> check_fair_trade(attrs)
   end
+
+  defp put_abc_amount(cs, attrs) do
+    abc_amount = Enum.reduce(attrs.invoices, 0, fn x, sum -> Decimal.add(x.total, sum) end)
+    
+    cs 
+    |> put_change(:abc_amount, abc_amount) 
+  end
+
+
 
   # defp check_fair_trade(transaction_cs, attrs \\ %{}) do
   #   #? check the fairness of the transaction

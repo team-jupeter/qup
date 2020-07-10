@@ -18,9 +18,9 @@ defmodule Demo.Supuls do
 
   def get_supul!(id), do: Repo.get!(Supul, id)
 
-  def create_supul(attrs \\ %{}) do
+  def create_supul(attrs) do
     Supul.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert() 
   end
 
   def update_supul(%Supul{} = supul, attrs) do

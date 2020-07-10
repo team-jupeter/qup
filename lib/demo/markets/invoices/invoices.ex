@@ -26,10 +26,18 @@ defmodule Demo.Invoices do
       )
     end
 
+    def list_buyer_invoices(buyer_id) do 
+      Repo.all(
+        from u in Invoice,
+          where: u.buyer_id == ^buyer_id
+      )
+    end
+
     def get_invoice!(id), do: Repo.get!(Invoice, id)
 
+
     def change_invoice(invoice, attrs \\ %{}) do
-      Invoice.changeset(invoice, attrs)
+      Invoice.changeset(invoice, attrs) 
     end
 
     def create_invoice(attrs) do

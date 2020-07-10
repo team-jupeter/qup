@@ -26,7 +26,7 @@ defmodule DemoWeb.ProductVideoController do
     # videos = Multimedia.list_product_videos(current_product) 
     # render(conn, "index.html", videos: videos)
     conn
-  end
+  end 
 
   def show(conn, %{"id" => id}) do
     IO.puts "ProductVideoController show"

@@ -2,57 +2,46 @@
 <table>
   <thead>
     <tr>
-    <th>Account</th>
-    <th>Amount</th>
+      <th>Account</th>
+      <th>Amount</th>
     </tr>
   </thead>
   <tbody>
   <tr>
-    <td>entity_name</td>
+    <td>Entity name</td>
     <td><%= @es.entity_name %></td>
   </tr>
   <tr>
-    <td>opening_balance</td>
+    <td>Opening balance</td>
     <td><%= @es.opening_balance %></td>
   </tr>
   <tr>
-    <td>net_income</td>
+    <td>Net income</td>
     <td><%= @es.net_income %></td>
   </tr>
   <tr>
-    <td>other_income</td>
+    <td>Other income</td>
     <td><%= @es.other_income %></td>
   </tr>
   <tr>
-    <td>issue_of_new_capital</td>
+    <td>Issue of new capital</td>
     <td><%= @es.issue_of_new_capital %></td>
   </tr>
   <tr>
-    <td>net_loss</td>
+    <td>Net loss</td>
     <td><%= @es.net_loss %></td>
   </tr>
   <tr>
-    <td>other_loss</td>
+    <td>Other loss</td>
     <td><%= @es.other_loss %></td>
   </tr>
   <tr>
-    <td>dividends</td>
+    <td>Dividends</td>
     <td><%= @es.dividends %></td>
   </tr>
   <tr>
-    <td>withdrawal_of_capital</td>
+    <td>Withdrawal of capital</td>
     <td><%= @es.withdrawal_of_capital %></td>
-  </tr>
-  <tr>
-    <td>Belongs to</td>
-  </tr>
-  <tr>
-    <td>financial_report</td>
-    <td><%= @es.financial_report_id %></td>
-  </tr>
-  <tr>
-    <td>entity</td>
-    <td><%= @es.entity_id %></td>
   </tr>
   </tbody>
 </table> 

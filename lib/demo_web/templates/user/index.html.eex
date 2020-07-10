@@ -1,11 +1,18 @@
-<h4>Listing Accounts</h4>
+<%= form_for @conn, Routes.user_path(@conn, :index), [method: :get, class: "pull-right"], fn f -> %>
+      <%= search_input f, :query %>
+      <%= submit "Search" %>
+    <% end %>
+
+
+<h4>Listing Users</h4>
 
 <table>
   <%= for user <- @users do %>
     <tr>
       <td><%= render "user.html", user: user %></td>
-      <td><%= link "View", to: Routes.user_path(@conn, :show, user.id) %></td>
+      <td><%= link "Show", to: Routes.user_path(@conn, :show, user.id) %></td>
     </tr>
   <% end %>
 </table> 
+<span><%= link "New User", to: Routes.user_path(@conn, :new) %></span>
  

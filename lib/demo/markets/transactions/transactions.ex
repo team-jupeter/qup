@@ -16,9 +16,10 @@ defmodule Demo.Transactions do
   end
 
   
-  def get_entity_transaction!(entity, id) do
+  def get_entity_transaction!(id) do
+    IO.puts "get_entity_transaction"
     Transaction
-    |> entity_transactions_query(entity)
+    # |> entity_transactions_query(entity)
     |> Repo.get!(id)
   end
   defp entity_transactions_query(query, entity) do
@@ -51,13 +52,16 @@ defmodule Demo.Transactions do
   # end
 
 
-  def create_transaction(attrs) do
+  def create_transaction(attrs) do  
+    IO.puts "create_transaction"
     IO.inspect attrs
- 
+
     %Transaction{}
-    |> Transaction.changeset(attrs)
+    |> Transaction.changeset(attrs) 
     # |> Ecto.Changeset.put_assoc(:invoice, invoice)
-    |> Repo.insert()
+    |> IO.inspect
+    |> Repo.insert
+    |> IO.inspect
     # |> make_payload_and_send_to_supul(buyer_rsa_priv_key, sender_rsa_priv_key) #? if fail, the code below is not called.
   end 
 

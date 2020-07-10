@@ -20,5 +20,9 @@
       <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :show, @supul.id) %></li>
       <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :show, @supul.id) %></li>
   </ul>
-
+ 
 <span><%= link "Back", to: Routes.supul_path(@conn, :index) %></span>
+</br>
+<span><%= link "Edit", to: Routes.supul_path(@conn, :edit, @supul) %></span>
+</br>
+<span><%= link "New Supul", to: Routes.supul_path(@conn, :new) %></span>

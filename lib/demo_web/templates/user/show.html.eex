@@ -1,30 +1,54 @@
 <table >
   <thead>
+      <tr>
+      <td></td>
+      <td></td>
+    </tr>
   </thead>
   <tbody>
     <tr>
       <td>Type</td>
       <td><%= @user.type %></td>
     </tr>
-      <td>Nationality</td>
-      <td><%= @user.nationality %></td>
-    </tr>
-    </tr>
       <td>Name</td>
       <td><%= @user.name %></td>
-    </tr>
-    </tr>
-      <td>UserName</td>
-      <td><%= @user.username %></td>
-    </tr>
+    </tr> 
     </tr>
       <td>Email</td>
       <td><%= @user.email %></td>
     </tr>
+    </tr>
+      <td>Nationality</td>
+      <td><%= @user.nationality %></td>
+    </tr>
+    </tr>
+      <td>Nation ID</td>
+      <td><%= @user.nation_id %></td>
+    </tr>
+    </tr>
+      <td>Default Entity Name</td>
+      <td><%= @user.default_entity_name %></td>
+    </tr> 
+    </tr>
+      <td>Default Entity ID</td>
+      <td><%= @user.default_entity %></td>
+    </tr> 
+    </tr>
+      <td>Supul Name</td>
+      <td><%= @user.supul_name %></td>
+    </tr> 
+    </tr>
+      <td>Supul ID</td>
+      <td><%= @user.supul_id %></td>
+    </tr> 
   </tbody>
 </table>
 
 <section class="container">
+
+<span><%= link "Edit", to: Routes.user_path(@conn, :edit, @user) %></span>
+<span><%= link "Back", to: Routes.user_path(@conn, :index) %></span>
+
 <nav role="navigation">
     <ul>
         <li><%= link "Entities", to: Routes.entity_path(@conn, :index) %></li>

@@ -1,6 +1,7 @@
 <table>
   <thead>
-    <tr>
+    <tr> 
+      <th>Name</th>
     </tr>
   </thead>
   <tbody>
@@ -8,12 +9,9 @@
     <tr>
       <td><%= product.name %></td>
       <td><%= link "Edit", to: Routes.product_path(@conn, :edit, product) %></td>
-      <td><%= link "Show", to: Routes.product_path(@conn, :show, product) %></td>
+      <td><%= link "Show", to: Routes.product_watch_path(@conn, :show, product) %></td>
+      <td><%= link "Delete", to: Routes.product_path(@conn, :delete, product), method: :delete, data: [confirm: "Are you sure?"] %></td>
 
-      <td>
-        <%= link "Video", to: Routes.product_watch_path(@conn, :show, product),
-                          class: "button" %>
-      </td>
     </tr>
 <% end %>
   </tbody>

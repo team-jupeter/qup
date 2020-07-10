@@ -27,7 +27,6 @@ defmodule DemoWeb.ItemController do
   end
 
   def create(conn, %{"item" => item_params}, _current_entity) do
-    # IO.puts "item create"
     case Items.create_item(item_params) do
       {:ok, item} ->
         conn
@@ -46,7 +45,7 @@ defmodule DemoWeb.ItemController do
 
   def edit(conn, %{"id" => id}, current_entity) do
     item = Products.get_product!(id)
-
+ 
     buyer_id = current_entity.id 
     buyer_name = Repo.one(from e in Entity, where: e.id == ^buyer_id, select: e.name) 
     buyer_supul_id = Repo.one(from e in Entity, where: e.id == ^buyer_id, select: e.supul_id) 

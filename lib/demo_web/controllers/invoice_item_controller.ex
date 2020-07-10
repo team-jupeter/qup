@@ -4,7 +4,7 @@ defmodule DemoWeb.InvoiceItemController do
   alias Demo.InvoiceItems
 alias Demo.Invoices.InvoiceItem 
 
-  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show, :delete]
+  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :update, :create, :show, :delete]
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_entity]
@@ -56,7 +56,7 @@ alias Demo.Invoices.InvoiceItem
 
   def update(conn, %{"id" => id, "invoice_item" => invoice_item_params}, _current_entity) do
     IO.puts "update"
-    IO.inspect invoice_item_params
+    IO.inspect invoice_item_params 
     IO.inspect id
 
     # invoice_item = InvoiceItems.get_buyer_invoice_item!(current_entity, id)

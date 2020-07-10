@@ -1,7 +1,7 @@
 defmodule DemoWeb.SessionController do
   use DemoWeb, :controller
 
-  def new(conn, _) do
+  def new(conn, _) do 
     render(conn, "new.html")
   end
 

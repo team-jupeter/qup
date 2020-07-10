@@ -11,9 +11,9 @@ defmodule Demo.Taxations.Taxation do
 
     has_many :entities, Demo.Business.Entity
     has_many :tax_rates, Demo.Taxations.TaxRate
-    has_many :transactons, Demo.Transactions.Transaction
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
+    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
 
     timestamps()
   end
@@ -25,7 +25,7 @@ defmodule Demo.Taxations.Taxation do
     |> cast(attrs, @fields)
     |> put_change(:auth_code, attrs.auth_code)
   end
-  @doc false
+  @doc false 
   def changeset(taxation, attrs) do
     taxation
     |> cast(attrs, @fields)

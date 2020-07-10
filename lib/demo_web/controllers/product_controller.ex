@@ -5,13 +5,13 @@ defmodule DemoWeb.ProductController do
   alias Demo.Business.Products
   alias Demo.Business.Product
  
-  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
+  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show, :delete]
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_entity]
     apply(__MODULE__, action_name(conn), args)  
   end 
-
+ 
   def index(conn, _params, current_entity) do
     products = Products.list_entity_products(current_entity) 
     IO.puts "Product controller index"
@@ -44,7 +44,12 @@ defmodule DemoWeb.ProductController do
   end
 
   def delete(conn, %{"id" => id}, current_entity) do
+    IO.inspect "delete"
+    
     product = Products.get_entity_product!(current_entity, id) 
+
+    IO.inspect product
+
     {:ok, _product} = Products.delete_product(product)
 
     conn
@@ -53,12 +58,13 @@ defmodule DemoWeb.ProductController do
   end
 
   def new(conn, _params, _current_entity) do
-    changeset = Products.change_product(%Product{})
+    changeset = Products.change_product(%Product{}) 
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"product" => product_params}, current_entity) do
-    IO.inspect current_entity
+    IO.inspect "product_params"
+    IO.inspect product_params
     
     case Products.create_product(current_entity, product_params) do
       {:ok, product} ->
