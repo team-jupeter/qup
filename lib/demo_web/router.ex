@@ -85,7 +85,9 @@ defmodule DemoWeb.Router do
     end
     resources "/invoice_items", InvoiceItemController
     resources "/invoices", InvoiceController
-    resources "/transactions", TransactionController
+    resources "/transactions", TransactionController do
+      get "/payload", TransactionController, :payload, as: :payload
+    end
     resources "/jangs", JangController
 
   end

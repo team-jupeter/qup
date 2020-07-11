@@ -2,7 +2,7 @@ import Ecto.Query
 import Ecto.Changeset
 alias Demo.Repo
 
-
+ 
 '''
 
 SPECIAL USER == KOREA
@@ -98,6 +98,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   name: "한경 수풀", 
   state_supul: jejudo_supul,
   gab_balance: Decimal.from_float(0.0),
+  current_hash: "hankyung"
   }) 
 
 msg_serialized = Poison.encode!(hankyung_supul)
@@ -113,6 +114,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
     name: "한림 수풀", 
     state_supul: jejudo_supul,
     gab_balance: Decimal.from_float(0.0),
+    current_hash: "hanlim"
     }) 
 
 msg_serialized = Poison.encode!(hanlim_supul)
@@ -855,83 +857,6 @@ alias Demo.Multimedia
 {:ok, 우동_video} = Multimedia.create_video(우동, %{title: "우동", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 우동.id, description: "엄청 맛있데요. 글쎄..."})
 
  
-
-'''
-TRANSACTION 2
-Transaction between hong_entity and tomi_entity
-'''
-
-#? write invoice for trade between mr_hong and gab_korea.
-# item_1 = Item.changeset(%Item{}, %{gpc_code: "ABCDE11133", category: "Food", name: "김밥", price: Decimal.from_float(0.01)}) |> Repo.insert!
-# item_2 = Item.changeset(%Item{}, %{gpc_code: "ABCDE11134", category: "Food", name: "떡볶이", price: Decimal.from_float(0.02)}) |> Repo.insert!
-# invoice_items = [%{item_id: item_1.id, quantity: 3}, %{item_id: item_2.id, quantity: 3}]
-alias Demo.Business.InvoiceItem
-alias Demo.InvoiceItems
-alias Demo.Invoices
-{:ok, product_1} = Business.create_product(tomi_entity, %{gpc_code: "ABCDE11133", category: "Food", name: "김밥", price: Decimal.from_float(0.01)}) 
-{:ok, product_2} = Business.create_product(tomi_entity, %{gpc_code: "ABCDE11134", category: "Food", name: "떡볶이", price: Decimal.from_float(0.02)}) 
-
-{:ok, invoice_item_1} = InvoiceItems.create_invoice_item(%{product_id: product_1.id, price: product_1.price, quantity: 3})
-{:ok, invoice_item_2} = InvoiceItems.create_invoice_item(%{product_id: product_2.id, price: product_2.price, quantity: 3})
-
-invoice_items = [invoice_item_1, invoice_item_2]
-
-params = %{
-  buyer: %{"main_id" => hong_entity.id, "main_name" => hong_entity.name},
-  seller: %{"main_id" => tomi_entity.id, "main_name" => tomi_entity.name},
-  invoice_items: invoice_items,
-}
-
-#? invoice => transaction => supul (1) update financial reports, (2) archieve, (3) openhash
-{:ok, invoice} = Invoices.create_invoice(params)
-transaction = Transactions.create_transaction()
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
-
-Third, the mulet of supul, state_supul, korea_supul and global_supul openhashes the unserialized message. 
-
-'''
-
-#? Supul Mulet 
-#? pretend transmit the message...
-#? pretend receive the message...
-hankyung_mulet = Ecto.build_assoc(hankyung_supul, :mulet, %{current_hash: hankyung_supul.id}) 
-
-incoming_hash = :crypto.hash(:sha256, payload) \
-  |> Base.encode16() \
-  |> String.downcase()
-hankyung_mulet = Mulet.changeset(hankyung_mulet, %{incoming_hash: incoming_hash})
-
-#? send every 10th payload to the state_supul of supul.
-
-#? StateSupul Mulet 
-#? pretend transmit the message...
-#? pretend receive the message...
-jejudo_mulet = Ecto.build_assoc(jejudo_supul, :mulet, %{current_hash: jejudo_supul.id}) 
-jejudo_mulet = Mulet.changeset(jejudo_mulet, %{incoming_hash: incoming_hash})
-
-#? send every 100th payload to the nation_supul of sate_supul.
-korea_mulet = Ecto.build_assoc(korea_supul, :mulet, %{current_hash: korea_supul.id}) 
-korea_mulet = Mulet.changeset(korea_mulet, %{incoming_hash: incoming_hash})
-
-#? send every 10000th payload to the global_supul of sate_supul.
-global_mulet = Ecto.build_assoc(global_supul, :mulet, %{current_hash: global_supul.id}) 
-global_mulet = Mulet.changeset(global_mulet, %{incoming_hash: incoming_hash})
-
-#? send every 1000th payload to the supuls of the world.
-hankyung_mulet = Mulet.changeset(hankyung_mulet, %{incoming_hash: incoming_hash})
 
 
 

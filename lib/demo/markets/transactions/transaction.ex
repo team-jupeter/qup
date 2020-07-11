@@ -31,7 +31,7 @@ defmodule Demo.Transactions.Transaction do
     field :abc_amount, :decimal, precision: 15, scale: 4
     field :items, {:array, :binary_id}
     field :fiat_currency, :decimal, precision: 15, scale: 4
-    field :transaction_status, :string, default: "processing" #? processing, pending, completed
+    field :transaction_status, :string, default: "Processing..." #? processing, pending, completed
     field :if_only_item, :string 
     field :fair?, :boolean, default: false
     
@@ -39,7 +39,8 @@ defmodule Demo.Transactions.Transaction do
 
     field :locked?, :boolean, default: false
 
-    has_many :invoices, Demo.Invoices.Invoice, on_delete: :delete_all
+    belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
+    # has_one :openhash, Demo.Mulets.Openhash
     has_many :tickets, Demo.Gopang.Ticket, on_delete: :delete_all
         
     many_to_many(
@@ -65,19 +66,11 @@ defmodule Demo.Transactions.Transaction do
     transaction
     |> cast(attrs, @fields)
     |> validate_required([])
-    # |> put_assoc(:invoices, [attrs.invoices])
     |> put_assoc(:entities, [attrs.entity])
-    |> put_abc_amount(attrs)
+    |> put_assoc(:invoice, attrs.invoice)
+    |> put_change(:abc_amount, attrs.invoice.total) 
     # |> check_fair_trade(attrs)
   end
-
-  defp put_abc_amount(cs, attrs) do
-    abc_amount = Enum.reduce(attrs.invoices, 0, fn x, sum -> Decimal.add(x.total, sum) end)
-    
-    cs 
-    |> put_change(:abc_amount, abc_amount) 
-  end
-
 
 
   # defp check_fair_trade(transaction_cs, attrs \\ %{}) do

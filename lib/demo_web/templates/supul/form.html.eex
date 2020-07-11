@@ -34,9 +34,13 @@
   <%= text_input f, :name %>
   <%= error_tag f, :name %>
 
-  <%= label f, :payload %>
-  <%= textarea f, :payload %>
-  <%= error_tag f, :payload %>
+  <%= label f, :current_hash %>
+  <%= textarea f, :current_hash %>
+  <%= error_tag f, :current_hash %>
+
+  <%= label f, :incoming_hash %>
+  <%= textarea f, :incoming_hash %>
+  <%= error_tag f, :incoming_hash %>
 
   <div>
     <%= submit "Save" %>

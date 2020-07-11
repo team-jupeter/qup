@@ -7,6 +7,7 @@ defmodule Demo.Business.Entity do
   # alias Demo.Business.Product
   alias Demo.Business.Entity
   alias Demo.Repo
+  alias Demo.Supuls.Supul
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -65,17 +66,18 @@ defmodule Demo.Business.Entity do
     belongs_to :biz_category, Demo.Taxations.Taxation, type: :binary_id
 
     has_many :reports, Demo.Reports.Report
-    has_many :certificates, Demo.Certificates.Certificate
+    # has_many :certificates, Demo.Certificates.Certificate
     has_many :machines, Demo.Machines.Machine
     has_many :labs, Demo.Labs.Lab
     has_many :products, Demo.Business.Product
     
-    many_to_many(
-      :invoices,
-      Invoice,
-      join_through: "entities_invoices",
-      on_replace: :delete
-    )
+    has_one :invoice, Demo.Invoices.Invoice
+    # many_to_many(
+    #   :invoices,
+    #   Invoice,
+    #   join_through: "entities_invoices",
+    #   on_replace: :delete
+    # )
     
     many_to_many(
       :transactions,
@@ -191,11 +193,11 @@ defmodule Demo.Business.Entity do
     |> Repo.update!()
   end
 
-  def changeset_update_invoices(%Entity{} = entity, invoices) do
+  def changeset_update_invocie(%Entity{} = entity, invocie) do
     entity 
-    |> Repo.preload(:invoices)
+    |> Repo.preload(:invocie)
     |> change()  \
-    |> put_assoc(:invoices, invoices) #? many to many between invoices and entities
+    |> put_assoc(:invocie, invocie) 
     |> Repo.update!()
   end
 

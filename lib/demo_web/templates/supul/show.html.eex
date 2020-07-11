@@ -9,6 +9,18 @@
     <strong>Supul Code:</strong>
     <%= @supul.supul_code %>
   </li>
+  <li>
+    <strong>current_hash:</strong>
+    <%= @supul.current_hash %>
+  </li>
+  <li>
+    <strong>incoming_hash:</strong>
+    <%= @supul.incoming_hash %>
+  </li>
+  <li>
+    <strong>hash_history:</strong>
+    <%= @supul.hash_history %>
+  </li>
 </ul>
 
 
@@ -24,5 +36,4 @@
 <span><%= link "Back", to: Routes.supul_path(@conn, :index) %></span>
 </br>
 <span><%= link "Edit", to: Routes.supul_path(@conn, :edit, @supul) %></span>
-</br>
-<span><%= link "New Supul", to: Routes.supul_path(@conn, :new) %></span>
+

@@ -21,7 +21,7 @@ defmodule Demo.Repo.Migrations.CreateInvoices do
       add :seller_supul_id, :binary_id
       add :seller_supul_name, :string
 
-      add :transaction_id, references(:transactions, type: :uuid, null: false)
+      add :entity_id, references(:entities, type: :uuid, null: false)
 
       #? embedded
       # add(:seller, :jsonb)

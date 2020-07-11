@@ -11,6 +11,14 @@
     <td><%= @transaction.abc_output_name %></td>
   </tr>
    <tr>
+    <td>Items:</td>
+    <td><%= @transaction.items %></td>
+  </tr>
+  <tr>
+    <td>ABC_amount:</td>
+    <td><%= @transaction.abc_amount %></td>
+  </tr>
+   <tr>
     <td>Tax:</td>
     <td><%= @transaction.tax %></td>
   </tr> 
@@ -23,10 +31,6 @@
     <td><%= @transaction.insurance %></td>
   </tr>
    <tr>
-    <td>ABC_amount:</td>
-    <td><%= @transaction.abc_amount %></td>
-  </tr>
-   <tr>
     <td>Transaction Status:</td>
     <td><%= @transaction.transaction_status %></td>
   </tr>
@@ -37,6 +41,6 @@
  <tbody>
 </table>
 
-<span><%= link "Send to supuls", to: Routes.supul_path(@conn, :edit, @transaction) %></span>
+<span><%= link "Send to supuls", to: Routes.transaction_path(@conn, :edit, @transaction) %></span>
 </br>
 <span><%= link "Transaction List", to: Routes.transaction_path(@conn, :index) %></span>

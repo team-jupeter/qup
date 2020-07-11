@@ -25,18 +25,19 @@ defmodule Demo.Invoices.Invoice do
     field :seller_supul_name, :string
 
     has_many :invoice_items, Demo.Invoices.InvoiceItem, on_delete: :delete_all
-    belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id
+    has_one :transaction, Demo.Transactions.Transaction
 
     # embeds_one :buyer, Demo.Invoices.BuyerEmbed, on_replace: :delete
     # embeds_one :seller, Demo.Invoices.SellerEmbed, on_replace: :delete
     # embeds_many :payments, Demo.Invoices.Payment, on_replace: :delete
 
-    many_to_many(
-      :entities,
-      Demo.Business.Entity,
-      join_through: Demo.Products.EntitiesInvoices,
-      on_replace: :delete
-      )
+    belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    # many_to_many(
+    #   :entities,
+    #   Demo.Business.Entity,
+    #   join_through: Demo.Products.EntitiesInvoices,
+    #   on_replace: :delete
+    #   )
 
     timestamps()
   end 
@@ -65,7 +66,7 @@ defmodule Demo.Invoices.Invoice do
   def create(_invoice, attrs) do
     changeset(%Invoice{}, attrs)
     |> put_assoc(:invoice_items, attrs.invoice_items)
-    |> put_assoc(:entities, [attrs.entity])
+    |> put_assoc(:entity, attrs.entity)
     |> put_total(attrs)
     |> Repo.insert #? {ok, invoice}
 

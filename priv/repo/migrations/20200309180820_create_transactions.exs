@@ -33,6 +33,8 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :supul_code, :binary_id
       add :locked?, :boolean, default: false
 
+      add :invoice_id, references(:invoices, type: :uuid, null: false)
+
       # add :locked, :boolean, default: false
       # add :locking_use_area, {:array, :string}, default: []
       # add :locking_use_until, :naive_datetime

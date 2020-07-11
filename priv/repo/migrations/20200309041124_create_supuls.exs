@@ -16,6 +16,10 @@ defmodule Demo.Repo.Migrations.CreateSupuls do
       add :payload, :text
       add :payload_hash, :text
   
+      add :hash_history, {:array, :text}, default: []
+      add :current_hash, :text
+      add :incoming_hash, :text
+  
       add :state_supul_id, references(:state_supuls, type: :uuid, null: false)
 
       timestamps()

@@ -3,7 +3,6 @@ defmodule Demo.Supuls do
   alias Demo.Repo
 
   alias Demo.Supuls.Supul
-  alias Demo.Mulets
   alias Demo.IncomeStatements
   alias Demo.BalanceSheets 
   alias Demo.IncomeStatements
@@ -39,74 +38,55 @@ defmodule Demo.Supuls do
   end
 
   def check_archive_payload(transaction, payload) do
+    buyer_supul = get_supul!(transaction.buyer_supul_id)
+    seller_supul = get_supul!(transaction.seller_supul_id)
 
     parts = String.split(payload, "|")
 
     # ? reject the payload if the timestamp is newer than the arriving time to supul. 
     recv_ts = Enum.fetch!(parts, 0)
+    recv_txn_id = Enum.fetch!(parts, 1)
+    recv_txn_hash_serialized = Enum.fetch!(parts, 2)
 
-    #? verify the signature
-    recv_msg_serialized = Enum.fetch!(parts, 1)
-    {:ok, recv_sig_buyer} = Enum.fetch!(parts, 2) |> Base.url_decode64()
-    {:ok, recv_sig_seller} = Enum.fetch!(parts, 3) |> Base.url_decode64()
+    {:ok, recv_sig_buyer} = Enum.fetch!(parts, 3) |> Base.url_decode64()
+    {:ok, recv_sig_seller} = Enum.fetch!(parts, 4) |> Base.url_decode64()
 
 
-    #? Hard coded public keys
+    #? Hard coded public keys. Those shall be obtained via public routes.
     hong_entity_rsa_pub_key = ExPublicKey.load!("./keys/hong_entity_public_key.pem")
     tomi_rsa_pub_key = ExPublicKey.load!("./keys/tomi_public_key.pem")
 
+    IO.puts "Do you see me? 1 ^^*"
 
     {:ok, sig_valid_buyer} =
-      ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig_buyer, hong_entity_rsa_pub_key)
+      ExPublicKey.verify("#{recv_ts}|#{recv_txn_id}|#{recv_txn_hash_serialized}", recv_sig_buyer, hong_entity_rsa_pub_key)
 
     {:ok, sig_valid_seller} =
-      ExPublicKey.verify("#{recv_ts}|#{recv_msg_serialized}", recv_sig_seller, tomi_rsa_pub_key)
+      ExPublicKey.verify("#{recv_ts}|#{recv_txn_id}|#{recv_txn_hash_serialized}", recv_sig_seller, tomi_rsa_pub_key)
     
+
     cond do
-      sig_valid_buyer && sig_valid_seller -> archive_payload(transaction, payload)
+      sig_valid_buyer && sig_valid_seller -> 
+        Supul.changeset(buyer_supul, %{txn_id: transaction.id, incoming_hash: recv_txn_hash_serialized}) 
+        
+        if buyer_supul != seller_supul, do:
+        Supul.changeset(seller_supul, %{txn_id: transaction.id, incoming_hash: recv_txn_hash_serialized}) 
+
       true -> "error" #? halt the process
     end
+
+    IO.puts "Do you see me? 2 ^^*"
   end
 
-  alias Demo.Mulets
-  defp archive_payload(transaction, payload) do
-    IO.inspect transaction
-
-    IO.puts "smile again 2  ^^*"
-    #? Archieve Payload
-    {:ok, archived_payload} = Mulets.create_payload_archive(%{payload: payload}) 
-    # {:ok, archived_payload} = Demo.Mulets.create_payload_archive(%{payload: payload}) 
-    
-    IO.puts "smile again 3 ^^*"
-    IO.inspect archived_payload.payload_hash
-
-    #? Openhash 
-    openhash = Mulets.openhash(%{
-      buyer_id: transaction.buyer_id, 
-      buyer_name: transaction.buyer_name, 
-      seller_id: transaction.seller_id, 
-      seller_name: transaction.seller_name, 
-      
-      input_id: transaction.buyer_supul_code,
-      input_name: transaction.buyer_supul_name,
-      output_id: transaction.seller_supul_code,
-      output_name: transaction.seller_supul_name,
-
-      payload_hash: archived_payload.payload_hash, 
-      
-      })
-
-    # send_openhash_to_upper_supul(openhash) 
-    
-    # Supuls.return_openhash_to_buyer_and_seller(openhash) 
-
-    {:ok, transaction}
-  end
-
-  defp send_openhash_to_state_supul() do
-  end
+  # def archive_payload(transaction, payload) do
+  #   buyer_supul_id = transaction.buyer_supul_id
 
 
+
+  #   %PayloadArchive{}
+  #   |> PayloadArchive.changeset(attrs)
+  #   |> Repo.insert()
+  # end 
 
   def process_transaction({:ok, transaction}) do
     update_IS(transaction)

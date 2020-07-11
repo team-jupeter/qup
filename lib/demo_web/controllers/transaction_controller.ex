@@ -4,8 +4,9 @@ defmodule DemoWeb.TransactionController do
   alias Demo.Transactions
   alias Demo.Business.Entity
   alias Demo.InvoiceItems
-  # alias Demo.Invoices
+  # alias Demo.Invoices 
   alias Demo.Repo
+  alias Demo.Supuls
 
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
 
@@ -20,23 +21,19 @@ defmodule DemoWeb.TransactionController do
   end
 
   def new(conn, _params, current_entity) do
-    IO.puts "trn_contorller new"
     buyer = current_entity #? buyer ID
 
-   buyer_supul_id = case buyer.supul_id do
+    buyer_supul_id = case buyer.supul_id do
     nil -> buyer.nation_supul_id
     _ -> buyer.supul_id
    end
 
    #? different approach: compare two lines below. 
     # invoices = Invoices.list_buyer_invoices(buyer.id)
-    invoices = Repo.preload(current_entity, :invoices).invoices
-
-
+    invoice = Repo.preload(current_entity, :invoice).invoice
     invoice_items = InvoiceItems.list_invoice_items(buyer.id)
 
     seller_id = Enum.at(invoice_items, 0).seller_id
-
     seller = Repo.one(
       from e in Entity,
         where: e.id == ^seller_id
@@ -51,6 +48,7 @@ defmodule DemoWeb.TransactionController do
 
     transaction_params = %{
       entity: current_entity,
+      invoice: invoice,
 
       buyer_name: buyer.name, 
       buyer_id: buyer.id,
@@ -61,18 +59,17 @@ defmodule DemoWeb.TransactionController do
       seller_id: seller.id,
       seller_supul_id: seller_supul_id,
       seller_supul_name: seller.supul_name,
-      invoices: invoices,
 
       abc_input_id: buyer.id,
       abc_input_name: buyer.name,
       abc_output_id: seller.id,
-      abc_output_name: seller.name,
+      abc_output_name: seller.name, 
     }
 
     case Transactions.create_transaction(transaction_params) do
       {:ok, transaction} ->
 
-        IO.inspect transaction
+        IO.inspect "Transactions.create_transaction"
 
         conn
         |> put_flash(:info, "Transaction created successfully.")
@@ -90,33 +87,33 @@ defmodule DemoWeb.TransactionController do
 
   def show(conn, %{"id" => id}, _current_entity) do
     transaction = Transactions.get_entity_transaction!(id) 
-    
-    IO.puts "show"
-    IO.inspect transaction
-
     render(conn, "show.html", transaction: transaction)
   end
 
-  def edit(conn, %{"id" => id}, _current_entity) do
-    IO.puts "TransactionController edit"
-    transaction = Transactions.get_entity_transaction!(id)
-    changeset = Transactions.change_transaction(transaction)
-    render(conn, "edit.html", transaction: transaction, changeset: changeset)
-  end
 
-  # def update(conn, %{"id" => id, "transaction" => transaction_params}, current_entity) do
-  #   transaction = Transactions.get_transaction!(current_entity, id)
+  #? payload path for "send to supul" is not working, why? temporalily use edit path.
+  def edit(conn,  %{"id" => id}, _current_entity) do
+    transaction = Transactions.get_transaction!(id)
 
-  #   case Transactions.update_transaction(transaction, transaction_params) do
-  #     {:ok, transaction} ->
-  #       conn
-  #       |> put_flash(:info, "Transaction updated successfully.")
-  #       |> redirect(to: Routes.transaction_path(conn, :show, transaction))
+    #? hard coding private keys. Those will be extracted from smartphones of trading clients.
+    hong_entity_rsa_priv_key = ExPublicKey.load!("./keys/hong_entity_private_key.pem")
+    tomi_rsa_priv_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
 
-  #     {:error, %Ecto.Changeset{} = changeset} ->
-  #       render(conn, "edit.html", transaction: transaction, changeset: changeset)
-  #   end
-  # end
+    IO.puts "hi, I am here"
+    case Transactions.payload(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key) do
+      {:ok, payload} ->
+        Supuls.check_archive_payload(transaction,payload) #? if pass the check, return transaction
+        # |> Supuls.process_transaction() #? executed only if the code above succeeds.
+        
+      conn
+        |> put_flash(:info, "Payload genearted successfully.")
+        |> redirect(to: Routes.transaction_path(conn, :show, transaction))
+
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "edit.html", transaction: transaction, changeset: changeset)
+    end
+  end 
 
   # def delete(conn, %{"id" => id}, current_entity) do
   #   transaction = Transactions.get_transaction!(current_entity, id)
