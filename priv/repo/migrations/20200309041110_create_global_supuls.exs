@@ -7,6 +7,7 @@ defmodule Demo.Repo.Migrations.CreateGlobalSupuls do
       add :type, :string
       add :name, :string
 
+      add :auth_code, :string
       add :global_signature, :string
       add :hash_count, :integer, default: 0
       add :hash_history, {:array, :string}, default: []

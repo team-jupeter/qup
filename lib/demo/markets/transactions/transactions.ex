@@ -24,7 +24,8 @@ defmodule Demo.Transactions do
   end
   defp entity_transactions_query(query, entity) do
     from(t in query, 
-    where: t.buyer_id == ^entity.id or t.seller_id == ^entity.id)
+    where: t.buyer_id == ^entity.id or t.seller_id == ^entity.id,
+    select: t)
   end
   
   def get_transaction!(id), do: Repo.get!(Transaction, id)
@@ -34,6 +35,7 @@ defmodule Demo.Transactions do
     %Transaction{}
     |> Transaction.changeset(attrs)  
     |> Repo.insert
+    |> IO.inspect
     # |> make_payload_and_send_to_supul(buyer_rsa_priv_key, sender_rsa_priv_key) #? if fail, the code below is not called.
   end 
 
@@ -62,9 +64,13 @@ defmodule Demo.Transactions do
   end
 
 
-  # def delete_transaction(%Transaction{} = transaction) do
-  #   Repo.delete(transaction)
-  # end
+  def archive_transaction(%Transaction{} = transaction) do
+    Transaction.changeset(transaction, %{archived: true})
+  end
+
+  def delete_transaction(%Transaction{} = transaction) do
+    Repo.delete(transaction)
+  end
 
   def change_transaction(%Transaction{} = transaction) do
     Transaction.changeset(transaction, %{})

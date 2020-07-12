@@ -5,7 +5,11 @@
   </thead>
   <tbody>
     <tr>
-      <td>Name</td>
+      <td>Seller</td>
+      <td><%= @invoice_item.seller_name %></td>
+    </tr>
+    <tr>
+      <td>Item</td>
       <td><%= @invoice_item.item_name %></td>
     </tr>
     <tr>

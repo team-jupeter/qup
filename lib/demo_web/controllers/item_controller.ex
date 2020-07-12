@@ -66,7 +66,6 @@ defmodule DemoWeb.ItemController do
     seller_supul_name = Repo.one(from e in Entity, where: e.id == ^seller_id, select: e.supul_name) 
     seller_supul_id = Repo.one(from e in Entity, where: e.id == ^seller_id, select: e.supul_id) 
     
-    IO.inspect current_entity
 
     params = %{ "invoice_item" => %{
       buyer_id: buyer_id,

@@ -69,7 +69,7 @@ defmodule Demo.Supuls do
       sig_valid_buyer && sig_valid_seller -> 
         Supul.changeset(buyer_supul, %{txn_id: transaction.id, incoming_hash: recv_txn_hash_serialized}) 
         |> Repo.update!
-     
+
       true -> "error" #? halt the process
     end
 
@@ -80,16 +80,16 @@ defmodule Demo.Supuls do
     end
 
     IO.inspect "buyer_supul.hash_count"
-    IO.inspect buyer_supul.hash_count
+    IO.inspect buyer_supul.hash_count 
 
-    if buyer_supul.hash_count < 100 do
+    if buyer_supul.hash_count == 5 do
       state_supul = Repo.preload(buyer_supul, :state_supul).state_supul
       StateSupuls.update_state_supul(state_supul, %{incoming_hash: buyer_supul.current_hash})
       Supul.changeset(buyer_supul, %{incoming_hash: state_supul.current_hash, hash_count: 1})
       |> Repo.update!
     end
 
-    if seller_supul.hash_count < 100 do
+    if seller_supul.hash_count == 5 do
       state_supul = Repo.preload(seller_supul, :state_supul).state_supul
       StateSupuls.update_state_supul(state_supul, %{incoming_hash: seller_supul.current_hash})
       
@@ -100,7 +100,7 @@ defmodule Demo.Supuls do
     IO.puts "Do you see me? 2 ^^*"
   end
 
-  def process_transaction({:ok, transaction}) do
+  def process_transaction(transaction) do
     update_IS(transaction)
     update_gab_balance(transaction)
     update_t1s(transaction)

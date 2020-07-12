@@ -1,17 +1,18 @@
 <table>
   <thead>
     <tr>
-      <th>Input</th>
-      <th>Output</th>
-      <th>Amount</th>
+      <th>seller</th>
+      <th>amount</th>
+      <th>archived?</th>
     </tr>
   </thead>
   <tbody>
 <%= for transaction <- @transactions do %>
     <tr> 
-      <td><%= transaction.abc_input_name %></td>
-      <td><%= transaction.abc_output_name %></td>
+      <td><%= transaction.seller_name %></td>
       <td><%= transaction.abc_amount %></td>
+      <td><%= transaction.archived? %></td>
+    </tr>
       <td>
         <span><%= link "Show", to: Routes.transaction_path(@conn, :show, transaction) %></span>
       </td>

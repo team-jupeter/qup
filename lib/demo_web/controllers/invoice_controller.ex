@@ -25,14 +25,10 @@ defmodule DemoWeb.InvoiceController do
   def new(conn, _params, current_entity) do
     invoice_items = InvoiceItems.list_invoice_items(current_entity.id)
 
-    IO.puts "new"
-    IO.inspect Enum.at(invoice_items, 0)
-
-
     seller_id = Enum.at(invoice_items, 0).seller_id
     seller_name = Enum.at(invoice_items, 0).seller_name
-    buyer_id = Enum.at(invoice_items, 0).buyer_id
-    buyer_name = Enum.at(invoice_items, 0).buyer_name
+    buyer_id = current_entity.id
+    buyer_name = current_entity.name
 
     invoice_params = %{
       entity: current_entity,
@@ -49,11 +45,13 @@ defmodule DemoWeb.InvoiceController do
         conn
         |> put_flash(:info, "Invoice created successfully.")
         |> redirect(to: Routes.invoice_path(conn, :show, invoice))
+        
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
+
 
   def show(conn, %{"id" => id}, _current_entity) do
     invoice = Invoices.get_invoice!(id)

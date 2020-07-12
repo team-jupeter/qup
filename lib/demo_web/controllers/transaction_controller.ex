@@ -4,7 +4,7 @@ defmodule DemoWeb.TransactionController do
   alias Demo.Transactions
   alias Demo.Business.Entity
   alias Demo.InvoiceItems
-  # alias Demo.Invoices 
+  # alias Demo.Invoices
   alias Demo.Repo
   alias Demo.Supuls
 
@@ -16,10 +16,10 @@ defmodule DemoWeb.TransactionController do
   end 
 
   def index(conn, _params, current_entity) do
-    transactions = Transactions.list_transactions(current_entity)
+    transactions = Transactions.list_transactions(current_entity) 
     render(conn, "index.html", transactions: transactions)
   end
-
+  
   def new(conn, _params, current_entity) do
     buyer = current_entity #? buyer ID
 
@@ -66,14 +66,16 @@ defmodule DemoWeb.TransactionController do
       abc_output_name: seller.name, 
     }
 
-    case Transactions.create_transaction(transaction_params) do
+    case Transactions.create_transaction(transaction_params) do 
       {:ok, transaction} ->
 
-        IO.inspect "Transactions.create_transaction"
+        #? Empty cart
+        Enum.map(invoice_items, fn item -> InvoiceItems.delete_invoice_item(item) end)
 
         conn
         |> put_flash(:info, "Transaction created successfully.")
         |> redirect(to: Routes.transaction_path(conn, :show, transaction))
+
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -106,16 +108,20 @@ defmodule DemoWeb.TransactionController do
     case Transactions.payload(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key) do
       {:ok, payload} ->
         Supuls.check_archive_payload(transaction,payload) #? if pass the check, return transaction
-        # |> Supuls.process_transaction() #? executed only if the code above succeeds.
+        Supuls.process_transaction(transaction) #? executed only if the code above succeeds.
         
-      conn
-        |> put_flash(:info, "Payload genearted successfully.")
-        |> redirect(to: Routes.item_path(conn, :index))
-
+        conn
+          |> put_flash(:info, "Payload generated successfully.")
+          |> redirect(to: Routes.item_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", transaction: transaction, changeset: changeset)
     end
+
+
+    Transactions.update_transaction(transaction, %{archived?: true})
+    |> Repo.update!
+    
   end 
 
   # def delete(conn, %{"id" => id}, current_entity) do

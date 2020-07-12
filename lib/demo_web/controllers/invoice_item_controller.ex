@@ -28,7 +28,10 @@ alias Demo.Invoices.InvoiceItem
   end
 
   def create(conn, %{"invoice_item" => invoice_item_params}) do
-    IO.puts "create"
+      
+    IO.inspect "invoice_item_params"
+    IO.inspect invoice_item_params
+    
     case InvoiceItems.create_invoice_item(invoice_item_params) do 
       {:ok, invoice_item} -> 
         conn

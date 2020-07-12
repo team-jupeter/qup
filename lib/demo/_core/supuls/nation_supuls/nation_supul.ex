@@ -27,7 +27,7 @@ defmodule Demo.NationSupuls.NationSupul do
   end
 
   @fields [
-    :name, :auth_code,
+    :name, :auth_code, :nation_supul_code, :type, 
     :hash_history, :current_hash, :incoming_hash, :hash_count, 
 
   ]
@@ -46,6 +46,7 @@ defmodule Demo.NationSupuls.NationSupul do
   end
 
   def changeset(%NationSupul{} = nation_supul, attrs = %{auth_code: auth_code}) do
+    IO.puts "hhhhiiii"
     nation_supul
     |> cast(attrs, @fields)
     |> validate_required([:name])

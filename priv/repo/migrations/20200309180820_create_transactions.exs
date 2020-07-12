@@ -32,6 +32,7 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :fair?, :boolean, default: false
       add :supul_code, :binary_id
       add :locked?, :boolean, default: false
+      add :archived?, :boolean, default: false
 
       add :invoice_id, references(:invoices, type: :uuid, null: false)
 

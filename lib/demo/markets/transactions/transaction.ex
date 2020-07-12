@@ -38,6 +38,7 @@ defmodule Demo.Transactions.Transaction do
     field :supul_code, :binary_id
 
     field :locked?, :boolean, default: false
+    field :archived?, :boolean, default: false
 
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
     # has_one :openhash, Demo.Mulets.Openhash
@@ -59,8 +60,16 @@ defmodule Demo.Transactions.Transaction do
     :gps, :tax, :insurance, :abc_input_id, :abc_input_name,  
     :abc_output_id, :abc_output_name, :abc_input_t1s, :abc_amount, 
     :items, :fiat_currency, :transaction_status, :if_only_item, 
-    :fair?, :gopang_fee
+    :fair?, :gopang_fee, :archived?
   ]
+  @doc false
+  def changeset(transaction, attrs = %{archived?: archived}) do 
+    IO.puts "archived?: archived"
+    transaction
+    |> cast(attrs, @fields)
+    |> validate_required([])
+  end
+
   @doc false
   def changeset(transaction, attrs) do 
     transaction

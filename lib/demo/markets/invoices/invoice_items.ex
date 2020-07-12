@@ -46,7 +46,7 @@ defmodule Demo.InvoiceItems do
     %InvoiceItem{}
       |> InvoiceItem.changeset(attrs)
       |> Repo.insert()
-      |> IO.inspect
+      # |> IO.inspect
       # |> notify_subscribers([:invoice_item, :created])
     end
 

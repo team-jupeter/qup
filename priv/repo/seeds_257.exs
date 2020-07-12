@@ -1,7 +1,7 @@
 import Ecto.Query
 import Ecto.Changeset
 alias Demo.Repo
-
+ 
  
 '''
 
@@ -59,7 +59,7 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 
-{:ok, global_supul} = GlobalSupuls.update_global_supul(global_supul, %{global_signature: signature}) 
+{:ok, global_supul} = GlobalSupuls.update_global_supul(global_supul, %{auth_code: signature}) 
    
 #? KOREA SUPUL
 {:ok, korea_supul} = NationSupuls.create_nation_supul(%{

@@ -20,4 +20,4 @@
   </tbody>
 </table>
 
-<span><%= link "New Transaction", to: Routes.invoice_path(@conn, :new) %></span>
+<span><%= link "New Transaction", to: Routes.transaction_path(@conn, :new) %></span>

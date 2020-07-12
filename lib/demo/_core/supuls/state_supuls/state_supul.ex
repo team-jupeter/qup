@@ -25,7 +25,7 @@ defmodule Demo.StateSupuls.StateSupul do
   end
 
   @fields [
-    :type, :name, :nation_name, :auth_code, 
+    :type, :name, :nation_name, :auth_code, :state_supul_code,
     :hash_history, :current_hash, :incoming_hash, :hash_count, 
   ]
 

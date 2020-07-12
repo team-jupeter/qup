@@ -21,18 +21,21 @@ defmodule Demo.StateSupuls do
  
   def update_state_supul(%StateSupul{} = state_supul, attrs) do
     IO.inspect "update_state_supul"
-    state_supul
-    |> StateSupul.changeset(attrs)
-    |> Repo.update()
-    |> IO.inspect
 
-    if state_supul.hash_count == 2 do
+    if state_supul.hash_count == 5 do
       nation_supul = Repo.preload(state_supul, :nation_supul).nation_supul
       NationSupuls.update_nation_supul(nation_supul, %{incoming_hash: state_supul.current_hash})
       
       StateSupul.changeset(state_supul, %{incoming_hash: nation_supul.current_hash, hash_count: 1})
       |> Repo.update!
     end
+
+    state_supul
+    |> StateSupul.changeset(attrs)
+    |> Repo.update()
+    |> IO.inspect
+
+
   end
 
 
