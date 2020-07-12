@@ -1,17 +1,39 @@
 <h4><%= @state_supul.name %></h4>
  
 <ul>
-  <li>
-    <strong>Type:</strong>
-    <%= @supul.type %>
+   <li>
+    <strong>type:</strong>
+    <%= @state_supul.type %>
   </li>
-
-  <li>
-    <strong>nation_name:</strong>
-    <%= @state_supul.nation_name %>
+   <li>
+    <strong>state_supul_code:</strong>
+    <%= @state_supul.state_supul_code %>
   </li>
-
+  <li>
+    <strong>current_hash:</strong>
+    <%= @state_supul.current_hash %>
+  </li>
+  <li>
+    <strong>hash_count:</strong>
+    <%= @state_supul.hash_count %>
+  </li>
+  <li>
+    <strong>hash_history:</strong>
+    <%= @state_supul.hash_history %>
+  </li>
 </ul>
 
-<span><%= link "Edit", to: Routes.state_supul_path(@conn, :edit, @state_supul) %></span>
-<span><%= link "Back", to: Routes.state_supul_path(@conn, :index) %></span>
+<h4>Financial Reports</h4>
+  <ul>
+      <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @state_supul.id) %></li>
+      <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :show, @state_supul.id) %></li>
+      <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @state_supul.id) %></li>
+      <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :show, @state_supul.id) %></li>
+      <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :show, @state_supul.id) %></li>
+  </ul>
+ 
+<span><%= link "Back", to: Routes.supul_path(@conn, :index) %></span>
+</br>
+<span><%= link "Edit", to: Routes.supul_path(@conn, :edit, @state_supul) %></span>
+
+

@@ -13,9 +13,8 @@ defmodule Demo.Repo.Migrations.CreateSupuls do
       add :geographical_area, :string
 
       add :auth_code, :text
-      add :payload, :text
-      add :payload_hash, :text
   
+      add :hash_count, :integer, default: 0
       add :hash_history, {:array, :text}, default: []
       add :current_hash, :text
       add :incoming_hash, :text

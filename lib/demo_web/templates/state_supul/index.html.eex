@@ -2,11 +2,11 @@
       <%= search_input f, :query %>
       <%= submit "Search" %>
     <% end %>
-
-<table>
+ 
+<table> 
   <thead>
     <tr>
-      <th></th>
+      <th>State Supuls</th>
       <th></th>
     </tr>
   </thead>

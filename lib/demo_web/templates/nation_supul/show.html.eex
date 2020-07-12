@@ -1,11 +1,35 @@
 <h4><%= @nation_supul.name %></h4>
 
 <ul>
-  <li>
-    <strong>payload_hash:</strong>
-    <%= @nation_supul.payload_hash %>
+   <li>
+    <strong>type:</strong>
+    <%= @nation_supul.type %>
   </li>
-
+   <li>
+    <strong>nation_supul_code:</strong>
+    <%= @nation_supul.nation_supul_code %>
+  </li>
+   <li>
+    <strong>current_hash:</strong>
+    <%= @nation_supul.current_hash %>
+  </li>
+  <li>
+    <strong>hash_count:</strong>
+    <%= @nation_supul.hash_count %>
+  </li>
+  <li>
+    <strong>hash_history:</strong>
+    <%= @nation_supul.hash_history %>
+  </li>
 </ul>
 
-<span><%= link "Back", to: Routes.nation_supul_path(@conn, :index) %></span>
+<h4>Financial Reports</h4>
+  <ul>
+      <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @nation_supul.id) %></li>
+      <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :show, @nation_supul.id) %></li>
+      <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @nation_supul.id) %></li>
+      <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :show, @nation_supul.id) %></li>
+      <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :show, @nation_supul.id) %></li>
+  </ul>
+ 
+

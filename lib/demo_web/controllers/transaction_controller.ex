@@ -100,6 +100,9 @@ defmodule DemoWeb.TransactionController do
     tomi_rsa_priv_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
 
     IO.puts "hi, I am here"
+    # buyer_supul = Supuls.get_supul!(transaction.buyer_supul_id)
+    # seller_supul = Supuls.get_supul!(transaction.seller_supul_id)
+
     case Transactions.payload(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key) do
       {:ok, payload} ->
         Supuls.check_archive_payload(transaction,payload) #? if pass the check, return transaction
@@ -107,7 +110,7 @@ defmodule DemoWeb.TransactionController do
         
       conn
         |> put_flash(:info, "Payload genearted successfully.")
-        |> redirect(to: Routes.transaction_path(conn, :show, transaction))
+        |> redirect(to: Routes.item_path(conn, :index))
 
 
       {:error, %Ecto.Changeset{} = changeset} ->

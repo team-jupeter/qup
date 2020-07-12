@@ -7,7 +7,7 @@ defmodule Demo.Business.Entity do
   # alias Demo.Business.Product
   alias Demo.Business.Entity
   alias Demo.Repo
-  alias Demo.Supuls.Supul
+  # alias Demo.Supuls.Supul
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id

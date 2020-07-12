@@ -8,9 +8,10 @@ defmodule Demo.Repo.Migrations.CreateGlobalSupuls do
       add :name, :string
 
       add :global_signature, :string
-      add :private_key, :string
-      add :public_key, :string
-
+      add :hash_count, :integer, default: 0
+      add :hash_history, {:array, :string}, default: []
+      add :current_hash, :string
+      add :incoming_hash, :string
       timestamps()
     end
 

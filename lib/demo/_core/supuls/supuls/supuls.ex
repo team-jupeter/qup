@@ -9,7 +9,7 @@ defmodule Demo.Supuls do
   alias Demo.Reports.IncomeStatement
   alias Demo.Business
   alias Demo.Business.Entity
-  alias Demo.Supuls.Supul
+  alias Demo.StateSupuls
 
   def list_supuls do
     Repo.all(Supul)
@@ -68,25 +68,37 @@ defmodule Demo.Supuls do
     cond do
       sig_valid_buyer && sig_valid_seller -> 
         Supul.changeset(buyer_supul, %{txn_id: transaction.id, incoming_hash: recv_txn_hash_serialized}) 
-        
-        if buyer_supul != seller_supul, do:
-        Supul.changeset(seller_supul, %{txn_id: transaction.id, incoming_hash: recv_txn_hash_serialized}) 
-
+        |> Repo.update!
+     
       true -> "error" #? halt the process
+    end
+
+    
+    if buyer_supul != seller_supul do
+      Supul.changeset(seller_supul, %{txn_id: transaction.id, incoming_hash: recv_txn_hash_serialized}) 
+      |> Repo.update!
+    end
+
+    IO.inspect "buyer_supul.hash_count"
+    IO.inspect buyer_supul.hash_count
+
+    if buyer_supul.hash_count < 100 do
+      state_supul = Repo.preload(buyer_supul, :state_supul).state_supul
+      StateSupuls.update_state_supul(state_supul, %{incoming_hash: buyer_supul.current_hash})
+      Supul.changeset(buyer_supul, %{incoming_hash: state_supul.current_hash, hash_count: 1})
+      |> Repo.update!
+    end
+
+    if seller_supul.hash_count < 100 do
+      state_supul = Repo.preload(seller_supul, :state_supul).state_supul
+      StateSupuls.update_state_supul(state_supul, %{incoming_hash: seller_supul.current_hash})
+      
+      Supul.changeset(seller_supul, %{incoming_hash: state_supul.current_hash, hash_count: 1})
+      |> Repo.update!
     end
 
     IO.puts "Do you see me? 2 ^^*"
   end
-
-  # def archive_payload(transaction, payload) do
-  #   buyer_supul_id = transaction.buyer_supul_id
-
-
-
-  #   %PayloadArchive{}
-  #   |> PayloadArchive.changeset(attrs)
-  #   |> Repo.insert()
-  # end 
 
   def process_transaction({:ok, transaction}) do
     update_IS(transaction)

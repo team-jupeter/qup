@@ -8,9 +8,11 @@ defmodule Demo.GlobalSupuls.GlobalSupul do
     field :type, :string
     field :name, :string
 
-    field :global_signature, :string
-    field :private_key, :string
-    field :public_key, :string
+    field :auth_code, :string
+    field :hash_count, :integer, default: 0
+    field :hash_history, {:array, :string}, default: []
+    field :current_hash, :string
+    field :incoming_hash, :string
 
     has_many :nation_supuls, Demo.NationSupuls.NationSupul
     has_many :schools, Demo.Schools.School, on_replace: :nilify
@@ -22,7 +24,8 @@ defmodule Demo.GlobalSupuls.GlobalSupul do
   end
 
   @fields [
-    :name, :global_signature, :private_key, :public_key, 
+    :name, :auth_code,
+    :hash_history, :current_hash, :incoming_hash, :hash_count, 
   ]
 
   @doc false

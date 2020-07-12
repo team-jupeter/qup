@@ -63,6 +63,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
    
 #? KOREA SUPUL
 {:ok, korea_supul} = NationSupuls.create_nation_supul(%{
+  type: "Nation Supul", 
+  nation_supul_code: "82",
   name: "한국 수풀", 
   global_supul: global_supul, 
   user_id: korea.id,
@@ -81,6 +83,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 #? JEJUDO SUPUL
 {:ok, jejudo_supul} = StateSupuls.create_state_supul(%{
   name: "제주도 수풀", 
+  type: "State Supul", 
+  state_supul_code: "8213",
   nation_supul: korea_supul, 
   gab_balance: Decimal.from_float(0.0),
   }) 
@@ -96,6 +100,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 #? HANKYUNG SUPUL
 {:ok, hankyung_supul} = Supuls.create_supul(%{
   name: "한경 수풀", 
+  type: "Unit Supul", 
+  supul_code: "821311",
   state_supul: jejudo_supul,
   gab_balance: Decimal.from_float(0.0),
   current_hash: "hankyung"
@@ -112,6 +118,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 #? HANLIM SUPUL
 {:ok, hanlim_supul} = Supuls.create_supul(%{
     name: "한림 수풀", 
+    type: "Unit Supul", 
+    supul_code: "821312",
     state_supul: jejudo_supul,
     gab_balance: Decimal.from_float(0.0),
     current_hash: "hanlim"

@@ -6,12 +6,15 @@ defmodule Demo.NationSupuls.NationSupul do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "nation_supuls" do
-    field :type, :string
     field :name, :string
+    field :type, :string
+    field :nation_supul_code, :string
 
     field :auth_code, :string
-    field :payload, :string
-    field :payload_hash, :string
+    field :hash_count, :integer, default: 0
+    field :hash_history, {:array, :string}, default: []
+    field :current_hash, :string, default: "nation_supul origin"
+    field :incoming_hash, :string
 
     # has_many :entities, Demo.Business.Entity
     has_many :state_supuls, Demo.StateSupuls.StateSupul
@@ -19,13 +22,14 @@ defmodule Demo.NationSupuls.NationSupul do
 
     belongs_to :global_supul, Demo.GlobalSupuls.GlobalSupul, type: :binary_id
     has_one :financial_report, Demo.Reports.FinancialReport
-    has_one :mulet, Demo.Mulets.Mulet
 
     timestamps()
   end
 
   @fields [
-    :name, :payload, :payload_hash, :auth_code
+    :name, :auth_code,
+    :hash_history, :current_hash, :incoming_hash, :hash_count, 
+
   ]
   @doc false 
   def changeset(attrs = %{global_supul: global_supul}) do

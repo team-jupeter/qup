@@ -1,12 +1,12 @@
 <h4><%= @supul.name %></h4>
 <ul>
   <li>
-    <strong>Type:</strong>
+    <strong>type:</strong>
     <%= @supul.type %>
   </li>
   
   <li>
-    <strong>Supul Code:</strong>
+    <strong>supul_code:</strong>
     <%= @supul.supul_code %>
   </li>
   <li>
@@ -14,8 +14,8 @@
     <%= @supul.current_hash %>
   </li>
   <li>
-    <strong>incoming_hash:</strong>
-    <%= @supul.incoming_hash %>
+    <strong>hash_count:</strong>
+    <%= @supul.hash_count %>
   </li>
   <li>
     <strong>hash_history:</strong>
@@ -33,7 +33,3 @@
       <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :show, @supul.id) %></li>
   </ul>
  
-<span><%= link "Back", to: Routes.supul_path(@conn, :index) %></span>
-</br>
-<span><%= link "Edit", to: Routes.supul_path(@conn, :edit, @supul) %></span>
-

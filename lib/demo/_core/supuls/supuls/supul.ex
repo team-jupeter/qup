@@ -2,7 +2,7 @@ defmodule Demo.Supuls.Supul do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.Supuls.Supul
-  alias Demo.Repo
+  # alias Demo.Repo
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "supuls" do
@@ -14,9 +14,8 @@ defmodule Demo.Supuls.Supul do
     field :nation_name, :string 
 
     field :auth_code, :string
-    field :payload, :string
-    field :payload_hash, :string
 
+    field :hash_count, :integer, default: 0
     field :hash_history, {:array, :string}, default: []
     field :current_hash, :string
     field :incoming_hash, :string
@@ -37,31 +36,49 @@ defmodule Demo.Supuls.Supul do
   @doc false
   @fields [
     :type, :name, :geographical_area, :supul_code, :auth_code, 
-    :payload, :payload_hash, :state_name, :nation_name, 
-    :hash_history, :current_hash, :incoming_hash
+    :state_name, :nation_name, 
+    :hash_history, :current_hash, :incoming_hash, :hash_count, 
   ]
 
   def changeset(%Supul{} = supul, attrs = %{txn_id: txn_id, incoming_hash: incoming_hash}) do
     old_current_hash = supul.current_hash
     new_current_hash = Pbkdf2.hash_pwd_salt(supul.current_hash <> attrs.incoming_hash)
-    
     # new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
     new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
     |> Base.encode16()
-    |> String.downcase()
+    |> String.downcase()   
+    
+    new_count = supul.hash_count + 1
 
-    IO.inspect "new_hash"
-    IO.inspect new_hash
+    attrs = %{
+      hash_history: [old_current_hash | supul.hash_history], 
+      current_hash: new_hash,
+      hash_count: new_count
+    }
 
-    changeset(supul, %{hash_history: [old_current_hash | supul.hash_history], current_hash: new_hash})
-    |> Repo.update!
-  end
-
-  def changeset(supul, attrs = %{hash_history: hash_history, current_hash: current_hash}) do
     supul
     |> cast(attrs, @fields)
     |> validate_required([])
-    |> IO.inspect
+  end
+
+  def changeset(%Supul{} = supul, attrs = %{incoming_hash: incoming_hash, hash_count: hash_count}) do
+    old_current_hash = supul.current_hash
+    new_current_hash = Pbkdf2.hash_pwd_salt(supul.current_hash <> attrs.incoming_hash)
+    # new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
+    new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
+    |> Base.encode16()
+    |> String.downcase()   
+    
+
+    attrs = %{
+      hash_history: [old_current_hash | supul.hash_history], 
+      current_hash: new_hash,
+      hash_count: hash_count
+    }
+
+    supul
+    |> cast(attrs, @fields)
+    |> validate_required([])
   end
 
   def changeset(attrs = %{state_supul: state_supul}) do

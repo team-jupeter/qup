@@ -3,14 +3,10 @@
       <%= submit "Search" %>
     <% end %>
 
-
-<h4>Listing Nation Supuls</h4>
-
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-
+      <th>Nation Supuls</th>
       <th></th>
     </tr>
   </thead>
