@@ -4,7 +4,7 @@ defmodule Demo.Sils.Sil do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "sils" do
-    field :hash_history, {:array, :string}
+    field :openhash_box, {:array, :string}
     field :current_hash, :string
     field :report_hash, :string
 
@@ -16,7 +16,7 @@ defmodule Demo.Sils.Sil do
   @doc false
   def changeset(sil, attrs) do
     sil
-    |> cast(attrs, [:hash_history, :current_hash])
+    |> cast(attrs, [:openhash_box, :current_hash])
     |> validate_required([:current_hash])
     |> generate_hash(attrs.report_hash)
   end
@@ -28,6 +28,6 @@ defmodule Demo.Sils.Sil do
     |> Base.encode16()
     |> String.downcase()
 
-    %Demo.Sils.Sil{hash_history: [current_hash | sil_cs.data.hash_history], current_hash: new_hash}
+    %Demo.Sils.Sil{openhash_box: [current_hash | sil_cs.data.openhash_box], current_hash: new_hash}
   end
 end

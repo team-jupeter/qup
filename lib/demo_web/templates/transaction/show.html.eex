@@ -38,6 +38,11 @@
     <td>Fair?:</td>
     <td><%= @transaction.fair? %></td>
   </tr>
+   <tr>
+    <td>supul_code:</td>
+    <td><%= @transaction.supul_code %></td>
+  </tr>
+
  <tbody>
 </table>
 

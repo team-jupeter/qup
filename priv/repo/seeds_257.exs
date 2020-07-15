@@ -67,7 +67,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   nation_supul_code: "82",
   name: "한국 수풀", 
   global_supul: global_supul, 
-  user_id: korea.id,
+  user_id: corea.id,
   global_supul_id: global_supul.id,
   gab_balance: Decimal.from_float(0.0),
   }) 
@@ -100,6 +100,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 #? HANKYUNG SUPUL
 {:ok, hankyung_supul} = Supuls.create_supul(%{
   name: "한경 수풀", 
+  state_name: "제주도", 
+  nation_name: "한국",
   type: "Unit Supul", 
   supul_code: "821311",
   state_supul: jejudo_supul,
@@ -116,8 +118,10 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 {:ok, hankyung_supul} = Supuls.update_supul(hankyung_supul, %{auth_code: signature}) 
    
 #? HANLIM SUPUL
-{:ok, hanlim_supul} = Supuls.create_supul(%{
+{:ok, hanlim_supul} = Supuls.create_supul(%{ 
     name: "한림 수풀", 
+    state_name: "제주도", 
+    nation_name: "한국",
     type: "Unit Supul", 
     supul_code: "821312",
     state_supul: jejudo_supul,
@@ -404,7 +408,7 @@ korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
 
 jejudo_rsa_priv_key = ExPublicKey.load!("./keys/jejudo_private_key.pem")
 jejudo_rsa_pub_key = ExPublicKey.load!("./keys/jejudo_public_key.pem")
-
+ 
 hankyung_rsa_priv_key = ExPublicKey.load!("./keys/hankyung_private_key.pem")
 hankyung_rsa_pub_key = ExPublicKey.load!("./keys/hankyung_public_key.pem")
    

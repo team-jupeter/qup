@@ -35,13 +35,16 @@ defmodule Demo.Transactions.Transaction do
     field :if_only_item, :string 
     field :fair?, :boolean, default: false
     
-    field :supul_code, :binary_id
+    field :supul_code, :integer, default: 0
+    field :txn_hash, :string
 
     field :locked?, :boolean, default: false
     field :archived?, :boolean, default: false
+    field :payload, :string
+    field :payload_hash, :string
 
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
-    # has_one :openhash, Demo.Mulets.Openhash
+    has_many :openhash, Demo.Supuls.Openhash
     has_many :tickets, Demo.Gopang.Ticket, on_delete: :delete_all
         
     many_to_many(
@@ -60,11 +63,17 @@ defmodule Demo.Transactions.Transaction do
     :gps, :tax, :insurance, :abc_input_id, :abc_input_name,  
     :abc_output_id, :abc_output_name, :abc_input_t1s, :abc_amount, 
     :items, :fiat_currency, :transaction_status, :if_only_item, 
-    :fair?, :gopang_fee, :archived?
+    :fair?, :gopang_fee, :archived?, :payload, :payload_hash,
+    :txn_hash,
   ]
   @doc false
   def changeset(transaction, attrs = %{archived?: archived}) do 
-    IO.puts "archived?: archived"
+    transaction
+    |> cast(attrs, @fields)
+    |> validate_required([])
+  end
+  @doc false
+  def changeset(transaction, attrs = %{txn_hash: txn_hash}) do 
     transaction
     |> cast(attrs, @fields)
     |> validate_required([])
@@ -78,6 +87,12 @@ defmodule Demo.Transactions.Transaction do
     |> put_assoc(:entities, [attrs.entity])
     |> put_assoc(:invoice, attrs.invoice)
     |> put_change(:abc_amount, attrs.invoice.total) 
+    # |> check_fair_trade(attrs)
+  end
+  def changeset_openhash(transaction, attrs) do 
+    transaction
+    |> cast(attrs, @fields)
+    |> put_assoc(:openhash, attrs.openhash)
     # |> check_fair_trade(attrs)
   end
 

@@ -16,15 +16,22 @@ defmodule Demo.Supuls.Supul do
     field :auth_code, :string
 
     field :hash_count, :integer, default: 0
-    field :hash_history, {:array, :string}, default: []
-    field :current_hash, :string
-    field :incoming_hash, :string
 
+    field :txn_id, :binary_id
+    field :hash_chain, {:array, :string}, default: []
+    field :openhash_box, {:array, :string}, default: []
+    field :current_hash, :string, default: "state supul origin"
+    field :incoming_hash, :string
+    field :previous_hash, :string
+    field :state_openhash_id, :binary_id, default: "b87dc547-649b-41cb-9e17-d83977753abc"
+    
     has_many :entities, Demo.Business.Entity, on_replace: :nilify
     has_many :payloads, Demo.Mulets.Payload, on_replace: :nilify
     has_many :schools, Demo.Schools.School, on_replace: :nilify
+    has_many :openhashes, Demo.Supuls.Openhash, on_replace: :nilify
 
     has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify
+    has_one :openhash, Demo.Supuls.Openhash, on_replace: :nilify
     # has_one :mulet, Demo.Mulets.Mulet
     has_one :gopang, Demo.Gopangs.Gopang 
     
@@ -36,12 +43,14 @@ defmodule Demo.Supuls.Supul do
   @doc false
   @fields [
     :type, :name, :geographical_area, :supul_code, :auth_code, 
-    :state_name, :nation_name, 
-    :hash_history, :current_hash, :incoming_hash, :hash_count, 
+    :state_name, :nation_name, :openhash_box, :hash_chain,
+    :previous_hash, :current_hash, :incoming_hash, :hash_count, 
+    :txn_id, :state_openhash_id, 
   ]
 
-  def changeset(%Supul{} = supul, attrs = %{txn_id: txn_id, incoming_hash: incoming_hash}) do
-    old_current_hash = supul.current_hash
+  def changeset_txnhash(%Supul{} = supul, attrs = %{
+    sender: sender, txn_id: txn_id, incoming_hash: incoming_hash}) do
+    previous_hash = supul.current_hash
     new_current_hash = Pbkdf2.hash_pwd_salt(supul.current_hash <> attrs.incoming_hash)
     # new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
     new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
@@ -51,9 +60,13 @@ defmodule Demo.Supuls.Supul do
     new_count = supul.hash_count + 1
 
     attrs = %{
-      hash_history: [old_current_hash | supul.hash_history], 
+      txn_id: attrs.txn_id,
+      sender: attrs.sender,
+      previous_hash: previous_hash,
+      incoming_hash: incoming_hash,
       current_hash: new_hash,
-      hash_count: new_count
+      hash_count: new_count,
+      hash_chain: [new_hash | supul.hash_chain]
     }
 
     supul
@@ -61,24 +74,10 @@ defmodule Demo.Supuls.Supul do
     |> validate_required([])
   end
 
-  def changeset(%Supul{} = supul, attrs = %{incoming_hash: incoming_hash, hash_count: hash_count}) do
-    old_current_hash = supul.current_hash
-    new_current_hash = Pbkdf2.hash_pwd_salt(supul.current_hash <> attrs.incoming_hash)
-    # new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
-    new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
-    |> Base.encode16()
-    |> String.downcase()   
-    
-
-    attrs = %{
-      hash_history: [old_current_hash | supul.hash_history], 
-      current_hash: new_hash,
-      hash_count: hash_count
-    }
-
+  def changeset_openhash(%Supul{} = supul, attrs = %{openhash: openhash}) do
     supul
     |> cast(attrs, @fields)
-    |> validate_required([])
+    |> put_assoc(:openhash, attrs.openhash)
   end
 
   def changeset(attrs = %{state_supul: state_supul}) do
@@ -88,12 +87,6 @@ defmodule Demo.Supuls.Supul do
     |> put_assoc(:state_supul, attrs.state_supul)
   end
 
-  def changeset(%Supul{} = supul, attrs = %{auth_code: auth_code}) do
-    supul
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_change(:auth_code, attrs.auth_code)
-  end
 
   def changeset(attrs) do
     %Supul{}
@@ -107,5 +100,4 @@ defmodule Demo.Supuls.Supul do
     |> cast(attrs, @fields)
     |> validate_required([])
   end
-
 end

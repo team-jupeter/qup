@@ -10,11 +10,17 @@ defmodule Demo.Repo.Migrations.CreateStateSupuls do
       add :nation_name, :string
   
       add :auth_code, :text
+
       add :hash_count, :integer, default: 0
-      add :hash_history, {:array, :text}, default: []
+
+      add :sender, :binary_id
+      add :hash_chain, {:array, :text}, default: []
+      add :openhash_box, {:array, :text}, default: []
       add :current_hash, :text, default: "state_supul origin"
       add :incoming_hash, :text
-      
+      add :nation_openhash_id, :binary_id
+      add :previous_hash, :text
+
       add :nation_supul_id, references(:nation_supuls, type: :uuid, null: false)
 
       timestamps()

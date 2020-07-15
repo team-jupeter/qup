@@ -7,7 +7,7 @@ defmodule Demo.Repo.Migrations.CreateFinancialReports do
       add :entity_name, :string
       add :locked, :boolean, default: false
       add :current_hash, :string
-      add :hash_history, {:array, :string}
+      add :openhash_box, {:array, :string}
 
 
       #? Summary

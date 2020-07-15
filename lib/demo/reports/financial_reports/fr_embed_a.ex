@@ -32,7 +32,7 @@ defmodule Demo.Reports.FREmbedA do
     @fields [
         :locked,
         :current_hash,
-        :hash_history,
+        :openhash_box,
         
         :num_of_shares,
         :market_capitalization,

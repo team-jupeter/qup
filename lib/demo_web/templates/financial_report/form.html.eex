@@ -13,9 +13,9 @@
   <%= text_input f, :current_hash %>
   <%= error_tag f, :current_hash %>
 
-  <%= label f, :hash_history %>
-  <%= text_input f, :hash_history %>
-  <%= error_tag f, :hash_history %>
+  <%= label f, :openhash_box %>
+  <%= text_input f, :openhash_box %>
+  <%= error_tag f, :openhash_box %>
 
   <%= label f, :credit_rate %>
   <%= text_input f, :credit_rate %>

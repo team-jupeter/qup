@@ -101,12 +101,13 @@ defmodule DemoWeb.TransactionController do
     hong_entity_rsa_priv_key = ExPublicKey.load!("./keys/hong_entity_private_key.pem")
     tomi_rsa_priv_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
 
-    IO.puts "hi, I am here"
+    IO.puts "hi, I am here in transaction controller"
     # buyer_supul = Supuls.get_supul!(transaction.buyer_supul_id)
     # seller_supul = Supuls.get_supul!(transaction.seller_supul_id)
 
-    case Transactions.payload(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key) do
+    case Transactions.make_payload(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key) do
       {:ok, payload} ->
+        IO.puts "Transactions.make_payload"
         Supuls.check_archive_payload(transaction,payload) #? if pass the check, return transaction
         Supuls.process_transaction(transaction) #? executed only if the code above succeeds.
         
@@ -119,8 +120,8 @@ defmodule DemoWeb.TransactionController do
     end
 
 
-    Transactions.update_transaction(transaction, %{archived?: true})
-    |> Repo.update!
+    # Transactions.update_transaction(transaction, %{archived?: true})
+    # |> Repo.update!
     
   end 
 

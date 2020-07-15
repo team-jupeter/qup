@@ -1,6 +1,8 @@
 <h4><%= @state_supul.name %></h4>
  
 <ul>
+<h5>Permanent Data</h5>
+
    <li>
     <strong>type:</strong>
     <%= @state_supul.type %>
@@ -9,17 +11,41 @@
     <strong>state_supul_code:</strong>
     <%= @state_supul.state_supul_code %>
   </li>
+    <li>
+    <strong>nation_name:</strong>
+    <%= @state_supul.nation_name %>
+  </li>
+    <li>
+    <strong>nation_supul:</strong>
+  </li>
+
+    </br>
+  <h5>Temporary Data</h5>
+  
   <li>
     <strong>current_hash:</strong>
     <%= @state_supul.current_hash %>
   </li>
   <li>
+    <strong>incoming_hash:</strong>
+    <%= @state_supul.incoming_hash %>
+  </li>
+  <li>
+    <strong>previous_hash:</strong>
+    <%= @state_supul.previous_hash %>
+  </li>
+  <li>
     <strong>hash_count:</strong>
     <%= @state_supul.hash_count %>
   </li>
+
   <li>
-    <strong>hash_history:</strong>
-    <%= @state_supul.hash_history %>
+    <strong>hash_chain:</strong>
+    <%= @state_supul.hash_chain %>
+  </li>
+  <li>
+    <strong>openhash_box:</strong>
+    <%= @state_supul.openhash_box %>
   </li>
 </ul>
 

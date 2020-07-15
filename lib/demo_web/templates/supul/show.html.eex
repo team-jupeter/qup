@@ -1,25 +1,63 @@
 <h4><%= @supul.name %></h4>
 <ul>
+<h5>Permanent Data</h5>
   <li>
     <strong>type:</strong>
     <%= @supul.type %>
   </li>
-  
   <li>
     <strong>supul_code:</strong>
     <%= @supul.supul_code %>
   </li>
   <li>
+    <strong>state_name:</strong>
+    <%= @supul.state_name %>
+  </li>
+  <li>
+    <strong>nation_name:</strong>
+    <%= @supul.nation_name %>
+  </li>
+  <li>
+    <strong>state_supul:</strong>
+  </li>
+  <li>
+    <strong>nation_supul:</strong>
+  </li>
+  <li>
+    <strong>geographical_area:</strong>
+    <%= @supul.geographical_area %>
+  </li>
+  </br>
+  <h5>Temporary Data</h5>
+  <li>
+    <strong>txn_id:</strong>
+    <%= @supul.txn_id %>
+  </li>
+
+  <li>
     <strong>current_hash:</strong>
     <%= @supul.current_hash %>
+  </li>
+  <li>
+    <strong>incoming_hash:</strong>
+    <%= @supul.incoming_hash %>
+  </li>
+  <li>
+    <strong>previous_hash:</strong>
+    <%= @supul.previous_hash %>
   </li>
   <li>
     <strong>hash_count:</strong>
     <%= @supul.hash_count %>
   </li>
+
   <li>
-    <strong>hash_history:</strong>
-    <%= @supul.hash_history %>
+    <strong>hash_chain:</strong>
+    <%= @supul.hash_chain %>
+  </li>
+  <li>
+    <strong>openhash_box:</strong>
+    <%= @supul.openhash_box %>
   </li>
 </ul>
 

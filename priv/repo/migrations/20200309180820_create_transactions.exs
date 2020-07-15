@@ -30,10 +30,13 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :transaction_status, :string, default: "processing" 
       add :if_only_item, :string
       add :fair?, :boolean, default: false
-      add :supul_code, :binary_id
+      add :supul_code, :integer
       add :locked?, :boolean, default: false
       add :archived?, :boolean, default: false
-
+      add :payload, :text
+      add :payload_hash, :text
+      add :txn_hash, :text
+      
       add :invoice_id, references(:invoices, type: :uuid, null: false)
 
       # add :locked, :boolean, default: false

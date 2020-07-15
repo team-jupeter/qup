@@ -51,12 +51,12 @@ defmodule DemoWeb.StateSupulController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    state_supul = StateSupuls.get_state_supul!(id)
-    {:ok, _state_supul} = StateSupuls.delete_state_supul(state_supul)
+  # def delete(conn, %{"id" => id}) do
+  #   state_supul = StateSupuls.get_state_supul!(id)
+  #   {:ok, _state_supul} = StateSupuls.delete_state_supul(state_supul)
 
-    conn
-    |> put_flash(:info, "State supul deleted successfully.")
-    |> redirect(to: Routes.state_supul_path(conn, :index))
-  end
+  #   conn
+  #   |> put_flash(:info, "State supul deleted successfully.")
+  #   |> redirect(to: Routes.state_supul_path(conn, :index))
+  # end
 end

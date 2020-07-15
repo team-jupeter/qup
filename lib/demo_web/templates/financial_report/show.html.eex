@@ -9,7 +9,7 @@
 
   <tr>
     <td>Description:</td>
-    <td><%= @fr.hash_history %></td>
+    <td><%= @fr.openhash_box %></td>
   </tr>
 
   <tr>

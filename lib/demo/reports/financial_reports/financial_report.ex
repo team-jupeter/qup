@@ -9,7 +9,7 @@ defmodule Demo.Reports.FinancialReport do
     field :entity_name, :string
     field :locked, :boolean, default: false
     field :current_hash, :string
-    field :hash_history, {:array, :string}
+    field :openhash_box, {:array, :string}
 
     #? Summary
     field :credit_rate, :integer #? 신용 등급 
@@ -47,7 +47,7 @@ defmodule Demo.Reports.FinancialReport do
   end
 
   @fields [
-    :locked, :current_hash, :hash_history, 
+    :locked, :current_hash, :openhash_box, 
     :num_of_shares, :num_of_shares_issued, :num_of_treasury_stocks, 
     :credit_rate, :market_capitalization, :stock_price, 
     :intrinsic_value, :debt_int_rate, :re_fmv,

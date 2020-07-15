@@ -8,11 +8,14 @@ defmodule Demo.Repo.Migrations.CreateGlobalSupuls do
       add :name, :string
 
       add :auth_code, :string
-      add :global_signature, :string
+      add :global_signature, :text
       add :hash_count, :integer, default: 0
-      add :hash_history, {:array, :string}, default: []
-      add :current_hash, :string
-      add :incoming_hash, :string
+      add :hash_chain, {:array, :text}, default: []
+      add :openhash_box, {:array, :text}, default: []
+      add :current_hash, :text
+      add :incoming_hash, :text
+      add :global_openhash_id, :binary_id
+      
       timestamps()
     end
 
