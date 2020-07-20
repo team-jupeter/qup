@@ -22,24 +22,12 @@
       <td><%= @user.nationality %></td>
     </tr>
     </tr>
-      <td>Nation ID</td>
-      <td><%= @user.nation_id %></td>
-    </tr>
-    </tr>
       <td>Default Entity Name</td>
       <td><%= @user.default_entity_name %></td>
     </tr> 
     </tr>
-      <td>Default Entity ID</td>
-      <td><%= @user.default_entity %></td>
-    </tr> 
-    </tr>
       <td>Supul Name</td>
       <td><%= @user.supul_name %></td>
-    </tr> 
-    </tr>
-      <td>Supul ID</td>
-      <td><%= @user.supul_id %></td>
     </tr> 
   </tbody>
 </table>

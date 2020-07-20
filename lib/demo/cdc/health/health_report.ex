@@ -9,7 +9,7 @@ defmodule Demo.CDC.HealthReport do
     field :case_history, :decimal
     field :cholesterol, :decimal
     field :disabled, :decimal
-    field :disease, :decimal
+    field :disease, :decimal 
     field :dna, :decimal
     field :fingerprints, {:array, :map} 
     field :face, :decimal 

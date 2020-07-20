@@ -35,6 +35,7 @@ defmodule Demo.Repo.Migrations.CreateEntities do
       add :gab_balance, :decimal, default: 0.0
 
       add :nation_id, references(:nations, type: :uuid)
+      add :group_id, references(:groups, type: :uuid)
       add :supul_id, references(:supuls, type: :uuid)
       add :state_supul_id, references(:state_supuls, type: :uuid)
       add :nation_supul_id, references(:nation_supuls, type: :uuid)

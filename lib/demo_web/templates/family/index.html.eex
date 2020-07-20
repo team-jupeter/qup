@@ -1,0 +1,26 @@
+<h1>Listing Families</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Family code</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for family <- @families do %>
+    <tr>
+      <td><%= family.family_code %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.family_path(@conn, :show, family) %></span>
+        <span><%= link "Edit", to: Routes.family_path(@conn, :edit, family) %></span>
+        <span><%= link "Delete", to: Routes.family_path(@conn, :delete, family), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Family", to: Routes.family_path(@conn, :new) %></span>

@@ -8,6 +8,7 @@ defmodule Demo.Business.Entity do
   alias Demo.Business.Entity
   alias Demo.Repo
   # alias Demo.Supuls.Supul
+  alias Demo.Groups.Group
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -59,7 +60,9 @@ defmodule Demo.Business.Entity do
     has_one :t2_item, Demo.ABC.T2Item
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
-    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
+    
+    belongs_to :group, Demo.Families.Family, type: :binary_id
+    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id, on_replace: :delete
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
     belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
@@ -93,6 +96,13 @@ defmodule Demo.Business.Entity do
       on_replace: :delete
     )
 
+    many_to_many(
+      :groups,
+      Group,
+      join_through: "entities_groups",
+      on_replace: :delete
+    )
+
     # many_to_many(
     #   :products,
     #   Product,
@@ -114,9 +124,15 @@ defmodule Demo.Business.Entity do
     :name, :entity_address, :nation_signature,
     :biz_category_id, :sic_code, :legal_status, :year_started, 
     :num_of_shares, :supul_name, :gab_balance, :supul_id,
-    :share_price, :credit_rate, :project,  
+    :share_price, :credit_rate, :project, 
   ]
 
+  def changeset(%Entity{} = entity, attrs = %{supul: supul}) do
+    entity
+    |> cast(attrs, @fields)
+    |> put_assoc(:supul, attrs.supul)
+  end
+  
   def changeset(entity, attrs \\ %{}) do
     entity
     |> cast(attrs, @fields)

@@ -1,0 +1,36 @@
+<h1>Listing Events</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Who</th>
+      <th>When</th>
+      <th>Where</th>
+      <th>What</th>
+      <th>How</th>
+      <th>Why</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for event <- @events do %>
+    <tr>
+      <td><%= event.who %></td>
+      <td><%= event.when %></td>
+      <td><%= event.where %></td>
+      <td><%= event.what %></td>
+      <td><%= event.how %></td>
+      <td><%= event.why %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.event_path(@conn, :show, event) %></span>
+        <span><%= link "Edit", to: Routes.event_path(@conn, :edit, event) %></span>
+        <span><%= link "Delete", to: Routes.event_path(@conn, :delete, event), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Event", to: Routes.event_path(@conn, :new) %></span>

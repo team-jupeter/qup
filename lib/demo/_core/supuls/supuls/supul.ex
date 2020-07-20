@@ -17,7 +17,7 @@ defmodule Demo.Supuls.Supul do
 
     field :hash_count, :integer, default: 0
 
-    field :txn_id, :binary_id
+    field :event_id, :binary_id
     field :hash_chain, {:array, :string}, default: []
     field :openhash_box, {:array, :string}, default: []
     field :current_hash, :string, default: "state supul origin"
@@ -29,6 +29,7 @@ defmodule Demo.Supuls.Supul do
     has_many :payloads, Demo.Mulets.Payload, on_replace: :nilify
     has_many :schools, Demo.Schools.School, on_replace: :nilify
     has_many :openhashes, Demo.Supuls.Openhash, on_replace: :nilify
+    has_many :families, Demo.Families.Family, on_replace: :nilify
 
     has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify
     has_one :openhash, Demo.Supuls.Openhash, on_replace: :nilify
@@ -45,11 +46,11 @@ defmodule Demo.Supuls.Supul do
     :type, :name, :geographical_area, :supul_code, :auth_code, 
     :state_name, :nation_name, :openhash_box, :hash_chain,
     :previous_hash, :current_hash, :incoming_hash, :hash_count, 
-    :txn_id, :state_openhash_id, 
+    :event_id, :state_openhash_id, :event_id
   ]
 
-  def changeset_txnhash(%Supul{} = supul, attrs = %{
-    sender: sender, txn_id: txn_id, incoming_hash: incoming_hash}) do
+  def changeset_event_hash(%Supul{} = supul, attrs = %{
+    sender: sender, event_id: event_id, incoming_hash: incoming_hash}) do
     previous_hash = supul.current_hash
     new_current_hash = Pbkdf2.hash_pwd_salt(supul.current_hash <> attrs.incoming_hash)
     # new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
@@ -60,7 +61,7 @@ defmodule Demo.Supuls.Supul do
     new_count = supul.hash_count + 1
 
     attrs = %{
-      txn_id: attrs.txn_id,
+      event_id: attrs.event_id,
       sender: attrs.sender,
       previous_hash: previous_hash,
       incoming_hash: incoming_hash,
@@ -73,6 +74,8 @@ defmodule Demo.Supuls.Supul do
     |> cast(attrs, @fields)
     |> validate_required([])
   end
+
+
 
   def changeset_openhash(%Supul{} = supul, attrs = %{openhash: openhash}) do
     supul

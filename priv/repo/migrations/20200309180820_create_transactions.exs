@@ -4,16 +4,17 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
   def change do
     create table(:transactions, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :type, :string
       add :hash_of_invoice, :string
 
       add :buyer_name, :string  
       add :buyer_id, :binary_id
-      add :buyer_supul_name, :string
-      add :buyer_supul_id, :binary_id
+      add :erl_supul_name, :string
+      add :erl_supul_id, :binary_id
       add :seller_name, :string  
       add :seller_id, :binary_id
-      add :seller_supul_name, :string
-      add :seller_supul_id, :binary_id
+      add :ssu_supul_name, :string
+      add :ssu_supul_id, :binary_id
 
       add :gps, {:array, :map}
       add :tax, :decimal, default: 0.0
@@ -35,7 +36,7 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :archived?, :boolean, default: false
       add :payload, :text
       add :payload_hash, :text
-      add :txn_hash, :text
+      add :event_hash, :text
       
       add :invoice_id, references(:invoices, type: :uuid, null: false)
 

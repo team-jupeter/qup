@@ -33,10 +33,10 @@ alias Demo.Invoices.InvoiceItem
     IO.inspect invoice_item_params
     
     case InvoiceItems.create_invoice_item(invoice_item_params) do 
-      {:ok, invoice_item} -> 
+      {:ok, _invoice_item} -> 
         conn
         |> put_flash(:info, "InvoiceItem created successfully.")
-        |> redirect(to: Routes.invoice_item_path(conn, :show, invoice_item))
+        |> redirect(to: Route )
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

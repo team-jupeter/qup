@@ -29,6 +29,10 @@ defmodule DemoWeb.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     resources "/users", UserController
     resources "/certificates", CertificateController
+    resources "/families", FamilyController
+    resources "/groups", GroupController
+    resources "/events", EventController
+    resources "/weddings", WeddingController
 
 
     live "/presence_users/:name", UserLive.PresenceIndex

@@ -4,20 +4,20 @@ defmodule Demo.Transactions.Transaction do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "transactions" do
-
+    field :type, :string
     #? previous transaction_id and digital signature of invoice
     field :hash_of_invoice, :string
 
     #? who pays ABC? which t1s in his/her/its wallet?
     field :buyer_name, :string 
     field :buyer_id, :binary_id
-    field :buyer_supul_name, :string 
-    field :buyer_supul_id, :binary_id
+    field :erl_supul_name, :string 
+    field :erl_supul_id, :binary_id
     
     field :seller_name, :string 
     field :seller_id, :binary_id
-    field :seller_supul_name, :string
-    field :seller_supul_id, :binary_id
+    field :ssu_supul_name, :string
+    field :ssu_supul_id, :binary_id
 
     field :gps, {:array, :map} 
     field :tax, :decimal, default: 0.0
@@ -36,7 +36,7 @@ defmodule Demo.Transactions.Transaction do
     field :fair?, :boolean, default: false
     
     field :supul_code, :integer, default: 0
-    field :txn_hash, :string
+    field :event_hash, :string
 
     field :locked?, :boolean, default: false
     field :archived?, :boolean, default: false
@@ -58,28 +58,16 @@ defmodule Demo.Transactions.Transaction do
   end
 
   @fields [
-    :hash_of_invoice, :buyer_name, :seller_name, :buyer_id, :seller_id, 
-    :buyer_supul_name, :buyer_supul_id, :seller_supul_name, :seller_supul_id,  
+    :type, :hash_of_invoice, :buyer_name, :seller_name, :buyer_id, :seller_id, 
+    :erl_supul_name, :erl_supul_id, :ssu_supul_name, :ssu_supul_id,  
     :gps, :tax, :insurance, :abc_input_id, :abc_input_name,  
     :abc_output_id, :abc_output_name, :abc_input_t1s, :abc_amount, 
     :items, :fiat_currency, :transaction_status, :if_only_item, 
     :fair?, :gopang_fee, :archived?, :payload, :payload_hash,
-    :txn_hash,
+    :event_hash,
   ]
-  @doc false
-  def changeset(transaction, attrs = %{archived?: archived}) do 
-    transaction
-    |> cast(attrs, @fields)
-    |> validate_required([])
-  end
-  @doc false
-  def changeset(transaction, attrs = %{txn_hash: txn_hash}) do 
-    transaction
-    |> cast(attrs, @fields)
-    |> validate_required([])
-  end
 
-  @doc false
+
   def changeset(transaction, attrs) do 
     transaction
     |> cast(attrs, @fields)
@@ -89,6 +77,7 @@ defmodule Demo.Transactions.Transaction do
     |> put_change(:abc_amount, attrs.invoice.total) 
     # |> check_fair_trade(attrs)
   end
+  
   def changeset_openhash(transaction, attrs) do 
     transaction
     |> cast(attrs, @fields)
@@ -96,22 +85,5 @@ defmodule Demo.Transactions.Transaction do
     # |> check_fair_trade(attrs)
   end
 
-
-  # defp check_fair_trade(transaction_cs, attrs \\ %{}) do
-  #   #? check the fairness of the transaction
-  #   # market_value = average_market_value(attrs.item_id)
-  #   transaction_cs
-  # end
-
-  # defp average_market_value(attrs.item) do
-  #   market_value = 4
-  #   case market_value * 0.8 < item.price < market_value * 1.2 do:
-  #     true -> fair? = true
-  #     false -> investigate(transaction_cs.data)
-  # end
-
-  # defp investigate(transaction_cs) do
-    
-  # end
 
 end

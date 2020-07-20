@@ -1,0 +1,13 @@
+<h1>Show Family</h1>
+
+<ul>
+
+  <li>
+    <strong>Family code:</strong>
+    <%= @family.family_code %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.family_path(@conn, :edit, @family) %></span>
+<span><%= link "Back", to: Routes.family_path(@conn, :index) %></span>

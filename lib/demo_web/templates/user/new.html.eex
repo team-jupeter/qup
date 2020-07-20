@@ -6,26 +6,24 @@
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
-
-  <div>
-    <%= text_input f, :nationality, placeholder: "Nationality" %>
-    <%= error_tag f, :nationality %>
-  </div>
+  <p>If you don't have family code! Please register a family by setting you as the house holder.</p>
+  <td>
+    <span><%= link "New Family", to: Routes.family_path(@conn, :new) %></span>
+  </td>
+  
   <div>
     <%= text_input f, :name, placeholder: "Name" %>
     <%= error_tag f, :name %>
   </div>
-  <div>
-    <%= text_input f, :username, placeholder: "Username" %>
-    <%= error_tag f, :username %>
-  </div>
-  <div>
-    <%= text_input f, :email, placeholder: "Email" %>
-    <%= error_tag f, :email %>
-  </div>
+
   <div>
     <%= password_input f, :password, placeholder: "Password" %>
     <%= error_tag f, :password %>
+  </div>
+  <p>Input the family code which is a character "f" plus the email of the house holder.</p>
+  <div>
+    <%= text_input f, :family_code, placeholder: "Family Code" %>
+    <%= error_tag f, :family %>
   </div>
 
   <%= submit "Create User" %>

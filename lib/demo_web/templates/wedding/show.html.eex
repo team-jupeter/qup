@@ -1,0 +1,18 @@
+<h1>Show Wedding</h1>
+
+<ul>
+
+  <li>
+    <strong>Bride:</strong>
+    <%= @wedding.bride %>
+  </li>
+
+  <li>
+    <strong>Groom:</strong>
+    <%= @wedding.groom %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.wedding_path(@conn, :edit, @wedding) %></span>
+<span><%= link "Back", to: Routes.wedding_path(@conn, :index) %></span>

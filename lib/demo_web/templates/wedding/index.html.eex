@@ -1,0 +1,28 @@
+<h1>Listing Weddings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bride</th>
+      <th>Groom</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for wedding <- @weddings do %>
+    <tr>
+      <td><%= wedding.bride %></td>
+      <td><%= wedding.groom %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.wedding_path(@conn, :show, wedding) %></span>
+        <span><%= link "Edit", to: Routes.wedding_path(@conn, :edit, wedding) %></span>
+        <span><%= link "Delete", to: Routes.wedding_path(@conn, :delete, wedding), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Wedding", to: Routes.wedding_path(@conn, :new) %></span>

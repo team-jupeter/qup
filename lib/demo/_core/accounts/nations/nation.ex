@@ -15,6 +15,7 @@ defmodule Demo.Nations.Nation do
     has_one :taxation,  Demo.Taxations.Taxation, on_replace: :nilify
     has_many :entities, Demo.Business.Entity, on_replace: :nilify
     has_many :users, Demo.Accounts.User, on_replace: :nilify
+    has_many :families, Demo.Families.Family, on_replace: :nilify
   end
 
   @fields [

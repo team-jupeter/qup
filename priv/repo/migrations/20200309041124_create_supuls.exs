@@ -24,7 +24,7 @@ defmodule Demo.Repo.Migrations.CreateSupuls do
       add :state_openhash_id, :binary_id, default: "b87dc547-649b-41cb-9e17-d83977753abc" #? openhash_id from state supul
   
       add :state_supul_id, references(:state_supuls, type: :uuid, null: false)
-
+      add :event_id, :binary_id
       timestamps()
     end
   end

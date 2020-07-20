@@ -12,9 +12,10 @@ defmodule Demo.Accounts.User do
 
   schema "users" do
     field :type, :string 
-    field :default_entity, :binary_id
-    field :default_entity_name, :string
-    field :name, :string
+    field :name, :string 
+    field :birth_date, :naive_datetime
+    field :ssn, :string #? social security number
+    field :address, :string 
     field :gps, {:array, :map}
     field :nationality, :string
     field :username, :string
@@ -23,9 +24,11 @@ defmodule Demo.Accounts.User do
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
     field :auth_code, :string #? Social Security Number 
-    field :birth_date, :naive_datetime
+    field :default_entity_id, :binary_id
+    field :default_entity_name, :string
     field :supul_code, :string
     field :supul_name, :string
+    field :family_code, :string, default: nil
 
 
 
@@ -40,13 +43,14 @@ defmodule Demo.Accounts.User do
 
     timestamps()
 
-    belongs_to :supul, Demo.Supuls.Supul
+    belongs_to :family, Demo.Families.Family
+    belongs_to :supul, Demo.Supuls.Supul, on_replace: :delete
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id #? 고국
     belongs_to :constitution,  Demo.Votes.Constitution, type: :binary_id #? 고향 
     # belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id #? 고향 
     
     many_to_many(
-      :entities,
+      :entities, 
       Entity,
       join_through: "users_entities",
       on_replace: :delete
@@ -64,10 +68,22 @@ defmodule Demo.Accounts.User do
 
   # @required_fields [:type, :name, :email]
   @fields [
-    :name, :type, :nationality, :email, :birth_date, :default_entity_name, 
-    :password, :nation_id, :auth_code, :supul_name, 
-    :constitution_id, :supul_code, :username, :default_entity
+    :name, :type, :nationality, :email, :birth_date, :ssn, :default_entity_name, 
+    :password, :nation_id, :auth_code, :supul_name, :address, :family_code, 
+    :constitution_id, :supul_code, :username, :default_entity_id, :supul_id, 
   ]
+
+  def changeset(%User{} = user, attrs = %{supul: supul}) do
+    user
+    |> cast(attrs, @fields)
+    |> put_assoc(:supul, attrs.supul)
+  end
+
+  def changeset(user, attrs = %{family: family}) do
+    user
+    |> cast(attrs, @fields)
+    |> put_assoc(:family, family)
+  end
 
   def changeset(user, attrs) do
     user
@@ -112,6 +128,10 @@ defmodule Demo.Accounts.User do
     end
   end
 
+  def family_changeset(user, family) do
+    user
+    |> put_assoc(:family, family)
+  end
   # @phone ~r/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/
 
   # @doc false

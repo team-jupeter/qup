@@ -24,6 +24,7 @@ alias Demo.Accounts
   username: "corea", 
   password: "p",
   email: "corea@un",
+  family_code: nil,
   supul: nil, 
   nation: korea,
   }) 
@@ -137,6 +138,26 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 {:ok, hanlim_supul} = Supuls.update_supul(hanlim_supul, %{auth_code: signature}) 
    
+#? SEOGUIPO SUPUL
+{:ok, seoguipo_supul} = Supuls.create_supul(%{ 
+    name: "서귀포 수풀", 
+    state_name: "제주도", 
+    nation_name: "한국",
+    type: "Unit Supul", 
+    supul_code: "821313",
+    state_supul: jejudo_supul,
+    gab_balance: Decimal.from_float(0.0),
+    current_hash: "seoguipo"
+    }) 
+
+msg_serialized = Poison.encode!(seoguipo_supul)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+
+{:ok, seoguipo_supul} = Supuls.update_supul(seoguipo_supul, %{auth_code: signature}) 
+   
 
 
 '''
@@ -144,7 +165,6 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 HUMAN USER 
  
 '''
-
 #? A human being with nationality he or she claims.
 {:ok, mr_hong} = Accounts.create_user(%{
   type: "Human",
@@ -153,6 +173,7 @@ HUMAN USER
   supul: hankyung_supul, 
   username: "mr_hong", 
   password: "p",
+  family_code: nil, 
   email: "hong@0000.kr",
   birth_date: ~N[1990-05-05 06:14:09],
   username: "mr_hong"
@@ -172,6 +193,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   nation: korea, 
   supul: hanlim_supul,
   username: "ms_sung", 
+  family_code: nil, 
   email: "sung@0000.kr",
   password: "p",
   type: "Human",
@@ -194,6 +216,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   supul: hankyung_supul,
   username: "mr_lim", 
   password: "p",
+  family_code: nil, 
   email: "lim@0000.kr",
   type: "Human",
   auth_code: "5410051898822kr",
@@ -211,7 +234,41 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 {:ok, mr_lim} = Accounts.update_user(mr_lim, %{auth_code: signature}) 
 
   
+#? A human being with nationality he or she claims.
+{:ok, mr_lee} = Accounts.create_user(%{
+  type: "Human",
+  name: "이몽룡", 
+  nation: korea,
+  supul: seoguipo_supul, 
+  username: "mr_lee", 
+  password: "p",
+  email: "mong@0000.kr",
+  birth_date: ~N[2000-05-05 06:14:09],
+  family_code: nil, 
+  username: "mr_lee"
+  })
 
+#? Korea authorizes mr_lee as her citizen.
+msg_serialized = Poison.encode!(mr_lee)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+{:ok, mr_lee} = Accounts.update_user(mr_lee, %{auth_code: signature}) 
+
+'''
+
+CRYPTO
+Both users and entities should have private and public keys for future transactions.
+'''
+
+# ? openssl genrsa -outlee_private_key.pem 2048
+# ? openssl rsa -inlee_private_key.pem -pubout >lee_public_key.pem
+lee_priv_key = ExPublicKey.load!("./keys/lee_private_key.pem")
+lee_pub_key = ExPublicKey.load!("./keys/lee_public_key.pem")
+
+sung_priv_key = ExPublicKey.load!("./keys/sung_private_key.pem")
+sung_pub_key = ExPublicKey.load!("./keys/sung_public_key.pem")
 
 
 '''
@@ -297,7 +354,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   taxation: kts,
   supul_name: "hankyung_supul",
   pasword: "temppass",
-  email: "hong@0001.kr", 
+  email: "hong@0000.kr", 
   entity_address: "제주시 한경면 20-1 해거름전망대",
   gab_balance: Decimal.from_float(0.0),
   }) 
@@ -320,7 +377,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   nation: korea,
   taxation: kts,
   supul_name: "hanlim_supul",
-  email: "sung@0002.kr", 
+  email: "sung@0000.kr", 
   pasword: "temppass",
   gab_balance: Decimal.from_float(0.0),
   }) 
@@ -343,7 +400,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   supul: hanlim_supul,
   taxation: kts,
   supul_name: "hankyung_supul",
-  email: "lim@0001.kr", 
+  email: "lim@0000.kr", 
   pasword: "temppass",
   user_id: mr_lim.id,
   gab_balance: Decimal.from_float(0.0), 
@@ -356,6 +413,29 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 # lim_entity = change(lim_entity) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
 {:ok, lim_entity} = Business.update_entity(lim_entity, %{auth_code: signature}) 
+    
+#? 시민 이몽룡의 비즈니스 :: Lee's Entity
+{:ok, lee_entity} = Business.create_private_entity(%{
+  type: "Unit Entity",
+  name: "Lee Entity", 
+  user: mr_lee,
+  nation: korea,
+  supul: seoguipo_supul,
+  taxation: kts,
+  supul_name: "hanlim_supul",
+  email: "lee@0000.kr", 
+  pasword: "temppass",
+  user_id: mr_lee.id,
+  gab_balance: Decimal.from_float(0.0), 
+  }) 
+
+msg_serialized = Poison.encode!(lee_entity)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+# lee_entity = change(lim_entity) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
+{:ok, lee_entity} = Business.update_entity(lee_entity, %{auth_code: signature}) 
     
 
 #? 시민 성춘향의 또 하나의 비즈니스 = Tomi Lunch Box
@@ -387,9 +467,58 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 SET DEFAULT ENTITY OF EACH USER
 
 '''
-{:ok, mr_hong} = Accounts.update_user(mr_hong, %{default_entity: hong_entity.id}) 
-{:ok, ms_sung} = Accounts.update_user(ms_sung, %{default_entity: sung_entity.id}) 
-{:ok, mr_lim} = Accounts.update_user(mr_lim, %{default_entity: lim_entity.id}) 
+{:ok, mr_hong} = Accounts.update_user(mr_hong, %{default_entity_id: hong_entity.id}) 
+{:ok, ms_sung} = Accounts.update_user(ms_sung, %{default_entity_id: sung_entity.id}) 
+{:ok, mr_lim} = Accounts.update_user(mr_lim, %{default_entity_id: lim_entity.id}) 
+{:ok, mr_lee} = Accounts.update_user(mr_lee, %{default_entity_id: lee_entity.id}) 
+
+
+'''
+
+EVENT
+ms_sung married mr_lee.
+
+'''
+alias Demo.Weddings
+
+{:ok, lee_family} = Weddings.create_wedding(%{
+  type: "wedding", bride_name: "이몽룡", bride_email: mr_lee.email, 
+  groom_name: "성춘향", groom_email: ms_sung.email
+  }, lee_priv_key, sung_priv_key)
+
+ 
+alias Demo.Events
+alias Demo.Events.Event
+event = Events.new(%{who: [bride: mr_lee, groom: ms_sung], what: ls_wedding, why: "wedding"})
+
+
+'''
+
+FAMILY
+ms_sung and mr_lee become a family.
+
+'''
+#? A family with mr_lee as its house holder.
+house_holder_rsa_priv_key =lee_rsa_priv_key
+
+{:ok,lee_family} = Families.create_family(%{
+  house_holder: "mong@1312.kr", 
+  nation: korea,
+  supul: hanlim_supul
+  }, house_holder_rsa_priv_key)
+ 
+#? Korea authorizeslee_family as her citizen.
+msg_serialized = Poison.encode!(lee_family)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+{:ok,lee_family} = Families.update_family(lee_family, %{auth_code: signature}) 
+  
+#? add ms_sung to the house member of thelee_family.
+Families.update_family_members(lee_family, %{
+  husband: mr_lee.email, wife: ms_sung.email}, 
+  house_holder_rsa_priv_key:lee_rsa_priv_key, new_member_rsa_priv_key: sung_rsa_priv_key)
 
 
 '''

@@ -4,9 +4,9 @@ defmodule DemoWeb.TransactionController do
   alias Demo.Transactions
   alias Demo.Business.Entity
   alias Demo.InvoiceItems
-  # alias Demo.Invoices
   alias Demo.Repo
-  alias Demo.Supuls
+  alias Demo.Events
+  # alias Demo.Supuls.CheckArchiveEvent
 
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
 
@@ -66,7 +66,10 @@ defmodule DemoWeb.TransactionController do
       abc_output_name: seller.name, 
     }
 
-    case Transactions.create_transaction(transaction_params) do 
+    buyer_private_key = ExPublicKey.load!("./keys/hong_entity_private_key.pem")
+    seller_private_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
+  
+    case Events.create_event(transaction_params, buyer_private_key, seller_private_key) do 
       {:ok, transaction} ->
 
         #? Empty cart
@@ -94,7 +97,7 @@ defmodule DemoWeb.TransactionController do
 
 
   #? payload path for "send to supul" is not working, why? temporalily use edit path.
-  def edit(conn,  %{"id" => id}, _current_entity) do
+  def edit(_conn,  %{"id" => id}, _current_entity) do
     transaction = Transactions.get_transaction!(id)
 
     #? hard coding private keys. Those will be extracted from smartphones of trading clients.
@@ -105,19 +108,22 @@ defmodule DemoWeb.TransactionController do
     # buyer_supul = Supuls.get_supul!(transaction.buyer_supul_id)
     # seller_supul = Supuls.get_supul!(transaction.seller_supul_id)
 
-    case Transactions.make_payload(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key) do
-      {:ok, payload} ->
-        IO.puts "Transactions.make_payload"
-        Supuls.check_archive_payload(transaction,payload) #? if pass the check, return transaction
-        Supuls.process_transaction(transaction) #? executed only if the code above succeeds.
-        
-        conn
-          |> put_flash(:info, "Payload generated successfully.")
-          |> redirect(to: Routes.item_path(conn, :index))
+    Events.create_event(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key) 
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", transaction: transaction, changeset: changeset)
-    end
+    # case Events.make_payload(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key) do
+    #   {:ok, payload} ->
+    #     IO.puts "Events.make_payload"
+
+    #     #? Store transaction data into the related supuls. 
+    #     CheckArchiveEvent.check_archive_event(transaction, payload) #? if pass the check, return transaction
+
+    #     conn
+    #       |> put_flash(:info, "Transaction data was sent to your supul.")
+    #       |> redirect(to: Routes.item_path(conn, :index))
+
+    #   {:error, %Ecto.Changeset{} = changeset} ->
+    #     render(conn, "edit.html", transaction: transaction, changeset: changeset)
+    # end
 
 
     # Transactions.update_transaction(transaction, %{archived?: true})

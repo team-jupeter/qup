@@ -1,0 +1,5 @@
+<h1>Edit Family</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.family_path(@conn, :update, @family)) %>
+
+<span><%= link "Back", to: Routes.family_path(@conn, :index) %></span>

@@ -32,36 +32,15 @@ defmodule Demo.Transactions do
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
   
-  def create_transaction(attrs) do  
-    %Transaction{}
+  def create_transaction(attrs, buyer_private_key, seller_private_key) do  
+    {:ok, transaction} = %Transaction{} 
     |> Transaction.changeset(attrs)  
     |> Repo.insert
-    |> IO.inspect
-    # |> make_payload_and_send_to_supul(buyer_rsa_priv_key, sender_rsa_priv_key) #? if fail, the code below is not called.
+
+    Demo.Events.create_event(transaction, buyer_private_key, seller_private_key)
   end 
 
-  def make_payload(transaction, buyer_rsa_priv_key, sender_rsa_priv_key) do
-    ts = DateTime.utc_now() |> DateTime.to_unix()
-    txn_id = transaction.id 
 
-    txn_serialized = Poison.encode!(transaction)
-    txn_hash = Pbkdf2.hash_pwd_salt(txn_serialized)
-    # txn_hash_serialized =  Poison.encode!(txn_hash)
-
-    Transaction.changeset(transaction, %{txn_hash: txn_hash})
-    |> Repo.update()
-
-    # txn_msg = "#{ts}|#{txn_id}|#{txn_hash_serialized}"
-    txn_msg = "#{ts}|#{txn_id}|#{txn_hash}"
-
-    {:ok, buyer_signature} = ExPublicKey.sign(txn_msg, buyer_rsa_priv_key)
-    {:ok, seller_signature} = ExPublicKey.sign(txn_msg, sender_rsa_priv_key)
-
-    IO.puts "Hi, I am here...smile ^^*"
-    # payload = "#{ts}|#{txn_id}|#{txn_hash_serialized}|#{Base.url_encode64(buyer_signature)}|#{Base.url_encode64(seller_signature)}"
-    payload = "#{ts}|#{txn_id}|#{txn_hash}|#{Base.url_encode64(buyer_signature)}|#{Base.url_encode64(seller_signature)}"
-    {:ok, payload}
-  end
 
   def update_transaction(%Transaction{} = transaction, attrs) do
     IO.inspect "update_transaction"

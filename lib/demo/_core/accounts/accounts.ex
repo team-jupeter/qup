@@ -15,7 +15,7 @@ defmodule Demo.Accounts do
 
   def list_users, do: Repo.all(User)
 
-  def list_users(current_page, per_page) do
+  def list_users(current_page, per_page) do 
     Repo.all(
       from u in User,
         order_by: [asc: u.id],
@@ -53,10 +53,23 @@ defmodule Demo.Accounts do
 
 
   def create_user(attrs \\ %{}) do
-    %User{}
+    {:ok, user} = %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
     |> notify_subscribers([:user, :created])
+
+    IO.inspect "attrs.family_code"
+    IO.inspect attrs.family_code
+
+    if attrs[:family_code] != nil do
+      family = from f in Demo.Families.Family, where: f.family_code == ^attrs.family_code, select: f
+      
+      user
+      |> User.family_changeset(family) 
+      |> Repo.update
+    end
+
+    {:ok, user} 
   end
 
   
@@ -83,9 +96,9 @@ defmodule Demo.Accounts do
     User.registration_changeset(user, params)
   end
 
-  def register_user(attrs \\ %{}) do
+  def register_user(attrs \\ %{}) do 
     %User{}
-    |> User.registration_changeset(attrs)
+    |> User.registration_changeset(attrs) 
     |> Repo.insert()
   end
 
