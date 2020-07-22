@@ -17,9 +17,7 @@ defmodule DemoWeb.IncomeStatementController do
  
   def show(conn, %{"id" => id}) do
     [income_statement] = IncomeStatements.get_entity_income_statement!(id) 
-    
-    IO.inspect income_statement
-    
+        
     case income_statement do
       nil -> 
         new(conn, "dummy")

@@ -14,7 +14,7 @@ defmodule Demo.Reports.CFStatement do
     field :opening_cash_balance, :decimal, precision: 12, scale: 2
 
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
-    belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id

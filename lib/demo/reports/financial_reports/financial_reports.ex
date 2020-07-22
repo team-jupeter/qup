@@ -4,7 +4,7 @@ defmodule Demo.FinancialReports do
   alias Demo.Repo
 
   alias Demo.Reports.FinancialReport
-  # alias Demo.Business.Entity
+  # alias Demo.Entities.Entity
 
   def get_financial_report!(id), do: Repo.get!(FinancialReport, id)
 
@@ -12,7 +12,6 @@ defmodule Demo.FinancialReports do
     FinancialReport
     |> entity_financial_reports_query(entity_id)
     |> Repo.all
-    |> IO.inspect
   end
 
   defp entity_financial_reports_query(query, entity_id) do    

@@ -4,54 +4,68 @@ defmodule Demo.Families do
   alias Demo.Repo
 
   alias Demo.Families.Family
+  alias Demo.Families
+  alias Demo.Accounts.User
 
-  def list_families do
-    Repo.all(Family)
-  end
+  def get_user_family!(%User{} = user) do
+    Repo.preload(user, :family).family
+  end 
 
-
-  def get_family!(id), do: Repo.get!(Family, id)
-
+  def create_family_via_wedding(wedding, openhash, bride, groom) do
+    '''
+        #? Record wedding history of the bride and the groom.
+    # Weddings.update_wedding(wedding, openhash)
+    wedding = Repo.preload(lee_family, :wedding).wedding
+    openhashes = Repo.preload(wedding, :openhashes).openhashes
+'''
+    #? Family attrs
+    attrs = %{
+      house_holder_id: wedding.bride_id,
+      house_holder_name: wedding.bride_name,
+      house_holder_email: wedding.bride_email,
+      husband_id: wedding.bride_id,
+      husband_name: wedding.bride_name,
+      husband_email: wedding.bride_email,
+      wife_id: wedding.groom_id,
+      wife_name: wedding.groom_name,
+      wife_email: wedding.groom_email, 
+      house_holder_supul_id: wedding.erl_supul_id
+    }
 
  
+'''  
+    #? We should remove lee and sung from their previous families.
+    #? but, at this time, they are the first family like Adam and Eve. 
 
-  def create_family(attrs \\ %{}) do
-    %Family{}
-    |> Family.changeset(attrs)
-    |> Repo.insert()
-  end
+    Families.delete_member(husband_previous_family, husband)
+    Families.delete_member(wife_previous_family, wife)
+'''
+    #? Return family
+    {:ok, family} = %Family{}
+      |> Family.changeset(attrs)
+      |> Repo.insert()
 
-
-
-  # def update_family_members(attrs, house_holder_rsa_priv_key, new_member_rsa_priv_key) do
-  #   ts = DateTime.utc_now() |> DateTime.to_unix()
-  
-  #   attrs_serialized = Poison.encode!(attrs)
-  #   # attrs_hash = Pbkdf2.hash_pwd_salt(attrs_serialized)
-   
-  #   attrs_msg = "#{ts}|#{attrs_serialized}"
-  
-  #   {:ok, house_holder_signature} = ExPublicKey.sign(attrs_msg, house_holder_rsa_priv_key)
-  #   {:ok, new_member_signature} = ExPublicKey.sign(attrs_msg, new_member_rsa_priv_key)
-  
-  #   IO.puts "Hi, we have just married ...smile ^^*"
+    {:ok, family} = Repo.preload(family, :users) |> Families.update_family(%{users: [bride, groom]})
     
-  #   family_payload = "#{
-  #     ts}|#{attrs_serialized}|#{Base.url_encode64(house_holder_signature)}
-  #     |#{Base.url_encode64(new_member_signature)}"
-
-  # end
-
-  def update_family(%Family{} = family, attrs) do   
-    family
-    |> Family.changeset(attrs)
-    |> Repo.update()
+    IO.puts "Repo.preload(family, :wedding |> Families.update_family(%{wedding: wedding}))"
+    {:ok, family} = Repo.preload(family, :wedding) |> Families.update_family(%{wedding: wedding})
+    
+    # {:ok, wife} = Repo.preload(wife, :family) |> Accounts.update_user(%{family: family})
+    # {:ok, husband} = Repo.preload(husband, :family) |> Accounts.update_user(%{family: family})
   end
 
   def update_family_group(%Family{} = family, %{group: group}) do   
     family
     |> Family.changeset_group(%{group: group})
     |> Repo.update()
+  end 
+
+  def update_family(%Family{} = family, attrs) do  
+    IO.puts "update_family(%Family{} = family, attrs)"
+    family
+    |> Family.changeset(attrs) 
+    |> Repo.update() 
+    |> IO.inspect
   end
 
 
@@ -62,5 +76,9 @@ defmodule Demo.Families do
 
   def change_family(%Family{} = family) do
     Family.changeset(family, %{})
+  end
+
+  def new_family(%Family{} = family) do
+    Family.changeset(family, %{}) 
   end
 end

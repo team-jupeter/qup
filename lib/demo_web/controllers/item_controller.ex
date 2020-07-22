@@ -3,8 +3,8 @@ defmodule DemoWeb.ItemController do
 
   alias Demo.Items
   alias Demo.Invoices.Item
-  alias Demo.Business.Products
-  alias Demo.Business.Entity
+  alias Demo.Entities.Products
+  alias Demo.Entities.Entity
   alias DemoWeb.InvoiceItemController
   alias Demo.Repo
   import Ecto.Query, only: [from: 2]
@@ -53,8 +53,6 @@ defmodule DemoWeb.ItemController do
   def cart(conn, %{"item_id" => id}, current_entity) do
     # %{"item_id" => "f2117537-c5f5-438c-a066-eadedbdda1c8"}
     item = Products.get_product!(id)
-
-    IO.inspect item
 
     buyer_id = current_entity.id 
     buyer_name = Repo.one(from e in Entity, where: e.id == ^buyer_id, select: e.name) 

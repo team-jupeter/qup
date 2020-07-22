@@ -4,7 +4,7 @@ defmodule Demo.CFStatements do
   alias Demo.Repo
 
   alias Demo.Reports.CFStatement
-  alias Demo.Business.Entity
+  # alias Demo.Entities.Entity
 
   def get_cf_statement!(id), do: Repo.get!(CFStatement, id)
 
@@ -19,7 +19,7 @@ defmodule Demo.CFStatements do
   end
 
  
-  def create_cf_statement(%Entity{} = entity, attrs) do
+  def create_cf_statement(%CFStatement{} = entity, attrs) do
     %CFStatement{}
     |> CFStatement.changeset(attrs)
     |> Repo.insert()

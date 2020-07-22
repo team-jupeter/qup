@@ -15,15 +15,15 @@ defmodule Demo.Invoices.InvoiceItem do
 
     field :seller_id, :binary_id
     field :seller_name, :string
-    field :seller_supul_id, :binary_id
+    field :seller_supul_id, :binary_id 
     field :seller_supul_name, :string
     
     field :quantity, :decimal, precision: 12, scale: 2
     field :tax_subtotal, :decimal, precision: 16, scale: 6, default: 0.0
     field :subtotal, :decimal, precision: 16, scale: 6, default: 0.0
      
-    belongs_to :entity, Demo.Business.Entity, type: :binary_id
-    belongs_to :product, Demo.Business.Product, type: :binary_id
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+    belongs_to :product, Demo.Entities.Product, type: :binary_id
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
 
     timestamps()
@@ -38,7 +38,6 @@ defmodule Demo.Invoices.InvoiceItem do
   # @zero Decimal.new(0)
 
   def changeset(data, params \\ %{}) do
-    IO.inspect params
     data
     |> cast(params, @fields)
     |> validate_required([])
@@ -46,8 +45,6 @@ defmodule Demo.Invoices.InvoiceItem do
     # |> validate_number(:quantity, greater_than_or_equal_to: @zero)
     # |> foreign_key_constraint(:invoice_id, message: "Select a valid invoice")
     |> set_subtotal
-    |> IO.inspect
-    # |> IO.inspect
   end
 
   def set_subtotal(cs) do

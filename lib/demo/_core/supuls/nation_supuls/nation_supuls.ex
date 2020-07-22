@@ -31,7 +31,7 @@ defmodule Demo.NationSupuls do
   end
 
   defp make_hash(nation_supul, attrs) do
-    Supul.changeset_event_hash(nation_supul, attrs) 
+    Supul.changeset(nation_supul, attrs) 
     |> Repo.update!
   end
 

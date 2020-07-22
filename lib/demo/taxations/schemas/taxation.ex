@@ -9,7 +9,7 @@ defmodule Demo.Taxations.Taxation do
     field :name, :string
     field :auth_code, :string
 
-    has_many :entities, Demo.Business.Entity
+    has_many :entities, Demo.Entities.Entity
     has_many :tax_rates, Demo.Taxations.TaxRate
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id

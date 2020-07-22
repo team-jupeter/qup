@@ -1,6 +1,7 @@
 defmodule Demo.Weddings.Wedding do
   use Ecto.Schema
   import Ecto.Changeset
+
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "weddings" do
@@ -12,8 +13,20 @@ defmodule Demo.Weddings.Wedding do
     field :groom_name, :string
     field :groom_email, :string
     field :erl_supul_id, :binary_id
+    field :erl_supul_name, :string
     field :ssu_supul_id, :binary_id
+    field :ssu_supul_name, :string
     field :event_hash, :string 
+
+    field :erl_email, :string
+    field :ssu_email, :string
+
+    field :wedding_openhash_id, :binary_id
+    field :payload, :string
+
+    has_many :openhashes, Demo.Openhashes.Openhash
+    belongs_to :family, Demo.Families.Family, type: :binary_id
+    belongs_to :user, Demo.Accounts.User, type: :binary_id
 
     timestamps()
   end
@@ -24,11 +37,17 @@ defmodule Demo.Weddings.Wedding do
     :bride_name, 
     :bride_email, 
     :groom_id,  
-    :groom_name, 
+    :groom_name,  
     :groom_email, 
-    :erl_supul_id, 
+    :erl_supul_id,  
+    :erl_supul_name, 
     :ssu_supul_id, 
+    :ssu_supul_name, 
     :event_hash, 
+    :erl_email,
+    :ssu_email,
+    :wedding_openhash_id,
+    :payload, 
   ]
   @doc false
   def changeset(wedding, attrs) do
@@ -39,9 +58,16 @@ defmodule Demo.Weddings.Wedding do
 
    
   def changeset_openhash(wedding, attrs) do 
+    # IO.puts "changeset_openhash"
+    wedding = Demo.Repo.preload(wedding, :openhashes)
+
+    IO.puts "wedding, changeset_openhash"
+    openhashes = [attrs.openhash | wedding.openhashes]
+
+
     wedding
     |> cast(attrs, @fields)
-    |> put_assoc(:openhash, attrs.openhash)
+    |> put_assoc(:openhashes, openhashes)
     # |> check_fair_trade(attrs)
   end
 end

@@ -5,8 +5,6 @@ defmodule DemoWeb.InvoiceLive.Row do
     use Phoenix.LiveComponent
 
     def mount(socket) do
-      IO.inspect socket
-
       {:ok, socket}
     end
 
@@ -51,15 +49,11 @@ defmodule DemoWeb.InvoiceLive.Row do
   end
 
   def mount(socket) do
-    IO.puts "Row.mount"
-    IO.inspect socket
 
     {:ok, assign(socket, product_id: 1, buyer_id: 2, seller_id: 3)}
   end
 
   def render(assigns) do
-    IO.puts "Row.render"
-    IO.inspect assigns
 
     ~L"""
     <tr class="invoice-row" id="<%= @id %>" phx-click="click" phx-target="#<%= @id %>">
@@ -88,8 +82,6 @@ defmodule DemoWeb.InvoiceLive.Index do
   alias DemoWeb.InvoiceLive.Row
 
   def render(assigns) do
-    IO.puts "render"
-    IO.inspect assigns
 
     ~L"""
     <table>
@@ -106,9 +98,6 @@ defmodule DemoWeb.InvoiceLive.Index do
   end
 
   def mount(_params, _session, socket) do
-    IO.puts "index.mount"
-    IO.inspect socket
-
     if connected?(socket), do: Demo.Invoices.subscribe()
 
     {:ok,

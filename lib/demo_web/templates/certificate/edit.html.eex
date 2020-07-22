@@ -1,4 +1,4 @@
-<h1>Edit Certificate</h1>
+<h4>Edit Certificate</h1>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.certificate_path(@conn, :update, @certificate)) %>
 

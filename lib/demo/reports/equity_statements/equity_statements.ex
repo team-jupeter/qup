@@ -4,7 +4,7 @@ defmodule Demo.EquityStatements do
     alias Demo.Repo
   
     alias Demo.Reports.EquityStatement
-    alias Demo.Business.Entity
+    alias Demo.Entities.Entity
   
   
     def get_equity_statement!(id), do: Repo.get!(EquityStatement, id)

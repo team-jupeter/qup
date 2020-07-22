@@ -4,7 +4,7 @@ defmodule Demo.ProductsTest do
   alias Demo.Products
 
   describe "products" do
-    alias Demo.Business.Product
+    alias Demo.Entities.Product
 
     @valid_attrs %{comments: "some comments", gopang_fee: "some gopang_fee", gpc_code: "some gpc_code", insurance: "some insurance", name: "some name", price: "120.5", stars: "120.5", tax: "120.5"}
     @update_attrs %{comments: "some updated comments", gopang_fee: "some updated gopang_fee", gpc_code: "some updated gpc_code", insurance: "some updated insurance", name: "some updated name", price: "456.7", stars: "456.7", tax: "456.7"}

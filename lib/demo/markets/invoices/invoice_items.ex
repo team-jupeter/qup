@@ -2,7 +2,7 @@ defmodule Demo.InvoiceItems do
     import Ecto.Query, warn: false
     alias Demo.Repo
     alias Demo.Invoices.InvoiceItem
-    alias Demo.Business.Entity
+    alias Demo.Entities.Entity
 
     import Ecto.Query, only: [from: 2]
 
@@ -36,9 +36,7 @@ defmodule Demo.InvoiceItems do
     def get_invoice_item!(id), do: Repo.get!(InvoiceItem, id)
 
 
-    def change_invoice_item(invoice_item, attrs \\ %{}) do
-      # IO.inspect invoice_item
-      
+    def change_invoice_item(invoice_item, attrs \\ %{}) do      
       InvoiceItem.changeset(invoice_item, attrs)
     end
 
@@ -46,7 +44,6 @@ defmodule Demo.InvoiceItems do
     %InvoiceItem{}
       |> InvoiceItem.changeset(attrs)
       |> Repo.insert()
-      # |> IO.inspect
       # |> notify_subscribers([:invoice_item, :created])
     end
 
@@ -59,7 +56,6 @@ defmodule Demo.InvoiceItems do
       IO.puts "update_invoice_item"
       invoice_item
       |> InvoiceItem.changeset(attrs)
-      |> IO.inspect
       |> Repo.update()
     end
 

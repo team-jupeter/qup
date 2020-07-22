@@ -123,8 +123,7 @@ defmodule Demo.Polices do
 
   # defp notify_subscribers({:ok, result}, event) do
   #   # IO.puts "notify_subscribers"
-  #   # IO.inspect result
-  #   # IO.inspect event
+
   #   Phoenix.PubSub.broadcast(Demo.PubSub, @topic, {__MODULE__, event, result})
   #   Phoenix.PubSub.broadcast(Demo.PubSub, @topic <> "#{result.id}", {__MODULE__, event, result})
   #   {:ok, result}

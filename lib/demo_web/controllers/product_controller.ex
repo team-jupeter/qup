@@ -2,8 +2,8 @@
 defmodule DemoWeb.ProductController do
   use DemoWeb, :controller
 
-  alias Demo.Business.Products
-  alias Demo.Business.Product
+  alias Demo.Entities.Products
+  alias Demo.Entities.Product
  
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show, :delete, :update]
 
@@ -44,11 +44,7 @@ defmodule DemoWeb.ProductController do
   end
 
   def delete(conn, %{"id" => id}, current_entity) do
-    IO.inspect "delete"
-    
     product = Products.get_entity_product!(current_entity, id) 
-
-    IO.inspect product
 
     {:ok, _product} = Products.delete_product(product)
 
@@ -63,9 +59,6 @@ defmodule DemoWeb.ProductController do
   end
 
   def create(conn, %{"product" => product_params}, current_entity) do
-    IO.inspect "product_params"
-    IO.inspect product_params
-    
     case Products.create_product(current_entity, product_params) do
       {:ok, product} ->
         conn

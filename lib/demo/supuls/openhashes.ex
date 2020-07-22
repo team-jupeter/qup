@@ -2,13 +2,16 @@ defmodule Demo.Openhashes do
   import Ecto.Query, warn: false
   alias Demo.Repo
 
-  alias Demo.Supuls.Openhash
+  alias Demo.Openhashes.Openhash
   alias Demo.GlobalSupuls.GlobalSupul
   alias Demo.NationSupuls.NationSupul
   alias Demo.StateSupuls.StateSupul
   alias Demo.StateSupuls
   alias Demo.Supuls.Supul
-  alias Demo.Events
+  alias Demo.Supuls
+
+  alias Demo.Weddings
+  # alias Demo.Transactions
 
   def list_openhashes do
     Repo.all(Openhash)
@@ -40,10 +43,11 @@ defmodule Demo.Openhashes do
     {:ok, openhash} =
       Openhash.changeset(%Openhash{}, %{
         event_id: supul.event_id,
+        event_sender: supul.event_sender, 
         incoming_hash: supul.incoming_hash,
         supul_id: supul.id,
         previous_hash: supul.previous_hash,
-        current_hash: supul.current_hash
+        current_hash: supul.current_hash,
       })
       |> Repo.insert()
 
@@ -61,13 +65,15 @@ defmodule Demo.Openhashes do
         |> Repo.update()
     '''
 
-    # ? put assoc
-    Supul.changeset_openhash(supul, %{openhash: openhash})
-    |> Repo.update!()
+    # ? Add the new openhash to the supul's openhash array.
+    Supuls.update_supul(supul, %{openhash: openhash})
+    
+    # Repo.preload(supul, :openhashes)
+    # |> Supul.changeset_openhash(%{openhash: openhash})
+    # |> Repo.update!()
     
     # # ? put assoc
     # Repo.preload(supul, :openhash)
-    # # |> IO.inspect
     # |> Supul.changeset_openhash(%{openhash: openhash})
     # |> Repo.update!()
 
@@ -76,14 +82,20 @@ defmodule Demo.Openhashes do
     openhash_box = [openhash.id | supul.openhash_box]
     Supul.changeset(supul, %{openhash_box: openhash_box}) |> Repo.update()
 
-    # ? add openhash field to the event received. 
+    # ? add openhash to the event. 
+    attrs = %{
+      openhash: openhash, 
+      supul_code: supul.supul_code,
+      wedding_openhash_id: openhash.id
+      }
 
-    Events.update_event(event, %{
-      openhash: openhash,
-      supul_code: supul.supul_code
-    })
+    case event.type do
+      "wedding" -> Weddings.add_openhash(event, attrs)
+      "transaction" -> Transasctions.add_openhash(event, attrs)
+      _ -> "error"  
+    end
 
-    IO.puts("if supul.hash_count == 20")
+    # IO.puts("if supul.hash_count == 20")
     # if supul.hash_count == 6, do: report_openhash_box_to_upper_supul(supul)
     if supul.hash_count == 100 do
       IO.puts("report_openhash_box_to_upper_supul")
@@ -103,6 +115,9 @@ defmodule Demo.Openhashes do
     end
 
     IO.puts("Do you see me? 2 ^^*")
+        
+    #? return openhash
+    openhash
   end
 
   def make_state_openhash(state_supul) do
@@ -139,6 +154,7 @@ defmodule Demo.Openhashes do
     # ? add openhash_id to the openhash block of the supul.
     openhash_box = [openhash.id | state_supul.openhash_box]
     StateSupul.changeset(state_supul, %{openhash_box: openhash_box}) |> Repo.update()
+
   end
 
   def make_nation_openhash(nation_supul) do

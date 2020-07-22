@@ -6,7 +6,7 @@ defmodule Demo.StateSupuls do
   alias Demo.NationSupuls
   # alias Demo.Supuls.Supul
   # alias Demo.Supuls
-  alias Demo.Supuls.Openhash
+  alias Demo.Openhashes.Openhash
   alias Demo.Openhashes
  
   def list_state_supuls do
@@ -59,7 +59,6 @@ defmodule Demo.StateSupuls do
   end
 
   def change_state_supul(%StateSupul{} = state_supul) do
-    # IO.inspect "change_state_supul"
     StateSupul.changeset(state_supul, %{})
   end
 end

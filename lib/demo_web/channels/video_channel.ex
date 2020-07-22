@@ -19,11 +19,6 @@ defmodule DemoWeb.VideoChannel do
   end
 
   def handle_info(:after_join, socket) do 
-
-    IO.inspect "VideoChannel.handle_info"
-    IO.inspect socket
-    IO.inspect DemoWeb.Presence.list(socket)
-
     push(socket, "presence_state", DemoWeb.Presence.list(socket))
     {:ok, _} = DemoWeb.Presence.track(
       socket, 

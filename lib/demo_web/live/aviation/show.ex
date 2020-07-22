@@ -22,8 +22,6 @@ defmodule DemoWeb.Aviation.Show do
   end
 
   def mount(_params, _session, socket) do
-    IO.inspect "socket"
-    IO.inspect socket
     {:ok, socket}
   end
 

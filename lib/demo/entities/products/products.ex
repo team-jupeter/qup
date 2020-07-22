@@ -1,10 +1,10 @@
-defmodule Demo.Business.Products do
+defmodule Demo.Entities.Products do
   import Ecto.Query, warn: false
 
   alias Demo.Repo
-  alias Demo.Business.Product 
-  alias Demo.Business.GPCCode
-  alias Demo.Business.Entity
+  alias Demo.Entities.Product 
+  alias Demo.Entities.GPCCode
+  alias Demo.Entities.Entity
 
   def create_category!(name) do
     Repo.insert!(%GPCCode{name: name}, on_conflict: :nothing)
@@ -46,7 +46,6 @@ defmodule Demo.Business.Products do
   end 
 
   def create_product(%Entity{} = entity, attrs \\ %{}) do
-    IO.inspect "create_product"
     %Product{}
     |> Product.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, entity)
@@ -57,7 +56,7 @@ defmodule Demo.Business.Products do
     Product.changeset(product, %{})
   end
 
-  alias Demo.Business.ProductAnnotation
+  alias Demo.Entities.ProductAnnotation
 
   def annotate_product(%Entity{id: entity_id}, product_id, attrs) do 
     %ProductAnnotation{product_id: product_id, entity_id: entity_id}

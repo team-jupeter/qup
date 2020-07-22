@@ -1,18 +1,60 @@
-<h1>Show Wedding</h1>
+<h4>Show Wedding</h1>
+<table >
+  <thead>
+      <tr>
+      <td></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bride_id</td>
+      <td><%= @wedding.bride_id %></td>
+    </tr>
+    <tr>
+      <td>bride_name</td>
+      <td><%= @wedding.bride_name %></td>
+    </tr>
+    <tr>
+      <td>bride_email</td>
+      <td><%= @wedding.bride_email %></td>
+    </tr>
+    <tr>
+      <td>groom_id</td>
+      <td><%= @wedding.groom_id %></td>
+    </tr>
+    <tr>
+      <td>groom_name</td>
+      <td><%= @wedding.groom_name %></td>
+    </tr>
+    <tr>
+      <td>groom_email</td>
+      <td><%= @wedding.groom_email %></td>
+    </tr>
+    <tr>
+      <td>bride_supul_id</td>
+      <td><%= @wedding.erl_supul_id %></td>
+    </tr>
+    <tr>
+      <td>bride_supul_name</td>
+      <td><%= @wedding.erl_supul_name %></td>
+    </tr>
+    <tr>
+      <td>wedding_openhash_id</td>
+      <td><%= @wedding.ssu_supul_id %></td>
+    </tr>
+    <tr>
+      <td>groom_supul_name</td>
+      <td><%= @wedding.ssu_supul_name %></td>
+    </tr>
+    <tr>
+      <td>wedding_openhash_id</td>
+      <td><%= @wedding.wedding_openhash_id %></td>
+    </tr>
+    <tr>
+      <td>event_hash</td>
+      <td><%= @wedding.event_hash %></td>
+    </tr>
+  </tbody>
+</table>
 
-<ul>
-
-  <li>
-    <strong>Bride:</strong>
-    <%= @wedding.bride %>
-  </li>
-
-  <li>
-    <strong>Groom:</strong>
-    <%= @wedding.groom %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.wedding_path(@conn, :edit, @wedding) %></span>
-<span><%= link "Back", to: Routes.wedding_path(@conn, :index) %></span>

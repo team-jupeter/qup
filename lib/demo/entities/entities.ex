@@ -1,11 +1,11 @@
-defmodule Demo.Business do
+defmodule Demo.Entities do
   import Ecto.Query, warn: false
 
   alias Demo.Repo
-  alias Demo.Business.Entity
-  alias Demo.Business.Product
-  alias Demo.Business.GPCCode
-  alias Demo.Business.BizCategory
+  alias Demo.Entities.Entity
+  alias Demo.Entities.Product
+  alias Demo.Entities.GPCCode
+  alias Demo.Entities.BizCategory
   alias Demo.Accounts.User
 
 
@@ -61,6 +61,12 @@ defmodule Demo.Business do
   #   |> Repo.insert()
   # end
 
+  def create_default_entity(user, attrs) do
+    %Entity{}
+    |> Entity.create_default_entity(user, attrs)
+    |> Repo.insert()
+  end
+
   def create_private_entity(attrs) do
     %Entity{}
     |> Entity.create_private_entity(attrs)
@@ -86,8 +92,6 @@ defmodule Demo.Business do
   end
  
   def create_product(%Entity{} = entity, attrs \\ %{}) do
-    IO.inspect entity
-
     %Product{}
     |> Product.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, entity)

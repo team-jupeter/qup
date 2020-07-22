@@ -114,7 +114,7 @@
     embeds_one :deliverybox, Demo.Gopangs.DeliveryboxEmbed  </br>
 
     belongs_to :transaction, Demo.Transactions.Transaction, type: :binary_id
-    belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     belongs_to :car, Demo.Cars.Car, type: :binary_id
 
 

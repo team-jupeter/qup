@@ -60,8 +60,6 @@ defmodule DemoWeb.UserLive.Row do
     use Phoenix.LiveComponent
 
     def mount(socket) do
-      IO.inspect socket
-
       {:ok, socket}
     end
 
@@ -200,16 +198,10 @@ defmodule DemoWeb.UserLive.Row do
   end
 
   def mount(socket) do
-    IO.puts "Row.mount"
-    IO.inspect socket
-
     {:ok, socket}
   end
 
   def render(assigns) do
-    IO.puts "Row.render"
-    IO.inspect assigns
-
     ~L"""
     <tr class="user-row" id="<%= @id %>" phx-click="click" phx-target="#<%= @id %>">
       <td><%= @user.id %></td>
@@ -256,9 +248,6 @@ defmodule DemoWeb.UserLive.Index do
   alias DemoWeb.UserLive.Row
 
   def render(assigns) do
-    IO.puts "render"
-    IO.inspect assigns
-
     ~L"""
     <table>
       <tbody id="users"
@@ -274,9 +263,6 @@ defmodule DemoWeb.UserLive.Index do
   end
 
   def mount(_params, _session, socket) do
-    IO.puts "index.mount"
-    IO.inspect socket
-
     if connected?(socket), do: Demo.Accounts.subscribe()
 
     {:ok,

@@ -54,7 +54,7 @@ irs = Taxation.changeset(%Taxation{}, %{name: "US Internal Revenue Service", nat
 
 
 #? init entities
-alias Demo.Business.Entity
+alias Demo.Entities.Entity
 
 hs_entity = Entity.changeset(%Entity{}, %{category: "hairshop", name: "Hong & Sung's Hair", nation_id: korea.id, email: "hs@82345.kr", supul_id: hankyung_supul.id, taxation_id: kts.id}) |> Repo.insert!
 tomi_entity = Entity.changeset(%Entity{}, %{category: "food", name: "Tomi Kimbab", nation_id: korea.id, email: "tomi@82345.kr", supul_id: hallim_supul.id, taxation_id: kts.id}) |> Repo.insert!
@@ -63,7 +63,7 @@ delta_entity = Entity.changeset(%Entity{}, %{category: "airline", name: "Delta A
 
 
 #? users_entities
-alias Demo.Business.Entity
+alias Demo.Entities.Entity
 alias Demo.Accounts.User
 alias Demo.Accounts
 

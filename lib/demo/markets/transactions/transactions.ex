@@ -8,7 +8,7 @@ defmodule Demo.Transactions do
   # alias Demo.Supuls
   # alias Demo.Transactions
   alias Demo.Transactions.Transaction
-  alias Demo.Business.Entity
+  alias Demo.Entities.Entity
 
   def list_transactions(%Entity{} = entity) do
     Transaction
@@ -43,15 +43,16 @@ defmodule Demo.Transactions do
 
 
   def update_transaction(%Transaction{} = transaction, attrs) do
-    IO.inspect "update_transaction"
-    IO.inspect attrs
-    
     transaction = Repo.preload(transaction, :openhash)
     transaction
     |> Transaction.changeset_openhash(attrs)
     |> Repo.update()
   end
 
+
+  def add_openhash(%Transaction{} = transaction, attrs) do
+    Repo.preload(transaction, :openhash) |> Transaction.changeset_openhash(attrs)
+  end
 
   def archive_transaction(%Transaction{} = transaction) do
     Transaction.changeset(transaction, %{archived: true})

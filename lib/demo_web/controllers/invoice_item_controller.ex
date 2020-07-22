@@ -15,8 +15,6 @@ alias Demo.Invoices.InvoiceItem
   def index(conn, _params, current_entity) do
     buyer_id = current_entity.id
     
-    IO.inspect buyer_id
-
     invoice_items = InvoiceItems.list_invoice_items(buyer_id)
     render(conn, "index.html", invoice_items: invoice_items)
   end
@@ -28,10 +26,6 @@ alias Demo.Invoices.InvoiceItem
   end
 
   def create(conn, %{"invoice_item" => invoice_item_params}) do
-      
-    IO.inspect "invoice_item_params"
-    IO.inspect invoice_item_params
-    
     case InvoiceItems.create_invoice_item(invoice_item_params) do 
       {:ok, _invoice_item} -> 
         conn
@@ -58,13 +52,9 @@ alias Demo.Invoices.InvoiceItem
   end
 
   def update(conn, %{"id" => id, "invoice_item" => invoice_item_params}, _current_entity) do
-    IO.puts "update"
-    IO.inspect invoice_item_params 
-    IO.inspect id
 
     # invoice_item = InvoiceItems.get_buyer_invoice_item!(current_entity, id)
     invoice_item = InvoiceItems.get_invoice_item!(id)
-    IO.inspect invoice_item
 
     case InvoiceItems.update_invoice_item(invoice_item, invoice_item_params) do
       {:ok, invoice_item} ->

@@ -49,7 +49,6 @@ changeset =
 # And update the entry
 post = Repo.update!(changeset)
 
-IO.inspect(changeset.changes.permalinks)
 '''
 
 _ = '''
@@ -121,7 +120,7 @@ taxation_ids = Enum.map(Repo.all(Taxation), fn(taxation)-> taxation.id end)
 #? every entity belongs to a nation.
 #? every entity belongs to a supul.
 
-alias Demo.Business.Entity
+alias Demo.Entities.Entity
 
 hong_sung_entity = Entity.changeset(%Entity{}, %{category: "hairshop", name: "Hong & Sung's Hair", nation_id: korea_id, email: "hong_sung@82345.kr", supul_id: hankyung_supul_id, taxation_id: kts_id}) |> Repo.insert!
 delta_entity = Entity.changeset(%Entity{}, %{category: "airline", name: "Delta Airline", nation_id: usa_id, email: "delta@023357.us", supul_id: orange_supul_id, taxation_id: irs_id}) |> Repo.insert!
@@ -157,7 +156,7 @@ delta_BS = %BalanceSheet{financial_report_id: delta_report_id, gab_account: 2000
 
 
 #? users_entities
-alias Demo.Business.Entity
+alias Demo.Entities.Entity
 alias Demo.Accounts.User
 alias Demo.Accounts
 

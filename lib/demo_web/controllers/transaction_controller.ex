@@ -2,7 +2,7 @@ defmodule DemoWeb.TransactionController do
   use DemoWeb, :controller
   import Ecto.Query, only: [from: 2]
   alias Demo.Transactions
-  alias Demo.Business.Entity
+  alias Demo.Entities.Entity
   alias Demo.InvoiceItems
   alias Demo.Repo
   alias Demo.Events

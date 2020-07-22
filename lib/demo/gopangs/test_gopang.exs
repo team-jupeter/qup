@@ -49,7 +49,7 @@ korea =
   User.changeset(%User{}, %{name: "South Korea", email: "korea@000000.kr"}) |> Repo.insert!()
 
 # ? init entities
-alias Demo.Business.Entity
+alias Demo.Entities.Entity
 
 hong_entity =
   Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@8245.kr", entity_address: "제주시 한경면 20-1 해거름전망대"}) \

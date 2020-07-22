@@ -19,6 +19,7 @@ korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
    
 alias Demo.Accounts
 
+
 {:ok, corea} = Accounts.create_user(%{
   name: "COREA", 
   username: "corea", 
@@ -173,6 +174,8 @@ HUMAN USER
   supul: hankyung_supul, 
   username: "mr_hong", 
   password: "p",
+  nationality: "한국",
+  supul_name: "한경면",
   family_code: nil, 
   email: "hong@0000.kr",
   birth_date: ~N[1990-05-05 06:14:09],
@@ -194,6 +197,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   supul: hanlim_supul,
   username: "ms_sung", 
   family_code: nil, 
+  nationality: "한국",
+  supul_name: "한림읍",
   email: "sung@0000.kr",
   password: "p",
   type: "Human",
@@ -217,6 +222,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   username: "mr_lim", 
   password: "p",
   family_code: nil, 
+  nationality: "한국",
+  supul_name: "한경면",
   email: "lim@0000.kr",
   type: "Human",
   auth_code: "5410051898822kr",
@@ -242,7 +249,9 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   supul: seoguipo_supul, 
   username: "mr_lee", 
   password: "p",
-  email: "mong@0000.kr",
+  nationality: "한국",
+  supul_name: "서귀포",
+  email: "lee@0000.kr",
   birth_date: ~N[2000-05-05 06:14:09],
   family_code: nil, 
   username: "mr_lee"
@@ -297,17 +306,17 @@ alias Demo.Taxations
   {:ok, kts} = Taxations.update_taxation(kts, %{auth_code: signature}) 
   
   
-alias Demo.Business
+alias Demo.Entities
 
 #? 국가 금융 인프라 Korea's Entity == a governmental organization  
-{:ok, gab_korea} = Business.create_public_entity(%{
+{:ok, gab_korea} = Entities.create_public_entity(%{
   type: "National Monetary Infra",
   name: "GAB Korea", 
   user: corea, 
   nation: korea,
-  supul: korea_supul, 
+  nation_supul: korea_supul, 
   project: "반자동 금융 인프라", 
-  supul_name: "korea_supul",
+  supul_name: "한국",
   pasword: "temppass",
   email: "gab_korea@krd",
   gab_balance: Decimal.from_float(1000.0),
@@ -319,17 +328,17 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 # gab_korea = change(gab_korea) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
-{:ok, gab_korea} = Business.update_entity(gab_korea, %{auth_code: signature}) 
+{:ok, gab_korea} = Entities.update_entity(gab_korea, %{auth_code: signature}) 
 
 #? 국가 교통물류 인프라 Korea's Entity == a governmental organization  
-{:ok, gopang_korea} = Business.create_public_entity(%{
+{:ok, gopang_korea} = Entities.create_public_entity(%{
   type: "National Logistics Infra",
   name: "Gopang", 
   user: corea, 
   nation: korea,
-  supul: korea_supul, 
+  nation_supul: korea_supul, 
   project: "반자동 물류 인프라",
-  supul_name: "korea_supul",
+  supul_name: "한국",
   pasword: "temppass",
   email: "gopang_korea@kr",
   gab_balance: Decimal.from_float(0.0),
@@ -341,18 +350,18 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 # gopang_korea = change(gopang_korea) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
-{:ok, gopang_korea} = Business.update_entity(gopang_korea, %{auth_code: signature}) 
+{:ok, gopang_korea} = Entities.update_entity(gopang_korea, %{auth_code: signature}) 
 
 
 #? 시민 홍길동의 비즈니스 :: Hong's Entity
-{:ok, hong_entity} = Business.create_private_entity(%{
+{:ok, hong_entity} = Entities.create_default_entity(mr_hong, %{
   type: "Unit Entity",
   name: "Hong Entity", 
   user: mr_hong, 
   nation: korea,
   supul: hankyung_supul, 
   taxation: kts,
-  supul_name: "hankyung_supul",
+  supul_name: "한경면",
   pasword: "temppass",
   email: "hong@0000.kr", 
   entity_address: "제주시 한경면 20-1 해거름전망대",
@@ -365,18 +374,18 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 
-{:ok, hong_entity} = Business.update_entity(hong_entity, %{auth_code: signature}) 
+{:ok, hong_entity} = Entities.update_entity(hong_entity, %{auth_code: signature}) 
 
   
 #? 시민 성춘향의 비즈니스 :: Sung's Entity
-{:ok, sung_entity} = Business.create_private_entity(%{
+{:ok, sung_entity} = Entities.create_default_entity(ms_sung, %{
   type: "Unit Entity",
   name: "Sung Entity", 
   user: ms_sung,
   supul: hanlim_supul,
   nation: korea,
   taxation: kts,
-  supul_name: "hanlim_supul",
+  supul_name: "한림",
   email: "sung@0000.kr", 
   pasword: "temppass",
   gab_balance: Decimal.from_float(0.0),
@@ -388,18 +397,18 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 
-{:ok, sung_entity} = Business.update_entity(sung_entity, %{auth_code: signature}) 
+{:ok, sung_entity} = Entities.update_entity(sung_entity, %{auth_code: signature}) 
      
 
 #? 시민 임꺽정의 비즈니스 :: Lim's Entity
-{:ok, lim_entity} = Business.create_private_entity(%{
+{:ok, lim_entity} = Entities.create_default_entity(mr_lim, %{
   type: "Unit Entity",
   name: "Lim Entity", 
   user: mr_lim,
   nation: korea,
   supul: hanlim_supul,
   taxation: kts,
-  supul_name: "hankyung_supul",
+  supul_name: "한경면",
   email: "lim@0000.kr", 
   pasword: "temppass",
   user_id: mr_lim.id,
@@ -412,17 +421,17 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 # lim_entity = change(lim_entity) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
-{:ok, lim_entity} = Business.update_entity(lim_entity, %{auth_code: signature}) 
+{:ok, lim_entity} = Entities.update_entity(lim_entity, %{auth_code: signature}) 
     
 #? 시민 이몽룡의 비즈니스 :: Lee's Entity
-{:ok, lee_entity} = Business.create_private_entity(%{
+{:ok, lee_entity} = Entities.create_default_entity(mr_lee, %{
   type: "Unit Entity",
   name: "Lee Entity", 
   user: mr_lee,
   nation: korea,
   supul: seoguipo_supul,
   taxation: kts,
-  supul_name: "hanlim_supul",
+  supul_name: "서귀포",
   email: "lee@0000.kr", 
   pasword: "temppass",
   user_id: mr_lee.id,
@@ -435,11 +444,11 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 # lee_entity = change(lim_entity) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
-{:ok, lee_entity} = Business.update_entity(lee_entity, %{auth_code: signature}) 
+{:ok, lee_entity} = Entities.update_entity(lee_entity, %{auth_code: signature}) 
     
 
 #? 시민 성춘향의 또 하나의 비즈니스 = Tomi Lunch Box
-{:ok, tomi_entity} = Business.create_private_entity(%{
+{:ok, tomi_entity} = Entities.create_private_entity(%{
   type: "Corporation",
   name: "Tomi Lunch Box", 
   user: ms_sung,
@@ -447,7 +456,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   nation: korea,
   taxation: kts,
   project: "일반 법인", 
-  supul_name: "hanlim_supul",
+  supul_name: "한림읍",
   pasword: "temppass",
   email: "tomi@3532.kr", 
   entity_address: "제주시 한림읍 11-1",
@@ -460,53 +469,37 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 # tomi_entity = change(tomi_entity) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
-{:ok, tomi_entity} = Business.update_entity(tomi_entity, %{auth_code: signature}) 
+{:ok, tomi_entity} = Entities.update_entity(tomi_entity, %{auth_code: signature}) 
 
 '''
-
 SET DEFAULT ENTITY OF EACH USER
+'''
+{:ok, mr_hong} = Accounts.update_user(mr_hong, %{default_entity_id: hong_entity.id, default_entity_name: "hong_entity"}) 
+{:ok, ms_sung} = Accounts.update_user(ms_sung, %{default_entity_id: sung_entity.id, default_entity_name: "sung_entity"}) 
+{:ok, mr_lim} = Accounts.update_user(mr_lim, %{default_entity_id: lim_entity.id, default_entity_name: "lim_entity"}) 
+{:ok, mr_lee} = Accounts.update_user(mr_lee, %{default_entity_id: lee_entity.id, default_entity_name: "lee_entity"}) 
+
 
 '''
-{:ok, mr_hong} = Accounts.update_user(mr_hong, %{default_entity_id: hong_entity.id}) 
-{:ok, ms_sung} = Accounts.update_user(ms_sung, %{default_entity_id: sung_entity.id}) 
-{:ok, mr_lim} = Accounts.update_user(mr_lim, %{default_entity_id: lim_entity.id}) 
-{:ok, mr_lee} = Accounts.update_user(mr_lee, %{default_entity_id: lee_entity.id}) 
-
-
-'''
-
 EVENT
 ms_sung married mr_lee.
+''' 
 
-'''
+#? a new family
 alias Demo.Weddings
-
 {:ok, lee_family} = Weddings.create_wedding(%{
   type: "wedding", bride_name: "이몽룡", bride_email: mr_lee.email, 
   groom_name: "성춘향", groom_email: ms_sung.email
   }, lee_priv_key, sung_priv_key)
 
- 
-alias Demo.Events
-alias Demo.Events.Event
-event = Events.new(%{who: [bride: mr_lee, groom: ms_sung], what: ls_wedding, why: "wedding"})
 
 
 '''
-
-FAMILY
-ms_sung and mr_lee become a family.
-
+TEST
+wedding = Repo.preload(lee_family, :wedding).wedding
+openhashes = Repo.preload(wedding, :openhashes).openhashes
 '''
-#? A family with mr_lee as its house holder.
-house_holder_rsa_priv_key =lee_rsa_priv_key
 
-{:ok,lee_family} = Families.create_family(%{
-  house_holder: "mong@1312.kr", 
-  nation: korea,
-  supul: hanlim_supul
-  }, house_holder_rsa_priv_key)
- 
 #? Korea authorizeslee_family as her citizen.
 msg_serialized = Poison.encode!(lee_family)
 ts = DateTime.utc_now() |> DateTime.to_unix()
@@ -515,7 +508,7 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 {:ok,lee_family} = Families.update_family(lee_family, %{auth_code: signature}) 
   
-#? add ms_sung to the house member of thelee_family.
+#? add ms_sung to the house member of the lee_family.
 Families.update_family_members(lee_family, %{
   husband: mr_lee.email, wife: ms_sung.email}, 
   house_holder_rsa_priv_key:lee_rsa_priv_key, new_member_rsa_priv_key: sung_rsa_priv_key)
@@ -926,13 +919,13 @@ The code below is hard coded. We need write codes for invoice_items with only on
 '''
 # alias Demo.Transactions.Transaction
 alias Demo.Invoices.{Item, Invoice, InvoiceItem}
-# alias Demo.Business.Product
-alias Demo.Business
+# alias Demo.Entities.Product
+alias Demo.Entities
 
 
 #? From now on, let's write invoice for trade between mr_hong and gab_korea.
 #? First, let "krw" a product of hong_entity
-{:ok, krw} = Business.create_product(hong_entity, %{
+{:ok, krw} = Entities.create_product(hong_entity, %{
   name: "KRW", 
   seller_id: hong_entity.id,
   seller_name: hong_entity.name,
@@ -947,37 +940,37 @@ alias Demo.Business
 
 
 
-alias Demo.Business
-alias Demo.Business.BizCategory
+alias Demo.Entities
+alias Demo.Entities.BizCategory
 
 for category <- [%{name: "한식 일반 음식점업", standard: "한국표준산업분류표", code: "56111"}, %{name: "김밥 및 기타 간이 음식점업", standard: "한국표준산업분류표", code: "56194"}] do
-  Business.create_biz_category!(category)
+  Entities.create_biz_category!(category)
 end
 
 
-alias Demo.Business.GPCCode
+alias Demo.Entities.GPCCode
 # 분식 = GPCCode.changeset(%GPCCode{name: "분식", code: "345445", standard: "GTIN"}) |> Repo.insert!
 # 한식 = GPCCode.changeset(%GPCCode{name: "한식", code: "345446", standard: "GTIN"}) |> Repo.insert!
-{:ok, 분식} = Business.create_GPCCode(%{name: "분식", code: "345445", standard: "GTIN"}) 
-{:ok, 한식} = Business.create_GPCCode(%{name: "한식", code: "345446", standard: "GTIN"}) 
+{:ok, 분식} = Entities.create_GPCCode(%{name: "분식", code: "345445", standard: "GTIN"}) 
+{:ok, 한식} = Entities.create_GPCCode(%{name: "한식", code: "345446", standard: "GTIN"}) 
 
 
-alias Demo.Business.Product
+alias Demo.Entities.Product
 #? 토미 김밥의 상품
 # 김밥 = Product.changeset(%Product{name: "김밥", gpc_code_id: 분식.id, price: 1.0}) |> Repo.insert!
-{:ok, 김밥} = Business.create_product(tomi_entity, %{
+{:ok, 김밥} = Entities.create_product(tomi_entity, %{
   name: "김밥", 
   gpc_code_id: 분식.id, 
   price: 1.0
   }) 
-{:ok, 떡볶이} =  Business.create_product(tomi_entity, %{name: "떡볶이", gpc_code_id: 분식.id, price: 1.5}) 
-{:ok, 우동} = Business.create_product(tomi_entity, %{name: "우동", gpc_code_id: 분식.id, price: 1.5}) 
+{:ok, 떡볶이} =  Entities.create_product(tomi_entity, %{name: "떡볶이", gpc_code_id: 분식.id, price: 1.5}) 
+{:ok, 우동} = Entities.create_product(tomi_entity, %{name: "우동", gpc_code_id: 분식.id, price: 1.5}) 
 
 
 #? 임꺽정 산채의 상품
-{:ok, 한정식} = Business.create_product(lim_entity, %{name: "한정식", gpc_code_id: 한식.id, price: 5.0})
-{:ok, 육개장} = Business.create_product(lim_entity, %{name: "육개장", gpc_code_id: 한식.id, price: 3.5})
-{:ok, 갈비탕} = Business.create_product(lim_entity, %{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5})
+{:ok, 한정식} = Entities.create_product(lim_entity, %{name: "한정식", gpc_code_id: 한식.id, price: 5.0})
+{:ok, 육개장} = Entities.create_product(lim_entity, %{name: "육개장", gpc_code_id: 한식.id, price: 3.5})
+{:ok, 갈비탕} = Entities.create_product(lim_entity, %{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5})
 
  
 # #? 토미 김밥

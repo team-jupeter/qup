@@ -1,4 +1,4 @@
-<h1>New Jang</h1>
+<h4>New Jang</h1>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.jang_path(@conn, :create)) %>
 

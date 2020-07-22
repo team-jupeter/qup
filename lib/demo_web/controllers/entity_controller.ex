@@ -1,55 +1,45 @@
 defmodule DemoWeb.EntityController do
   use DemoWeb, :controller
-  alias Demo.Business
-  alias Demo.Business.Entity
+  alias Demo.Entities
+  alias Demo.Entities.Entity
 
   # plug :authenticate_user when action in [:new, :create]
   plug :load_biz_categories when action in [:new, :create, :edit, :update]
 
   defp load_biz_categories(conn, _) do
-    assign(conn, :biz_categories, Business.list_alphabetical_biz_categories())
+    assign(conn, :biz_categories, Entities.list_alphabetical_biz_categories())
   end
-
+ 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_user]
     apply(__MODULE__, action_name(conn), args)
   end
  
   def index(conn, _params, current_user) do
-    entities = Business.list_user_entities(current_user) 
+    entities = Entities.list_user_entities(current_user) 
     render(conn, "index.html", entities: entities)
   end
   
   def show(conn, %{"id" => id}, current_user) do
-    # IO.puts "entity_controller show"
-    # IO.inspect conn
-    # IO.inspect id
-    # IO.inspect current_user
-    
-    entity = Business.get_user_entity!(current_user, id) 
-
-    # IO.puts "entity"
-    # IO.inspect entity
+    entity = Entities.get_user_entity!(current_user, id) 
 
     conn = conn
     |> DemoWeb.EntityAuth.entity_login(entity)
-
-    # IO.inspect conn
 
     render(conn, "show.html", entity: entity)
 
   end
 
   def edit(conn, %{"id" => id}, current_user) do
-    entity = Business.get_user_entity!(current_user, id) 
-    changeset = Business.change_entity(entity)
+    entity = Entities.get_user_entity!(current_user, id) 
+    changeset = Entities.change_entity(entity)
     render(conn, "edit.html", entity: entity, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "entity" => entity_params}, current_user) do
-    entity = Business.get_user_entity!(current_user, id) 
+    entity = Entities.get_user_entity!(current_user, id) 
 
-    case Business.update_entity(entity, entity_params) do
+    case Entities.update_entity(entity, entity_params) do
       {:ok, entity} ->
         conn
         |> put_flash(:info, "Entity updated successfully.")
@@ -61,8 +51,8 @@ defmodule DemoWeb.EntityController do
   end
 
   def delete(conn, %{"id" => id}, current_user) do
-    entity = Business.get_user_entity!(current_user, id) 
-    {:ok, _entity} = Business.delete_entity(entity)
+    entity = Entities.get_user_entity!(current_user, id) 
+    {:ok, _entity} = Entities.delete_entity(entity)
 
     conn
     |> put_flash(:info, "Entity deleted successfully.")
@@ -71,12 +61,30 @@ defmodule DemoWeb.EntityController do
 
   def new(conn, _params, _current_user) do
     IO.puts "entity.new"
-    changeset = Business.new_entity(%Entity{}) 
+    changeset = Entities.new_entity(%Entity{}) 
     render(conn, "new.html", changeset: changeset)
   end
 
+  def create_default_entity(conn, %{"entity" => entity_params}, current_user) do
+    case Entities.create_default_entity(current_user, entity_params) do
+      {:ok, entity} ->
+        update_user(current_user, entity)
+
+        conn
+        |> put_flash(:info, "Entity created successfully.")
+        |> redirect(to: Routes.entity_path(conn, :show, entity))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
+  end
+
+  defp update_user(user, entity) do
+    Demo.Accounts.update_user(user, %{default_entity_id: entity.id})  
+  end
+
   def create_private_entity(conn, %{"entity" => entity_params}, current_user) do
-    case Business.create_private_entity(current_user, entity_params) do
+    case Entities.create_private_entity(current_user, entity_params) do
       {:ok, entity} ->
         conn
         |> put_flash(:info, "Entity created successfully.")
@@ -88,7 +96,7 @@ defmodule DemoWeb.EntityController do
   end
 
   def create_public_entity(conn, %{"entity" => entity_params}, current_user) do
-    case Business.create_public_entity(current_user, entity_params) do
+    case Entities.create_public_entity(current_user, entity_params) do
       {:ok, entity} ->
         conn
         |> put_flash(:info, "Entity created successfully.")

@@ -22,7 +22,7 @@ defmodule Demo.NationSupuls.NationSupul do
     field :global_openhash_id, :binary_id, default: "b87dc547-649b-41cb-9e17-d83977753abc"
     field :sender, :binary_id
 
-    # has_many :entities, Demo.Business.Entity
+    # has_many :entities, Demo.Entities.Entity
     has_many :state_supuls, Demo.StateSupuls.StateSupul
     has_many :schools, Demo.Schools.School, on_replace: :nilify
 

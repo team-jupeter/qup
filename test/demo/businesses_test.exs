@@ -4,7 +4,7 @@ defmodule Demo.BusinessesTest do
   alias Demo.Businesses
 
   describe "businesses" do
-    alias Demo.Businesses.Business
+    alias Demo.Businesses.Entities
 
     @valid_attrs %{}
     @update_attrs %{}
@@ -30,7 +30,7 @@ defmodule Demo.BusinessesTest do
     end
 
     test "create_business/1 with valid data creates a business" do
-      assert {:ok, %Business{} = business} = Businesses.create_business(@valid_attrs)
+      assert {:ok, %Entities{} = business} = Businesses.create_business(@valid_attrs)
     end
 
     test "create_business/1 with invalid data returns error changeset" do
@@ -39,7 +39,7 @@ defmodule Demo.BusinessesTest do
 
     test "update_business/2 with valid data updates the business" do
       business = business_fixture()
-      assert {:ok, %Business{} = business} = Businesses.update_business(business, @update_attrs)
+      assert {:ok, %Entities{} = business} = Businesses.update_business(business, @update_attrs)
     end
 
     test "update_business/2 with invalid data returns error changeset" do
@@ -50,7 +50,7 @@ defmodule Demo.BusinessesTest do
 
     test "delete_business/1 deletes the business" do
       business = business_fixture()
-      assert {:ok, %Business{}} = Businesses.delete_business(business)
+      assert {:ok, %Entities{}} = Businesses.delete_business(business)
       assert_raise Ecto.NoResultsError, fn -> Businesses.get_business!(business.id) end
     end
 

@@ -44,12 +44,12 @@ defmodule Demo.Transactions.Transaction do
     field :payload_hash, :string
 
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
-    has_many :openhash, Demo.Supuls.Openhash
+    has_one :openhash, Demo.Openhashes.Openhash
     has_many :tickets, Demo.Gopang.Ticket, on_delete: :delete_all
         
     many_to_many(
       :entities,
-      Demo.Business.Entity,
+      Demo.Entities.Entity,
       join_through: Demo.Transactions.EntitiesTransactions,
       on_replace: :delete
       )

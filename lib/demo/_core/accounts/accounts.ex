@@ -58,8 +58,6 @@ defmodule Demo.Accounts do
     |> Repo.insert()
     |> notify_subscribers([:user, :created])
 
-    IO.inspect "attrs.family_code"
-    IO.inspect attrs.family_code
 
     if attrs[:family_code] != nil do
       family = from f in Demo.Families.Family, where: f.family_code == ^attrs.family_code, select: f
@@ -75,7 +73,7 @@ defmodule Demo.Accounts do
   
   def update_user(%User{} = user, attrs) do
     user
-    |> User.update_changeset(attrs)
+    |> User.update_changeset(attrs) 
     |> Repo.update()
     |> notify_subscribers([:user, :updated])
   end
@@ -110,9 +108,6 @@ defmodule Demo.Accounts do
 
 
   defp notify_subscribers({:ok, result}, event) do
-    # IO.puts "notify_subscribers"
-    # IO.inspect result
-    # IO.inspect event
     Phoenix.PubSub.broadcast(Demo.PubSub, @topic, {__MODULE__, event, result})
     Phoenix.PubSub.broadcast(Demo.PubSub, @topic <> "#{result.id}", {__MODULE__, event, result})
     {:ok, result}

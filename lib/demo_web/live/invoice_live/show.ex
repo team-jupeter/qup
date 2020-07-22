@@ -19,8 +19,6 @@ defmodule DemoWeb.InvoiceLive.Show do
   end
 
   def mount(_params, _session, socket) do
-    # IO.inspect "socket"
-    # IO.inspect socket
     {:ok, socket}
   end
 
@@ -30,7 +28,6 @@ defmodule DemoWeb.InvoiceLive.Show do
   end
 
   defp fetch(%Socket{assigns: %{id: id}} = socket) do
-    IO.inspect Invoices.get_invoice!(id)
     assign(socket, invoice: Invoices.get_invoice!(id))
   end
 

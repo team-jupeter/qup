@@ -4,31 +4,21 @@ defmodule DemoWeb.EntityAuth do
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    # IO.puts "EntityAuth call"
-    # IO.inspect conn
     entity_id = get_session(conn, :entity_id)
-    entity = entity_id && Demo.Business.get_entity!(entity_id)
+    entity = entity_id && Demo.Entities.get_entity!(entity_id)
     # a = assign(conn, :current_entity, entity)
-    # IO.inspect a
     assign(conn, :current_entity, entity)
-  end
+  end 
 
  
   def entity_login(conn, entity) do
-    # IO.puts "entity_login"
-    # IO.inspect conn
     conn
     |> assign(:current_entity, entity)
-    # |> IO.inspect
     |> put_session(:entity_id, entity.id)
-    # |> IO.inspect
     |> configure_session(renew: true)
-    # |> IO.inspect
   end
 
   def logout(conn) do
-    # IO.puts "logout"
-    # IO.inspect conn
     configure_session(conn, drop: true) # initialize conn
   end
 

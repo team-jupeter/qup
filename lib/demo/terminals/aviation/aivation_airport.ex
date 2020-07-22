@@ -17,7 +17,6 @@ defmodule Demo.Aviation.Airport do
 
   # end
   def init(_) do
-    # IO.inspect @pubsub_name # :aviation
     Phoenix.PubSub.subscribe(:aviation, "traffic")
     {:ok, %{}}
   end

@@ -20,6 +20,7 @@ defmodule Demo.Repo.Migrations.CreateUsers do
       add :supul_code, :string
       add :family_code, :string, default: nil
       add :supul_name, :string
+      add :married, :boolean, default: false
 
       
       add :family_id, references(:families, type: :uuid, null: false)

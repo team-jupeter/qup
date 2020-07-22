@@ -1,4 +1,10 @@
-<h1>Listing Families</h1>
+<%= form_for @conn, Routes.item_path(@conn, :index), [method: :get, class: "pull-right"], fn f -> %>
+      <%= search_input f, :query %>
+      <%= submit "Search" %>
+    <% end %>
+
+
+<b>Listing Families</b>
 
 <table>
   <thead>

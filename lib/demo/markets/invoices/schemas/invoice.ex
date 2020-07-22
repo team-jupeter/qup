@@ -31,10 +31,10 @@ defmodule Demo.Invoices.Invoice do
     # embeds_one :seller, Demo.Invoices.SellerEmbed, on_replace: :delete
     # embeds_many :payments, Demo.Invoices.Payment, on_replace: :delete
 
-    belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     # many_to_many(
     #   :entities,
-    #   Demo.Business.Entity,
+    #   Demo.Entities.Entity,
     #   join_through: Demo.Products.EntitiesInvoices,
     #   on_replace: :delete
     #   )

@@ -4,13 +4,60 @@ defmodule DemoWeb.FamilyController do
   alias Demo.Families
   alias Demo.Families.Family
 
-  def index(conn, _params) do
-    families = Families.list_families()
-    render(conn, "index.html", families: families)
+  def action(conn, _) do
+    args = [conn, conn.params, conn.assigns.current_user]
+    apply(__MODULE__, action_name(conn), args)
+  end
+ 
+  # def index(conn, _params, current_user) do
+  #   family = Families.get_user_family!(current_user, id) 
+  #   render(conn, "index.html", family: family)
+  # end
+  
+  def show(conn, _, current_user) do
+    family = Families.get_user_family!(current_user) 
+
+    if family == nil do
+      changeset = Families.new_family(%Family{}) 
+      render(conn, "new.html", changeset: changeset)
+    else
+      render(conn, "show.html", family: family)
+    end
+
   end
 
-  def new(conn, _params) do
-    changeset = Families.change_family(%Family{})
+  def edit(conn, %{"id" => _id}, current_user) do
+    family = Families.get_user_family!(current_user) 
+    changeset = Families.change_family(family)
+    render(conn, "edit.html", family: family, changeset: changeset)
+  end
+
+  def update(conn, %{"id" => _id, "family" => family_params}, current_user) do
+    family = Families.get_user_family!(current_user) 
+
+    case Families.update_family(family, family_params) do
+      {:ok, family} ->
+        conn
+        |> put_flash(:info, "Family updated successfully.")
+        |> redirect(to: Routes.family_path(conn, :show, family))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "edit.html", family: family, changeset: changeset)
+    end
+  end
+
+  def delete(conn, %{"id" => _id}, current_user) do
+    family = Families.get_user_family!(current_user) 
+    {:ok, _family} = Families.delete_family(family)
+
+    conn
+    |> put_flash(:info, "Family deleted successfully.")
+    |> redirect(to: Routes.family_path(conn, :index))
+  end
+
+  def new(conn, _params, _current_user) do
+    IO.puts "family.new"
+    changeset = Families.new_family(%Family{}) 
     render(conn, "new.html", changeset: changeset)
   end
 
@@ -26,37 +73,8 @@ defmodule DemoWeb.FamilyController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    family = Families.get_family!(id)
-    render(conn, "show.html", family: family)
+  defp update_user(user, family) do
+    Demo.Accounts.update_user(user, %{default_family_id: family.id})  
   end
 
-  def edit(conn, %{"id" => id}) do
-    family = Families.get_family!(id)
-    changeset = Families.change_family(family)
-    render(conn, "edit.html", family: family, changeset: changeset)
-  end
-
-  def update(conn, %{"id" => id, "family" => family_params}) do
-    family = Families.get_family!(id)
-
-    case Families.update_family(family, family_params) do
-      {:ok, family} ->
-        conn
-        |> put_flash(:info, "Family updated successfully.")
-        |> redirect(to: Routes.family_path(conn, :show, family))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", family: family, changeset: changeset)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    family = Families.get_family!(id)
-    {:ok, _family} = Families.delete_family(family)
-
-    conn
-    |> put_flash(:info, "Family deleted successfully.")
-    |> redirect(to: Routes.family_path(conn, :index))
-  end
 end

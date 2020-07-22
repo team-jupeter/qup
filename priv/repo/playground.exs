@@ -49,4 +49,3 @@ end
 
 # add your test code to Playground.play above - this will execute it
 # and write the result to the console
-IO.inspect(Playground.play())

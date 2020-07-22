@@ -11,7 +11,7 @@ defmodule Demo.Licenses.License do
     field :name, :string
     field :document, :binary_id
 
-    belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     timestamps()
   end
 

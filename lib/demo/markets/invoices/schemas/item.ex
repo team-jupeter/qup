@@ -12,10 +12,10 @@ defmodule Demo.Invoices.Item do
     
     # embeds_one :item_locker, Demo.Invoices.ItemLockeEmbed
     
-    belongs_to :product, Demo.Business.Product, type: :binary_id
-    belongs_to :entity, Demo.Business.Entity, type: :binary_id
-    has_one :invoice_item, Demo.Invoices.InvoiceItem
-
+    belongs_to :product, Demo.Entities.Product, type: :binary_id
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+    # has_one :invoice_item, Demo.Invoices.InvoiceItem
+ 
     timestamps()
   end
 

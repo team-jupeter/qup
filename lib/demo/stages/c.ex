@@ -9,7 +9,6 @@ defmodule C do
 
   def handle_events(events, _from, sleeping_time) do
     # Print events to terminal.
-    IO.inspect(events)
 
     # Sleep the configured time.
     Process.sleep(sleeping_time)

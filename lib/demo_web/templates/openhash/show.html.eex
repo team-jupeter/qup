@@ -1,0 +1,35 @@
+<h4>Show Openhash</h1>
+
+<ul>
+  <li>
+    <strong>id</strong>
+    <td><%= @openhash.id %></td>
+  </li>
+  <li>
+    <strong>event_id</strong>
+    <td><%= @openhash.event_id %></td>
+  </li>
+  <li>
+    <strong>event_sender</strong>
+    <td><%= @openhash.event_sender %></td>
+  </li>
+  <li>
+    <strong>incoming_hash</strong>
+    <td><%= @openhash.incoming_hash %></td>
+</li>
+  <li>
+    <strong>current_hash</strong>
+    <td><%= @openhash.current_hash %></td>
+  </li>
+  <li>
+    <strong>previous_hash</strong>
+    <td><%= @openhash.previous_hash %></td>
+  </li>
+  <li>
+    <strong>supul_signature</strong>
+    <td><%= @openhash.supul_signature %></td>
+  </li>
+</ul>
+
+<span><%= link "Edit", to: Routes.openhash_path(@conn, :edit, @openhash) %></span>
+<span><%= link "Back", to: Routes.openhash_path(@conn, :index) %></span>

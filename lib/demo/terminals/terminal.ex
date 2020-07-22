@@ -2,7 +2,7 @@ defmodule Demo.Terminals.Terminal do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.Transports.Transport
-  # alias Demo.Business.Entity
+  # alias Demo.Entities.Entity
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "terminals" do

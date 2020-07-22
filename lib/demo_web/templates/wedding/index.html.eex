@@ -1,4 +1,9 @@
-<h1>Listing Weddings</h1>
+<%= form_for @conn, Routes.item_path(@conn, :index), [method: :get, class: "pull-right"], fn f -> %>
+      <%= search_input f, :query %>
+      <%= submit "Search" %>
+    <% end %>
+
+<h4>Listing Weddings</h1>
 
 <table>
   <thead>
@@ -12,13 +17,11 @@
   <tbody>
 <%= for wedding <- @weddings do %>
     <tr>
-      <td><%= wedding.bride %></td>
-      <td><%= wedding.groom %></td>
+      <td><%= wedding.bride_name %></td>
+      <td><%= wedding.groom_name %></td>
 
       <td>
         <span><%= link "Show", to: Routes.wedding_path(@conn, :show, wedding) %></span>
-        <span><%= link "Edit", to: Routes.wedding_path(@conn, :edit, wedding) %></span>
-        <span><%= link "Delete", to: Routes.wedding_path(@conn, :delete, wedding), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
     </tr>
 <% end %>

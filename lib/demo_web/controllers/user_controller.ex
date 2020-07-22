@@ -39,7 +39,6 @@ defmodule DemoWeb.UserController do
 
 
   def edit(conn, %{"id" => id}) do
-    IO.inspect "user edit"
     user = User |> Demo.Repo.get!(id) 
     changeset = Accounts.change_user(user)
     render(conn, "edit.html", user: user, changeset: changeset)

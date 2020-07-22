@@ -1,7 +1,7 @@
 defmodule Demo.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Demo.Business.Entity
+  alias Demo.Entities.Entity
   alias Demo.Accounts.User
   alias Demo.Schools.School
   alias Demo.Repo
@@ -29,7 +29,7 @@ defmodule Demo.Accounts.User do
     field :supul_code, :string
     field :supul_name, :string
     field :family_code, :string, default: nil
-
+    field :married, :boolean, defaulut: false
 
 
     # field :nation_signature, :string
@@ -40,6 +40,7 @@ defmodule Demo.Accounts.User do
     has_one :health_report, Demo.CDC.HealthReport
     has_one :student, Demo.Schools.Student
     has_one :mentor, Demo.Schools.Mentor
+    has_many :weddings, Demo.Weddings.Wedding
 
     timestamps()
 
@@ -70,8 +71,17 @@ defmodule Demo.Accounts.User do
   @fields [
     :name, :type, :nationality, :email, :birth_date, :ssn, :default_entity_name, 
     :password, :nation_id, :auth_code, :supul_name, :address, :family_code, 
-    :constitution_id, :supul_code, :username, :default_entity_id, :supul_id, 
+    :constitution_id, :supul_code, :username, :default_entity_id, :supul_id,
+    :married,  
   ]
+
+  def changeset(%User{} = user, attrs = %{wedding: wedding, married: true}) do
+    #? add this wedding to the list of his/her wedding history.
+    weddings = [wedding | user.weddings]
+    user
+    |> cast(attrs, @fields)
+    |> put_assoc(:weddings, weddings)
+  end
 
   def changeset(%User{} = user, attrs = %{supul: supul}) do
     user
@@ -108,7 +118,6 @@ defmodule Demo.Accounts.User do
 
   def registration_changeset(user, attrs) do
     user
-    |> IO.inspect
     |> changeset(attrs)
     |> cast(attrs, [:email, :password])
     |> validate_required([:password])

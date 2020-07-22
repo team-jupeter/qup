@@ -23,10 +23,6 @@ defmodule DemoWeb.UserLive.New do
   end
 
   def handle_event("save", %{"user" => user_params}, socket) do
-    IO.puts "handle_event save"
-    IO.inspect user_params
-    IO.inspect socket
-
     case Accounts.create_user(user_params) do
       {:ok, user} ->
         {:noreply,

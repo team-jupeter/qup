@@ -23,8 +23,6 @@ defmodule DemoWeb.UserLive.Show do
   end
 
   def mount(_params, _session, socket) do
-    # IO.inspect "socket"
-    # IO.inspect socket
     {:ok, socket}
   end
 
@@ -34,7 +32,6 @@ defmodule DemoWeb.UserLive.Show do
   end
 
   defp fetch(%Socket{assigns: %{id: id}} = socket) do
-    IO.inspect Accounts.get_user!(id)
     assign(socket, user: Accounts.get_user!(id))
   end
 

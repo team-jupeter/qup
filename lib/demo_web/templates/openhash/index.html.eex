@@ -1,0 +1,26 @@
+<%= form_for @conn, Routes.item_path(@conn, :index), [method: :get, class: "pull-right"], fn f -> %>
+      <%= search_input f, :query %>
+      <%= submit "Search" %>
+    <% end %>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Openhash Sender</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for openhash <- @openhashes do %>
+    <tr>
+      <td><%= openhash.event_sender %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.openhash_path(@conn, :show, openhash) %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

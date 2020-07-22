@@ -5,26 +5,18 @@
     </div>
   <% end %>
 
-  <p>family_code is a character "f" plus the email of the to_be house holder.</p>
-  <%= label f, :family_code %>
-  <%= text_input f, :family_code %>
-  <%= error_tag f, :family_code %>
-
-  <%= label f, :house_holder %>
-  <%= text_input f, :house_holder %>
-  <%= error_tag f, :house_holder %>
+  <%= label f, :house_holder_name %>
+  <%= text_input f, :house_holder_name %>
+  <%= error_tag f, :house_holder_name %> 
   
-  <%= label f, :nationality %>
-  <%= text_input f, :nationality %>
-  <%= error_tag f, :nationality %>
-
-  <%= label f, :address %>
+  <%= label f, :house_holder_email %>
+  <%= text_input f, :house_holder_email %>
+  <%= error_tag f, :house_holder_email %> 
+  
+  <p>Input only if the householder moves from his/her current address to a new address. </p>
+  <%= label f, :new_address %>
   <%= text_input f, :address %>
   <%= error_tag f, :address %>
-
-  <%= label f, :house_holder_supul_id %>
-  <%= text_input f, :house_holder_supul_id %>
-  <%= error_tag f, :house_holder_supul_id %>
 
   <div>
     <%= submit "Save" %>

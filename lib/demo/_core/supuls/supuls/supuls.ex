@@ -4,12 +4,12 @@ defmodule Demo.Supuls do
 
   alias Demo.Supuls.Supul
 
-  # alias Demo.Business
-  # alias Demo.Business.Entity
+  # alias Demo.Entities
+  # alias Demo.Entities.Entity
   # alias Demo.StateSupuls
-  # alias Demo.Supuls.Openhash
+  # alias Demo.Openhashes.Openhash
   # alias Demo.NationSupuls.NationSupul
-  # alias Demo.Supuls.Openhash
+  # alias Demo.Openhashes.Openhash
   # alias Demo.Transactions
 
   def list_supuls do

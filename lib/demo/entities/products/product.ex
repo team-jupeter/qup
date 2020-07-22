@@ -1,8 +1,8 @@
-defmodule Demo.Business.Product do
+defmodule Demo.Entities.Product do
   use Ecto.Schema
   import Ecto.Changeset 
-  # alias Demo.Business.Entity
-  alias Demo.Business.Product
+  # alias Demo.Entities.Entity
+  alias Demo.Entities.Product
   alias Demo.Repo
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -33,12 +33,12 @@ defmodule Demo.Business.Product do
     has_many :items, Demo.Invoices.Item
     has_many :documents, Demo.Documents.Document
     
-    embeds_many :comments, Demo.Business.CommentEmbed
-    embeds_many :product_logs, Demo.Business.ProductLogEmbed
+    embeds_many :comments, Demo.Entities.CommentEmbed
+    embeds_many :product_logs, Demo.Entities.ProductLogEmbed
 
-    belongs_to :gpc_code, Demo.Business.GPCCode
-    belongs_to :biz_category, Demo.Business.BizCategory
-    belongs_to :entity, Demo.Business.Entity
+    belongs_to :gpc_code, Demo.Entities.GPCCode
+    belongs_to :biz_category, Demo.Entities.BizCategory
+    belongs_to :entity, Demo.Entities.Entity
 
     # many_to_many(
     #   :entities,

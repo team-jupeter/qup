@@ -29,10 +29,11 @@ defmodule DemoWeb.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     resources "/users", UserController
     resources "/certificates", CertificateController
-    resources "/families", FamilyController
+    resources "/families", FamilyController 
     resources "/groups", GroupController
     resources "/events", EventController
     resources "/weddings", WeddingController
+    resources "/openhashes", OpenhashController
 
 
     live "/presence_users/:name", UserLive.PresenceIndex
@@ -79,7 +80,7 @@ defmodule DemoWeb.Router do
 
   end
 
-  scope "/business", DemoWeb do
+  scope "/entities", DemoWeb do
     pipe_through [:browser, :authenticate_user]
 
     resources "/entities", EntityController

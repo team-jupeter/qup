@@ -1,4 +1,4 @@
-<h1>Edit Wedding</h1>
+<h4>Edit Wedding</h1>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.wedding_path(@conn, :update, @wedding)) %>
 

@@ -6,13 +6,11 @@ defmodule DemoWeb.SessionController do
   end
 
   def create(conn, %{"session" => %{"email" => email, "password" => pass}}) do
-    # IO.inspect conn
     case Demo.Accounts.authenticate_by_email_and_pass(email, pass) do
       {:ok, user} ->
         conn
         |> DemoWeb.Auth.login(user)
         |> put_flash(:info, "Welcome back!")
-        |> IO.inspect
         |> redirect(to: Routes.user_path(conn, :show, user.id))
 
       {:error, _reason} -> 
@@ -23,7 +21,6 @@ defmodule DemoWeb.SessionController do
   end
 
   def delete(conn, _) do
-    # IO.inspect conn
     conn
     |> DemoWeb.Auth.logout()
     |> redirect(to: Routes.page_path(conn, :index))

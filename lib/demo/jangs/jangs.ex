@@ -4,7 +4,7 @@ defmodule Demo.Jangs do
   alias Demo.Repo
 
   alias Demo.Jangs.Jang
-  alias Demo.Business.Product
+  alias Demo.Entities.Product
 
   def list_jangs do
     Repo.all(Jang)

@@ -5,10 +5,10 @@ defmodule Demo.Supuls.ProcessTransaction do
   alias Demo.BalanceSheets
   alias Demo.IncomeStatements
   alias Demo.Reports.IncomeStatement
-  alias Demo.Business
-  alias Demo.Business.Entity
+  alias Demo.Entities
+  alias Demo.Entities.Entity
 
-  def process_transaction(transaction) do
+  def process_transaction(transaction, openhash) do
     update_IS(transaction)
     update_gab_balance(transaction)
     update_t1s(transaction)
@@ -44,7 +44,7 @@ defmodule Demo.Supuls.ProcessTransaction do
         where: b.id == ^transaction.abc_input_id
 
     buyer = Repo.one(query)
-    Business.minus_gab_balance(buyer, %{amount: transaction.abc_amount})
+    Entities.minus_gab_balance(buyer, %{amount: transaction.abc_amount})
 
     # ? Seller's gab_balance
     query =
@@ -52,7 +52,7 @@ defmodule Demo.Supuls.ProcessTransaction do
         where: s.id == ^transaction.abc_output_id
 
     seller = Repo.one(query)
-    Business.plus_gab_balance(seller, %{amount: transaction.abc_amount})
+    Entities.plus_gab_balance(seller, %{amount: transaction.abc_amount})
   end
 
   defp update_t1s(transaction) do

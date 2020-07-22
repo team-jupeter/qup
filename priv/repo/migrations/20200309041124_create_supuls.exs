@@ -15,6 +15,7 @@ defmodule Demo.Repo.Migrations.CreateSupuls do
 
       add :auth_code, :text
   
+      add :event_sender, :string
       add :hash_count, :integer, default: 0
       add :hash_chain, {:array, :text}, default: []
       add :openhash_box, {:array, :text}, default: []

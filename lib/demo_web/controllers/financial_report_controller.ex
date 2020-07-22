@@ -19,7 +19,6 @@ defmodule DemoWeb.FinancialReportController do
   # end
 
   def show(conn, %{"id" => id}) do
-    IO.inspect id
     [financial_report] = FinancialReports.get_entity_financial_report!(id) 
     case financial_report do
       nil -> 

@@ -1,11 +1,11 @@
-defmodule Demo.Business.Entity do
+defmodule Demo.Entities.Entity do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.Invoices.Invoice
 
   alias Demo.Accounts.User 
-  # alias Demo.Business.Product
-  alias Demo.Business.Entity
+  # alias Demo.Entities.Product
+  alias Demo.Entities.Entity
   alias Demo.Repo
   # alias Demo.Supuls.Supul
   alias Demo.Groups.Group
@@ -45,7 +45,7 @@ defmodule Demo.Business.Entity do
     field :nation_signature, :string 
 
     #? A user must have only one entity, and An entity may have several business_embeds. 
-    # embeds_many :business_embeds, Demo.Business.BusinessEmbed, on_replace: :delete
+    # embeds_many :business_embeds, Demo.Entities.BusinessEmbed, on_replace: :delete
 
     has_one :color_code, Demo.ColorCodes.ColorCode
     has_one :sil, Demo.Sils.Sil
@@ -72,7 +72,7 @@ defmodule Demo.Business.Entity do
     # has_many :certificates, Demo.Certificates.Certificate
     has_many :machines, Demo.Machines.Machine
     has_many :labs, Demo.Labs.Lab
-    has_many :products, Demo.Business.Product
+    has_many :products, Demo.Entities.Product
     
     has_one :invoice, Demo.Invoices.Invoice
     # many_to_many(
@@ -157,6 +157,14 @@ defmodule Demo.Business.Entity do
   
 
 
+  def create_default_entity(entity, current_user, attrs) do
+    changeset(entity, attrs)
+    |> put_assoc(:supul, attrs.supul)
+    |> put_assoc(:users, [current_user])
+    |> put_assoc(:taxation, attrs.taxation)
+    |> assoc_constraint(:taxation)
+  end
+
   def create_private_entity(entity, current_user, attrs) do
     changeset(entity, attrs)
     |> put_assoc(:supul, attrs.supul)
@@ -176,14 +184,14 @@ defmodule Demo.Business.Entity do
 
   def create_public_entity(entity, current_user, attrs) do
     changeset(entity, attrs)
-    |> put_assoc(:nation_supul, attrs.supul)
+    |> put_assoc(:nation_supul, attrs.nation_supul)
     |> put_assoc(:users, [current_user])
   end
 
   def create_public_entity(entity, attrs) do
     changeset(entity, attrs)
     |> put_assoc(:users, [attrs.user])
-    |> put_assoc(:nation_supul, attrs.supul)
+    |> put_assoc(:nation_supul, attrs.nation_supul)
   end
 
 

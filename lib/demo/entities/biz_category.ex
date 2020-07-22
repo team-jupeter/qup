@@ -1,4 +1,4 @@
-defmodule Demo.Business.BizCategory do
+defmodule Demo.Entities.BizCategory do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,8 +10,8 @@ defmodule Demo.Business.BizCategory do
     field :name, :string
     field :code, :string
 
-    has_many :entities, Demo.Business.Entity
-    has_many :products, Demo.Business.Product
+    has_many :entities, Demo.Entities.Entity
+    has_many :products, Demo.Entities.Product
     
     timestamps()
   end

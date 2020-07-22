@@ -24,7 +24,7 @@ defmodule Demo.StateSupuls.StateSupul do
 
     has_many :supuls, Demo.Supuls.Supul
     has_many :schools, Demo.Schools.School, on_replace: :nilify
-    has_many :openhashes, Demo.Supuls.Openhash, on_replace: :nilify
+    has_many :openhashes, Demo.Openhashes.Openhash, on_replace: :nilify
 
     has_one :financial_report, Demo.Reports.FinancialReport 
 

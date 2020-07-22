@@ -3,7 +3,7 @@ defmodule Demo.Gopang.Tickets do
 
   alias Demo.Repo
   alias Demo.Gopang.Ticket
-  alias Demo.Business.Entity
+  alias Demo.Entities.Entity
   # alias Demo.Invoices
 
 

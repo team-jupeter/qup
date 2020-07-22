@@ -29,11 +29,11 @@
   </li>
   </br>
   <h5>Temporary Data</h5>
-  <li>
-    <strong>txn_id:</strong>
-    <%= @supul.txn_id %>
-  </li>
 
+  <li>
+    <strong>event_sender:</strong>
+    <%= @supul.event_sender %>
+  </li>
   <li>
     <strong>current_hash:</strong>
     <%= @supul.current_hash %>

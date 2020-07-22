@@ -1,13 +1,33 @@
-<h1>Show Family</h1>
+<b>Show Family</b>
 
-<ul>
+<table >
+  <thead>
+      <tr>
+      <td></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Husband Name</td>
+      <td><%= @family.husband_name %></td>
+    </tr>
+    <tr>
+      <td>Husband Email</td>
+      <td><%= @family.husband_email %></td>
+    </tr>
+    <tr>
+      <td>Wife Name</td>
+      <td><%= @family.wife_name %></td>
+    </tr>
+    <tr>
+      <td>Wife Email</td>
+      <td><%= @family.wife_email %></td>
+    </tr>
+    <tr>
+      <td>Payload</td>
+      <td><%= @family.payload %></td>
+    </tr>
 
-  <li>
-    <strong>Family code:</strong>
-    <%= @family.family_code %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.family_path(@conn, :edit, @family) %></span>
-<span><%= link "Back", to: Routes.family_path(@conn, :index) %></span>
+  </tbody>
+</table>

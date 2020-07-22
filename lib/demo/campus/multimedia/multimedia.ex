@@ -5,7 +5,7 @@ defmodule Demo.Multimedia do
   alias Demo.Multimedia.Video
   alias Demo.Multimedia.Category
   alias Demo.Accounts.User
-  alias Demo.Business.Product
+  alias Demo.Entities.Product
 
   def create_category!(name) do
     Repo.insert!(%Category{name: name}, on_conflict: :nothing)
@@ -52,8 +52,6 @@ defmodule Demo.Multimedia do
   end
 
   defp product_videos_query(query, %Product{id: product_id}) do
-    IO.inspect "product_id"
-    IO.inspect product_id
     from(v in query, where: v.product_id == ^product_id)
   end
 

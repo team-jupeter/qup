@@ -14,7 +14,6 @@ defmodule EventHandler do
   end
 
   def handle_events(events, _from, state) do
-    IO.inspect events
     {:noreply, [], state}
   end
 end

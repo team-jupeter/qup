@@ -17,7 +17,7 @@ defmodule DemoWeb do
   and import those modules here.
   """
 
-  def controller do
+  def controller do 
     quote do
       use Phoenix.Controller, namespace: DemoWeb
 

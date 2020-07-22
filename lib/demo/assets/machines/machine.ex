@@ -12,7 +12,7 @@ defmodule Demo.Machines.Machine do
     field :made_where, :string
     field :made_when, :date
 
-    belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     has_many :reports, Demo.Reports.Report
 
     timestamps()

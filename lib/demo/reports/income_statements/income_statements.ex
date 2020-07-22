@@ -4,7 +4,7 @@ defmodule Demo.IncomeStatements do
   alias Demo.Repo
 
   alias Demo.Reports.IncomeStatement
-  alias Demo.Business.Entity
+  alias Demo.Entities.Entity
 
 
 

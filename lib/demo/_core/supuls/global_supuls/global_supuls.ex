@@ -8,7 +8,7 @@ defmodule Demo.GlobalSupuls do
 
   alias Demo.GlobalSupuls.GlobalSupul
   # alias Demo.NationSupuls
-  alias Demo.Supuls.Openhash
+  alias Demo.Openhashes.Openhash
   alias Demo.Openhashes
 
 

@@ -25,34 +25,41 @@ defmodule Demo.Weddings do
     bride = Repo.one(from u in User, where: u.email == ^attrs.bride_email, select: u)
     groom = Repo.one(from u in User, where: u.email == ^attrs.groom_email, select: u)
 
-    erl_supul = Repo.preload(bride, :supul).supul
+    erl_supul = Repo.preload(bride, :supul).supul #? 이몽룡의 수풀
     erl_supul_id = erl_supul.id 
 
-    ssu_supul = Repo.preload(groom, :supul).supul
+    ssu_supul = Repo.preload(groom, :supul).supul #? 성춘향의 수풀
     ssu_supul_id = ssu_supul.id 
 
+    
     attrs = Map.merge(attrs, %{
-      bride_id: bride.id, groom_id: groom.id, 
-      erl_supul_id: erl_supul_id, ssu_supul_id: ssu_supul_id
-    })
+      bride_id: bride.id, 
+      groom_id: groom.id, 
+      bride_name: bride.name, 
+      groom_name: groom.name,
 
-    IO.inspect attrs
+      erl_supul_id: erl_supul_id, 
+      ssu_supul_id: ssu_supul_id,
+
+      erl_email: attrs.bride_email,
+      ssu_email: attrs.groom_email
+    })
     
     {:ok, wedding} = %Wedding{}
     |> Wedding.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert() 
 
     Events.create_event(wedding, bride_private_key, groom_private_key)
   end
 
+  def add_openhash(wedding, attrs) do
+    IO.puts "add_openhash"
+    Repo.preload(wedding, :openhashes) |> Wedding.changeset_openhash(attrs) |> Repo.update() 
+  end
 
-  def update_wedding(%Wedding{} = wedding, attrs) do
-    IO.inspect "update_wedding"
-    IO.inspect attrs
-    
-    wedding = Repo.preload(wedding, :openhash)
+  def update_wedding(%Wedding{} = wedding, attrs) do 
     wedding
-    |> Wedding.changeset_openhash(attrs)
+    |> Wedding.changeset(attrs)
     |> Repo.update()
   end
 

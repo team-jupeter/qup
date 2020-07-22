@@ -1,4 +1,4 @@
-defmodule Demo.Business.BusinessEmbed do
+defmodule Demo.Entities.BusinessEmbed do
   import Ecto.Changeset
   use Ecto.Schema
 

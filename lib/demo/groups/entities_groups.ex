@@ -9,7 +9,7 @@ defmodule Demo.Groups.EntitiesGroups do
     @foreign_key_type :binary_id
   
     schema "entities_groups" do
-      belongs_to :entity, Demo.Business.Entity, type: :binary_id
+      belongs_to :entity, Demo.Entities.Entity, type: :binary_id
       belongs_to :group, Demo.Groups.Group, type: :binary_id
       timestamps()
     end

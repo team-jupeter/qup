@@ -10,13 +10,6 @@ defmodule DemoWeb.InvoiceLive.New do
 
   def mount(_params, _session, socket) do
     changeset = Invoices.change_invoice(%Invoice{})
-
-    IO.puts "DemoWeb.InvoiceLive.New.mount"
-    IO.inspect changeset
-
-    IO.puts "socket"
-    IO.inspect socket
-
     {:ok, assign(socket, changeset: changeset)}
   end
 
@@ -30,20 +23,10 @@ defmodule DemoWeb.InvoiceLive.New do
       |> Demo.Invoices.change_invoice(invoice_params)
       |> Map.put(:action, :insert)
 
-    IO.puts "InvoiceLive.New.handle_event validate"
-    IO.inspect changeset
-
-    IO.puts "socket"
-    IO.inspect socket
-
     {:noreply, assign(socket, changeset: changeset)}
   end
 
   def handle_event("save", %{"invoice" => invoice_params}, socket) do
-    IO.puts "InvoiceLive.New.handle_event save"
-    IO.inspect invoice_params
-    IO.inspect socket
-
     case Invoices.create_invoice(invoice_params) do
       {:ok, invoice} ->
         {:noreply,

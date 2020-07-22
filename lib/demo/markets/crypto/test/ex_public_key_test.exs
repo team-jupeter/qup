@@ -89,8 +89,6 @@ defmodule ExPublicKeyTest do
   end
 
   test "read RSA keys in PEM format", context do
-    # IO.inspect context
-    # load the private key
     {:ok, priv_key_string} = File.read(context[:rsa_private_key_path])
     rsa_priv_key = ExPublicKey.loads!(priv_key_string)
     assert(is_map(rsa_priv_key))
@@ -132,7 +130,6 @@ defmodule ExPublicKeyTest do
     msg = "This is a test message to sign, complete with some entropy (#{rand_chars})."
     {:ok, signature} = ExPublicKey.sign(msg, rsa_priv_key)
     {:ok, valid} = ExPublicKey.verify(msg, signature, rsa_pub_key)
-    IO.inspect(valid)
     assert(valid)
   end
 

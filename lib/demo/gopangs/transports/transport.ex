@@ -10,7 +10,7 @@ defmodule Demo.Transports.Transport do
     field :capacity, :string
     field :purpose, :string
 
-    belongs_to :entity, Demo.Business.Entity, type: :binary_id
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id
 
     many_to_many(
       :terminals,

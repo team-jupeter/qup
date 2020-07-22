@@ -38,7 +38,7 @@ irs = Taxation.changeset(%Taxation{}, %{name: "US Internal Revenue Service", nat
 
 
 #? init entities
-alias Demo.Business.Entity
+alias Demo.Entities.Entity
 
 hong_entity = Entity.changeset(%Entity{}, %{name: "Hong Gildong Entity", email: "hong_gil_dong@82345.kr"}) |> Repo.insert!
 tomi_entity = Entity.changeset(%Entity{}, %{name: "Sung Chunhyang Entity", email: "sung_chun_hyang@82345.kr"}) |> Repo.insert!

@@ -3,7 +3,7 @@ defmodule DemoWeb.ProductVideoController do
 
   alias Demo.Multimedia
   alias Demo.Multimedia.Video
-  alias Demo.Business
+  alias Demo.Entities
 
   plug DemoWeb.ProductAuth when action in [:new, :edit, :create]
 
@@ -15,13 +15,9 @@ defmodule DemoWeb.ProductVideoController do
 
    
   def index(conn, _params, current_product) do
-    IO.puts "ProductVideoController index"
-    IO.inspect current_product
-    
     # conn = conn
     # |> DemoWeb.ProductAuth.product_login(current_product)
     
-    # IO.inspect conn
 
     # videos = Multimedia.list_product_videos(current_product) 
     # render(conn, "index.html", videos: videos)
@@ -29,10 +25,7 @@ defmodule DemoWeb.ProductVideoController do
   end 
 
   def show(conn, %{"id" => id}) do
-    IO.puts "ProductVideoController show"
-    IO.inspect id
-    current_product = Business.get_product!(id)
-    IO.inspect current_product
+    current_product = Entities.get_product!(id)
     
     conn = conn
     |> DemoWeb.ProductAuth.product_login(current_product)

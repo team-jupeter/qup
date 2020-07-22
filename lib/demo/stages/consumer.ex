@@ -11,7 +11,6 @@ defmodule Demo.Stages.Consumer do
 
   def handle_events(events, _from, state) do
     for event <- events do
-      IO.inspect({self(), event, state})
     end
 
     # As a consumer we never emit events

@@ -41,11 +41,8 @@ defmodule Demo.Invoices do
     end
 
     def create_invoice(attrs) do
-      # IO.inspect "attrs"
-      # IO.inspect attrs
       %Invoice{}
       |> Invoice.create(attrs)
-      |> IO.inspect
       # |> notify_subscribers([:transaction, :created])
     
     end 
