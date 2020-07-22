@@ -30,11 +30,11 @@ defmodule Demo.Supuls.ProcessWedding do
 
     #? Update the current marrige status and history, and supul_id etc. of users.
     Accounts.update_user(bride, %{wedding: wedding, married: true, supul_id: bride_supul.id, supul_name: bride_supul.name})
-    Accounts.update_user(groom, %{wedding: wedding, married: true, supul_id: groom_supul.id, supul_name: groom_supul.name})
+    Accounts.update_user(groom, %{wedding: wedding, married: true, supul_id: bride_supul.id, supul_name: bride_supul.name})
     
     #? Update the supul_id etc. of users' entities.
+    Entities.update_entity(bride_entity, %{supul_id: bride_supul.id, supul_name: bride_supul.name})
     Entities.update_entity(groom_entity, %{supul_id: bride_supul.id, supul_name: bride_supul.name})
-    Entities.update_entity(bride_entity, %{supul_id: groom_supul.id, supul_name: groom_supul.name})
   
     #? Create a family group.
     {:ok, group} = Groups.create_group(%{type: "family", title: "이몽룡과 성춘향의 가족"})

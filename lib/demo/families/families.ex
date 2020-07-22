@@ -29,7 +29,8 @@ defmodule Demo.Families do
       wife_id: wedding.groom_id,
       wife_name: wedding.groom_name,
       wife_email: wedding.groom_email, 
-      house_holder_supul_id: wedding.erl_supul_id
+      house_holder_supul_id: wedding.erl_supul_id,
+      payload: wedding.payload
     }
 
  

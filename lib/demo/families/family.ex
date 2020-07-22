@@ -67,6 +67,8 @@ defmodule Demo.Families.Family do
     field :entity_id_of_relatives, {:array, :map}
     field :entity_id_of_inmates, {:array, :map}
 
+    field :payload, :string
+
     field :wedding_openhash_id, :binary_id
 
     has_many :users, Demo.Accounts.User
@@ -132,6 +134,7 @@ defmodule Demo.Families.Family do
     :entity_id_of_grand_dauthers,
     :entity_id_of_relatives,
     :entity_id_of_inmates,
+    :payload,
     :wedding_openhash_id, 
   ]
 
