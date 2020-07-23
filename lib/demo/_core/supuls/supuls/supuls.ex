@@ -29,6 +29,12 @@ defmodule Demo.Supuls do
     |> Repo.update()
   end
 
+  def update_hash_chain(%Supul{} = supul, attrs) do
+    supul
+    |> Supul.changeset_event_hash(attrs)
+    |> Repo.update()
+  end
+
 
   def delete_supul(%Supul{} = supul) do
     Repo.delete(supul)

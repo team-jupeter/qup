@@ -7,6 +7,7 @@ defmodule Demo.Repo.Migrations.CreateSupuls do
       add :type, :string
       add :txn_id, :binary_id
       add :supul_code, :string
+      add :supul_name, :string
       add :name, :string
       add :state_name, :string
       add :nation_name, :string

@@ -27,9 +27,11 @@ defmodule Demo.Weddings do
 
     erl_supul = Repo.preload(bride, :supul).supul #? 이몽룡의 수풀
     erl_supul_id = erl_supul.id 
+    erl_supul_name = erl_supul.name 
 
     ssu_supul = Repo.preload(groom, :supul).supul #? 성춘향의 수풀
     ssu_supul_id = ssu_supul.id 
+    ssu_supul_name = ssu_supul.name 
 
     
     attrs = Map.merge(attrs, %{
@@ -39,15 +41,17 @@ defmodule Demo.Weddings do
       groom_name: groom.name,
 
       erl_supul_id: erl_supul_id, 
+      erl_supul_name: erl_supul_name, 
       ssu_supul_id: ssu_supul_id,
+      ssu_supul_name: ssu_supul_name,
 
       erl_email: attrs.bride_email,
       ssu_email: attrs.groom_email
     })
-    
+     
     {:ok, wedding} = %Wedding{}
     |> Wedding.changeset(attrs)
-    |> Repo.insert() 
+    |> Repo.insert() #? 결혼 신고서 
 
     Events.create_event(wedding, bride_private_key, groom_private_key)
   end

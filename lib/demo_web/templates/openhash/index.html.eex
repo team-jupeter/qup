@@ -3,20 +3,19 @@
       <%= submit "Search" %>
     <% end %>
 
-
+<b>Openhash List</b>
 <table>
   <thead>
     <tr>
-      <th>Openhash Sender</th>
-
-      <th></th>
+      <th>Erl(얼)</th>
+      <th>Ssu(쑤)</th>
     </tr>
   </thead>
   <tbody>
 <%= for openhash <- @openhashes do %>
     <tr>
-      <td><%= openhash.event_sender %></td>
-
+      <td><%= openhash.erl_email %></td>
+      <td><%= openhash.ssu_email %></td>
       <td>
         <span><%= link "Show", to: Routes.openhash_path(@conn, :show, openhash) %></span>
       </td>

@@ -33,7 +33,7 @@ defmodule Demo.Families do
       payload: wedding.payload
     }
 
- 
+
 '''  
     #? We should remove lee and sung from their previous families.
     #? but, at this time, they are the first family like Adam and Eve. 
@@ -66,7 +66,6 @@ defmodule Demo.Families do
     family
     |> Family.changeset(attrs) 
     |> Repo.update() 
-    |> IO.inspect
   end
 
 

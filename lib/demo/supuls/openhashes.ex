@@ -40,17 +40,22 @@ defmodule Demo.Openhashes do
   end
 
   def create_openhash(supul, event) do
+    IO.puts "create_openhash(supul, event)"
+
     {:ok, openhash} =
       Openhash.changeset(%Openhash{}, %{
-        event_id: supul.event_id,
-        event_sender: supul.event_sender, 
-        incoming_hash: supul.incoming_hash,
+        event_id: event.id,
+        erl_email: event.erl_email, 
+        ssu_email: event.ssu_email, 
         supul_id: supul.id,
+        supul_name: supul.name,
         previous_hash: supul.previous_hash,
+        incoming_hash: supul.incoming_hash,
         current_hash: supul.current_hash,
       })
       |> Repo.insert()
 
+    IO.inspect openhash
     '''
         #? add supul signature to the openhash struct.  
         #? hard coding supul private key. 
@@ -80,15 +85,16 @@ defmodule Demo.Openhashes do
     # ? UPDATE OPENHASH BLOCK
     # ? add openhash_id to the openhash block of the supul.
     openhash_box = [openhash.id | supul.openhash_box]
-    Supul.changeset(supul, %{openhash_box: openhash_box}) |> Repo.update()
+    Supuls.update_supul(supul, %{openhash_box: openhash_box})  #? will be sent to the upper supul of this supul.
 
     # ? add openhash to the event. 
     attrs = %{
       openhash: openhash, 
       supul_code: supul.supul_code,
-      wedding_openhash_id: openhash.id
+      openhash_id: openhash.id
       }
 
+      #? Openhash is stored by both supul and by event. 
     case event.type do
       "wedding" -> Weddings.add_openhash(event, attrs)
       "transaction" -> Transasctions.add_openhash(event, attrs)

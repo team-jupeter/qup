@@ -7,7 +7,9 @@ defmodule Demo.Openhashes.Openhash do
 
   schema "openhashes" do
     field :event_id, :binary_id
-    field :event_sender, :string
+    field :erl_email, :string
+    field :ssu_email, :string
+    field :supul_name, :string
     field :incoming_hash, :string
     field :previous_hash, :string
     field :current_hash, :string
@@ -27,9 +29,11 @@ defmodule Demo.Openhashes.Openhash do
 
   @fields [
     :event_id, 
-    :event_sender, 
-    :incoming_hash,
+    :erl_email, 
+    :ssu_email, 
+    :supul_name, 
     :previous_hash,
+    :incoming_hash,
     :current_hash, 
     :supul_signature,
   ]
@@ -56,6 +60,8 @@ defmodule Demo.Openhashes.Openhash do
 
   @doc false
   def changeset(openhash, attrs) do
+    IO.puts "Openhash, changeset"
+
     openhash
     |> cast(attrs, @fields)
     |> validate_required([])

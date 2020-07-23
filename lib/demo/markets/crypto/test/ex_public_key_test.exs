@@ -280,7 +280,6 @@ defmodule ExPublicKeyTest do
         assert false, "the wrong error was provoked: #{inspect error}"
 
       _x ->
-        # IO.inspect x
         assert false, "something else happened"
     end
   end

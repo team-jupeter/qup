@@ -69,7 +69,7 @@ defmodule Demo.Families.Family do
 
     field :payload, :string
 
-    field :wedding_openhash_id, :binary_id
+    field :openhash_id, :binary_id
 
     has_many :users, Demo.Accounts.User
     has_one :group, Demo.Groups.Group
@@ -135,7 +135,7 @@ defmodule Demo.Families.Family do
     :entity_id_of_relatives,
     :entity_id_of_inmates,
     :payload,
-    :wedding_openhash_id, 
+    :openhash_id, 
   ]
 
 

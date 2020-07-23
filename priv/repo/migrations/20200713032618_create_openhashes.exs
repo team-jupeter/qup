@@ -5,7 +5,10 @@ defmodule Demo.Repo.Migrations.CreateOpenHashes do
     create table(:openhashes, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :event_id, :binary_id
+      add :erl_email, :string
+      add :ssu_email, :string
       add :event_sender, :string
+      add :supul_name, :string
       add :incoming_hash, :text 
       add :previous_hash, :text
       add :current_hash, :text

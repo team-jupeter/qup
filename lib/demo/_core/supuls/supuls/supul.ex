@@ -8,6 +8,7 @@ defmodule Demo.Supuls.Supul do
   schema "supuls" do
     field :type, :string
     field :supul_code, :string
+    field :supul_name, :string
     field :geographical_area, :string
     field :name, :string
     field :state_name, :string 
@@ -46,11 +47,12 @@ defmodule Demo.Supuls.Supul do
     :type, :name, :geographical_area, :supul_code, :auth_code, 
     :state_name, :nation_name, :openhash_box, :hash_chain,
     :previous_hash, :current_hash, :incoming_hash, :hash_count, 
-    :event_id, :state_openhash_id, :event_id, :event_sender
+    :event_id, :state_openhash_id, :event_id, :event_sender, :supul_name, 
   ]
 
   def changeset_event_hash(%Supul{} = supul, attrs = %{
-    sender: sender, event_id: event_id, incoming_hash: incoming_hash}) do
+    event_sender: sender, event_id: event_id, incoming_hash: incoming_hash}) do
+
     previous_hash = supul.current_hash
     new_current_hash = Pbkdf2.hash_pwd_salt(supul.current_hash <> attrs.incoming_hash)
     # new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
@@ -62,7 +64,7 @@ defmodule Demo.Supuls.Supul do
 
     attrs = %{
       event_id: attrs.event_id,
-      sender: attrs.sender,
+      event_sender: attrs.event_sender,
       previous_hash: previous_hash,
       incoming_hash: incoming_hash,
       current_hash: new_hash,
@@ -93,13 +95,24 @@ defmodule Demo.Supuls.Supul do
 
 
   def changeset(attrs) do
+    
     %Supul{}
     |> cast(attrs, @fields)
     |> validate_required([])
   end
-
-
+  
+  
   def changeset(%Supul{} = supul, attrs) do
+    # IO.puts "Supul, changeset"
+    # current_hash = Pbkdf2.hash_pwd_salt(supul.current_hash <> attrs.incoming_hash)
+    # hash_chain = [attrs.incomming_hash | supul.hash_chain]
+
+    # attrs = %{
+    #   incomming_hash: attrs.incoming_hash,
+    #   current_hash: current_hash,
+    #   previous_hash: supul.current_hash,
+    #   hash_chain: hash_chain,
+    # }
     supul
     |> cast(attrs, @fields)
     |> validate_required([])

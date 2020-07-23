@@ -65,7 +65,7 @@ defmodule Demo.Repo.Migrations.CreateFamilies do
       add(:entity_id_of_grand_dauthers, {:array, :map})
       add(:entity_id_of_relatives, {:array, :map})
       add(:entity_id_of_inmates, {:array, :map})
-      add :wedding_openhash_id, :binary_id
+      add :openhash_id, :binary_id
       add :payload, :text
 
       add(:nation_id, references(:nations, type: :uuid))

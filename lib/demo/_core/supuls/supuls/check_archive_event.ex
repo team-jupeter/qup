@@ -9,6 +9,7 @@ defmodule Demo.Supuls.CheckArchiveEvent do
     erl_supul = Supuls.get_supul!(event.erl_supul_id)
     ssu_supul = Supuls.get_supul!(event.ssu_supul_id)
 
+
     parts = String.split(payload, "|")
 
     # ? reject the payload if the timestamp is newer than the arriving time to supul. 
@@ -42,17 +43,11 @@ defmodule Demo.Supuls.CheckArchiveEvent do
     # ? OPENHASH 
     cond do
       sig_valid_erl && sig_valid_ssu ->
-        IO.puts("Make a erl supul struct")
-
-        Supuls.update_supul(erl_supul, %{
-          event_sender: event.erl_email,
-          event_id: event.id,
-          incoming_hash: recv_event_hash
-        })
-
-        IO.puts("Make an openhash of erl supul struct")
+        IO.puts("Update erl supul with recv_event_hash")
+        {:ok, erl_supul} = Supuls.update_hash_chain(erl_supul, %{event_sender: event.erl_email, event_id: event.id, incoming_hash: recv_event_hash})
+        
         openhash = Openhashes.create_openhash(erl_supul, event)
-        IO.inspect openhash
+
 
         # ? BOOKKEEPING 
         process_event(event, openhash)
@@ -60,12 +55,8 @@ defmodule Demo.Supuls.CheckArchiveEvent do
         if erl_supul.id != ssu_supul.id do
           IO.puts("Make a ssu supul struct")
 
-          Supul.changeset(ssu_supul, %{
-            event_sender: event.ssu_email,
-            event_id: event.id,
-            incoming_hash: recv_event_hash
-          })
-          |> Repo.update!()
+          {:ok, ssu_supul} = Supuls.update_hash_chain(ssu_supul, %{event_sender: event.ssu_email, event_id: event.id, incoming_hash: recv_event_hash})
+          # IO.inspect ssu_supul
 
           IO.puts("Make an openhash of ssu supul struct")
           openhash = Openhashes.create_openhash(ssu_supul, event)

@@ -18,7 +18,7 @@ defmodule Demo.Repo.Migrations.CreateWeddings do
       add :event_hash, :string 
       add :erl_email, :string
       add :ssu_email, :string
-      add :wedding_openhash_id, :binary_id
+      add :openhash_id, :binary_id
       add :payload, :text
       
       add :family_id, references(:families, type: :uuid)

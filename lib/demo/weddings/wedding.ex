@@ -21,7 +21,7 @@ defmodule Demo.Weddings.Wedding do
     field :erl_email, :string
     field :ssu_email, :string
 
-    field :wedding_openhash_id, :binary_id
+    field :openhash_id, :binary_id
     field :payload, :string
 
     has_many :openhashes, Demo.Openhashes.Openhash
@@ -46,7 +46,7 @@ defmodule Demo.Weddings.Wedding do
     :event_hash, 
     :erl_email,
     :ssu_email,
-    :wedding_openhash_id,
+    :openhash_id,
     :payload, 
   ]
   @doc false

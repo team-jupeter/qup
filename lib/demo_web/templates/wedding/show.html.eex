@@ -8,6 +8,10 @@
   </thead>
   <tbody>
     <tr>
+      <td><b>openhash_id</b></td>
+      <td><%= @wedding.openhash_id %></td>
+    </tr>
+    <tr>
       <td>bride_id</td>
       <td><%= @wedding.bride_id %></td>
     </tr>
@@ -40,21 +44,14 @@
       <td><%= @wedding.erl_supul_name %></td>
     </tr>
     <tr>
-      <td>wedding_openhash_id</td>
+      <td>groom_supul_id</td>
       <td><%= @wedding.ssu_supul_id %></td>
     </tr>
     <tr>
       <td>groom_supul_name</td>
       <td><%= @wedding.ssu_supul_name %></td>
     </tr>
-    <tr>
-      <td>wedding_openhash_id</td>
-      <td><%= @wedding.wedding_openhash_id %></td>
-    </tr>
-    <tr>
-      <td>event_hash</td>
-      <td><%= @wedding.event_hash %></td>
-    </tr>
+
   </tbody>
 </table>
 
