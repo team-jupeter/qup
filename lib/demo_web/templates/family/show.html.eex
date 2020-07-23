@@ -8,6 +8,7 @@
     </tr>
   </thead>
   <tbody>
+
     <tr>
       <td>Husband Name</td>
       <td><%= @family.husband_name %></td>
@@ -25,9 +26,12 @@
       <td><%= @family.wife_email %></td>
     </tr>
     <tr>
-      <td>Payload</td>
-      <td><%= @family.payload %></td>
+      <td>Nationality</td>
+      <td><%= @family.nationality %></td>
     </tr>
-
+    <tr>
+      <td>Auth Code</td>
+      <td><%= @family.auth_code %></td>
+    </tr>
   </tbody>
 </table>

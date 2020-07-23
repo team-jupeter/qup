@@ -75,8 +75,8 @@ defmodule Demo.Families.Family do
     has_one :group, Demo.Groups.Group
     has_one :wedding, Demo.Weddings.Wedding
 
-    belongs_to :nation, Demo.Nations.Nation
-    belongs_to :supul, Demo.Supuls.Supul
+    belongs_to :nation, Demo.Nations.Nation, type: :binary_id
+    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
 
     timestamps()
   end
@@ -164,10 +164,15 @@ defmodule Demo.Families.Family do
     |> cast(attrs, @fields)
     |> validate_required([])
   end
-
+  
   def changeset_group(family, %{group: group}) do
     family
     |> put_assoc(:group, group)
-    |> validate_required([])
+  end
+
+  def changeset_auth(family, attrs = %{auth_code: auth_code, nation: nation, nationality: nation_name}) do
+    family
+    |> cast(attrs, @fields)
+    |> put_assoc(:nation, nation)
   end
 end

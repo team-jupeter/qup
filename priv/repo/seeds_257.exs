@@ -508,11 +508,6 @@ ts_msg_serialized = "#{ts}|#{msg_serialized}"
 signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
 {:ok,lee_family} = Families.update_family(lee_family, %{auth_code: signature}) 
   
-#? add ms_sung to the house member of the lee_family.
-Families.update_family_members(lee_family, %{
-  husband: mr_lee.email, wife: ms_sung.email}, 
-  house_holder_rsa_priv_key:lee_rsa_priv_key, new_member_rsa_priv_key: sung_rsa_priv_key)
-
 
 '''
 

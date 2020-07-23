@@ -6,6 +6,8 @@ defmodule Demo.Families do
   alias Demo.Families.Family
   alias Demo.Families
   alias Demo.Accounts.User
+  alias Demo.Nations
+  alias Demo.Nations.Nation
 
   def get_user_family!(%User{} = user) do
     Repo.preload(user, :family).family
@@ -17,21 +19,22 @@ defmodule Demo.Families do
     # Weddings.update_wedding(wedding, openhash)
     wedding = Repo.preload(lee_family, :wedding).wedding
     openhashes = Repo.preload(wedding, :openhashes).openhashes
-'''
+    '''
+
+
     #? Family attrs
     attrs = %{
-      house_holder_id: wedding.bride_id,
-      house_holder_name: wedding.bride_name,
-      house_holder_email: wedding.bride_email,
-      husband_id: wedding.bride_id,
-      husband_name: wedding.bride_name,
-      husband_email: wedding.bride_email,
-      wife_id: wedding.groom_id,
-      wife_name: wedding.groom_name,
-      wife_email: wedding.groom_email, 
+      house_holder_id: bride.id,
+      house_holder_name: bride.name,
+      house_holder_email: bride.email,
+      husband_id: bride.id,
+      husband_name: bride.name,
+      husband_email: bride.email,
+      wife_id: groom.id,
+      wife_name: groom.name,
+      wife_email: groom.email, 
       house_holder_supul_id: wedding.erl_supul_id,
-      payload: wedding.payload
-    }
+      }
 
 
 '''  
@@ -51,9 +54,24 @@ defmodule Demo.Families do
     IO.puts "Repo.preload(family, :wedding |> Families.update_family(%{wedding: wedding}))"
     {:ok, family} = Repo.preload(family, :wedding) |> Families.update_family(%{wedding: wedding})
     
+    #? Authorization from the nation
+    bride = Repo.preload(bride, :nation)
+    nation = Repo.one(from n in Nation, where: n.id == ^bride.nation.id)
+
+    # IO.inspect "nation"
+    # IO.inspect nation
+
+    #? hard_coded Korea' private key
+    auth_code = Nations.authorize(nation, family)
+    family = Repo.preload(family, :nation)
+    family
+    |> Family.changeset_auth(%{auth_code: auth_code, nation: nation, nationality: nation.name})
+    |> Repo.update()  
     # {:ok, wife} = Repo.preload(wife, :family) |> Accounts.update_user(%{family: family})
     # {:ok, husband} = Repo.preload(husband, :family) |> Accounts.update_user(%{family: family})
   end
+
+
 
   def update_family_group(%Family{} = family, %{group: group}) do   
     family

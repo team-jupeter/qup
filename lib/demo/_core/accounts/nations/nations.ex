@@ -33,4 +33,16 @@ defmodule Demo.Nations do
   def change_nation(%Nation{} = nation) do
     Nation.changeset(nation, %{})
   end
+
+  def authorize(nation, entity) do
+    #? hard coded private key
+    nation_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
+
+    #? auth code
+    msg_serialized = Poison.encode!(entity)
+    ts = DateTime.utc_now() |> DateTime.to_unix()
+    ts_msg_serialized = "#{ts}|#{msg_serialized}"
+    {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, nation_priv_key)
+    auth_code = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+  end    
 end
