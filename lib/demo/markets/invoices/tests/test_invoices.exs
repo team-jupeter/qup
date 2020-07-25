@@ -103,7 +103,7 @@ trump_health = Repo.insert!(trump_health)
 #? init taxations
 #? We need a standard protocal to treat trades among people with different nationalities.
 #? Normally people have used cash_basis accounting principles.
-#? We will use a brand_new real_time acccounting principle.
+#? We will use a brand_new real_time accounting principle.
 alias Demo.Taxations.Taxation
 
 korea_taxation = %Taxation{name: "Korea Tax Service", nation_id: korea_id} |> Repo.insert!

@@ -19,8 +19,15 @@ defmodule Demo.Groups.Group do
       on_replace: :delete
     )
 
+    has_one :account_book, Demo.AccountBooks.AccountBook
+    has_one :financial_report, Demo.FinancialReports.FinancialReport
+    has_one :income_statement, Demo.IncomeStatements.IncomeStatement
+    has_one :balance_sheet, Demo.BalanceSheets.BalanceSheet
+    has_one :cf_statement, Demo.CFStatements.CFStatement
+    has_one :equity_statement, Demo.EquityStatements.EquityStatement
+
     timestamps()
-  end
+  end 
 
   @fields [
     :type, :title, 

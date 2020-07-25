@@ -25,6 +25,20 @@ defmodule Demo.Weddings do
     bride = Repo.one(from u in User, where: u.email == ^attrs.bride_email, select: u)
     groom = Repo.one(from u in User, where: u.email == ^attrs.groom_email, select: u)
 
+
+    #? Stop if bride or groom is alread married.
+    case bride.married do
+      true -> "error"
+      false -> true
+    end
+
+    case groom.married do
+      true -> "error"
+      false -> true
+    end
+
+
+
     erl_supul = Repo.preload(bride, :supul).supul #? 이몽룡의 수풀
     erl_supul_id = erl_supul.id 
     erl_supul_name = erl_supul.name 

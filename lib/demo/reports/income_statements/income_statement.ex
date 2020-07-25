@@ -31,6 +31,7 @@ defmodule Demo.Reports.IncomeStatement do
 
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+    belongs_to :group, Demo.Groups.Group, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
@@ -67,48 +68,4 @@ defmodule Demo.Reports.IncomeStatement do
     |> cast(attrs, @fields)
     |> validate_required([])
   end
-
-  def private_changeset(income_statement, attrs) do
-    changeset(income_statement, attrs)
-    |> put_assoc(:entity, attrs.entity)
-    |> put_assoc(:supul, attrs.supul)
-  end
-  @doc false
-  def public_changeset(income_statement, attrs) do
-    income_statement
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:entity, attrs.entity)
-    |> put_assoc(:nation_supul, attrs.nation_supul)
-  end
-  
-  def tax_changeset(income_statement, attrs) do
-    income_statement
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:taxation, attrs.taxation)
-  end
-  
-  def supul_changeset(income_statement, attrs) do
-    income_statement
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:supul, attrs.supul)
-  end
-  
-  def state_supul_changeset(income_statement, attrs) do
-    income_statement
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:state_supul, attrs.state_supul)
-  end
-  
-  def nation_supul_changeset(income_statement, attrs) do
-    income_statement
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:nation_supul, attrs.nation_supul)
-  end
-
-
 end

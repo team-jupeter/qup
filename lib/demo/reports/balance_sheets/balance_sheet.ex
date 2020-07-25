@@ -31,6 +31,7 @@ defmodule Demo.Reports.BalanceSheet do
     embeds_many :t3s, Demo.ABC.T3, on_replace: :delete
  
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
+    belongs_to :group, Demo.Groups.Group, type: :binary_id
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
@@ -65,7 +66,6 @@ defmodule Demo.Reports.BalanceSheet do
     balance_sheet
     |> cast(attrs, @fields)
   end 
-  
   
   def changeset_t1s(balance_sheet, attrs \\ %{}) do
     balance_sheet

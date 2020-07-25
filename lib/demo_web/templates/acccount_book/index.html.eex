@@ -1,0 +1,26 @@
+<h1>Listing Account books</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Grain</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for account_book <- @account_books do %>
+    <tr>
+      <td><%= account_book.grain %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.account_book_path(@conn, :show, account_book) %></span>
+        <span><%= link "Edit", to: Routes.account_book_path(@conn, :edit, account_book) %></span>
+        <span><%= link "Delete", to: Routes.account_book_path(@conn, :delete, account_book), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Account book", to: Routes.account_book_path(@conn, :new) %></span>

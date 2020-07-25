@@ -58,9 +58,6 @@ defmodule Demo.Families do
     bride = Repo.preload(bride, :nation)
     nation = Repo.one(from n in Nation, where: n.id == ^bride.nation.id)
 
-    # IO.inspect "nation"
-    # IO.inspect nation
-
     #? hard_coded Korea' private key
     auth_code = Nations.authorize(nation, family)
     family = Repo.preload(family, :nation)
@@ -69,18 +66,20 @@ defmodule Demo.Families do
     |> Repo.update()  
     # {:ok, wife} = Repo.preload(wife, :family) |> Accounts.update_user(%{family: family})
     # {:ok, husband} = Repo.preload(husband, :family) |> Accounts.update_user(%{family: family})
+
   end
 
 
-
-  def update_family_group(%Family{} = family, %{group: group}) do   
+  def update_family(%Family{} = family, %{group: group}) do   
+    IO.puts "update_family(%Family{} = family, attrs)"
+  
+    family = Repo.preload(family,:group)
     family
-    |> Family.changeset_group(%{group: group})
+    |> Family.changeset(%{group: group})
     |> Repo.update()
   end 
 
   def update_family(%Family{} = family, attrs) do  
-    IO.puts "update_family(%Family{} = family, attrs)"
     family
     |> Family.changeset(attrs) 
     |> Repo.update() 

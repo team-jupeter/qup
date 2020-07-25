@@ -37,6 +37,7 @@ defmodule Demo.Reports.FinancialReport do
     # has_one :consolidated_FS
 
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+    belongs_to :group, Demo.Groups.Group, type: :binary_id
     belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
@@ -55,66 +56,16 @@ defmodule Demo.Reports.FinancialReport do
   ]
 
   
-  @doc false
-  def changeset(%FinancialReport{} = report, attrs) do
-    report
+  def changeset(financial_report, attrs) do
+    financial_report
     |> cast(attrs, @fields)
+    |> validate_required([])
   end
 
   def changeset(attrs) do
     %FinancialReport{}
     |> cast(attrs, @fields)
     |> validate_required([])
-    |> put_assoc(:supul, attrs.supul)
-    |> put_assoc(:entity, attrs.entity)
-  end
-  
-  def tax_changeset(attrs) do
-    %FinancialReport{}
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:taxation, attrs.taxation)
-    |> put_assoc(:nation_supul, attrs.nation_supul)
-  end
-
-  def public_changeset(attrs) do
-    %FinancialReport{}
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:entity, attrs.entity)
-    |> put_assoc(:nation_supul, attrs.nation_supul)
-  end
-
-
-  @doc false
-  def nation_supul_changeset(attrs) do
-    %FinancialReport{}
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:nation_supul, attrs.nation_supul)
-  end
-  @doc false
-  def state_supul_changeset(attrs) do
-    %FinancialReport{}
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:state_supul, attrs.state_supul)
-  end
-  @doc false
-  def supul_changeset(attrs) do 
-    %FinancialReport{}
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:supul, attrs.supul)
-  end
-
-  @doc false
-  def entity_changeset(%Entity{} = entity, attrs) do
-    %FinancialReport{}
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> put_assoc(:supul, attrs.supul)
-    |> put_assoc(:entity, entity)
   end
 
 end

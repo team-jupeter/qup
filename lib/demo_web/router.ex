@@ -34,7 +34,7 @@ defmodule DemoWeb.Router do
     resources "/events", EventController
     resources "/weddings", WeddingController
     resources "/openhashes", OpenhashController
-
+    resources "/account_books", AccountBookController
 
     live "/presence_users/:name", UserLive.PresenceIndex
 

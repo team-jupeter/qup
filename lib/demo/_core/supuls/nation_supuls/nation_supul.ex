@@ -27,7 +27,13 @@ defmodule Demo.NationSupuls.NationSupul do
     has_many :schools, Demo.Schools.School, on_replace: :nilify
 
     belongs_to :global_supul, Demo.GlobalSupuls.GlobalSupul, type: :binary_id
+
+    has_one :account_book, Demo.AccountBooks.AccountBook 
     has_one :financial_report, Demo.Reports.FinancialReport
+    has_one :income_statement, Demo.Reports.IncomeStatement, on_replace: :nilify
+    has_one :balance_sheet, Demo.Reports.BalanceSheet, on_replace: :nilify
+    has_one :cf_statement, Demo.Reports.CFStatement, on_replace: :nilify
+    has_one :equity_statement, Demo.Reports.EquityStatement, on_replace: :nilify
 
     timestamps()
   end

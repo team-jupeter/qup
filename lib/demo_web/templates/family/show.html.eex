@@ -35,3 +35,12 @@
     </tr>
   </tbody>
 </table>
+
+<b>Financial Reports</b>
+    <ul>
+        <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @family.id) %></li>
+        <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :show, @family.id) %></li>
+        <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @family.id) %></li>
+        <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :show, @family.id) %></li>
+        <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :show, @family.id) %></li>
+    </ul>

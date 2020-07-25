@@ -72,6 +72,7 @@ defmodule Demo.Families.Family do
     field :openhash_id, :binary_id
 
     has_many :users, Demo.Accounts.User
+    has_many :entities, Demo.Entities.Entity
     has_one :group, Demo.Groups.Group
     has_one :wedding, Demo.Weddings.Wedding
 
@@ -152,8 +153,9 @@ defmodule Demo.Families.Family do
     |> cast(attrs, @fields)
     |> put_assoc(:wedding, attrs.wedding)
   end
-
+  
   def changeset(family, attrs = %{group: group}) do
+    IO.puts "changeset(family, attrs = %{group: group})"
     family
     |> cast(attrs, @fields)
     |> put_assoc(:group, attrs.group)
@@ -165,10 +167,6 @@ defmodule Demo.Families.Family do
     |> validate_required([])
   end
   
-  def changeset_group(family, %{group: group}) do
-    family
-    |> put_assoc(:group, group)
-  end
 
   def changeset_auth(family, attrs = %{auth_code: auth_code, nation: nation, nationality: nation_name}) do
     family

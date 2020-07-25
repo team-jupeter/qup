@@ -49,6 +49,7 @@ defmodule Demo.Entities.Entity do
 
     has_one :color_code, Demo.ColorCodes.ColorCode
     has_one :sil, Demo.Sils.Sil
+    has_one :account_book, Demo.AccountBooks.AccountBook
     has_one :financial_report, Demo.Reports.FinancialReport
     has_one :balance_sheet, Demo.Reports.BalanceSheet
     has_one :income_statement, Demo.Reports.IncomeStatement
@@ -133,6 +134,13 @@ defmodule Demo.Entities.Entity do
     |> put_assoc(:supul, attrs.supul)
   end
   
+  def default_changeset(entity, attrs \\ %{}) do
+    entity
+    |> cast(attrs, @fields)
+    |> validate_required([])
+    |> validate_format(:email, ~r/@/)
+  end
+  
   def changeset(entity, attrs \\ %{}) do
     entity
     |> cast(attrs, @fields)
@@ -158,11 +166,8 @@ defmodule Demo.Entities.Entity do
 
 
   def create_default_entity(entity, current_user, attrs) do
-    changeset(entity, attrs)
-    |> put_assoc(:supul, attrs.supul)
+    default_changeset(entity, attrs)
     |> put_assoc(:users, [current_user])
-    |> put_assoc(:taxation, attrs.taxation)
-    |> assoc_constraint(:taxation)
   end
 
   def create_private_entity(entity, current_user, attrs) do

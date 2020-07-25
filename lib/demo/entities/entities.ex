@@ -62,7 +62,7 @@ defmodule Demo.Entities do
   # end
 
   def create_default_entity(user, attrs) do
-    %Entity{}
+    %Entity{} 
     |> Entity.create_default_entity(user, attrs)
     |> Repo.insert()
   end

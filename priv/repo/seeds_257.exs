@@ -82,6 +82,23 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 {:ok, korea_supul} = NationSupuls.update_nation_supul(korea_supul, %{auth_code: signature}) 
    
+#? SEOUL SUPUL
+{:ok, seoul_supul} = StateSupuls.create_state_supul(%{
+  name: "서울 수풀", 
+  type: "State Supul", 
+  state_supul_code: "8201",
+  nation_supul: korea_supul, 
+  gab_balance: Decimal.from_float(0.0),
+  }) 
+
+msg_serialized = Poison.encode!(seoul_supul)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+
+{:ok, seoul_supul} = StateSupuls.update_state_supul(seoul_supul, %{auth_code: signature}) 
+   
 #? JEJUDO SUPUL
 {:ok, jejudo_supul} = StateSupuls.create_state_supul(%{
   name: "제주도 수풀", 
@@ -355,13 +372,9 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 #? 시민 홍길동의 비즈니스 :: Hong's Entity
 {:ok, hong_entity} = Entities.create_default_entity(mr_hong, %{
-  type: "Unit Entity",
+  type: "Default Entity",
   name: "Hong Entity", 
   user: mr_hong, 
-  nation: korea,
-  supul: hankyung_supul, 
-  taxation: kts,
-  supul_name: "한경면",
   pasword: "temppass",
   email: "hong@0000.kr", 
   entity_address: "제주시 한경면 20-1 해거름전망대",
@@ -379,13 +392,9 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   
 #? 시민 성춘향의 비즈니스 :: Sung's Entity
 {:ok, sung_entity} = Entities.create_default_entity(ms_sung, %{
-  type: "Unit Entity",
+  type: "Default Entity",
   name: "Sung Entity", 
   user: ms_sung,
-  supul: hanlim_supul,
-  nation: korea,
-  taxation: kts,
-  supul_name: "한림",
   email: "sung@0000.kr", 
   pasword: "temppass",
   gab_balance: Decimal.from_float(0.0),
@@ -402,13 +411,9 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 #? 시민 임꺽정의 비즈니스 :: Lim's Entity
 {:ok, lim_entity} = Entities.create_default_entity(mr_lim, %{
-  type: "Unit Entity",
+  type: "Default Entity",
   name: "Lim Entity", 
   user: mr_lim,
-  nation: korea,
-  supul: hanlim_supul,
-  taxation: kts,
-  supul_name: "한경면",
   email: "lim@0000.kr", 
   pasword: "temppass",
   user_id: mr_lim.id,
@@ -425,13 +430,9 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
     
 #? 시민 이몽룡의 비즈니스 :: Lee's Entity
 {:ok, lee_entity} = Entities.create_default_entity(mr_lee, %{
-  type: "Unit Entity",
+  type: "Default Entity",
   name: "Lee Entity", 
   user: mr_lee,
-  nation: korea,
-  supul: seoguipo_supul,
-  taxation: kts,
-  supul_name: "서귀포",
   email: "lee@0000.kr", 
   pasword: "temppass",
   user_id: mr_lee.id,
@@ -471,6 +472,56 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 # tomi_entity = change(tomi_entity) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
 {:ok, tomi_entity} = Entities.update_entity(tomi_entity, %{auth_code: signature}) 
 
+#? 임꺽정의 또 하나의 비즈니스 = 산채 비빔밥 
+
+{:ok, sanche_entity} = Entities.create_private_entity(%{
+  type: "Corporation",
+  name: "산채 비빔밥", 
+  user: mr_lim,
+  supul: hankyung_supul,
+  nation: korea,
+  taxation: kts,
+  project: "일반 법인", 
+  supul_name: "한경면",
+  pasword: "temppass",
+  email: "sanche@3532.kr", 
+  entity_address: "제주시 한경면 11-1",
+  gab_balance: Decimal.from_float(0.0),
+  }) 
+
+msg_serialized = Poison.encode!(sanche_entity)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+# sanche_entity = change(sanche_entity) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
+{:ok, sanche_entity} = Entities.update_entity(sanche_entity, %{auth_code: signature}) 
+
+#? 이몽룡의 또 하나의 비즈니스 = 사또 아카테미 
+
+{:ok, sato_entity} = Entities.create_private_entity(%{
+  type: "Corporation",
+  name: "사또 아카데미", 
+  user: mr_lee,
+  supul: seoguipo_supul,
+  nation: korea,
+  taxation: kts,
+  project: "일반 법인", 
+  supul_name: "서귀포",
+  pasword: "temppass",
+  email: "sato@3532.kr", 
+  entity_address: "서귀포시 11-1",
+  gab_balance: Decimal.from_float(0.0),
+  }) 
+
+msg_serialized = Poison.encode!(sato_entity)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+
+{:ok, sato_entity} = Entities.update_entity(sato_entity, %{auth_code: signature}) 
+
 '''
 SET DEFAULT ENTITY OF EACH USER
 '''
@@ -479,35 +530,6 @@ SET DEFAULT ENTITY OF EACH USER
 {:ok, mr_lim} = Accounts.update_user(mr_lim, %{default_entity_id: lim_entity.id, default_entity_name: "lim_entity"}) 
 {:ok, mr_lee} = Accounts.update_user(mr_lee, %{default_entity_id: lee_entity.id, default_entity_name: "lee_entity"}) 
 
-
-'''
-EVENT
-ms_sung married mr_lee.
-''' 
-
-#? a new family
-alias Demo.Weddings
-{:ok, lee_family} = Weddings.create_wedding(%{
-  type: "wedding", bride_name: "이몽룡", bride_email: mr_lee.email, 
-  groom_name: "성춘향", groom_email: ms_sung.email
-  }, lee_priv_key, sung_priv_key)
-
-
-
-'''
-TEST
-wedding = Repo.preload(lee_family, :wedding).wedding
-openhashes = Repo.preload(wedding, :openhashes).openhashes
-'''
-
-#? Korea authorizeslee_family as her citizen.
-msg_serialized = Poison.encode!(lee_family)
-ts = DateTime.utc_now() |> DateTime.to_unix()
-ts_msg_serialized = "#{ts}|#{msg_serialized}"
-{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
-signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
-{:ok,lee_family} = Families.update_family(lee_family, %{auth_code: signature}) 
-  
 
 '''
 
@@ -581,6 +603,10 @@ korea = Accounts.update_entities(korea, [
 
 Financial Reports
 
+
+[] \  
+\\ %{}  
+
 '''
 # ? prepare financial statements for entities.
 alias Demo.Reports.FinancialReport
@@ -590,60 +616,61 @@ alias Demo.Reports.BalanceSheet
 alias Demo.Reports.EquityStatement
 
 alias Demo.FinancialReports
+alias Demo.AccountBooks
 alias Demo.IncomeStatements
 alias Demo.CFStatements
 alias Demo.BalanceSheets
 alias Demo.EquityStatements
 
+alias Demo.Taxations.Taxation
 #? Financial Report
 # gab_korea_FR =
 #   FinancialReport.changeset(%FinancialReport{}, %{entity_id: gab_korea.id}) |> Repo.insert!()
-{:ok, kts_FR} = FinancialReports.create_tax_financial_report(%{taxation: kts, nation: korea, nation_supul: korea_supul}) 
-{:ok, gopang_korea_FR} = FinancialReports.create_public_financial_report(%{entity: gopang_korea, nation_supul: korea_supul}) 
-{:ok, gab_korea_FR} = FinancialReports.create_public_financial_report(%{entity: gab_korea, nation_supul: korea_supul}) 
+{:ok, kts_FR} = FinancialReports.create_financial_report(kts, %{}) 
+{:ok, gopang_korea_FR} = FinancialReports.create_financial_report(gopang_korea, %{}) 
+{:ok, gab_korea_FR} = FinancialReports.create_financial_report(gab_korea, %{}) 
 
-{:ok, hong_entity_FR} = FinancialReports.create_financial_report(%{entity: hong_entity, supul: hankyung_supul}) 
-{:ok, sung_entity_FR} = FinancialReports.create_financial_report(%{entity: sung_entity, supul: hanlim_supul}) 
-{:ok, lim_entity_FR} = FinancialReports.create_financial_report(%{entity: lim_entity, supul: hankyung_supul}) 
-{:ok, tomi_entity_FR} = FinancialReports.create_financial_report(%{entity: tomi_entity, supul: hanlim_supul}) 
+{:ok, hong_entity_FR} = FinancialReports.create_financial_report(hong_entity, %{}) 
+{:ok, sung_entity_FR} = FinancialReports.create_financial_report(sung_entity, %{}) 
+{:ok, lee_entity_FR} = FinancialReports.create_financial_report(lee_entity, %{}) 
+{:ok, lim_entity_FR} = FinancialReports.create_financial_report(lim_entity, %{}) 
+{:ok, tomi_entity_FR} = FinancialReports.create_financial_report(tomi_entity, %{}) 
 
-{:ok, korea_supul_FR} = FinancialReports.create_nation_supul_financial_report(%{nation_supul: korea_supul}) 
-{:ok, jejudo_supul_FR} = FinancialReports.create_state_supul_financial_report(%{state_supul: jejudo_supul}) 
-{:ok, hankyung_supul_FR} = FinancialReports.create_supul_financial_report(%{supul: hankyung_supul}) 
-{:ok, hanlim_supul_FR} = FinancialReports.create_supul_financial_report(%{supul: hanlim_supul}) 
-
-
-
-
+# {:ok, hankyung_supul_FR} = FinancialReports.create_financial_report(hankyung_supul) 
+# {:ok, hanlim_supul_FR} = FinancialReports.create_financial_report(hanlim_supul) 
+# {:ok, seoul_supul_FR} = FinancialReports.create_financial_report(seoul_supul) 
+# {:ok, jejudo_supul_FR} = FinancialReports.create_financial_report(jejudo_supul) 
+# {:ok, korea_supul_FR} = FinancialReports.create_financial_report(korea_supul) 
 
 
-
+#? Account Book
+{:ok, hong_entity_AB} = AccountBooks.create_account_book(hong_entity) 
+{:ok, sung_entity_AB} = AccountBooks.create_account_book(sung_entity) 
+{:ok, lee_entity_AB} = AccountBooks.create_account_book(lee_entity) 
+{:ok, lim_entity_AB} = AccountBooks.create_account_book(lim_entity) 
 
 #? Income Statement
-{:ok, kts_IS} = IncomeStatements.create_tax_income_statement(%{taxation: kts}) 
-{:ok, gab_korea_IS} = IncomeStatements.create_public_income_statement(%{nation_supul: korea_supul, entity: gab_korea}) 
-{:ok, gopang_korea_IS} = IncomeStatements.create_public_income_statement(%{nation_supul: korea_supul, entity: gopang_korea}) 
+{:ok, kts_IS} = IncomeStatements.create_income_statement(kts, %{}) 
+{:ok, gab_korea_IS} = IncomeStatements.create_income_statement(gab_korea, %{}) 
+{:ok, gopang_korea_IS} = IncomeStatements.create_income_statement(gopang_korea, %{}) 
 
-{:ok, hong_entity_IS} = IncomeStatements.create_income_statement(%{supul: hankyung_supul, entity: hong_entity}) 
-{:ok, sung_entity_IS} = IncomeStatements.create_income_statement(%{supul: hanlim_supul, entity: sung_entity}) 
-{:ok, lim_entity_IS} = IncomeStatements.create_income_statement(%{supul: hankyung_supul, entity: lim_entity}) 
-{:ok, tomi_entity_IS} = IncomeStatements.create_income_statement(%{supul: hanlim_supul, entity: tomi_entity}) 
 
-{:ok, korea_supul_IS} = IncomeStatements.create_nation_supul_income_statement(%{nation_supul: korea_supul, entity: korea_supul}) 
-{:ok, jejudo_supul_IS} = IncomeStatements.create_state_supul_income_statement(%{state_supul: jejudo_supul, entity: jejudo_supul}) 
-{:ok, hankyung_supul_IS} = IncomeStatements.create_supul_income_statement(%{supul: hankyung_supul, entity: hankyung_supul}) 
-{:ok, hanlim_supul_IS} = IncomeStatements.create_supul_income_statement(%{supul: hankyung_supul, entity: hanlim_supul}) 
+{:ok, tomi_entity_IS} = IncomeStatements.create_income_statement(tomi_entity, %{}) 
+{:ok, sanche_entity_IS} = IncomeStatements.create_income_statement(sanche_entity, %{}) 
+{:ok, sato_entity_IS} = IncomeStatements.create_income_statement(sato_entity, %{}) 
+
+{:ok, hankyung_supul_IS} = IncomeStatements.create_income_statement(hankyung_supul) 
+{:ok, hanlim_supul_IS} = IncomeStatements.create_income_statement(hanlim_supul) 
+{:ok, seoguipo_supul_IS} = IncomeStatements.create_income_statement(seoguipo_supul) 
+{:ok, seoul_supul_IS} = IncomeStatements.create_income_statement(seoul_supul) 
+{:ok, jejudo_supul_IS} = IncomeStatements.create_income_statement(jejudo_supul) 
+{:ok, korea_supul_IS} = IncomeStatements.create_income_statement(korea_supul) 
 
 
 #? Balance Sheet
 alias Demo.ABC.T1
 #? 반자동 국세청
-{:ok, kts_BS} = BalanceSheets.create_tax_balance_sheet(%{
-  taxation: kts,
-  nation_supul: korea_supul,
-  cash: Decimal.from_float(0.0),
-  gab_balance: Decimal.from_float(0.0),
-  })
+{:ok, kts_BS} = BalanceSheets.create_balance_sheet(kts, %{})
  
 new_t1s =  %{t1s: %T1{
   input_name: korea.name, 
@@ -656,13 +683,7 @@ new_t1s =  %{t1s: %T1{
 BalanceSheets.add_t1s(kts_BS, new_t1s)  
 
 #? 국가 물류 인프라
-{:ok, gopang_korea_BS} = BalanceSheets.create_public_balance_sheet(%{ 
-    entity: gopang_korea, 
-    nation_supul: korea_supul,
-    gab_balance: Decimal.from_float(0.0),
-    entity_name: gopang_korea.name,
-    cash: Decimal.from_float(0.0),
-  })
+{:ok, gopang_korea_BS} = BalanceSheets.create_balance_sheet(gopang_korea, %{})
   
 new_t1s = %{t1s: %T1{
   input_name: gab_korea.name, 
@@ -674,13 +695,7 @@ new_t1s = %{t1s: %T1{
 BalanceSheets.add_t1s(gopang_korea_BS, new_t1s)  
 
 #? 국가 금융 인프라
-{:ok, gab_korea_BS} = BalanceSheets.create_public_balance_sheet(%{
-      entity: gab_korea,
-      nation_supul: korea_supul,
-      entity_name: gab_korea.name,
-      gab_balance: Decimal.from_float(0.0),
-      cash: Decimal.from_float(0.00),
-    }) 
+{:ok, gab_korea_BS} = BalanceSheets.create_balance_sheet(gab_korea, %{}) 
 
 new_t1s =  %{t1s: %T1{
   input_name: korea.name, 
@@ -694,13 +709,7 @@ BalanceSheets.add_t1s(gab_korea_BS, new_t1s)
 
 
 #? 홍길동 1인 법인
-{:ok, hong_entity_BS} = BalanceSheets.create_balance_sheet(%{
-  entity: hong_entity,
-  supul: hankyung_supul,
-  entity_name: hong_entity.name,
-  cash: Decimal.from_float(50_000.0),
-  gab_balance: Decimal.from_float(0.0),
-  }) 
+{:ok, hong_entity_BS} = BalanceSheets.create_balance_sheet(hong_entity, %{}) 
 
 new_t1s =  %{t1s: %T1{
   input_name: korea.name, 
@@ -713,13 +722,7 @@ new_t1s =  %{t1s: %T1{
 BalanceSheets.add_t1s(hong_entity_BS, new_t1s)  
 
 #? 임꺽정 1인 법인
-{:ok, lim_entity_BS} = BalanceSheets.create_balance_sheet(%{
-  entity: lim_entity,
-  entity_name: lim_entity.name,
-  supul: hankyung_supul,
-  cash: Decimal.from_float(50_000.00),
-  gab_balance: Decimal.from_float(0.0),
-  }) 
+{:ok, lim_entity_BS} = BalanceSheets.create_balance_sheet(lim_entity, %{}) 
 
 new_t1s =  %{t1s: %T1{
   input_name: korea.name, 
@@ -732,13 +735,7 @@ new_t1s =  %{t1s: %T1{
 BalanceSheets.add_t1s(lim_entity_BS, new_t1s)  
 
 #? 성춘향 1인 법인
-{:ok, sung_entity_BS} = BalanceSheets.create_balance_sheet(%{
-  entity: sung_entity,
-  entity_name: sung_entity.name,
-  supul: hanlim_supul,
-  cash: Decimal.from_float(50_000.00),
-  gab_balance: Decimal.from_float(0.0),
-  }) 
+{:ok, sung_entity_BS} = BalanceSheets.create_balance_sheet(sung_entity, %{}) 
 
 new_t1s =  %{t1s: %T1{
   input_name: korea.name, 
@@ -750,14 +747,21 @@ new_t1s =  %{t1s: %T1{
 
 BalanceSheets.add_t1s(sung_entity_BS, new_t1s)  
 
+#? 이몽룡 1인 법인
+{:ok, lee_entity_BS} = BalanceSheets.create_balance_sheet(lee_entity, %{}) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: lee_entity.name, 
+  output_id: lee_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_t1s(lee_entity_BS, new_t1s)  
+
 #? 토미 도시락 일반 법인
-{:ok, tomi_entity_BS} = BalanceSheets.create_balance_sheet(%{
-  entity: tomi_entity,
-  entity_name: tomi_entity.name,
-  supul: hanlim_supul,
-  cash: Decimal.from_float(0.0),
-  gab_balance: Decimal.from_float(0.0),
-  }) 
+{:ok, tomi_entity_BS} = BalanceSheets.create_balance_sheet(tomi_entity, %{}) 
 
 new_t1s =  %{t1s: %T1{
   input_name: korea.name, 
@@ -770,68 +774,9 @@ new_t1s =  %{t1s: %T1{
 tomi_entity_BS = BalanceSheets.add_t1s(tomi_entity_BS, new_t1s)  
 
 
-# #? Global Supul
-# {:ok, global_supul_BS} = BalanceSheets.create_balance_sheet(global_supul, %{
-#   entity_name: global_supul.name,
-#   cash: Decimal.from_float(0.0),
-#   gab_balance: Decimal.from_float(0.0),
-#   }) 
-
-# new_t1s =  %{t1s: %T1{
-#   input_name: korea.name, 
-#   input_id: korea.id, 
-#   output_name: global_supul.name, 
-#   output_id: global_supul.id, 
-#   amount: Decimal.from_float(0.0),
-#   }}
-
-# global_supul_BS = BalanceSheets.add_t1s(global_supul_BS, new_t1s)  
-
-    
-#? Korea Supul
-{:ok, korea_supul_BS} = BalanceSheets.create_nation_supul_balance_sheet(%{
-  nation_supul: korea_supul,
-  entity_name: korea_supul.name,
-  cash: Decimal.from_float(0.0),
-  gab_balance: Decimal.from_float(0.0),
-  }) 
-
-new_t1s =  %{t1s: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: korea_supul.name, 
-  output_id: korea_supul.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
-
-korea_supul_BS = BalanceSheets.add_t1s(korea_supul_BS, new_t1s)  
-
-    
-#? Jejudo Supul
-{:ok, jejudo_supul_BS} = BalanceSheets.create_state_supul_balance_sheet(%{
-  state_supul: jejudo_supul,
-  entity_name: jejudo_supul.name,
-  cash: Decimal.from_float(0.0),
-  gab_balance: Decimal.from_float(0.0),
-  }) 
-
-new_t1s =  %{t1s: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: jejudo_supul.name, 
-  output_id: jejudo_supul.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
-
-jejudo_supul_BS = BalanceSheets.add_t1s(jejudo_supul_BS, new_t1s)  
 
 #? Hankyung Supul
-{:ok, hankyung_supul_BS} = BalanceSheets.create_supul_balance_sheet(%{
-  supul: hankyung_supul,
-  entity_name: hankyung_supul.name,
-  cash: Decimal.from_float(0.0),
-  gab_balance: Decimal.from_float(0.0),
-  }) 
+{:ok, hankyung_supul_BS} = BalanceSheets.create_balance_sheet(hankyung_supul) 
 
 new_t1s =  %{t1s: %T1{
   input_name: korea.name, 
@@ -844,12 +789,7 @@ new_t1s =  %{t1s: %T1{
 hankyung_supul_BS = BalanceSheets.add_t1s(hankyung_supul_BS, new_t1s) 
 
 #? Hanlim Supul
-{:ok, hanlim_supul_BS} = BalanceSheets.create_supul_balance_sheet(%{
-  supul: hanlim_supul,
-  entity_name: hanlim_supul.name,
-  cash: Decimal.from_float(0.0),
-  gab_balance: Decimal.from_float(0.0),
-  }) 
+{:ok, hanlim_supul_BS} = BalanceSheets.create_balance_sheet(hanlim_supul) 
 
 new_t1s =  %{t1s: %T1{
   input_name: korea.name, 
@@ -861,46 +801,169 @@ new_t1s =  %{t1s: %T1{
 
 hanlim_supul_BS = BalanceSheets.add_t1s(hanlim_supul_BS, new_t1s)  
 
+#? Seoguipo Supul
+{:ok, seoguipo_supul_BS} = BalanceSheets.create_balance_sheet(seoguipo_supul) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: seoguipo_supul.name, 
+  output_id: seoguipo_supul.id, 
+  amount: Decimal.from_float(1000.0),
+  }}
+
+seoguipo_supul_BS = BalanceSheets.add_t1s(seoguipo_supul_BS, new_t1s)  
+
+    
+
+    
+#? Seoul Supul
+{:ok, seoul_supul_BS} = BalanceSheets.create_balance_sheet(seoul_supul) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: seoul_supul.name, 
+  output_id: seoul_supul.id, 
+  amount: Decimal.from_float(1000.0),
+  }}
+
+seoul_supul_BS = BalanceSheets.add_t1s(seoul_supul_BS, new_t1s)  
+
+#? Jejudo Supul
+{:ok, jejudo_supul_BS} = BalanceSheets.create_balance_sheet(jejudo_supul) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: jejudo_supul.name, 
+  output_id: jejudo_supul.id, 
+  amount: Decimal.from_float(1000.0),
+  }}
+
+jejudo_supul_BS = BalanceSheets.add_t1s(jejudo_supul_BS, new_t1s)  
+
+    
+#? Korea Supul
+{:ok, korea_supul_BS} = BalanceSheets.create_balance_sheet(korea_supul) 
+
+new_t1s =  %{t1s: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: korea_supul.name, 
+  output_id: korea_supul.id, 
+  amount: Decimal.from_float(1000.0),
+  }}
+
+korea_supul_BS = BalanceSheets.add_t1s(korea_supul_BS, new_t1s)  
+
     
 
 #? Cash Flow Statement
 # gab_korea_CF =
 #   IncomeStatement.changeset(%IncomeStatement{}, %{entity_id: gab_korea.id}) |> Repo.insert!()
-{:ok, kts_CF} = CFStatements.create_tax_cf_statement(%{nation_supul: korea_supul, taxation: kts}) 
-{:ok, gab_korea_CF} = CFStatements.create_public_cf_statement(%{nation_supul: korea_supul, entity: gab_korea}) 
-{:ok, gopang_korea_CF} = CFStatements.create_public_cf_statement(%{nation_supul: korea_supul, entity: gopang_korea}) 
+{:ok, kts_CF} = CFStatements.create_cf_statement(kts, %{}) 
+{:ok, gab_korea_CF} = CFStatements.create_cf_statement(gab_korea, %{}) 
+{:ok, gopang_korea_CF} = CFStatements.create_cf_statement(gopang_korea, %{}) 
 
-{:ok, hong_entity_CF} = CFStatements.create_private_cf_statement(%{supul: hankyung_supul, entity: hong_entity}) 
-{:ok, sung_entity_CF} = CFStatements.create_private_cf_statement(%{supul: hanlim_supul, entity: sung_entity}) 
-{:ok, tomi_entity_CF} = CFStatements.create_private_cf_statement(%{supul: hanlim_supul, entity: tomi_entity}) 
-{:ok, lim_entity_CF} = CFStatements.create_private_cf_statement(%{supul: hankyung_supul, entity: lim_entity}) 
+{:ok, hong_entity_CF} = CFStatements.create_cf_statement(hong_entity, %{}) 
+{:ok, sung_entity_CF} = CFStatements.create_cf_statement(sung_entity, %{}) 
+{:ok, lee_entity_CF} = CFStatements.create_cf_statement(lee_entity, %{}) 
+{:ok, lim_entity_CF} = CFStatements.create_cf_statement(lim_entity, %{})
 
-{:ok, korea_supul_CF} = CFStatements.create_nation_supul_cf_statement(%{nation_supul: korea_supul}) 
-{:ok, jejudo_supul_CF} = CFStatements.create_state_supul_cf_statement(%{state_supul: jejudo_supul}) 
-{:ok, hankyung_supul_CF} = CFStatements.create_supul_cf_statement(%{supul: hankyung_supul}) 
-{:ok, hanlim_supul_CF} = CFStatements.create_supul_cf_statement(%{supul: hanlim_supul}) 
+{:ok, tomi_entity_CF} = CFStatements.create_cf_statement(tomi_entity, %{}) 
+{:ok, sato_entity_CF} = CFStatements.create_cf_statement(sato_entity, %{}) 
+{:ok, sanche_entity_CF} = CFStatements.create_cf_statement(sanche_entity, %{}) 
+
+{:ok, hankyung_supul_CF} = CFStatements.create_cf_statement(hankyung_supul) 
+{:ok, hanlim_supul_CF} = CFStatements.create_cf_statement(hanlim_supul) 
+
+{:ok, seoul_supul_CF} = CFStatements.create_cf_statement(seoul_supul) 
+{:ok, jejudo_supul_CF} = CFStatements.create_cf_statement(jejudo_supul) 
+
+{:ok, korea_supul_CF} = CFStatements.create_cf_statement(korea_supul) 
 
 
 
 #? Equity Statement
 # kts_ES =
 #   EquityStatement.changeset(%EquityStatement{}, %{entity_id: kts.id}) |> Repo.insert!()
-{:ok, kts_ES} = EquityStatements.create_tax_equity_statement(%{taxation: kts}) 
-{:ok, gab_korea_ES} = EquityStatements.create_public_equity_statement(%{nation_supul: korea_supul, entity: gab_korea}) 
-{:ok, gopang_korea_ES} = EquityStatements.create_public_equity_statement(%{nation_supul: korea_supul, entity: gopang_korea}) 
+#? For public companies
+{:ok, kts_ES} = EquityStatements.create_equity_statement(kts, %{}) 
+{:ok, gab_korea_ES} = EquityStatements.create_equity_statement(gab_korea, %{}) 
+{:ok, gopang_korea_ES} = EquityStatements.create_equity_statement(gopang_korea, %{}) 
 
-{:ok, hong_entity_ES} = EquityStatements.create_private_equity_statement(%{supul: hankyung_supul, entity: hong_entity}) 
-{:ok, sung_entity_ES} = EquityStatements.create_private_equity_statement(%{supul: hanlim_supul, entity: sung_entity}) 
-{:ok, lim_entity_ES} = EquityStatements.create_private_equity_statement(%{supul: hankyung_supul, entity: lim_entity}) 
-{:ok, tomi_entity_ES} = EquityStatements.create_private_equity_statement(%{supul: hanlim_supul, entity: tomi_entity}) 
+#? For default entities
+{:ok, hong_entity_ES} = EquityStatements.create_equity_statement(hong_entity, %{}) 
+{:ok, sung_entity_ES} = EquityStatements.create_equity_statement(sung_entity, %{}) 
+{:ok, lee_entity_ES} = EquityStatements.create_equity_statement(lee_entity, %{}) 
+{:ok, lim_entity_ES} = EquityStatements.create_equity_statement(lim_entity, %{}) 
 
-{:ok, korea_supul_ES} = EquityStatements.create_nation_supul_equity_statement(%{nation_supul: korea_supul}) 
-{:ok, jejudo_supul_ES} = EquityStatements.create_state_supul_equity_statement(%{state_supul: jejudo_supul}) 
-{:ok, hankyung_supul_ES} = EquityStatements.create_supul_equity_statement(%{supul: hankyung_supul}) 
-{:ok, hanlim_supul_ES} = EquityStatements.create_supul_equity_statement(%{supul: hanlim_supul}) 
+#? For private companies
+{:ok, tomi_entity_ES} = EquityStatements.create_equity_statement(tomi_entity, %{}) 
+{:ok, tomi_entity_ES} = EquityStatements.create_equity_statement(tomi_entity, %{}) 
+{:ok, tomi_entity_ES} = EquityStatements.create_equity_statement(tomi_entity, %{}) 
+
+#?For unit supuls
+{:ok, hankyung_supul_ES} = EquityStatements.create_equity_statement(hankyung_supul) 
+{:ok, hanlim_supul_ES} = EquityStatements.create_equity_statement(hanlim_supul) 
+
+#? For state supuls
+{:ok, seoul_supul_ES} = EquityStatements.create_equity_statement(seoul_supul) 
+{:ok, jejudo_supul_ES} = EquityStatements.create_equity_statement(jejudo_supul) 
+
+#? For nation supul
+{:ok, korea_supul_ES} = EquityStatements.create_equity_statement(korea_supul) 
 
 
 
+
+'''
+EVENT
+ms_sung married mr_lee.
+''' 
+
+#? a new family
+alias Demo.Weddings
+Weddings.create_wedding(%{
+  type: "wedding", bride_name: "이몽룡", bride_email: mr_lee.email, 
+  groom_name: "성춘향", groom_email: ms_sung.email
+  }, lee_priv_key, sung_priv_key)
+  
+  
+  
+  
+  
+#? Account books of the family.
+
+
+#? Account books of supuls.
+{:ok, hankyung_supul_AB} = AccountBooks.create_account_book(hankyung_supul) 
+{:ok, hanlim_supul_AB} = AccountBooks.create_account_book(hanlim_supul) 
+{:ok, seoul_supul_AB} = AccountBooks.create_account_book(seoul_supul) 
+{:ok, jejudo_supul_AB} = AccountBooks.create_account_book(jejudo_supul) 
+{:ok, korea_supul_AB} = AccountBooks.create_account_book(korea_supul) 
+  
+
+
+'''
+[] \\ %{}  
+'''
+
+'''
+TEST
+wedding = Repo.preload(lee_family, :wedding).wedding
+openhashes = Repo.preload(wedding, :openhashes).openhashes
+'''
+
+#? Korea authorizeslee_family as her citizen.
+msg_serialized = Poison.encode!(lee_family)
+ts = DateTime.utc_now() |> DateTime.to_unix()
+ts_msg_serialized = "#{ts}|#{msg_serialized}"
+{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+{:ok,lee_family} = Families.update_family(lee_family, %{auth_code: signature}) 
+  
 
 
 

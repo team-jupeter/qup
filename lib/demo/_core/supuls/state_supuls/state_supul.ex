@@ -26,7 +26,12 @@ defmodule Demo.StateSupuls.StateSupul do
     has_many :schools, Demo.Schools.School, on_replace: :nilify
     has_many :openhashes, Demo.Openhashes.Openhash, on_replace: :nilify
 
+    has_one :account_book, Demo.AccountBooks.AccountBook 
     has_one :financial_report, Demo.Reports.FinancialReport 
+    has_one :income_statement, Demo.Reports.IncomeStatement, on_replace: :nilify
+    has_one :balance_sheet, Demo.Reports.BalanceSheet, on_replace: :nilify
+    has_one :cf_statement, Demo.Reports.CFStatement, on_replace: :nilify
+    has_one :equity_statement, Demo.Reports.EquityStatement, on_replace: :nilify
 
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
     
@@ -76,6 +81,12 @@ defmodule Demo.StateSupuls.StateSupul do
   def changeset(state_supul, attrs = %{nation_supul: nation_supul}) do
     IO.puts "StateSupul nation_supul changeset"
     state_supul
+    |> cast(attrs, @fields)
+    |> put_assoc(:nation_supul, attrs.nation_supul)
+  end 
+  def changeset(attrs = %{nation_supul: nation_supul}) do
+    IO.puts "StateSupul nation_supul changeset"
+    %StateSupul{}
     |> cast(attrs, @fields)
     |> put_assoc(:nation_supul, attrs.nation_supul)
   end 

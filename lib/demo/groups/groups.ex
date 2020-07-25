@@ -14,7 +14,7 @@ defmodule Demo.Groups do
 
 
   def create_group(attrs \\ %{}) do
-    %Group{}
+    %Group{} 
     |> Group.changeset(attrs)
     |> Repo.insert()
   end

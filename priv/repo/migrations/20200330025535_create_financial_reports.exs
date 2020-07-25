@@ -46,6 +46,7 @@ defmodule Demo.Repo.Migrations.CreateFinancialReports do
       add(:fr_embed_b, :jsonb)
 
       add :entity_id, references(:entities, type: :uuid, null: false)
+      add :group_id, references(:groups, type: :uuid, null: false)
       add :supul_id, references(:supuls, type: :uuid, null: false)
       add :taxation_id, references(:taxations, type: :uuid, null: false)
       add :state_supul_id, references(:state_supuls, type: :uuid, null: false)

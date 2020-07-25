@@ -9,6 +9,7 @@ defmodule Demo.Openhashes do
   alias Demo.StateSupuls
   alias Demo.Supuls.Supul
   alias Demo.Supuls
+  alias Demo.Transactions
 
   alias Demo.Weddings
   # alias Demo.Transactions
@@ -97,7 +98,7 @@ defmodule Demo.Openhashes do
       #? Openhash is stored by both supul and by event. 
     case event.type do
       "wedding" -> Weddings.add_openhash(event, attrs)
-      "transaction" -> Transasctions.add_openhash(event, attrs)
+      "transaction" -> Transactions.add_openhash(event, attrs)
       _ -> "error"  
     end
 
