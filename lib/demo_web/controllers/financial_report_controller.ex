@@ -12,7 +12,10 @@ defmodule DemoWeb.FinancialReportController do
 
   alias Demo.FinancialReports
   alias Demo.Reports.FinancialReport
-
+  alias Demo.Repo
+  alias Demo.Supuls
+  alias Demo.StateSupuls
+  alias Demo.NationSupuls
   # def action(conn, _) do
   #   args = [conn, conn.params, conn.assigns.current_entity]
   #   apply(__MODULE__, action_name(conn), args)
@@ -28,12 +31,38 @@ defmodule DemoWeb.FinancialReportController do
     end
   end 
 
-  def edit(conn, %{"id" => id}) do
-    financial_report = FinancialReport |> Demo.Repo.get!(id) 
-    changeset = FinancialReports.change_financial_report(financial_report)
-    render(conn, "edit.html", fr: financial_report, changeset: changeset)
-  end
+  # def edit(conn, %{"id" => id}) do
+  #   financial_report = FinancialReport |> Demo.Repo.get!(id) 
+  #   changeset = FinancialReports.change_financial_report(financial_report)
+  #   render(conn, "edit.html", fr: financial_report, changeset: changeset)
+  # end
 
+  def edit(conn, %{"id" => id}) do
+    financial_report = %FinancialReport{}
+
+    cond do
+      Families.get_family(id) != nil ->
+        family = Families.get_family(id)
+        financial_report = Repo.preload(family, :financial_report).financial_report
+
+      Supuls.get_supul(id) != nil ->
+        supul = Supuls.get_supul(id)
+        financial_report = Repo.preload(supul, :financial_report).financial_report
+
+      StateSupuls.get_state_supul(id) != nil ->
+        state_supul = StateSupuls.get_state_supul(id)
+        financial_report = Repo.preload(state_supul, :financial_report).financial_report
+
+      NationSupuls.get_nation_supul(id) != nil ->
+        nation_supul = NationSupuls.get_nation_supul(id)
+        financial_report = Repo.preload(nation_supul, :financial_report).financial_report
+
+      true ->
+        "error"
+    end
+
+    render(conn, "show.html", fr: financial_report)
+  end
   def update(conn, %{"id" => id, "financial_report" => financial_report_params}) do
     financial_report = FinancialReport |> Demo.Repo.get!(id) 
 
@@ -56,7 +85,7 @@ defmodule DemoWeb.FinancialReportController do
   end
 
   def create(conn, %{"financial_report" => financial_report_params}, current_entity) do
-    case FinancialReports.create_entity_financial_report(current_entity, financial_report_params) do
+    case FinancialReports.create_financial_report(current_entity, financial_report_params) do
       {:ok, financial_report} ->
         conn
         |> put_flash(:info, "FinancialReport created successfully.")

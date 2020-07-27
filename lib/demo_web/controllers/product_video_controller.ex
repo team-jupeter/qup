@@ -14,15 +14,15 @@ defmodule DemoWeb.ProductVideoController do
   # end
 
    
-  def index(conn, _params, current_product) do
-    # conn = conn
-    # |> DemoWeb.ProductAuth.product_login(current_product)
+  # def index(conn, _params, current_product) do
+  #   # conn = conn
+  #   # |> DemoWeb.ProductAuth.product_login(current_product)
     
 
-    # videos = Multimedia.list_product_videos(current_product) 
-    # render(conn, "index.html", videos: videos)
-    conn
-  end 
+  #   # videos = Multimedia.list_product_videos(current_product) 
+  #   # render(conn, "index.html", videos: videos)
+  #   conn
+  # end 
 
   def show(conn, %{"id" => id}) do
     current_product = Entities.get_product!(id)

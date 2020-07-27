@@ -9,99 +9,96 @@
    
   <tr>
     <td>Revenue</td>
-    <td><%= @is.revenue %></td>
+    <td><%= @income_statement.revenue %></td>
   </tr>
   <tr>
     <td>Expense</td>
-    <td><%= @is.expense %></td>
+    <td><%= @income_statement.expense %></td>
   </tr>
   <tr>
     <td>Compensation</td>
-    <td><%= @is.compensation %></td>
+    <td><%= @income_statement.compensation %></td>
   </tr>
 
   <tr>
     <td>Cost of goods sold</td>
-    <td><%= @is.cost_of_goods_sold %></td>
+    <td><%= @income_statement.cost_of_goods_sold %></td>
   </tr>
 
   <tr>
     <td>Depreciation and amortization</td>
-    <td><%= @is.depreciation_and_amortization %></td>
+    <td><%= @income_statement.depreciation_and_amortization %></td>
   </tr>
 
   <tr>
     <td>Employee benefits</td>
-    <td><%= @is.employee_benefits %></td>
+    <td><%= @income_statement.employee_benefits %></td>
   </tr>
 
   <tr>
     <td>Income taxes</td>
-    <td><%= @is.income_taxes %></td>
+    <td><%= @income_statement.income_taxes %></td>
   </tr>
 
   <tr>
     <td>Insurance</td>
-    <td><%= @is.insurance %></td>
+    <td><%= @income_statement.insurance %></td>
   </tr>
 
   <tr>
     <td>Marketing</td>
-    <td><%= @is.marketing %></td>
+    <td><%= @income_statement.marketing %></td>
   </tr>
 
   <tr>
     <td>Office</td>
-    <td><%= @is.office %></td>
+    <td><%= @income_statement.office %></td>
   </tr>
 
   <tr>
     <td>Payroll</td>
-    <td><%= @is.payroll %></td>
+    <td><%= @income_statement.payroll %></td>
   </tr>
 
   <tr>
     <td>Professional fees</td>
-    <td><%= @is.professional_fees %></td>
+    <td><%= @income_statement.professional_fees %></td>
   </tr>
 
   <tr>
     <td>Rent</td>
-    <td><%= @is.rent %></td>
+    <td><%= @income_statement.rent %></td>
   </tr>
  
   <tr>
     <td>Repair and maintenance</td>
-    <td><%= @is.repair_and_maintenance %></td>
+    <td><%= @income_statement.repair_and_maintenance %></td>
   </tr>
  
   <tr>
     <td>Sales discounts</td>
-    <td><%= @is.sales_discounts %></td>
+    <td><%= @income_statement.sales_discounts %></td>
   </tr>
  
   <tr>
     <td>Supplies</td>
-    <td><%= @is.supplies %></td>
+    <td><%= @income_statement.supplies %></td>
   </tr>
  
   <tr>
     <td>Taxes</td>
-    <td><%= @is.taxes %></td>
+    <td><%= @income_statement.taxes %></td>
   </tr>
  
   <tr>
     <td>Travel and entertainment</td>
-    <td><%= @is.travel_and_entertainment %></td>
+    <td><%= @income_statement.travel_and_entertainment %></td>
   </tr>
  
   <tr>
     <td>Utilities</td>
-    <td><%= @is.utilities %></td>
+    <td><%= @income_statement.utilities %></td>
   </tr>
  </tbody>
 
 </table>
-
-<span><%= link "Edit", to: Routes.income_statement_path(@conn, :edit, @is) %></span>
-<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

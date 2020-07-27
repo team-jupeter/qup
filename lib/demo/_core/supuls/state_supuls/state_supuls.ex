@@ -15,6 +15,7 @@ defmodule Demo.StateSupuls do
 
 
   def get_state_supul!(id), do: Repo.get!(StateSupul, id)
+  def get_state_supul(id), do: Repo.get(StateSupul, id)
  
 
   def create_state_supul(attrs) do

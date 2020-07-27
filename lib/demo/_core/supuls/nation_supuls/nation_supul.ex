@@ -9,6 +9,7 @@ defmodule Demo.NationSupuls.NationSupul do
     field :name, :string
     field :type, :string 
     field :nation_supul_code, :string
+    field :nation_name, :string
 
     field :auth_code, :string
 
@@ -41,7 +42,7 @@ defmodule Demo.NationSupuls.NationSupul do
   @fields [
     :name, :auth_code, :nation_supul_code, :type, :hash_chain,
     :openhash_box, :current_hash, :incoming_hash, :hash_count, :global_openhash_id,
-    :previous_hash, :sender,  
+    :previous_hash, :sender, :nation_name, 
 
   ]
 
@@ -99,6 +100,8 @@ defmodule Demo.NationSupuls.NationSupul do
   end
 
   def changeset(%NationSupul{} = nation_supul, attrs) do
+    IO.puts "changeset(%NationSupul{} = nation_supul, attrs)"
+
     nation_supul
     |> cast(attrs, @fields)
     |> validate_required([])

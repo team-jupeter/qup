@@ -3,6 +3,9 @@ defmodule DemoWeb.NationSupulController do
 
   alias Demo.NationSupuls
   alias Demo.NationSupuls.NationSupul 
+  alias Demo.AccountBooks.AccountBook
+  
+  import Ecto.Query, only: [from: 2]
 
   def index(conn, _params) do
     nation_supuls = NationSupuls.list_nation_supuls()
@@ -29,6 +32,11 @@ defmodule DemoWeb.NationSupulController do
   def show(conn, %{"id" => id}) do
     nation_supul = NationSupuls.get_nation_supul!(id)
     render(conn, "show.html", nation_supul: nation_supul)
+  end
+
+  def show_AB(conn, %{"id" => id}) do
+    ab_id = Repo.one(from ab in AccountBook, where: ab.nation_supul_id == ^id, select: ab.id)
+    DemoWeb.AccountBookController.show(conn, %{"id" => ab_id})
   end
 
   def edit(conn, %{"id" => id}) do

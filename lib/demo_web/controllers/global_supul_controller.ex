@@ -1,8 +1,12 @@
 defmodule DemoWeb.GlobalSupulController do
   use DemoWeb, :controller
 
+  alias Demo.Repo
   alias Demo.GlobalSupuls
   alias Demo.GlobalSupuls.GlobalSupul
+  alias Demo.AccountBooks.AccountBook
+  
+  import Ecto.Query, only: [from: 2]
 
   def index(conn, _params) do
     global_supuls = GlobalSupuls.list_global_supuls()
@@ -29,6 +33,11 @@ defmodule DemoWeb.GlobalSupulController do
   def show(conn, %{"id" => id}) do
     global_supul = GlobalSupuls.get_global_supul!(id)
     render(conn, "show.html", global_supul: global_supul)
+  end
+
+  def show_AB(conn, %{"id" => id}) do
+    ab_id = Repo.one(from ab in AccountBook, where: ab.globabl_supul_id == ^id, select: ab.id)
+    DemoWeb.AccountBookController.show(conn, %{"id" => ab_id})
   end
 
   def edit(conn, %{"id" => id}) do

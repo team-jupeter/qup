@@ -20,6 +20,17 @@ defmodule Demo.AccountBooks do
   def get_account_book!(id), do: Repo.get!(AccountBook, id)
 
 
+  def add_expense(%AccountBook{} = account_book, %{amount: amount}) do
+    accrued_expense = Decimal.add(account_book.expense, amount)
+    update_account_book(account_book, %{expense: accrued_expense})
+  end
+
+  def add_revenue(%AccountBook{} = account_book, %{amount: amount}) do
+    accrued_revenue = Decimal.add(account_book.revenue, amount)
+    update_account_book(account_book, %{revenue: accrued_revenue})
+  end
+
+  # ? For a user
   def create_account_book(%Entity{} = entity) do
     attrs = create_attrs(entity)
 
@@ -29,6 +40,7 @@ defmodule Demo.AccountBooks do
     |> Repo.insert()
   end
 
+  # ? For a family
   def create_account_book(%Family{} = family) do
     attrs = create_attrs(family)
 
@@ -37,19 +49,20 @@ defmodule Demo.AccountBooks do
     |> Ecto.Changeset.put_assoc(:family, family)
     |> Repo.insert()
   end
-  
+
   # ? Supul  
   def create_account_book(%Supul{} = supul) do
     attrs = create_attrs(supul)
-    
+
     %AccountBook{}
     |> AccountBook.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:supul, supul)
     |> Repo.insert()
   end
-  
+
   def create_account_book(%StateSupul{} = state_supul) do
     attrs = create_attrs(state_supul)
+
     %AccountBook{}
     |> AccountBook.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:state_supul, state_supul)
@@ -58,6 +71,7 @@ defmodule Demo.AccountBooks do
 
   def create_account_book(%NationSupul{} = nation_supul) do
     attrs = create_attrs(nation_supul)
+
     %AccountBook{}
     |> AccountBook.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
@@ -82,24 +96,41 @@ defmodule Demo.AccountBooks do
     list_AB = []
 
     case family_or_supul do
-      %Family{} -> 
+      %Family{} ->
         entities = Repo.preload(family_or_supul, :entities).entities
+
         list_AB =
           Enum.map(entities, fn entity -> Repo.preload(entity, :account_book).account_book end)
-      %Supul{} -> 
+
+      %Supul{} ->
         families = Repo.preload(family_or_supul, :families).families
+
         list_AB =
           Enum.map(families, fn family -> Repo.preload(family, :account_book).account_book end)
-      %StateSupul{} -> 
+
+      %StateSupul{} ->
         supuls = Repo.preload(family_or_supul, :supuls).supuls
+
         list_AB =
           Enum.map(supuls, fn supul -> Repo.preload(supul, :account_book).account_book end)
-      %NationSupul{} -> 
+
+      %NationSupul{} ->
         state_supuls = Repo.preload(family_or_supul, :state_supuls).state_supuls
+
         list_AB =
-          Enum.map(state_supuls, fn state_supul -> Repo.preload(state_supul, :account_book).account_book end)
-      _ -> "error"
-     end
+          Enum.map(state_supuls, fn state_supul ->
+            Repo.preload(state_supul, :account_book).account_book
+          end)
+
+      _ ->
+        "error"
+    end
+
+    expense =
+      Enum.reduce(list_AB, Decimal.from_float(0.00), fn x, acc -> Decimal.add(x.expense, acc) end)
+
+    revenue =
+      Enum.reduce(list_AB, Decimal.from_float(0.00), fn x, acc -> Decimal.add(x.revenue, acc) end)
 
     grain =
       Enum.reduce(list_AB, Decimal.from_float(0.00), fn x, acc -> Decimal.add(x.grain, acc) end)

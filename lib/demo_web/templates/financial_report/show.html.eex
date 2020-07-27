@@ -1,12 +1,6 @@
-<h4><%= @fr.entity_name %> F/R</h4>
 <p>Notice: Values in this page are automatically calculated from other financial statements.</p>
 
 <table>
-  <tr>
-    <td>Current Hash:</td>
-    <td><%= @fr.current_hash %></td>
-  </tr>
-
   <tr>
     <td>Description:</td>
     <td><%= @fr.openhash_box %></td>
@@ -69,8 +63,3 @@
 
 
 </table>
-
-<span><%= link "Edit", to: Routes.financial_report_path(@conn, :edit, @fr.id) %></span>
-<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>
-<span><%= link "New", to: Routes.financial_report_path(@conn, :new) %></span>
-

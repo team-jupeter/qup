@@ -12,7 +12,7 @@ alias Demo.Nations
 {:ok, korea} = Nations.create_nation(%{
   name: "South Korea", 
   }) 
-
+ 
 #? private and pulbic key of korea
 korea_rsa_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
 korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
@@ -929,9 +929,18 @@ Weddings.create_wedding(%{
   type: "wedding", bride_name: "이몽룡", bride_email: mr_lee.email, 
   groom_name: "성춘향", groom_email: ms_sung.email
   }, lee_priv_key, sung_priv_key)
-  
-  
-  
+
+alias Demo.Families.Family
+lee_family = Repo.one(from f in Family, where: f.husband_id == ^mr_lee.id, select: f)  
+
+# #? Korea authorizeslee_family as her citizen.
+# msg_serialized = Poison.encode!(lee_family)
+# ts = DateTime.utc_now() |> DateTime.to_unix()
+# ts_msg_serialized = "#{ts}|#{msg_serialized}"
+# {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
+# signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
+# {:ok,lee_family} = Families.update_family(lee_family, %{auth_code: signature}) 
+    
   
   
 #? Account books of the family.
@@ -940,8 +949,13 @@ Weddings.create_wedding(%{
 #? Account books of supuls.
 {:ok, hankyung_supul_AB} = AccountBooks.create_account_book(hankyung_supul) 
 {:ok, hanlim_supul_AB} = AccountBooks.create_account_book(hanlim_supul) 
+{:ok, seoguipo_supul_AB} = AccountBooks.create_account_book(seoguipo_supul) 
+
+#? Account books of state supuls.
 {:ok, seoul_supul_AB} = AccountBooks.create_account_book(seoul_supul) 
 {:ok, jejudo_supul_AB} = AccountBooks.create_account_book(jejudo_supul) 
+
+#? Account books of nation supul.
 {:ok, korea_supul_AB} = AccountBooks.create_account_book(korea_supul) 
   
 
@@ -956,14 +970,6 @@ wedding = Repo.preload(lee_family, :wedding).wedding
 openhashes = Repo.preload(wedding, :openhashes).openhashes
 '''
 
-#? Korea authorizeslee_family as her citizen.
-msg_serialized = Poison.encode!(lee_family)
-ts = DateTime.utc_now() |> DateTime.to_unix()
-ts_msg_serialized = "#{ts}|#{msg_serialized}"
-{:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
-signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
-{:ok,lee_family} = Families.update_family(lee_family, %{auth_code: signature}) 
-  
 
 
 
@@ -1031,12 +1037,6 @@ alias Demo.Entities.Product
 {:ok, 갈비탕} = Entities.create_product(lim_entity, %{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5})
 
  
-# #? 토미 김밥
-# tomi_entity = Entity.changeset_update_products(tomi_entity, [김밥, 떡볶이, 우동])
-
-# #? 임꺽정의 산채 한정식
-# lim_entity = Entity.changeset_update_products(lim_entity, [한정식, 육개장, 갈비탕])
-
 
 alias Demo.Multimedia
 # 한정식_video = Video.changeset(%Video{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 한정식.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!

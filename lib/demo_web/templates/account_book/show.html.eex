@@ -1,0 +1,363 @@
+
+
+<table >
+  <thead> 
+    <th>Exp.</th>
+    <th>Amt.</th>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td>revenue:</td>
+      <td><%= @account_book.revenue %></td>
+    </tr>
+    <tr>
+      <td>expense:</td>
+      <td><%= @account_book.expense %></td>
+    </tr>
+    <tr>
+      <td>grain:</td>
+      <td><%= @account_book.grain %></td>
+    </tr>
+    <tr>
+      <td>grain_products:</td>
+      <td><%= @account_book.grain_products %></td>
+    </tr>
+    <tr>
+      <td>grain_products:</td>
+      <td><%= @account_book.grain_products %></td> 
+    <tr>
+      <td>bread_and_rice:</td>
+      <td><%= @account_book.bread_and_rice %></td> 
+    <tr>
+      <td>meat:</td>
+      <td><%= @account_book.grain_products %></td> 
+    <tr>
+      <td>meat_products:</td>
+      <td><%= @account_book.meat %></td> 
+    <tr>
+      <td>fresh_fish:</td>
+      <td><%= @account_book.fresh_fish %></td> 
+    <tr>
+      <td>salt_etc:</td>
+      <td><%= @account_book.salt_and_salt_marine_animals %></td> 
+    <tr>
+      <td>other_aquatic:</td>
+      <td><%= @account_book.other_aquatic_animal_processing %></td> 
+    <tr>
+      <td>dairy_n_products:</td>
+      <td><%= @account_book.dairy_products_and_eggs %></td> 
+    <tr>
+      <td>oil_and_fat:</td>
+      <td><%= @account_book.oil_and_fat %></td> 
+    <tr>
+      <td>fruit_n_products:</td>
+      <td><%= @account_book.fruit_and_fruit_processed_products %></td> 
+
+    <tr>
+      <td>vegetable_n_products:</td>
+      <td><%= @account_book.vegetable_and_vegetable_processed_products %></td> 
+
+    <tr>
+      <td>seaweed_n_products:</td>
+      <td><%= @account_book.seaweed_and_seaweed_processed_products %></td> 
+    <tr>
+      <td>sugars_and_sweets:</td>
+      <td><%= @account_book.sugars_and_sweets %></td> 
+    <tr>
+      <td>seasoned_food:</td>
+      <td><%= @account_book.seasoned_food %></td> 
+    <tr>
+      <td>other_food:</td>
+      <td><%= @account_book.other_food %></td> 
+    <tr>
+      <td>coffee_n_tea:</td>
+      <td><%= @account_book.coffee_and_tea %></td> 
+    <tr>
+      <td>juice_n_drinks:</td>
+      <td><%= @account_book.juice_and_other_drinks %></td> 
+
+    <tr>
+      <td>liquor:</td>
+      <td><%= @account_book.liquor %></td> 
+    <tr>
+      <td>cigarette:</td>
+      <td><%= @account_book.cigarette %></td> 
+
+
+    <tr>
+      <td>fabric_and_others:</td>
+      <td><%= @account_book.fabric_and_others %></td> 
+    <tr>
+      <td>undergarment:</td>
+      <td><%= @account_book.undergarment %></td> 
+    <tr>
+      <td>other_apparel:</td>
+      <td><%= @account_book.other_apparel %></td> 
+    <tr>
+      <td>clothing_n_services:</td>
+      <td><%= @account_book.clothing_related_services %></td> 
+    <tr>
+      <td>shoes:</td>
+      <td><%= @account_book.shoes %></td> 
+    <tr>
+      <td>footwear_service:</td>
+      <td><%= @account_book.footwear_service %></td> 
+
+    <tr>
+      <td>residential_cost:</td>
+      <td><%= @account_book.actual_residential_cost %></td> 
+    <tr>
+      <td>housing_n_repair:</td>
+      <td><%= @account_book.housing_maintenance_and_repair %></td> 
+    <tr>
+      <td>water_n_waste:</td>
+      <td><%= @account_book.water_and_sewage_and_waste_treatment %></td> 
+    <tr>
+      <td>other_residential:</td>
+      <td><%= @account_book.other_residential_services %></td> 
+    <tr>
+      <td>fuel_costs:</td>
+      <td><%= @account_book.fuel_costs %></td> 
+
+
+    <tr>
+      <td>furniture_n_lighting:</td>
+      <td><%= @account_book.furniture_and_lighting %></td> 
+    <tr>
+      <td>interior_decoration:</td>
+      <td><%= @account_book.interior_decoration %></td> 
+    <tr>
+      <td>furniture_n_services:</td>
+      <td><%= @account_book.furniture_lighting_and_decoration_services %></td> 
+    <tr>
+      <td>household_textile:</td>
+      <td><%= @account_book.household_textile %></td> 
+    <tr>
+      <td>household_n_appliances:</td>
+      <td><%= @account_book.household_appliances_and_household_appliances %></td> 
+    <tr>
+      <td>home_n_related_service:</td>
+      <td><%= @account_book.home_appliance_related_service %></td> 
+    <tr>
+      <td>houseware:</td>
+      <td><%= @account_book.houseware %></td> 
+    <tr>
+      <td>household_n_others:</td>
+      <td><%= @account_book.household_tools_and_others %></td> 
+    <tr>
+      <td>household_goods:</td>
+      <td><%= @account_book.household_goods %></td> 
+    <tr>
+      <td>housekeeping_service:</td>
+      <td><%= @account_book.housekeeping_service %></td> 
+
+
+    <tr>
+      <td>medicine:</td>
+      <td><%= @account_book.medicine %></td> 
+    <tr>
+      <td>medical_consumables:</td>
+      <td><%= @account_book.medical_consumables %></td> 
+    <tr>
+      <td>health_care:</td>
+      <td><%= @account_book.health_care_supplies_and_equipment %></td> 
+    <tr>
+      <td>outpatient_medical_service:</td>
+      <td><%= @account_book.dental_service %></td> 
+    <tr>
+      <td>dental_service:</td>
+      <td><%= @account_book.grain_products %></td> 
+    <tr>
+      <td>other_medical_services:</td>
+      <td><%= @account_book.other_medical_services %></td> 
+    <tr>
+      <td>hospitalization_service:</td>
+      <td><%= @account_book.hospitalization_service %></td> 
+
+    <tr>
+      <td>car_purchase:</td>
+      <td><%= @account_book.car_purchase %></td> 
+    <tr>
+      <td>other_transportation:</td>
+      <td><%= @account_book.purchase_other_transportation_equipment %></td> 
+    <tr>
+      <td>trans_repair:</td>
+      <td><%= @account_book.maintenance_and_repair_of_transportation_equipment %></td> 
+    <tr>
+      <td>trans_fuel:</td>
+      <td><%= @account_book.transportation_fuel_costs %></td> 
+    <tr>
+      <td>other_trans_services:</td>
+      <td><%= @account_book.other_personal_transportation_services %></td> 
+    <tr>
+      <td>rail_transportation:</td>
+      <td><%= @account_book.rail_transportation %></td> 
+    <tr>
+      <td>land_transportation:</td>
+      <td><%= @account_book.land_transportation %></td> 
+    <tr>
+      <td>other_transportation:</td>
+      <td><%= @account_book.other_transportation %></td> 
+    <tr>
+      <td>other_trans_services:</td>
+      <td><%= @account_book.other_transportation_related_services %></td> 
+
+    <tr>
+      <td>postal_service:</td>
+      <td><%= @account_book.postal_service %></td> 
+    <tr>
+      <td>com_equipment:</td>
+      <td><%= @account_book.communication_equipment %></td> 
+    <tr>
+      <td>communication_service:</td>
+      <td><%= @account_book.communication_service %></td> 
+
+    <tr>
+      <td>video_and_sound:</td>
+      <td><%= @account_book.video_and_sound_equipment %></td> 
+    <tr>
+      <td>photo_equipment:</td>
+      <td><%= @account_book.photo_optical_equipment %></td> 
+    <tr>
+      <td>info_device:</td>
+      <td><%= @account_book.information_processing_device %></td> 
+    <tr>
+      <td>record_carrier:</td>
+      <td><%= @account_book.record_carrier %></td> 
+    <tr>
+      <td>info_device_repair:</td>
+      <td><%= @account_book.video_sound_and_information_device_repair %></td> 
+    <tr>
+      <td>entertainment:</td>
+      <td><%= @account_book.entertainment_culture_durable_goods %></td> 
+    <tr>
+      <td>musical_instrument:</td>
+      <td><%= @account_book.musical_instrument %></td> 
+    <tr>
+      <td>entertainment_culture:</td>
+      <td><%= @account_book.maintenance_and_repair_of_durable_entertainment_culture %></td> 
+    <tr>
+      <td>toys_and_hobbies:</td>
+      <td><%= @account_book.toys_and_hobbies %></td> 
+    <tr>
+      <td>camping_and_exercise:</td>
+      <td><%= @account_book.camping_and_exercise_related_goods %></td> 
+    <tr>
+      <td>flower_related_goods:</td>
+      <td><%= @account_book.flower_related_goods %></td> 
+    <tr>
+      <td>pet_related_items:</td>
+      <td><%= @account_book.pet_related_items %></td> 
+    <tr>
+      <td>flower_and_pet_services:</td>
+      <td><%= @account_book.flower_and_pet_services %></td> 
+    <tr>
+      <td>entertainment_service:</td>
+      <td><%= @account_book.exercise_and_entertainment_service %></td> 
+    <tr>
+      <td>cultural_service:</td>
+      <td><%= @account_book.cultural_service %></td> 
+    <tr>
+      <td>lottery_ticket:</td>
+      <td><%= @account_book.lottery_ticket %></td> 
+    <tr>
+      <td>books:</td>
+      <td><%= @account_book.books %></td> 
+    <tr>
+      <td>other_prints:</td>
+      <td><%= @account_book.other_prints %></td> 
+    <tr>
+      <td>phrases:</td>
+      <td><%= @account_book.phrases %></td> 
+    <tr>
+      <td>group_travel_cost:</td>
+      <td><%= @account_book.group_travel_cost %></td> 
+
+
+    <tr>
+      <td>regular_education:</td>
+      <td><%= @account_book.regular_education %></td> 
+    <tr>
+      <td>primary_education:</td>
+      <td><%= @account_book.primary_education %></td> 
+    <tr>
+      <td>secondary_education:</td>
+      <td><%= @account_book.secondary_education %></td> 
+    <tr>
+      <td>higher_education:</td>
+      <td><%= @account_book.higher_education %></td> 
+    <tr>
+      <td>school_education:</td>
+      <td><%= @account_book.school_and_moisturizing_education %></td> 
+    <tr>
+      <td>student_education:</td>
+      <td><%= @account_book.student_school_education %></td> 
+    <tr>
+      <td>adult_school_education:</td>
+      <td><%= @account_book.adult_school_education %></td> 
+    <tr>
+      <td>other_education:</td>
+      <td><%= @account_book.other_education %></td> 
+
+
+    <tr>
+      <td>meal_cost:</td>
+      <td><%= @account_book.meal_cost %></td> 
+    <tr>
+      <td>room_charge:</td>
+      <td><%= @account_book.meal_cost %></td> 
+
+
+    <tr>
+      <td>beauty_service:</td>
+      <td><%= @account_book.beauty_service %></td> 
+    <tr>
+      <td>beauty_equipment:</td>
+      <td><%= @account_book.beauty_equipment %></td> 
+    <tr>
+      <td>beauty_products:</td>
+      <td><%= @account_book.hygiene_and_beauty_products %></td> 
+    <tr>
+      <td>watches_n_ornaments:</td>
+      <td><%= @account_book.watches_and_ornaments %></td> 
+    <tr>
+      <td>other_personal:</td>
+      <td><%= @account_book.other_personal_items %></td> 
+    <tr>
+      <td>welfare_facilities:</td>
+      <td><%= @account_book.welfare_facilities %></td> 
+    <tr>
+      <td>insurance:</td>
+      <td><%= @account_book.insurance %></td> 
+    <tr>
+      <td>other_finance:</td>
+      <td><%= @account_book.other_finance %></td> 
+    <tr>
+      <td>other_services:</td>
+      <td><%= @account_book.other_services %></td> 
+
+    <tr>
+      <td>current_tax:</td>
+      <td><%= @account_book.current_tax %></td> 
+    <tr>
+      <td>unusual_taxes:</td>
+      <td><%= @account_book.unusual_taxes %></td> 
+    <tr>
+      <td>pension:</td>
+      <td><%= @account_book.pension %></td> 
+    <tr>
+      <td>social_insurance:</td>
+      <td><%= @account_book.social_insurance %></td> 
+    <tr>
+      <td>interest_expense:</td>
+      <td><%= @account_book.interest_expense %></td> 
+    <tr>
+      <td>furniture:</td>
+      <td><%= @account_book.furniture_simple_battery %></td> 
+    <tr>
+      <td>non_profit_org:</td>
+      <td><%= @account_book.moved_to_a_non_profit_organization %></td> 
+    
+  </tbody>
+</table>

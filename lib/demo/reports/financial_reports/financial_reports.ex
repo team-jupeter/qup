@@ -9,6 +9,7 @@ defmodule Demo.FinancialReports do
   alias Demo.StateSupuls.StateSupul
   alias Demo.NationSupuls.NationSupul
   alias Demo.Taxations.Taxation
+  alias Demo.Families.Family
 
   def get_financial_report!(id), do: Repo.get!(FinancialReport, id)
 
@@ -40,7 +41,6 @@ defmodule Demo.FinancialReports do
 
   # ? 그룹  
   def create_financial_report(%Group{} = group) do
-    group = Repo.preload(group, :entities)
     attrs = create_attrs(group)
 
     %FinancialReport{}
@@ -49,9 +49,18 @@ defmodule Demo.FinancialReports do
     |> Repo.insert()
   end
 
+  # ? 가족  
+  def create_financial_report(%Family{} = family) do
+    attrs = create_attrs(family)
+
+    %FinancialReport{}
+    |> FinancialReport.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:family, family)
+    |> Repo.insert()
+  end
+
   # ? Supul  
   def create_financial_report(%Supul{} = supul) do
-    supul = Repo.preload(supul, :entities)
     attrs = create_attrs(supul)
 
     %FinancialReport{}
@@ -93,11 +102,27 @@ defmodule Demo.FinancialReports do
   '''
 
   defp create_attrs(group_or_supul) do
-  entities = Repo.preload(group_or_supul, :entities).entities
+    list_FR = []
 
-    list_FR =
-      Enum.map(entities, fn entity -> Repo.preload(entity, :financial_report).financial_report end)
-
+    case group_or_supul do
+      %Group{} -> 
+        entities = Repo.preload(group_or_supul, :entities).entities
+        list_FR =
+          Enum.map(entities, fn entity -> Repo.preload(entity, :balance_sheet).balance_sheet end)
+      %Supul{} -> 
+        entities = Repo.preload(group_or_supul, :entities).entities
+        list_FR =
+          Enum.map(entities, fn entity -> Repo.preload(entity, :balance_sheet).balance_sheet end)
+      %StateSupul{} -> 
+        supuls = Repo.preload(group_or_supul, :supuls).supuls
+        list_FR =
+          Enum.map(supuls, fn supul -> Repo.preload(supul, :balance_sheet).balance_sheet end)
+      %NationSupul{} -> 
+        state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
+        list_FR =
+          Enum.map(state_supuls, fn state_supul -> Repo.preload(state_supul, :balance_sheet).balance_sheet end)
+      _ -> "error"
+     end
     num_of_shares =
       Enum.reduce(list_FR, Decimal.from_float(0.00), fn x, acc ->
         Decimal.add(x.num_of_shares, acc)

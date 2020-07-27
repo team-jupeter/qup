@@ -9,7 +9,7 @@ defmodule Demo.Repo.Migrations.CreateStateSupuls do
       add :name, :string
       add :nation_name, :string
   
-      add :auth_code, :text
+      add :auth_code, :text 
 
       add :hash_count, :integer, default: 0
 

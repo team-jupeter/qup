@@ -44,7 +44,10 @@ defmodule Demo.Entities.Entity do
     field :locked, :boolean, default: false
     field :nation_signature, :string 
 
-    #? A user must have only one entity, and An entity may have several business_embeds. 
+    #? A user must have only one default_entity, and An entity may have several business_embeds. 
+    field :default_entity, :boolean, default: false
+
+    
     # embeds_many :business_embeds, Demo.Entities.BusinessEmbed, on_replace: :delete
 
     has_one :color_code, Demo.ColorCodes.ColorCode
@@ -62,7 +65,8 @@ defmodule Demo.Entities.Entity do
 
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
     
-    belongs_to :group, Demo.Families.Family, type: :binary_id
+    belongs_to :family, Demo.Families.Family, type: :binary_id
+    belongs_to :group, Demo.Groups.Group, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id, on_replace: :delete
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
@@ -126,6 +130,7 @@ defmodule Demo.Entities.Entity do
     :biz_category_id, :sic_code, :legal_status, :year_started, 
     :num_of_shares, :supul_name, :gab_balance, :supul_id,
     :share_price, :credit_rate, :project, 
+    :default_entity,
   ]
 
   def changeset(%Entity{} = entity, attrs = %{supul: supul}) do

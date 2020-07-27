@@ -8,7 +8,7 @@
   <tbody>
     <tr>
     <td>GAB Balance</td>
-    <td><%= @bs.gab_balance %></td>
+    <td><%= @balance_sheet.gab_balance %></td>
     </tr>
     <tr>
     <td>T1</td>
@@ -24,69 +24,66 @@
     </tr>
     <tr>
     <td>Cash</td>
-    <td><%= @bs.cash %></td>
+    <td><%= @balance_sheet.cash %></td>
     </tr>
     <tr>
     <td>Accounts Payable</td>
-    <td><%= @bs.accounts_payable %></td>
+    <td><%= @balance_sheet.accounts_payable %></td>
     </tr>
     <tr>
     <td>Accounts Receivable</td>
-    <td><%= @bs.accounts_receivable %></td>
+    <td><%= @balance_sheet.accounts_receivable %></td>
     </tr>
     <tr>
     <td>Accrued Liabilities</td>
-    <td><%= @bs.accrued_liabilities %></td>
+    <td><%= @balance_sheet.accrued_liabilities %></td>
     </tr>
     <tr>
     <td>Add. Paid_in Cap.</td> 
-    <td><%= @bs.additional_paid_in_capital%></td>
+    <td><%= @balance_sheet.additional_paid_in_capital%></td>
     </tr>
     <tr>
     <td>Customer Prepayments</td>
-    <td><%= @bs.customer_prepayments%></td>
+    <td><%= @balance_sheet.customer_prepayments%></td>
     </tr>
     <tr>
     <td>Fixed Assets</td>
-    <td><%= @bs.inventory %></td>
+    <td><%= @balance_sheet.inventory %></td>
     </tr>
     <tr>
     <td>Long_term Debt</td>
-    <td><%= @bs.long_term_debt %></td>
+    <td><%= @balance_sheet.long_term_debt %></td>
     </tr>
     <tr>
     <td>Marketable Securities</td>
-    <td><%= @bs.marketable_securities %></td>
+    <td><%= @balance_sheet.marketable_securities %></td>
     </tr>
     <tr>
     <td>Prepaid Expenses</td>
-    <td><%= @bs.prepaid_expenses %></td>
+    <td><%= @balance_sheet.prepaid_expenses %></td>
     </tr>
     <tr>
     <td>Retained Earnings</td>
-    <td><%= @bs.retained_earnings %></td>
+    <td><%= @balance_sheet.retained_earnings %></td>
     </tr>
     <tr>
     <td>Short_term Debt</td>
-    <td><%= @bs.short_term_debt %></td>
+    <td><%= @balance_sheet.short_term_debt %></td>
     </tr>
     <tr>
     <td>Stock</td>
-    <td><%= @bs.stock %></td>
+    <td><%= @balance_sheet.stock %></td>
     </tr>
     <tr>
     <td>Taxes</td>
-    <td><%= @bs.taxes %></td>
+    <td><%= @balance_sheet.taxes %></td>
     </tr>
     <tr>
     <td>Treasury Stock</td>
-    <td><%= @bs.treasury_stock %></td>
+    <td><%= @balance_sheet.treasury_stock %></td>
     </tr>
   </tbody>
 </table>
 
 
 </ul>
-
-<span><%= link "Edit", to: Routes.balance_sheet_path(@conn, :edit, @bs) %></span>
-<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

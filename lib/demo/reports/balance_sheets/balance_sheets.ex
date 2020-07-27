@@ -10,10 +10,17 @@ defmodule Demo.BalanceSheets do
   alias Demo.StateSupuls.StateSupul
   alias Demo.NationSupuls.NationSupul
   alias Demo.Taxations.Taxation
+  alias Demo.Families.Family
 
   def get_balance_sheet!(id), do: Repo.get!(BalanceSheet, id)
 
   def get_balance_sheet!(entity_id) do
+    BalanceSheet
+    |> entity_balance_sheets_query(entity_id)
+    |> Repo.all()
+  end
+
+  def get_entity_balance_sheet!(entity_id) do
     BalanceSheet
     |> entity_balance_sheets_query(entity_id)
     |> Repo.all()
@@ -46,6 +53,16 @@ defmodule Demo.BalanceSheets do
     %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:group, group)
+    |> Repo.insert()
+  end
+
+  #? Family
+  def create_balance_sheet(%Family{} = family) do
+    attrs = create_attrs(family)
+
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:family, family)
     |> Repo.insert()
   end
 

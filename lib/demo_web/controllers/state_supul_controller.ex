@@ -3,6 +3,10 @@ defmodule DemoWeb.StateSupulController do
 
   alias Demo.StateSupuls 
   alias Demo.StateSupuls.StateSupul
+  alias Demo.AccountBooks.AccountBook
+  alias Demo.Repo
+  
+  import Ecto.Query, only: [from: 2]
 
   def index(conn, _params) do
     state_supuls = StateSupuls.list_state_supuls()
@@ -29,6 +33,11 @@ defmodule DemoWeb.StateSupulController do
   def show(conn, %{"id" => id}) do
     state_supul = StateSupuls.get_state_supul!(id)
     render(conn, "show.html", state_supul: state_supul)
+  end
+
+  def show_AB(conn, %{"id" => id}) do
+    ab_id = Repo.one(from ab in AccountBook, where: ab.statge_supul_id == ^id, select: ab.id)
+    DemoWeb.AccountBookController.show(conn, %{"id" => ab_id})
   end
 
   def edit(conn, %{"id" => id}) do

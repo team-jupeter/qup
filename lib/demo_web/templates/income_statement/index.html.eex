@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-<%= for income_statement <- @is do %>
+<%= for income_statement <- @income_statement do %>
     <tr>
 
       <td>

@@ -16,7 +16,7 @@ defmodule DemoWeb.OpenhashController do
 
   def create(conn, %{"openhash" => openhash_params}) do
     case Openhashes.create_openhash(openhash_params) do 
-      {:ok, openhash} ->
+      {:ok, openhash} -> 
         conn
         |> put_flash(:info, "Openhash created successfully.")
         |> redirect(to: Routes.openhash_path(conn, :show, openhash))

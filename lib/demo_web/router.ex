@@ -34,7 +34,6 @@ defmodule DemoWeb.Router do
     resources "/events", EventController
     resources "/weddings", WeddingController
     resources "/openhashes", OpenhashController
-    resources "/account_books", AccountBookController
 
     live "/presence_users/:name", UserLive.PresenceIndex
 
@@ -99,8 +98,9 @@ defmodule DemoWeb.Router do
 
 
   scope "/reports", DemoWeb do
-    pipe_through [:browser, :authenticate_user]
+    pipe_through [:browser]
 
+    resources "/account_books", AccountBookController 
     resources "/financial_report", FinancialReportController
     resources "/balance_sheet", BalanceSheetController
     resources "/income_statement", IncomeStatementController
@@ -128,7 +128,9 @@ defmodule DemoWeb.Router do
     resources "/global_supul", GlobalSupulController
     resources "/nation_supuls", NationSupulController
     resources "/state_supuls", StateSupulController
-    resources "/", SupulController
+    resources "/", SupulController  do
+      get "/ab", SupulController, :ab
+    end
   end
 
   scope "/asset", DemoWeb do

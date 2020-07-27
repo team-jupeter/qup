@@ -12,7 +12,7 @@ defmodule Demo.EventsTest do
 
     def event_fixture(attrs \\ %{}) do
       {:ok, event} =
-        attrs
+        attrs  
         |> Enum.into(@valid_attrs)
         |> Events.create_event()
 

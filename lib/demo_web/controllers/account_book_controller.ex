@@ -3,6 +3,12 @@ defmodule DemoWeb.AccountBookController do
 
   alias Demo.AccountBooks
   alias Demo.AccountBooks.AccountBook
+  alias Demo.Repo
+  alias Demo.Families
+  alias Demo.Supuls
+  # alias Demo.Supuls.Supul
+  alias Demo.StateSupuls
+  alias Demo.NationSupuls
 
   def index(conn, _params) do
     account_books = AccountBooks.list_account_books()
@@ -28,14 +34,48 @@ defmodule DemoWeb.AccountBookController do
 
   def show(conn, %{"id" => id}) do
     account_book = AccountBooks.get_account_book!(id)
+    IO.inspect("account_book")
     render(conn, "show.html", account_book: account_book)
   end
 
   def edit(conn, %{"id" => id}) do
-    account_book = AccountBooks.get_account_book!(id)
-    changeset = AccountBooks.change_account_book(account_book)
-    render(conn, "edit.html", account_book: account_book, changeset: changeset)
+    account_book = %AccountBook{}
+
+    cond do
+      Families.get_family(id) != nil -> family = Families.get_family(id) 
+        account_book = Repo.preload(family, :account_book).account_book
+
+      Supuls.get_supul(id) != nil -> supul = Supuls.get_supul(id) 
+        account_book = Repo.preload(supul, :account_book).account_book
+
+      StateSupuls.get_state_supul(id) != nil -> state_supul = StateSupuls.get_state_supul(id) 
+        account_book = Repo.preload(state_supul, :account_book).account_book
+
+      NationSupuls.get_nation_supul(id) != nil -> nation_supul = NationSupuls.get_nation_supul(id) 
+        account_book = Repo.preload(nation_supul, :account_book).account_book
+
+      true ->
+        "error"
+    end
+
+    render(conn, "show.html", account_book: account_book)
   end
+
+  # def supul(conn, supul) do
+  #   account_book = Repo.preload(supul, :account_book).account_book
+  #   render(conn, "show.html", account_book: account_book)
+  # end
+
+  # def state_supul(conn, state_supul) do
+  #   IO.inspect state_supul
+  #   account_book = Repo.preload(state_supul, :account_book).account_book
+  #   render(conn, "show.html", account_book: account_book)
+  # end
+
+  # def nation_supul(conn, nation_supul) do
+  #   account_book = Repo.preload(nation_supul, :account_book).account_book
+  #   render(conn, "show.html", account_book: account_book)
+  # end
 
   def update(conn, %{"id" => id, "account_book" => account_book_params}) do
     account_book = AccountBooks.get_account_book!(id)

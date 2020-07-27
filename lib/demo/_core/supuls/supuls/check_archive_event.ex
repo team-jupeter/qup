@@ -53,7 +53,7 @@ defmodule Demo.Supuls.CheckArchiveEvent do
 
           openhash = Openhashes.create_openhash(erl_supul, event)
 
-          # ? BOOKKEEPING 
+          # ? Making a family struct and related financial statements. 
           process_event(event, openhash)
 
 
@@ -71,9 +71,6 @@ defmodule Demo.Supuls.CheckArchiveEvent do
 
             IO.puts("Make an openhash of ssu supul struct")
             openhash = Openhashes.create_openhash(ssu_supul, event)
-
-            # ? BOOKKEEPING 
-            process_event(event, %{openhash: openhash})
           end
 
         # ? halt the process 

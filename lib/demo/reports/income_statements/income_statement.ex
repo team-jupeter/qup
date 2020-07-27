@@ -5,25 +5,25 @@ defmodule Demo.Reports.IncomeStatement do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "income_statements" do
     field :compensation, :decimal, precision: 12, scale: 2, default: 0.0
-    field :cost_of_goods_sold, :decimal, precision: 12, scale: 2
-    field :depreciation_and_amortization, :decimal, precision: 12, scale: 2
-    field :employee_benefits, :decimal, precision: 12, scale: 2
+    field :cost_of_goods_sold, :decimal, precision: 12, scale: 2, default: 0.0
+    field :depreciation_and_amortization, :decimal, precision: 12, scale: 2, default: 0.0
+    field :employee_benefits, :decimal, precision: 12, scale: 2, default: 0.0
     field :entity_name, :string
-    field :expense, :decimal, precision: 12, scale: 2 
-    field :income_taxes, :decimal, precision: 12, scale: 2
-    field :insurance, :decimal, precision: 12, scale: 2 
-    field :marketing, :decimal, precision: 12, scale: 2
-    field :office, :decimal, precision: 12, scale: 2
-    field :payroll, :decimal, precision: 12, scale: 2
-    field :professional_fees, :decimal, precision: 12, scale: 2
-    field :rent, :decimal, precision: 12, scale: 2
-    field :repair_and_maintenance, :decimal, precision: 12, scale: 2 
-    field :revenue, :decimal, precision: 12, scale: 2
-    field :sales_discounts, :decimal, precision: 12, scale: 2
-    field :supplies, :decimal, precision: 12, scale: 2
-    field :taxes, :decimal, precision: 12, scale: 2
-    field :travel_and_entertainment, :decimal, precision: 12, scale: 2
-    field :utilities, :decimal, precision: 12, scale: 2
+    field :expense, :decimal, precision: 12, scale: 2, default: 0.0 
+    field :income_taxes, :decimal, precision: 12, scale: 2, default: 0.0
+    field :insurance, :decimal, precision: 12, scale: 2, default: 0.0 
+    field :marketing, :decimal, precision: 12, scale: 2, default: 0.0
+    field :office, :decimal, precision: 12, scale: 2, default: 0.0
+    field :payroll, :decimal, precision: 12, scale: 2, default: 0.0
+    field :professional_fees, :decimal, precision: 12, scale: 2, default: 0.0
+    field :rent, :decimal, precision: 12, scale: 2, default: 0.0
+    field :repair_and_maintenance, :decimal, precision: 12, scale: 2, default: 0.0 
+    field :revenue, :decimal, precision: 12, scale: 2, default: 0.0
+    field :sales_discounts, :decimal, precision: 12, scale: 2, default: 0.0
+    field :supplies, :decimal, precision: 12, scale: 2, default: 0.0
+    field :taxes, :decimal, precision: 12, scale: 2, default: 0.0
+    field :travel_and_entertainment, :decimal, precision: 12, scale: 2, default: 0.0
+    field :utilities, :decimal, precision: 12, scale: 2, default: 0.0
 
     embeds_many :t1, Demo.ABC.T1
     embeds_many :t2, Demo.ABC.T2

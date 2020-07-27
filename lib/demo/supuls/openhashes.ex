@@ -20,11 +20,11 @@ defmodule Demo.Openhashes do
 
   def get_openhash!(id), do: Repo.get!(Openhash, id)
 
-  # def create_openhash(supul, attrs \\ %{priv_key: priv_key}) do
-  #   %Openhash{}
-  #   |> Openhash.changeset(attrs)
-  #   |> Repo.insert()
-  # end
+  def create_openhash(attrs) do
+    %Openhash{}
+    |> Openhash.changeset(attrs)
+    |> Repo.insert()
+  end
 
   def update_openhash(%Openhash{} = openhash, attrs) do
     openhash
@@ -40,7 +40,7 @@ defmodule Demo.Openhashes do
     Openhash.changeset(openhash, %{})
   end
 
-  def create_openhash(supul, event) do
+  def create_openhash(%Supul{} = supul, event) do
     IO.puts "create_openhash(supul, event)"
 
     {:ok, openhash} =

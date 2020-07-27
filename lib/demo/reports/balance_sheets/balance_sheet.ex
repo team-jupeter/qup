@@ -7,24 +7,24 @@ defmodule Demo.Reports.BalanceSheet do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "balance_sheets" do
     field :entity_name, :string 
-    field :accounts_payable, :decimal, precision: 12, scale: 2
-    field :accounts_receivable, :decimal, precision: 12, scale: 2
-    field :accrued_liabilities, :decimal, precision: 12, scale: 2
-    field :additional_paid_in_capital, :decimal, precision: 12, scale: 2
-    field :cash, :decimal, precision: 12, scale: 2
-    field :customer_prepayments, :decimal, precision: 12, scale: 2
+    field :accounts_payable, :decimal, precision: 12, scale: 2, default: 0.0
+    field :accounts_receivable, :decimal, precision: 12, scale: 2, default: 0.0
+    field :accrued_liabilities, :decimal, precision: 12, scale: 2, default: 0.0
+    field :additional_paid_in_capital, :decimal, precision: 12, scale: 2, default: 0.0
+    field :cash, :decimal, precision: 12, scale: 2, default: 0.0
+    field :customer_prepayments, :decimal, precision: 12, scale: 2, default: 0.0
     field :fixed_assets, {:array, :map}, default: []
     field :inventory, {:array, :map}, default: []
-    field :long_term_debt, :decimal, precision: 12, scale: 2
-    field :marketable_securities, :decimal, precision: 12, scale: 2
-    field :prepaid_expenses, :decimal, precision: 12, scale: 2
-    field :retained_earnings, :decimal, precision: 12, scale: 2
-    field :short_term_debt, :decimal, precision: 12, scale: 2
-    field :stock, :decimal, precision: 12, scale: 2
-    field :taxes, :decimal, precision: 12, scale: 2
-    field :treasury_stock, :decimal, precision: 12, scale: 2
+    field :long_term_debt, :decimal, precision: 12, scale: 2, default: 0.0
+    field :marketable_securities, :decimal, precision: 12, scale: 2, default: 0.0
+    field :prepaid_expenses, :decimal, precision: 12, scale: 2, default: 0.0
+    field :retained_earnings, :decimal, precision: 12, scale: 2, default: 0.0
+    field :short_term_debt, :decimal, precision: 12, scale: 2, default: 0.0
+    field :stock, :decimal, precision: 12, scale: 2, default: 0.0
+    field :taxes, :decimal, precision: 12, scale: 2, default: 0.0
+    field :treasury_stock, :decimal, precision: 12, scale: 2, default: 0.0
     
-    field :gab_balance, :decimal, precision: 12, scale: 2
+    field :gab_balance, :decimal, precision: 12, scale: 2, default: 0.0
 
     embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
     embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
@@ -32,6 +32,7 @@ defmodule Demo.Reports.BalanceSheet do
  
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
     belongs_to :group, Demo.Groups.Group, type: :binary_id
+    belongs_to :family, Demo.Families.Family, type: :binary_id
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id

@@ -73,6 +73,7 @@ defmodule Demo.Families.Family do
 
     has_many :users, Demo.Accounts.User
     has_many :entities, Demo.Entities.Entity
+    has_one :account_book, Demo.AccountBooks.AccountBook
     has_one :group, Demo.Groups.Group
     has_one :wedding, Demo.Weddings.Wedding
 

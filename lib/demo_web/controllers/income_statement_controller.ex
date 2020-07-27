@@ -4,7 +4,10 @@ defmodule DemoWeb.IncomeStatementController do
 
   alias Demo.IncomeStatements
   alias Demo.Reports.IncomeStatement
-
+  alias Demo.Repo
+  alias Demo.Supuls
+  alias Demo.StateSupuls
+  alias Demo.NationSupuls
   # def action(conn, _) do
   #   args = [conn, conn.params, conn.assigns.current_entity]
   #   apply(__MODULE__, action_name(conn), args)
@@ -27,9 +30,26 @@ defmodule DemoWeb.IncomeStatementController do
   end 
 
   def edit(conn, %{"id" => id}) do
-    income_statement = IncomeStatement |> Demo.Repo.get!(id) 
-    changeset = IncomeStatements.change_income_statement(income_statement)
-    render(conn, "edit.html", is: income_statement, changeset: changeset)
+    income_statement = %IncomeStatement{}
+
+    cond do
+      Supuls.get_supul(id) != nil ->
+        supul = Supuls.get_supul(id)
+        income_statement = Repo.preload(supul, :income_statement).income_statement
+
+      StateSupuls.get_state_supul(id) != nil ->
+        state_supul = StateSupuls.get_state_supul(id)
+        income_statement = Repo.preload(state_supul, :income_statement).income_statement
+
+      NationSupuls.get_nation_supul(id) != nil ->
+        nation_supul = NationSupuls.get_nation_supul(id)
+        income_statement = Repo.preload(nation_supul, :income_statement).income_statement
+
+      true ->
+        "error"
+    end
+
+    render(conn, "show.html", income_statement: income_statement)
   end
 
   def update(conn, %{"id" => id, "income_statement" => income_statement_params}) do

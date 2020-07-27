@@ -31,6 +31,7 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
       add :financial_report_id, references(:financial_reports, type: :uuid, null: false)
       add :entity_id, references(:entities, type: :uuid, null: false)
       add :group_id, references(:groups, type: :uuid, null: false)
+      add :family_id, references(:families, type: :uuid, null: false)
       add :taxation_id, references(:taxations, type: :uuid, null: false)
       add :supul_id, references(:supuls, type: :uuid, null: false)
       add :state_supul_id, references(:state_supuls, type: :uuid, null: false)

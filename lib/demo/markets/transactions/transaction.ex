@@ -11,11 +11,22 @@ defmodule Demo.Transactions.Transaction do
     #? who pays ABC? which t1s in his/her/its wallet?
     field :buyer_name, :string 
     field :buyer_id, :binary_id
+    field :buyer_family_id, :binary_id, default: nil
+    field :buyer_state_supul_id, :binary_id 
+    field :buyer_state_supul_name, :binary_id
+    field :buyer_nation_supul_id, :binary_id 
+    field :buyer_nation_supul_name, :binary_id
+
     field :erl_supul_name, :string 
     field :erl_supul_id, :binary_id
     
     field :seller_name, :string 
     field :seller_id, :binary_id
+    field :seller_state_supul_id, :binary_id 
+    field :seller_state_supul_name, :binary_id
+    field :seller_nation_supul_id, :binary_id 
+    field :seller_nation_supul_name, :binary_id
+
     field :ssu_supul_name, :string
     field :ssu_supul_id, :binary_id
 
@@ -58,13 +69,24 @@ defmodule Demo.Transactions.Transaction do
   end
 
   @fields [
-    :type, :hash_of_invoice, :buyer_name, :seller_name, :buyer_id, :seller_id, 
+    :type, :hash_of_invoice, :buyer_name, :seller_name, :buyer_id, :buyer_family_id, :seller_id, 
     :erl_supul_name, :erl_supul_id, :ssu_supul_name, :ssu_supul_id,  
     :gps, :tax, :insurance, :abc_input_id, :abc_input_name,  
     :abc_output_id, :abc_output_name, :abc_input_t1s, :abc_amount, 
     :items, :fiat_currency, :transaction_status, :if_only_item, 
     :fair?, :gopang_fee, :archived?, :payload, :payload_hash,
     :event_hash,
+
+    :buyer_state_supul_id, 
+    :buyer_state_supul_name,
+    :buyer_nation_supul_id, 
+    :buyer_nation_supul_name,
+
+    :seller_state_supul_id, 
+    :seller_state_supul_name,
+    :seller_nation_supul_id, 
+    :seller_nation_supul_name,
+
   ]
 
 

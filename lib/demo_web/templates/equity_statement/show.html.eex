@@ -8,43 +8,36 @@
   </thead>
   <tbody>
   <tr>
-    <td>Entity name</td>
-    <td><%= @es.entity_name %></td>
-  </tr>
-  <tr>
     <td>Opening balance</td>
-    <td><%= @es.opening_balance %></td>
+    <td><%= @equity_statement.opening_balance %></td>
   </tr>
   <tr>
     <td>Net income</td>
-    <td><%= @es.net_income %></td>
+    <td><%= @equity_statement.net_income %></td>
   </tr>
   <tr>
     <td>Other income</td>
-    <td><%= @es.other_income %></td>
+    <td><%= @equity_statement.other_income %></td>
   </tr>
   <tr>
     <td>Issue of new capital</td>
-    <td><%= @es.issue_of_new_capital %></td>
+    <td><%= @equity_statement.issue_of_new_capital %></td>
   </tr>
   <tr>
     <td>Net loss</td>
-    <td><%= @es.net_loss %></td>
+    <td><%= @equity_statement.net_loss %></td>
   </tr>
   <tr>
     <td>Other loss</td>
-    <td><%= @es.other_loss %></td>
+    <td><%= @equity_statement.other_loss %></td>
   </tr>
   <tr>
     <td>Dividends</td>
-    <td><%= @es.dividends %></td>
+    <td><%= @equity_statement.dividends %></td>
   </tr>
   <tr>
     <td>Withdrawal of capital</td>
-    <td><%= @es.withdrawal_of_capital %></td>
+    <td><%= @equity_statement.withdrawal_of_capital %></td>
   </tr>
   </tbody>
 </table> 
-
-<span><%= link "Edit", to: Routes.balance_sheet_path(@conn, :edit, @es) %></span>
-<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

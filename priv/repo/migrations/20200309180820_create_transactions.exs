@@ -9,10 +9,21 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
 
       add :buyer_name, :string  
       add :buyer_id, :binary_id
+      add :buyer_family_id, :binary_id, default: nil
+      add :buyer_state_supul_id, :binary_id 
+      add :buyer_state_supul_name, :binary_id
+      add :buyer_nation_supul_id, :binary_id 
+      add :buyer_nation_supul_name, :binary_id
+
       add :erl_supul_name, :string
       add :erl_supul_id, :binary_id
       add :seller_name, :string  
       add :seller_id, :binary_id
+      add :seller_state_supul_id, :binary_id 
+      add :seller_state_supul_name, :binary_id
+      add :seller_nation_supul_id, :binary_id 
+      add :seller_nation_supul_name, :binary_id
+
       add :ssu_supul_name, :string
       add :ssu_supul_id, :binary_id
 

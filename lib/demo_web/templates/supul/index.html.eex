@@ -23,4 +23,3 @@
   </tbody>
 </table>
 
-<span><%= link "New Supul", to: Routes.supul_path(@conn, :new) %></span>

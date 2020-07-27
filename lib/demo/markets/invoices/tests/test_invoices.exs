@@ -387,8 +387,8 @@ bs_1 = Repo.insert!(%BalanceSheet{financial_report_id: hs_report.id})
 bs_2 = Repo.insert!(%BalanceSheet{financial_report_id: delta_report.id})
 
 #? add balance sheet to report
-hs_report = FinancialReport.changeset(hs_report, %{balance_sheet: bs_1}) |> Repo.update!
-delta_report = FinancialReport.changeset(delta_report, %{balance_sheet: bs_2}) |> Repo.update!
+hs_report = FinancialReport.changeset(hs_report, %{balance_sheet:balance_sheet_1}) |> Repo.update!
+delta_report = FinancialReport.changeset(delta_report, %{balance_sheet:balance_sheet_2}) |> Repo.update!
 
 #? preload reports
 preloaded_hs_report = Repo.one from report in FinancialReport,

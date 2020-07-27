@@ -9,6 +9,7 @@ defmodule Demo.CFStatements do
   alias Demo.StateSupuls.StateSupul
   alias Demo.NationSupuls.NationSupul
   alias Demo.Taxations.Taxation
+  alias Demo.Families.Family
 
   def get_cf_statement!(id), do: Repo.get!(CFStatement, id)
 
@@ -38,12 +39,23 @@ defmodule Demo.CFStatements do
     |> Repo.insert()
   end
 
+  # ? 그룹 
   def create_cf_statement(%Group{} = group) do
     attrs = create_attrs(group)
 
     %CFStatement{}
     |> CFStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:group, group)
+    |> Repo.insert()
+  end
+
+  # ? 가족 
+  def create_cf_statement(%Family{} = family) do
+    attrs = create_attrs(family)
+
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:family, family)
     |> Repo.insert()
   end
 

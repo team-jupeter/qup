@@ -30,7 +30,7 @@ defmodule Demo.Events do
   def delete_event(%Event{} = event) do
     Repo.delete(event)
   end
-
+ 
   def create_event(attrs) do
     %Event{}
     |> Event.changeset(attrs)
@@ -42,8 +42,15 @@ defmodule Demo.Events do
     Supuls.CheckArchiveEvent.check_archive_event(event, payload)
   end   
  
+
+  def update_event(event, attrs) do
+    event
+    |> Event.changeset(attrs)
+    |> Repo.update()
+  end
+
   #? 혼인신고서, 거래계약서, ....
-  def make_payload(event, erl_private_key, ssu_private_key) do
+  defp make_payload(event, erl_private_key, ssu_private_key) do
     ts = DateTime.utc_now() |> DateTime.to_unix()
     event_id = event.id 
 

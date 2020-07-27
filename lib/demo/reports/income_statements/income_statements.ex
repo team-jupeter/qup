@@ -9,6 +9,7 @@ defmodule Demo.IncomeStatements do
   alias Demo.StateSupuls.StateSupul
   alias Demo.NationSupuls.NationSupul
   alias Demo.Taxations.Taxation
+  alias Demo.Families.Family
 
   def list_income_statements(id) do
     IncomeStatement
@@ -50,6 +51,15 @@ defmodule Demo.IncomeStatements do
     %IncomeStatement{}
     |> IncomeStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:group, group)
+    |> Repo.insert()
+  end
+
+  def create_income_statement(%Family{} = family) do
+    attrs = create_attrs(family)
+  
+    %IncomeStatement{}
+    |> IncomeStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:family, family)
     |> Repo.insert()
   end
 

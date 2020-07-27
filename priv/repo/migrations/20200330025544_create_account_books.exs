@@ -4,6 +4,11 @@ defmodule Demo.Repo.Migrations.CreateAccountBooks do
   def change do
     create table(:account_books, primary_key: false) do
       add :id, :uuid, primary_key: true
+
+      #? 00.Temporoary Accounts for test
+      add :revenue, :decimal, precision: 12, scale: 2, default: 1000.0
+      add :expense, :decimal, precision: 12, scale: 2, default: 0.0
+
       #? 01.식료품 · 비주류음료
       add :grain, :decimal, precision: 12, scale: 2, default: 0.0
       add :grain_products, :decimal, precision: 12, scale: 2, default: 0.0
@@ -188,7 +193,8 @@ defmodule Demo.Repo.Migrations.CreateAccountBooks do
       add :family_id, references(:families, type: :binary_id)
       add :supul_id, references(:supuls, type: :binary_id)
       add :state_supul_id, references(:state_supuls, type: :binary_id)
-      add :nation_supul_id,references(:nations, type: :binary_id)
+      add :nation_supul_id, references(:nation_supuls, type: :binary_id)
+
       timestamps()
     end
   end

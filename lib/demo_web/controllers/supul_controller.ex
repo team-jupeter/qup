@@ -1,8 +1,12 @@
 defmodule DemoWeb.SupulController do
   use DemoWeb, :controller
 
+  # alias Demo.Repo
   alias Demo.Supuls
   alias Demo.Supuls.Supul
+  # alias Demo.AccountBooks.AccountBook
+  
+  # import Ecto.Query, only: [from: 2]
 
   def index(conn, _params) do
     supuls = Supuls.list_supuls()
@@ -22,7 +26,7 @@ defmodule DemoWeb.SupulController do
         |> redirect(to: Routes.supul_path(conn, :show, supul))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset)  
     end
   end
 
@@ -30,6 +34,14 @@ defmodule DemoWeb.SupulController do
     supul = Supuls.get_supul!(id)
     render(conn, "show.html", supul: supul)
   end
+  
+  # def ab(conn, %{"supul_id" => id}) do 
+  #   supul = Repo.get(Supul, id)
+  #   ab = Repo.preload(supul, :account_book).account_book
+  #   ab_id = ab.id
+  #   # render(conn, "show.html", supul: supul, ab: ab)
+  #   DemoWeb.AccountBookController.show(conn, %{"id" => ab_id, supul: supul})
+  # end
 
   def edit(conn, %{"id" => id}) do
     supul = Supuls.get_supul!(id)

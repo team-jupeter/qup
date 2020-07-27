@@ -9,41 +9,38 @@
   <tbody>
   <tr>
     <td>Capital expenditures:</td>
-    <td><%= @cf.capital_expenditures %></td>
+    <td><%= @cf_statement.capital_expenditures %></td>
   </tr>
 
   <tr>
     <td>Changes in working capital:</td>
-    <td><%= @cf.changes_in_working_capital %></td>
+    <td><%= @cf_statement.changes_in_working_capital %></td>
   </tr>
 
   <tr>
     <td>Debt issuance:</td>
-    <td><%= @cf.debt_issuance %></td>
+    <td><%= @cf_statement.debt_issuance %></td>
   </tr>
 
   <tr>
     <td>Depreciation amortization:</td>
-    <td><%= @cf.depreciation_amortization %></td>
+    <td><%= @cf_statement.depreciation_amortization %></td>
   </tr>
 
   <tr>
     <td>Equity issuance:</td>
-    <td><%= @cf.equity_issuance %></td>
+    <td><%= @cf_statement.equity_issuance %></td>
   </tr>
 
   <tr>
     <td>Net earnings:</td>
-    <td><%= @cf.net_earnings %></td>
+    <td><%= @cf_statement.net_earnings %></td>
   </tr>
 
   <tr>
     <td>Opening cash balance:</td>
-    <td><%= @cf.opening_cash_balance %></td>
+    <td><%= @cf_statement.opening_cash_balance %></td>
   </tr>
 </tbody>
 
 </table>
-
-<span><%= link "Edit", to: Routes.cf_statement_path(@conn, :edit, @cf) %></span>
-<span><%= link "Back", to: Routes.entity_path(@conn, :index) %></span>

@@ -14,6 +14,7 @@ defmodule Demo.NationSupuls do
  
 
   def get_nation_supul!(id), do: Repo.get!(NationSupul, id)
+  def get_nation_supul(id), do: Repo.get(NationSupul, id)
 
   def create_nation_supul(attrs) do
     NationSupul.changeset(attrs)
@@ -53,6 +54,7 @@ defmodule Demo.NationSupuls do
 
 
   def update_nation_supul(nation_supul, attrs) do
+    IO.puts "def update_nation_supul(nation_supul, attrs)"
     NationSupul.changeset(nation_supul, attrs) |> Repo.update()
   end
 

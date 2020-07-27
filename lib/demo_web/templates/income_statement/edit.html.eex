@@ -1,5 +1,5 @@
 <h4>Edit Income Statment</h4>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.income_statement_path(@conn, :update, @is)) %>
+<%= render "form.html", Map.put(assigns, :action, Routes.income_statement_path(@conn, :update, @income_statement)) %>
 
 <span><%= link "Back", to: Routes.income_statement_path(@conn, :index) %></span>

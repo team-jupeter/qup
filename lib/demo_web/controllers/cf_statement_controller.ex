@@ -4,7 +4,11 @@ defmodule DemoWeb.CFStatementController do
 
   alias Demo.CFStatements
   alias Demo.Reports.CFStatement
-
+  alias Demo.Repo
+  alias Demo.Families
+  alias Demo.Supuls
+  alias Demo.StateSupuls
+  alias Demo.NationSupuls
   # def action(conn, _) do
   #   args = [conn, conn.params, conn.assigns.current_entity]
   #   apply(__MODULE__, action_name(conn), args)
@@ -20,10 +24,36 @@ defmodule DemoWeb.CFStatementController do
     end
   end 
 
+  # def edit(conn, %{"id" => id}) do
+  #   cf_statement = CFStatement |> Demo.Repo.get!(id) 
+  #   changeset = CFStatements.change_cf_statement(cf_statement)
+  #   render(conn, "edit.html", cf: cf_statement, changeset: changeset)
+  # end
   def edit(conn, %{"id" => id}) do
-    cf_statement = CFStatement |> Demo.Repo.get!(id) 
-    changeset = CFStatements.change_cf_statement(cf_statement)
-    render(conn, "edit.html", cf: cf_statement, changeset: changeset)
+    cf_statement = %CFStatement{}
+
+    cond do
+      Families.get_family(id) != nil ->
+        family = Families.get_family(id)
+        cf_statement = Repo.preload(family, :cf_statement).cf_statement
+
+      Supuls.get_supul(id) != nil ->
+        supul = Supuls.get_supul(id)
+        cf_statement = Repo.preload(supul, :cf_statement).cf_statement
+
+      StateSupuls.get_state_supul(id) != nil ->
+        state_supul = StateSupuls.get_state_supul(id)
+        cf_statement = Repo.preload(state_supul, :cf_statement).cf_statement
+
+      NationSupuls.get_nation_supul(id) != nil ->
+        nation_supul = NationSupuls.get_nation_supul(id)
+        cf_statement = Repo.preload(nation_supul, :cf_statement).cf_statement
+
+      true ->
+        "error"
+    end
+
+    render(conn, "show.html", cf_statement: cf_statement)
   end
 
   def update(conn, %{"id" => id, "cf_statement" => cf_statement_params}) do

@@ -73,8 +73,8 @@ defmodule DemoWeb.FamilyController do
     end
   end
 
-  defp update_user(user, family) do
-    Demo.Accounts.update_user(user, %{default_family_id: family.id})  
-  end
+  # defp update_user(user, family) do
+  #   Demo.Accounts.update_user(user, %{default_family_id: family.id})  
+  # end
 
 end

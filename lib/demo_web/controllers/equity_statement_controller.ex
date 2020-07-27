@@ -4,7 +4,11 @@ defmodule DemoWeb.EquityStatementController do
 
   alias Demo.EquityStatements
   alias Demo.Reports.EquityStatement
-
+  alias Demo.Repo
+  alias Demo.Families
+  alias Demo.Supuls
+  alias Demo.StateSupuls
+  alias Demo.NationSupuls
   # def action(conn, _) do
   #   args = [conn, conn.params, conn.assigns.current_entity]
   #   apply(__MODULE__, action_name(conn), args)
@@ -20,10 +24,37 @@ defmodule DemoWeb.EquityStatementController do
     end
   end 
 
+
+  # def edit(conn, %{"id" => id}) do
+  #   equity_statement = EquityStatement |> Demo.Repo.get!(id) 
+  #   changeset = EquityStatements.change_equity_statement(equity_statement)
+  #   render(conn, "edit.html", es: equity_statement, changeset: changeset)
+  # end
   def edit(conn, %{"id" => id}) do
-    equity_statement = EquityStatement |> Demo.Repo.get!(id) 
-    changeset = EquityStatements.change_equity_statement(equity_statement)
-    render(conn, "edit.html", es: equity_statement, changeset: changeset)
+    equity_statement = %EquityStatement{}
+
+    cond do
+      Families.get_family(id) != nil ->
+        family = Families.get_family(id)
+        equity_statement = Repo.preload(family, :equity_statement).equity_statement
+      
+      Supuls.get_supul(id) != nil ->
+        supul = Supuls.get_supul(id)
+        equity_statement = Repo.preload(supul, :equity_statement).equity_statement
+
+      StateSupuls.get_state_supul(id) != nil ->
+        state_supul = StateSupuls.get_state_supul(id)
+        equity_statement = Repo.preload(state_supul, :equity_statement).equity_statement
+
+      NationSupuls.get_nation_supul(id) != nil ->
+        nation_supul = NationSupuls.get_nation_supul(id)
+        equity_statement = Repo.preload(nation_supul, :equity_statement).equity_statement
+
+      true ->
+        "error"
+    end
+
+    render(conn, "show.html", equity_statement: equity_statement)
   end
 
   def update(conn, %{"id" => id, "equity_statement" => equity_statement_params}) do

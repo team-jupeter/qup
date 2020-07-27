@@ -1,7 +1,7 @@
 defmodule DemoWeb.ItemController do
   use DemoWeb, :controller
 
-  alias Demo.Items
+  alias Demo.Items 
   alias Demo.Invoices.Item
   alias Demo.Entities.Products
   alias Demo.Entities.Entity
