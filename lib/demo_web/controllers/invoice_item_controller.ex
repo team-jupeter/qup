@@ -14,7 +14,6 @@ alias Demo.Invoices.InvoiceItem
 
   def index(conn, _params, current_entity) do
     buyer_id = current_entity.id
-    
     invoice_items = InvoiceItems.list_invoice_items(buyer_id)
     render(conn, "index.html", invoice_items: invoice_items)
   end
@@ -23,14 +22,14 @@ alias Demo.Invoices.InvoiceItem
     buyer_id = current_entity.id
     changeset = InvoiceItems.change_invoice_item(%InvoiceItem{}, %{buyer_id: buyer_id})
     render(conn, "new.html", changeset: changeset)
-  end
+  end 
 
   def create(conn, %{"invoice_item" => invoice_item_params}) do
     case InvoiceItems.create_invoice_item(invoice_item_params) do 
       {:ok, _invoice_item} -> 
         conn
         |> put_flash(:info, "InvoiceItem created successfully.")
-        |> redirect(to: Route )
+        |> redirect(to: Routes.invoice_item_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -43,7 +42,6 @@ alias Demo.Invoices.InvoiceItem
   end
 
   def edit(conn, %{"id" => id}, current_entity) do
-    IO.puts "edit"
     invoice_item = InvoiceItems.get_invoice_item!(id)
     buyer_id = current_entity.id
 

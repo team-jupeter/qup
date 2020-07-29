@@ -34,9 +34,11 @@ defmodule Demo.AccountBooks do
   def create_account_book(%Entity{} = entity) do
     attrs = create_attrs(entity)
 
+    family = Repo.preload(entity, :family).family
     %AccountBook{}
     |> AccountBook.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, entity)
+    |> Ecto.Changeset.put_assoc(:family, family)
     |> Repo.insert()
   end
 
@@ -93,6 +95,8 @@ defmodule Demo.AccountBooks do
   end
 
   defp create_attrs(family_or_supul) do
+    
+    #? If there already are members of the family or the supul parameter.
     list_AB = []
 
     case family_or_supul do

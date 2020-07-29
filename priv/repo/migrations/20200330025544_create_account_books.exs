@@ -189,7 +189,6 @@ defmodule Demo.Repo.Migrations.CreateAccountBooks do
       add :moved_to_a_non_profit_organization, :decimal, precision: 12, scale: 2, default: 0.0
 
       add :entity_id, references(:entities, type: :binary_id)
-      add :group_id, references(:groups, type: :binary_id)
       add :family_id, references(:families, type: :binary_id)
       add :supul_id, references(:supuls, type: :binary_id)
       add :state_supul_id, references(:state_supuls, type: :binary_id)

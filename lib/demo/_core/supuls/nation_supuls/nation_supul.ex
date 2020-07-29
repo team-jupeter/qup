@@ -86,10 +86,16 @@ defmodule Demo.NationSupuls.NationSupul do
     |> put_assoc(:global_supul, attrs.global_supul)
   end
 
-  def changeset(attrs) do
+  def changeset(attrs) do 
     %NationSupul{}
     |> cast(attrs, @fields)
     |> validate_required([])
+    |> put_assoc(:account_book, attrs.ab)
+    |> put_assoc(:income_statement, attrs.is)
+    |> put_assoc(:balance_sheet, attrs.bs)
+    |> put_assoc(:financial_report, attrs.fr)
+    |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:equity_statement, attrs.es)
   end
 
   def changeset(%NationSupul{} = nation_supul, attrs = %{auth_code: auth_code}) do
@@ -100,10 +106,14 @@ defmodule Demo.NationSupuls.NationSupul do
   end
 
   def changeset(%NationSupul{} = nation_supul, attrs) do
-    IO.puts "changeset(%NationSupul{} = nation_supul, attrs)"
-
     nation_supul
     |> cast(attrs, @fields)
     |> validate_required([])
+    |> put_assoc(:account_book, attrs.ab)
+    |> put_assoc(:income_statement, attrs.is)
+    |> put_assoc(:balance_sheet, attrs.bs)
+    |> put_assoc(:financial_report, attrs.fr)
+    |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:equity_statement, attrs.es)
   end
 end

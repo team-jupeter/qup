@@ -7,6 +7,8 @@ defmodule Demo.Repo.Migrations.CreateNations do
       add :nationality, :string
       add :name, :string
       add :constitution_signature, :string
+
+      add :nation_supul_id, references(:nations, type: :uuid)
     end
 
     create unique_index(:nations, [:name])

@@ -16,6 +16,8 @@ defmodule Demo.Nations.Nation do
     has_many :entities, Demo.Entities.Entity, on_replace: :nilify
     has_many :users, Demo.Accounts.User, on_replace: :nilify
     has_many :families, Demo.Families.Family, on_replace: :nilify
+
+    belongs_to :nation_supul, Demo.Nations.Nation
   end
 
   @fields [
@@ -25,5 +27,12 @@ defmodule Demo.Nations.Nation do
     nation
     |> cast(attrs, @fields)
     |> validate_required([:name])
+  end
+
+  def changeset_supul(%Nation{} = nation, attrs = %{nation_supul: nation_supul}) do
+    attrs = Map.merge(attrs, %{nation_supul_id: nation_supul.id})
+    nation
+    |> cast(attrs, @fields)
+    |> put_assoc(:nation_supul, attrs.nation_supul)
   end
 end

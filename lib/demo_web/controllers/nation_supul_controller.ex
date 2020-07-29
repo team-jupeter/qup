@@ -4,6 +4,7 @@ defmodule DemoWeb.NationSupulController do
   alias Demo.NationSupuls
   alias Demo.NationSupuls.NationSupul 
   alias Demo.AccountBooks.AccountBook
+  alias Demo.Repo
   
   import Ecto.Query, only: [from: 2]
 

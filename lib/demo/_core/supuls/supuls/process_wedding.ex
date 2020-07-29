@@ -13,6 +13,7 @@ defmodule Demo.Supuls.ProcessWedding do
   alias Demo.Weddings
   alias Demo.Accounts
   alias Demo.Families
+  alias Demo.Families.Family
 
   alias Demo.FinancialReports
   alias Demo.BalanceSheets
@@ -25,6 +26,13 @@ defmodule Demo.Supuls.ProcessWedding do
     groom = Repo.one(from u in User, where: u.id == ^wedding.groom_id, select: u)
     bride = Repo.one(from u in User, where: u.id == ^wedding.bride_id, select: u)
 
+    #? If any of groom and bride already married, stop the process.
+    # any_family_1 = Repo.one(from f in Family, where: f.husband_id == ^groom.id or f.husband_id == ^groom.id, select: f)  
+    # any_family_2 = Repo.one(from f in Family, where: f.husband_id == ^bride.id or f.husband_id == ^bride.id, select: f)  
+
+    # if any_family_1 != nil or any_family_2 != nil, do: "error"
+
+    #? process wedding
     groom_entity = Repo.one(from e in Entity, where: e.id == ^groom.default_entity_id, select: e)
     bride_entity = Repo.one(from e in Entity, where: e.id == ^bride.default_entity_id, select: e)
 
@@ -36,33 +44,31 @@ defmodule Demo.Supuls.ProcessWedding do
 
     # ? Create a family via wedding.
     {:ok, family} = Families.create_family_via_wedding(wedding, openhash, bride, groom)
-
+    
     # ? Update the current marrige status and history, and supul_id etc. of users.
-    Accounts.update_user(bride, %{
+    Accounts.update_user_wedding(bride, %{
+      family: family,
       wedding: wedding,
       married: true,
-      supul_id: bride_supul.id,
-      supul_name: bride_supul.name
+      supul: bride_supul,
     })
-
-    Accounts.update_user(groom, %{
+ 
+    Accounts.update_user_wedding(groom, %{
+      family: family,
       wedding: wedding,
       married: true,
-      supul_id: bride_supul.id,
-      supul_name: bride_supul.name
+      supul: bride_supul,
     })
 
     # ? Update the supul_id etc. of users' entities.
-    Entities.update_entity(bride_entity, %{supul_id: bride_supul.id, supul_name: bride_supul.name})
+    Entities.update_entity(bride_entity, %{
+      family: family,
+      supul: bride_supul, 
+      })
 
-    Entities.update_entity(groom_entity, %{supul_id: bride_supul.id, supul_name: bride_supul.name})
-
-    # ? create the account book of the family.
-    AccountBooks.create_account_book(family)
-
-    # ? create other financial statements of the family.
-    BalanceSheets.create_balance_sheet(family)
-    CFStatements.create_cf_statement(family)
-    EquityStatements.create_equity_statement(family)
+    Entities.update_entity(groom_entity, %{
+      family: family,
+      supul: bride_supul, 
+      })
   end
 end

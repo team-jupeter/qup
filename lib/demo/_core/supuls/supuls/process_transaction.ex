@@ -7,112 +7,227 @@ defmodule Demo.Supuls.ProcessTransaction do
   alias Demo.Reports.IncomeStatement
   alias Demo.Entities
   alias Demo.Entities.Entity
+  alias Demo.AccountBooks
+  alias Demo.AccountBooks.AccountBook
 
-  def process_transaction(transaction, openhash) do
-    case transaction.buyer_family_id do
-      nil -> update_IS(transaction)
-      _ -> update_AB(transaction)
+  def process_transaction(transaction, _openhash) do
+    case transaction.buyer_type do
+      "default" -> update_buyer_AB(transaction)
+      "pirvate" -> update_buyer_private_IS(transaction)
+      "public" -> update_buyer_public_IS(transaction)
     end
 
-    case transaction.seller_family_id do
-      nil -> update_IS(transaction)
-      _ -> update_AB(transaction)
+    case transaction.seller_type do
+      "default" -> update_seller_AB(transaction)
+      "pirvate" -> update_seller_private_IS(transaction)
+      "public" -> update_seller_public_IS(transaction)
     end
 
     update_gab_balance(transaction)
     update_t1s(transaction)
   end
 
-  defp update_AB(transaction) do
+  defp update_buyer_AB(transaction) do
     # ? trader can be either buyer or seller
-    # ? Update AB of buyer, buyer's family, supul, state_supul, and nation_supul.
-    trader_AB =
+    # ? Update AB or IS of buyer's or seller's entity
+    IO.inspect transaction
+
+    buyer_ab =
       Repo.one(from a in AccountBook, where: a.entity_id == ^transaction.buyer_id, select: a)
 
-    if trader_AB == nil do
-      trader_AB =
-        Repo.one(from a in AccountBook, where: a.entity_id == ^transaction.seller_id, select: a)
-    end
+    # ? update AB or IS of buyer's or seller's family, supul, state_supul, and nation_supul.
+    AccountBooks.add_expense(buyer_ab, %{amount: transaction.abc_amount})
 
-    AccountBooks.add_expense(trader_AB, %{amount: transaction.abc_amount})
-
-    trader_family_AB =
+    buyer_family_AB =
       Repo.one(
         from a in AccountBook,
-          where: a.family_id == ^transaction.trader_family_id
+          where: a.family_id == ^transaction.buyer_family_id
       )
 
-    AccountBooks.add_expense(trader_family_AB, %{amount: transaction.abc_amount})
+    AccountBooks.add_expense(buyer_family_AB, %{amount: transaction.abc_amount})
 
-    trader_supul_AB =
+    buyer_supul_AB =
       Repo.one(
         from a in AccountBook,
-          where: a.supul_id == ^transaction.trader_supul_id
+          where: a.supul_id == ^transaction.buyer_supul_id
       )
 
-    AccountBooks.add_expense(trader_supul_AB, %{amount: transaction.abc_amount})
+    AccountBooks.add_expense(buyer_supul_AB, %{amount: transaction.abc_amount})
 
-    trader_state_supul_AB =
+    buyer_state_supul_AB =
       Repo.one(
         from a in AccountBook,
-          where: a.state_supul_id == ^transaction.trader_state_supul_id
+          where: a.state_supul_id == ^transaction.buyer_state_supul_id
       )
 
-    AccountBooks.add_expense(trader_state_supul_AB, %{amount: transaction.abc_amount})
+    AccountBooks.add_expense(buyer_state_supul_AB, %{amount: transaction.abc_amount})
 
-    trader_nation_supul_AB =
+    buyer_nation_supul_AB =
       Repo.one(
         from a in AccountBook,
-          where: a.nation_supul_id == ^transaction.trader_nation_supul_id
+          where: a.nation_supul_id == ^transaction.buyer_nation_supul_id
       )
 
-    AccountBooks.add_expense(trader_nation_supul_AB, %{amount: transaction.abc_amount})
+    AccountBooks.add_expense(buyer_nation_supul_AB, %{amount: transaction.abc_amount})
   end
 
-  defp update_IS(transaction) do
+  defp update_seller_AB(transaction) do
+    # ? trader can be either seller or seller
+    # ? Update AB or IS of seller's or seller's entity
+    seller_ab =
+      Repo.one(from a in AccountBook, where: a.entity_id == ^transaction.seller_id, select: a)
+
+    # ? update AB or IS of seller's or seller's family, supul, state_supul, and nation_supul.
+    AccountBooks.add_expense(seller_ab, %{amount: transaction.abc_amount})
+
+    seller_family_AB =
+      Repo.one(
+        from a in AccountBook,
+          where: a.family_id == ^transaction.seller_family_id
+      )
+
+    AccountBooks.add_expense(seller_family_AB, %{amount: transaction.abc_amount})
+
+    seller_supul_AB =
+      Repo.one(
+        from a in AccountBook,
+          where: a.supul_id == ^transaction.seller_supul_id
+      )
+
+    AccountBooks.add_expense(seller_supul_AB, %{amount: transaction.abc_amount})
+
+    seller_state_supul_AB =
+      Repo.one(
+        from a in AccountBook,
+          where: a.state_supul_id == ^transaction.seller_state_supul_id
+      )
+
+    AccountBooks.add_expense(seller_state_supul_AB, %{amount: transaction.abc_amount})
+
+    seller_nation_supul_AB =
+      Repo.one(
+        from a in AccountBook,
+          where: a.nation_supul_id == ^transaction.seller_nation_supul_id
+      )
+
+    AccountBooks.add_expense(seller_nation_supul_AB, %{amount: transaction.abc_amount})
+  end
+
+  defp update_buyer_private_IS(transaction) do
     # ? trader can be either buyer or seller
     # ? Update IS of trader, trader's family, supul, state_supul, and nation_supul.
-    trader_IS =
+    buyer_IS =
       Repo.one(from a in AccountBook, where: a.entity_id == ^transaction.buyer_id, select: a)
 
-    if trader_IS == nil do
-      trader_IS =
-        Repo.one(from a in AccountBook, where: a.entity_id == ^transaction.seller_id, select: a)
-    end
+    IncomeStatements.add_expense(buyer_IS, %{amount: transaction.abc_amount})
 
-    IncomeStatements.add_expense(trader_IS, %{amount: transaction.abc_amount})
-
-    trader_group_IS =
+    buyer_group_IS =
       Repo.one(
         from a in IncomeStatement,
-          where: a.group_id == ^transaction.trader_group_id
+          where: a.group_id == ^transaction.buyer_group_id
       )
 
-    IncomeStatements.add_expense(trader_group_IS, %{amount: transaction.abc_amount})
+    IncomeStatements.add_expense(buyer_group_IS, %{amount: transaction.abc_amount})
 
-    trader_supul_IS =
+    buyer_supul_IS =
       Repo.one(
         from a in IncomeStatement,
-          where: a.supul_id == ^transaction.trader_supul_id
+          where: a.supul_id == ^transaction.buyer_supul_id
       )
 
-    IncomeStatements.add_expense(trader_supul_IS, %{amount: transaction.abc_amount})
+    IncomeStatements.add_expense(buyer_supul_IS, %{amount: transaction.abc_amount})
 
-    trader_state_supul_IS =
+    buyer_state_supul_IS =
       Repo.one(
         from a in IncomeStatement,
-          where: a.state_supul_id == ^transaction.trader_state_supul_id
+          where: a.state_supul_id == ^transaction.buyer_state_supul_id
       )
 
-    IncomeStatements.add_expense(trader_state_supul_IS, %{amount: transaction.abc_amount})
+    IncomeStatements.add_expense(buyer_state_supul_IS, %{amount: transaction.abc_amount})
 
-    trader_nation_supul_IS =
+    buyer_nation_supul_IS =
       Repo.one(
         from a in IncomeStatement,
-          where: a.nation_supul_id == ^transaction.trader_nation_supul_id
+          where: a.nation_supul_id == ^transaction.buyer_nation_supul_id
       )
 
-    IncomeStatements.add_expense(trader_nation_supul_IS, %{amount: transaction.abc_amount})
+    IncomeStatements.add_expense(buyer_nation_supul_IS, %{amount: transaction.abc_amount})
+  end
+
+  defp update_buyer_public_IS(transaction) do
+    # ? trader can be either buyer or seller
+    # ? Update IS of trader, trader's family, supul, state_supul, and nation_supul.
+    buyer_IS =
+      Repo.one(from a in AccountBook, where: a.entity_id == ^transaction.buyer_id, select: a)
+
+    IncomeStatements.add_expense(buyer_IS, %{amount: transaction.abc_amount})
+
+    buyer_nation_supul_IS =
+      Repo.one(
+        from a in IncomeStatement,
+          where: a.nation_supul_id == ^transaction.buyer_nation_supul_id
+      )
+
+    IncomeStatements.add_expense(buyer_nation_supul_IS, %{amount: transaction.abc_amount})
+  end
+
+  defp update_seller_private_IS(transaction) do
+    # ? trader can be either buyer or seller
+    # ? Update IS of trader, trader's family, supul, state_supul, and nation_supul.
+    seller_IS =
+      Repo.one(from a in AccountBook, where: a.entity_id == ^transaction.seller_id, select: a)
+
+    IncomeStatements.add_expense(seller_IS, %{amount: transaction.abc_amount})
+
+    seller_group_IS =
+      Repo.one(
+        from a in IncomeStatement,
+          where: a.group_id == ^transaction.seller_group_id
+      )
+
+    IncomeStatements.add_expense(seller_group_IS, %{amount: transaction.abc_amount})
+
+    seller_supul_IS =
+      Repo.one(
+        from a in IncomeStatement,
+          where: a.supul_id == ^transaction.seller_supul_id
+      )
+
+    IncomeStatements.add_expense(seller_supul_IS, %{amount: transaction.abc_amount})
+
+    seller_state_supul_IS =
+      Repo.one(
+        from a in IncomeStatement,
+          where: a.state_supul_id == ^transaction.seller_state_supul_id
+      )
+
+    IncomeStatements.add_expense(seller_state_supul_IS, %{amount: transaction.abc_amount})
+
+    seller_nation_supul_IS =
+      Repo.one(
+        from a in IncomeStatement,
+          where: a.nation_supul_id == ^transaction.seller_nation_supul_id
+      )
+
+    IncomeStatements.add_expense(seller_nation_supul_IS, %{amount: transaction.abc_amount})
+  end
+
+
+  defp update_seller_public_IS(transaction) do
+    # ? trader can be either buyer or seller
+    # ? Update IS of trader, trader's family, supul, state_supul, and nation_supul.
+    seller_IS =
+      Repo.one(from a in AccountBook, where: a.entity_id == ^transaction.seller_id, select: a)
+
+    IncomeStatements.add_expense(seller_IS, %{amount: transaction.abc_amount})
+
+    seller_nation_supul_IS =
+      Repo.one(
+        from a in IncomeStatement,
+          where: a.nation_supul_id == ^transaction.seller_nation_supul_id
+      )
+
+    IncomeStatements.add_expense(seller_nation_supul_IS, %{amount: transaction.abc_amount})
   end
 
   defp update_gab_balance(transaction) do

@@ -7,8 +7,12 @@
       <td></td>
     </tr>
   </thead>
-  <tbody>
+  <tbody> 
 
+    <tr>
+      <td>Houser Holder</td>
+      <td><%= @family.house_holder_name %></td>
+    </tr>
     <tr>
       <td>Husband Name</td>
       <td><%= @family.husband_name %></td>

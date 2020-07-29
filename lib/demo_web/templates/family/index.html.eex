@@ -1,32 +1,54 @@
-<%= form_for @conn, Routes.item_path(@conn, :index), [method: :get, class: "pull-right"], fn f -> %>
-      <%= search_input f, :query %>
-      <%= submit "Search" %>
-    <% end %>
-
-
-<b>Listing Families</b>
+<b>Family Entity</b>
 
 <table>
   <thead>
     <tr>
-      <th>Family code</th>
+      <th></th>
 
       <th></th>
     </tr>
   </thead>
   <tbody>
-<%= for family <- @families do %>
     <tr>
-      <td><%= family.family_code %></td>
-
-      <td>
-        <span><%= link "Show", to: Routes.family_path(@conn, :show, family) %></span>
-        <span><%= link "Edit", to: Routes.family_path(@conn, :edit, family) %></span>
-        <span><%= link "Delete", to: Routes.family_path(@conn, :delete, family), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
+      <td>family_code</td>
+      <td><%= @family_entity.family_code %></td>
     </tr>
-<% end %>
+    <tr>
+      <td>nationality</td>
+      <td><%= @family_entity.nationality %></td>
+    </tr>
+    <tr>
+      <td>auth_code</td>
+      <td><%= @family_entity.auth_code %></td>
+    </tr>
+    <tr>
+      <td>address</td>
+      <td><%= @family_entity.address %></td>
+    </tr>
+    <tr>
+      <td>house_holder_name</td>
+      <td><%= @family_entity.house_holder_name %></td>
+    </tr>
+    <tr>
+      <td>house_holder_email</td>
+      <td><%= @family_entity.house_holder_email %></td>
+    </tr>
+    <tr>
+      <td>house_holder_supul_id</td>
+      <td><%= @family_entity.house_holder_supul_id %></td>
+    </tr>
+    <tr>
+      <td>entity_id_of_house_holder</td>
+      <td><%= @family_entity.entity_id_of_house_holder %></td>
+    </tr>
   </tbody>
 </table>
 
-<span><%= link "New Family", to: Routes.family_path(@conn, :new) %></span>
+<b>Financial Reports</b>
+    <ul>
+        <li><%= link "Account Book", to: Routes.account_book_path(@conn, :edit, @family_entity.id) %></li>
+        <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :edit, @family_entity.id) %></li>
+        <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :edit, @family_entity.id) %></li>
+        <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :edit, @family_entity.id) %></li>
+        <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :edit, @family_entity.id) %></li>
+    </ul>

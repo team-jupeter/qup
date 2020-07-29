@@ -8,7 +8,19 @@ defmodule Demo.StateSupuls do
   # alias Demo.Supuls
   alias Demo.Openhashes.Openhash
   alias Demo.Openhashes
- 
+  alias Demo.Reports.FinancialReport
+  alias Demo.Reports.BalanceSheet
+  alias Demo.Reports.IncomeStatement
+  alias Demo.Reports.CFStatement
+  alias Demo.Reports.EquityStatement
+  alias Demo.AccountBooks.AccountBook
+  alias Demo.FinancialReports
+  alias Demo.BalanceSheets
+  alias Demo.IncomeStatements
+  alias Demo.CFStatements
+  alias Demo.EquityStatements
+  alias Demo.AccountBooks
+   
   def list_state_supuls do
     Repo.all(StateSupul)
   end
@@ -19,9 +31,23 @@ defmodule Demo.StateSupuls do
  
 
   def create_state_supul(attrs) do
-    StateSupul.changeset(attrs)
-    |> Repo.insert() 
-  end 
+    attrs = make_financial_statements(attrs)
+
+    %StateSupul{} 
+    |> StateSupul.changeset(attrs)
+    |> Repo.insert()
+  end
+ 
+  defp make_financial_statements(attrs) do
+    ab = %AccountBook{}
+    is = %IncomeStatement{}
+    bs = %BalanceSheet{}
+    cf = %CFStatement{}
+    fr = %FinancialReport{}
+    es = %EquityStatement{}
+
+    attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr})
+  end
  
  
   def update_state_supul(%StateSupul{} = state_supul, %{
@@ -56,7 +82,8 @@ defmodule Demo.StateSupuls do
   # end
 
   def update_state_supul(state_supul, attrs) do
-    StateSupul.changeset(state_supul, attrs) |> Repo.update()
+    StateSupul.changeset(state_supul, attrs) 
+    |> Repo.update()
   end
 
   def change_state_supul(%StateSupul{} = state_supul) do

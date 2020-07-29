@@ -30,6 +30,13 @@ defmodule Demo.BalanceSheets do
     from(f in query, where: f.entity_id == ^entity_id)
   end
 
+  # ? Default 
+  def create_balance_sheet(attrs \\ %{}) do
+    %BalanceSheet{} 
+    |> BalanceSheet.changeset(attrs)
+    |> Repo.insert()
+  end
+
   # ? Taxation 
   def create_balance_sheet(%Taxation{} = taxation, attrs) do
     %BalanceSheet{}
@@ -56,7 +63,14 @@ defmodule Demo.BalanceSheets do
     |> Repo.insert()
   end
 
-  #? Family
+  def create_balance_sheet(%Group{} = group, attrs) do
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:group, group)
+    |> Repo.insert()
+  end
+
+  # ? Family
   def create_balance_sheet(%Family{} = family) do
     attrs = create_attrs(family)
 
@@ -66,18 +80,41 @@ defmodule Demo.BalanceSheets do
     |> Repo.insert()
   end
 
+  # ? Family
+  def create_balance_sheet(%Family{} = family, attrs) do
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:family, family)
+    |> Repo.insert()
+  end
+
   # ? Supul  
   def create_balance_sheet(%Supul{} = supul) do
     attrs = create_attrs(supul)
-    
+
     %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:supul, supul)
     |> Repo.insert()
   end
-  
+  # ? Supul  
+  def create_balance_sheet(%Supul{} = supul, attrs) do
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:supul, supul)
+    |> Repo.insert()
+  end
+
   def create_balance_sheet(%StateSupul{} = state_supul) do
     attrs = create_attrs(state_supul)
+
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:state_supul, state_supul)
+    |> Repo.insert()
+  end
+
+  def create_balance_sheet(%StateSupul{} = state_supul, attrs) do
     %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:state_supul, state_supul)
@@ -86,6 +123,14 @@ defmodule Demo.BalanceSheets do
 
   def create_balance_sheet(%NationSupul{} = nation_supul) do
     attrs = create_attrs(nation_supul)
+
+    %BalanceSheet{}
+    |> BalanceSheet.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
+    |> Repo.insert()
+  end
+
+  def create_balance_sheet(%NationSupul{} = nation_supul, attrs) do
     %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
@@ -187,27 +232,30 @@ defmodule Demo.BalanceSheets do
 
   # ? Group/Supul  
   defp create_attrs(group_or_supul) do
-    list_BS = []
+    list_BS =
+      case group_or_supul do
+        %Group{} ->
+          entities = Repo.preload(group_or_supul, :entities).entities
+          Enum.map(entities, fn entity -> Repo.preload(entity, :balance_sheet).balance_sheet end)
 
-    case group_or_supul do
-      %Group{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_BS =
+        %Supul{} ->
+          entities = Repo.preload(group_or_supul, :entities).entities
           Enum.map(entities, fn entity -> Repo.preload(entity, :balance_sheet).balance_sheet end)
-      %Supul{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_BS =
-          Enum.map(entities, fn entity -> Repo.preload(entity, :balance_sheet).balance_sheet end)
-      %StateSupul{} -> 
-        supuls = Repo.preload(group_or_supul, :supuls).supuls
-        list_BS =
+
+        %StateSupul{} ->
+          supuls = Repo.preload(group_or_supul, :supuls).supuls
           Enum.map(supuls, fn supul -> Repo.preload(supul, :balance_sheet).balance_sheet end)
-      %NationSupul{} -> 
-        state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
-        list_BS =
-          Enum.map(state_supuls, fn state_supul -> Repo.preload(state_supul, :balance_sheet).balance_sheet end)
-      _ -> "error"
-     end
+
+        %NationSupul{} ->
+          state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
+
+          Enum.map(state_supuls, fn state_supul ->
+            Repo.preload(state_supul, :balance_sheet).balance_sheet
+          end)
+
+        _ ->
+          "error"
+      end
 
     accounts_payable =
       Enum.reduce(list_BS, Decimal.from_float(0.00), fn x, acc ->

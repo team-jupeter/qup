@@ -29,8 +29,7 @@ defmodule DemoWeb.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     resources "/users", UserController
     resources "/certificates", CertificateController
-    resources "/families", FamilyController 
-    resources "/groups", GroupController
+    resources "/families", FamilyController
     resources "/events", EventController
     resources "/weddings", WeddingController
     resources "/openhashes", OpenhashController
@@ -83,6 +82,7 @@ defmodule DemoWeb.Router do
     pipe_through [:browser, :authenticate_user]
 
     resources "/entities", EntityController
+    resources "/groups", GroupController
     resources "/products", ProductController
     resources "/items", ItemController do
       get "/cart", ItemController, :cart, as: :cart

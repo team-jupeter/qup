@@ -7,7 +7,19 @@ defmodule Demo.NationSupuls do
   alias Demo.Supuls.Supul
   alias Demo.Openhashes
   alias Demo.GlobalSupuls
-
+  alias Demo.Reports.FinancialReport
+  alias Demo.Reports.BalanceSheet
+  alias Demo.Reports.IncomeStatement
+  alias Demo.Reports.CFStatement
+  alias Demo.Reports.EquityStatement
+  alias Demo.AccountBooks.AccountBook
+  alias Demo.FinancialReports
+  alias Demo.BalanceSheets
+  alias Demo.IncomeStatements
+  alias Demo.CFStatements
+  alias Demo.EquityStatements
+  alias Demo.AccountBooks
+  
   def list_nation_supuls do
     Repo.all(NationSupul)
   end
@@ -17,8 +29,22 @@ defmodule Demo.NationSupuls do
   def get_nation_supul(id), do: Repo.get(NationSupul, id)
 
   def create_nation_supul(attrs) do
-    NationSupul.changeset(attrs)
+    attrs = make_financial_statements(attrs)
+
+    %NationSupul{} 
+    |> NationSupul.changeset(attrs)
     |> Repo.insert()
+  end
+
+  defp make_financial_statements(attrs) do 
+    ab = %AccountBook{}
+    is = %IncomeStatement{}
+    bs = %BalanceSheet{}
+    cf = %CFStatement{}
+    fr = %FinancialReport{}
+    es = %EquityStatement{}
+
+    attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr})
   end
 
   

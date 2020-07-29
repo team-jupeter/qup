@@ -23,6 +23,12 @@ defmodule Demo.FinancialReports do
     from(f in query, where: f.entity_id == ^entity_id)
   end
 
+  # ? Default 
+  def create_financial_report() do
+    %FinancialReport{}
+    |> Repo.insert()
+  end
+
   # ? Taxation 
   def create_financial_report(%Taxation{} = taxation, attrs = %{}) do
     %FinancialReport{}
@@ -102,27 +108,23 @@ defmodule Demo.FinancialReports do
   '''
 
   defp create_attrs(group_or_supul) do
-    list_FR = []
+    list_FR =
+      case group_or_supul do
+        %Group{} -> 
+          entities = Repo.preload(group_or_supul, :entities).entities
+            Enum.map(entities, fn entity -> Repo.preload(entity, :balance_sheet).balance_sheet end)
+        %Supul{} -> 
+          entities = Repo.preload(group_or_supul, :entities).entities
+            Enum.map(entities, fn entity -> Repo.preload(entity, :balance_sheet).balance_sheet end)
+        %StateSupul{} -> 
+          supuls = Repo.preload(group_or_supul, :supuls).supuls
+            Enum.map(supuls, fn supul -> Repo.preload(supul, :balance_sheet).balance_sheet end)
+        %NationSupul{} -> 
+          state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
+            Enum.map(state_supuls, fn state_supul -> Repo.preload(state_supul, :balance_sheet).balance_sheet end)
+        _ -> "error"
+      end
 
-    case group_or_supul do
-      %Group{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_FR =
-          Enum.map(entities, fn entity -> Repo.preload(entity, :balance_sheet).balance_sheet end)
-      %Supul{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_FR =
-          Enum.map(entities, fn entity -> Repo.preload(entity, :balance_sheet).balance_sheet end)
-      %StateSupul{} -> 
-        supuls = Repo.preload(group_or_supul, :supuls).supuls
-        list_FR =
-          Enum.map(supuls, fn supul -> Repo.preload(supul, :balance_sheet).balance_sheet end)
-      %NationSupul{} -> 
-        state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
-        list_FR =
-          Enum.map(state_supuls, fn state_supul -> Repo.preload(state_supul, :balance_sheet).balance_sheet end)
-      _ -> "error"
-     end
     num_of_shares =
       Enum.reduce(list_FR, Decimal.from_float(0.00), fn x, acc ->
         Decimal.add(x.num_of_shares, acc)

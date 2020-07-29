@@ -1,25 +1,24 @@
 defmodule Demo.Groups.Group do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Demo.Entities.Entity
 
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "groups" do
     field :type, :string
-    field :title, :string
+    field :name, :string
 
-    belongs_to :family, Demo.Families.Family, type: :binary_id
+    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
 
-    many_to_many(
-      :entities,
-      Entity,
-      # join_through: Demo.Groups.EntitiesGroups,
-      join_through: "entities_groups",
-      on_replace: :delete
-    )
+    has_many :entities, Demo.Entities.Entity
+    # many_to_many(
+    #   :entities,
+    #   Entity,
+    #   # join_through: Demo.Groups.EntitiesGroups,
+    #   join_through: "entities_groups",
+    #   on_replace: :delete
+    # )
 
-    has_one :account_book, Demo.AccountBooks.AccountBook
     has_one :financial_report, Demo.FinancialReports.FinancialReport
     has_one :income_statement, Demo.IncomeStatements.IncomeStatement
     has_one :balance_sheet, Demo.BalanceSheets.BalanceSheet
@@ -30,7 +29,7 @@ defmodule Demo.Groups.Group do
   end 
 
   @fields [
-    :type, :title, 
+    :type, :name, 
   ]
   @doc false
   def changeset(group, attrs = %{entities: entities}) do

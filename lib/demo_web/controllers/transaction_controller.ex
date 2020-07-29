@@ -6,7 +6,9 @@ defmodule DemoWeb.TransactionController do
   alias Demo.InvoiceItems
   alias Demo.Repo
   alias Demo.Events
-  # alias Demo.Supuls.CheckArchiveEvent
+  alias Demo.Supuls.Supul
+  alias Demo.StateSupuls.StateSupul
+  alias Demo.NationSupuls.NationSupul
 
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
 
@@ -21,22 +23,13 @@ defmodule DemoWeb.TransactionController do
   end
 
   def new(conn, _params, current_entity) do
-    # ? buyer ID
+    # ? For the buyer
     buyer = current_entity
-    transaction_params = %{}
-
-    buyer_supul = Repo.one(from s in Supul, where: s.id == ^buyer.supul_id, select: s)
+    buyer_supul = Repo.preload(buyer, :supul).supul
     buyer_state_supul = Repo.preload(buyer_supul, :state_supul).state_supul
-    buyer_state_supul_id = buyer_state_supul.id
-    buyer_state_supul_name = buyer_state_supul.name
-
-    buyer_state_supul = Repo.one(from s in StateSupul, where: s.id == ^buyer.supul_id, select: s)
     buyer_nation_supul = Repo.preload(buyer_state_supul, :nation_supul).nation_supul
-    buyer_nation_supul_id = buyer_nation_supul.id
-    buyer_nation_supul_name = buyer_nation_supul.name
-
-        # ? different approach: compare two lines below. 
-    # invoices = Invoices.list_buyer_invoices(buyer.id)
+    
+    # ? For the seller
     invoice = Repo.preload(current_entity, :invoice).invoice
     invoice_items = InvoiceItems.list_invoice_items(buyer.id)
 
@@ -48,69 +41,96 @@ defmodule DemoWeb.TransactionController do
           where: e.id == ^seller_id
       )
 
-    seller_supul_id =
-      case seller.supul_id do
-        nil -> seller.nation_supul_id
-        _ -> seller.supul_id
-      end
-
-    seller_supul = Repo.one(from s in Supul, where: s.id == ^seller.supul_id, select: s)
+    seller_supul = Repo.preload(seller, :supul).supul  
     seller_state_supul = Repo.preload(seller_supul, :state_supul).state_supul
-    seller_state_supul_id = seller_state_supul.id
-    seller_state_supul_name = seller_state_supul.name
-
-    seller_state_supul = Repo.one(from s in StateSupul, where: s.id == ^seller.supul_id, select: s)
     seller_nation_supul = Repo.preload(seller_state_supul, :nation_supul).nation_supul
-    seller_nation_supul_id = seller_nation_supul.id
-    seller_nation_supul_name = seller_nation_supul.name
-
-    case buyer.default_entity do
-      true ->
-        buyer_family_id = Repo.preload(buyer, :family).family.id
-        transaction_params = %{buyer_family_id: buyer_family_id}
-
-      false ->
-        buyer_supul_id =
-          case buyer.supul_id do
-            # ? public company
-            nil -> buyer.nation_supul_id
-            _ -> buyer.supul_id
-          end
-    end
-
-
-    transaction_params = %{
-      entity: current_entity,
-      invoice: invoice,
-      buyer_name: buyer.name,
+    
+    attrs = %{  
+      type: "transaction",
+      invoice: invoice,   
+      buyer_type: buyer.type,       
       buyer_id: buyer.id,
-      buyer_supul_id: buyer.supul_id, 
-      buyer_supul_name: buyer.supul_name,
-      buyer_state_supul_id: buyer_state_supul_id, 
-      buyer_state_supul_name: buyer_state_supul_name,
-      buyer_nation_supul_id: buyer_nation_supul_id, 
-      buyer_nation_supul_name: buyer_nation_supul_name,
+      buyer_name: buyer.name,
+      buyer_supul_id: buyer_supul.id,
+      buyer_state_supul_id: buyer_state_supul.id,
+      buyer_nation_supul_id: buyer_nation_supul.id,
+      
+      erl_email: buyer.email,
+      erl_supul_id: buyer_supul.id,
 
+      seller_type: seller.type,       
       seller_name: seller.name,
       seller_id: seller.id,
-      seller_supul_id: seller.supul_id,
-      seller_supul_name: seller.supul_name,
-      seller_state_supul_id: seller_state_supul_id, 
-      seller_state_supul_name: seller_state_supul_name,
-      seller_nation_supul_id: seller_nation_supul_id, 
-      seller_nation_supul_name: seller_nation_supul_name,
+      seller_supul_id: seller_supul.id,
+      seller_state_supul_id: seller_state_supul.id,
+      seller_nation_supul_id: seller_nation_supul.id,
 
-      abc_input_id: buyer.id,
-      abc_input_name: buyer.name,
-      abc_output_id: seller.id,
-      abc_output_name: seller.name
+      ssu_email: seller.email,
+      ssu_supul_id: seller_supul.id,
+
     }
+
+    # ? Determine whether the buyer is default_entity, private_entity, or public entity.
+    attrs =
+      case buyer.type do
+        "default" ->
+          buyer_family_id = Repo.preload(buyer, :family).family.id
+
+          attrs = 
+            Map.merge(attrs, %{
+              buyer_family_id: buyer_family_id,
+            })
+
+        "private" ->
+          buyer_group = Repo.preload(buyer, :group).group
+          buyer_group_id = buyer_group.id
+
+          attrs =
+            Map.merge(attrs, %{
+              buyer_group_id: buyer_group_id,
+            })
+
+        "public" -> attrs 
+      end
+
+    # ? For the seller
+    attrs =
+    case seller.type do
+      "default" ->
+        seller_family_id = Repo.preload(seller, :family).family.id
+
+
+        attrs = 
+          Map.merge(attrs, %{
+            seller_family_id: seller_family_id,
+          })
+
+      "private" ->
+        seller_group = Repo.preload(seller, :group).group
+        seller_group_id = seller_group.id
+
+        attrs =
+          Map.merge(attrs, %{
+            seller_group_id: seller_group_id,
+          })
+
+      "public" -> attrs
+    end
+    # ? Determine whether the seller is default_entity, private_entity, or public entity.
+    
+
+    # ? different approach: compare two lines below. 
+    # invoices = Invoices.list_seller_invoices(buyer.id)
+
+    {:ok, transaction} = Transactions.create_transaction(attrs)
+    IO.inspect("transaction")
+    IO.inspect(transaction)
 
     buyer_private_key = ExPublicKey.load!("./keys/hong_entity_private_key.pem")
     seller_private_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
 
-    case Events.create_event(transaction_params, buyer_private_key, seller_private_key) do
-      {:ok, transaction} ->
+    case Events.create_event(transaction, buyer_private_key, seller_private_key) do
+      {:ok, transaction} -> 
         # ? Empty cart
         Enum.map(invoice_items, fn item -> InvoiceItems.delete_invoice_item(item) end)
 

@@ -300,7 +300,6 @@ defmodule Demo.AccountBooks.AccountBook do
   
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     belongs_to :family, Demo.Families.Family, type: :binary_id
-    belongs_to :group, Demo.Groups.Group, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id

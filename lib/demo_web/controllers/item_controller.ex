@@ -39,6 +39,8 @@ defmodule DemoWeb.ItemController do
   end
 
   def show(conn, %{"id" => id}, _current_entity) do
+    IO.puts "show(conn, current_entity)"
+
     item = Products.get_product!(id) 
     product = Products.get_product!(id)
     render(conn, "show.html", item: item, product: product)
@@ -51,7 +53,6 @@ defmodule DemoWeb.ItemController do
   end
 
   def cart(conn, %{"item_id" => id}, current_entity) do
-    # %{"item_id" => "f2117537-c5f5-438c-a066-eadedbdda1c8"}
     item = Products.get_product!(id)
 
     buyer_id = current_entity.id 

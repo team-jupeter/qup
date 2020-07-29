@@ -14,7 +14,6 @@ defmodule DemoWeb.ProductController do
  
   def index(conn, _params, current_entity) do
     products = Products.list_entity_products(current_entity) 
-    IO.puts "Product controller index"
     render(conn, "index.html", products: products)
   end 
 

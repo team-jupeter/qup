@@ -25,6 +25,13 @@ defmodule Demo.Nations do
     |> Repo.update()
   end
 
+  def update_nation_supul(%Nation{} = nation, attrs = %{nation_supul: nation_supul}) do
+    nation = Repo.preload(nation, :nation_supul)
+    nation
+    |> Nation.changeset_supul(attrs)
+    |> Repo.update()
+  end
+
   def delete_nation(%Nation{} = nation) do
     Repo.delete(nation)
   end

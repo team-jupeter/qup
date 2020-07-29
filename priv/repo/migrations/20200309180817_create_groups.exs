@@ -5,9 +5,9 @@ defmodule Demo.Repo.Migrations.CreateGroups do
     create table(:groups, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :type, :string
-      add :title, :string
+      add :name, :string
 
-      add :family_id, references(:families, type: :uuid)
+      add :supul_id, references(:supuls, type: :uuid)
       
       timestamps()
     end

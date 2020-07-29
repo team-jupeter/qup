@@ -24,17 +24,15 @@ defmodule Demo.Accounts.User do
     field :password_hash, :string
     field :password_confirmation, :string, virtual: true
     field :auth_code, :string #? Social Security Number 
-    field :default_entity_id, :binary_id
-    field :default_entity_name, :string
     field :supul_code, :string
     field :supul_name, :string
     field :family_code, :string, default: nil
-    field :married, :boolean, defaulut: false
+    field :married, :boolean, default: false
+    field :default_family, :boolean, default: false
+    field :default_entity_id, :binary_id
+    field :default_entity_name, :string
 
-
-    # field :nation_signature, :string
     
-    # field :entity_names, {:array, :string}
 
     has_many :certificates, Demo.Certificates.Certificate
     has_one :health_report, Demo.CDC.HealthReport
@@ -44,11 +42,10 @@ defmodule Demo.Accounts.User do
 
     timestamps()
 
-    belongs_to :family, Demo.Families.Family
-    belongs_to :supul, Demo.Supuls.Supul, on_replace: :delete
-    belongs_to :nation, Demo.Nations.Nation, type: :binary_id #? 고국
-    belongs_to :constitution,  Demo.Votes.Constitution, type: :binary_id #? 고향 
-    # belongs_to :supul,  Demo.Supuls.Supul, type: :binary_id #? 고향 
+    belongs_to :family, Demo.Families.Family, on_replace: :nilify
+    belongs_to :supul, Demo.Supuls.Supul, on_replace: :nilify
+    belongs_to :nation, Demo.Nations.Nation, type: :binary_id, on_replace: :nilify
+    belongs_to :constitution,  Demo.Votes.Constitution, type: :binary_id, on_replace: :nilify 
     
     many_to_many(
       :entities, 
@@ -72,7 +69,7 @@ defmodule Demo.Accounts.User do
     :name, :type, :nationality, :email, :birth_date, :ssn, :default_entity_name, 
     :password, :nation_id, :auth_code, :supul_name, :address, :family_code, 
     :constitution_id, :supul_code, :username, :default_entity_id, :supul_id,
-    :married,  
+    :married, :default_family, 
   ]
 
   def changeset(%User{} = user, attrs = %{wedding: wedding, married: true}) do
@@ -81,6 +78,13 @@ defmodule Demo.Accounts.User do
     user
     |> cast(attrs, @fields)
     |> put_assoc(:weddings, weddings)
+  end
+
+  def family_changeset(%User{} = user, attrs = %{family: family}) do
+
+    user
+    |> cast(attrs, @fields)
+    |> put_assoc(:family, attrs.family)
   end
 
   def changeset(%User{} = user, attrs = %{supul: supul}) do
@@ -92,7 +96,7 @@ defmodule Demo.Accounts.User do
   def changeset(user, attrs = %{family: family}) do
     user
     |> cast(attrs, @fields)
-    |> put_assoc(:family, family)
+    |> put_assoc(:family, attrs.family)
   end
 
   def changeset(user, attrs) do
@@ -100,7 +104,7 @@ defmodule Demo.Accounts.User do
     |> cast(attrs, @fields)
     |> validate_required([])
     |> validate_format(:email, ~r/@/)
-    |> unique_constraint(:username)
+    |> unique_constraint(:username) 
   end
 
   def update_changeset(user, attrs) do
@@ -108,10 +112,23 @@ defmodule Demo.Accounts.User do
     |> cast(attrs, @fields)
   end
 
+  def update_changeset_family(user, attrs = %{family: family}) do
+    user
+    |> cast(attrs, @fields)
+    |> put_assoc(:family, family)
+  end
+
+  def update_changeset_wedding(user, attrs) do
+    user
+    |> cast(attrs, @fields)
+    |> put_assoc(:supul, attrs.supul)
+    |> put_assoc(:family, attrs.family)
+  end
+
   def changeset_update_entities(%User{} = user, entities) do
     user 
     |> Repo.preload(:entities)
-    |> change()  \
+    |> change()  
     |> put_assoc(:entities, entities) #? many to many between users and entities
   end
 
@@ -137,10 +154,7 @@ defmodule Demo.Accounts.User do
     end
   end
 
-  def family_changeset(user, family) do
-    user
-    |> put_assoc(:family, family)
-  end
+
   # @phone ~r/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/
 
   # @doc false

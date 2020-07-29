@@ -40,17 +40,20 @@ defmodule Demo.Events do
   def create_event(event, erl_private_key, ssu_private_key) do
     {:ok, payload} = make_payload(event, erl_private_key, ssu_private_key)
     Supuls.CheckArchiveEvent.check_archive_event(event, payload)
-  end   
+  end      
  
 
   def update_event(event, attrs) do
     event
-    |> Event.changeset(attrs)
+    |> Event.changeset(attrs) 
     |> Repo.update()
   end
 
   #? 혼인신고서, 거래계약서, ....
   defp make_payload(event, erl_private_key, ssu_private_key) do
+    IO.inspect "event"
+    IO.inspect event
+    
     ts = DateTime.utc_now() |> DateTime.to_unix()
     event_id = event.id 
 
@@ -66,14 +69,14 @@ defmodule Demo.Events do
     payload = "#{ts}|#{event_id}|#{event_hash}|#{Base.url_encode64(erl_signature)}|#{Base.url_encode64(ssu_signature)}"
     
     #? Attach payload to wedding for verification by anybody. 
-    case event.type do
-      "wedding" -> Wedding.changeset(event, %{payload: payload})
-        |> Repo.update()
+    # case event.type do
+    #   "wedding" -> Wedding.changeset(event, %{payload: payload})
+    #     |> Repo.update()
   
-      "transaction" -> Transaction.changeset(event, %{payload: payload})
-      |> Repo.update()
-      _ -> "error" 
-    end
+    #   "transaction" -> Transaction.changeset(event, %{payload: payload})
+    #   |> Repo.update()
+    #   _ -> "error" 
+    # end 
     {:ok, payload}
   end
   

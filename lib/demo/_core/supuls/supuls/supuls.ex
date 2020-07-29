@@ -3,11 +3,19 @@ defmodule Demo.Supuls do
   alias Demo.Repo
 
   alias Demo.Supuls.Supul
+  alias Demo.Reports.FinancialReport
+  alias Demo.Reports.BalanceSheet
+  alias Demo.Reports.IncomeStatement
+  alias Demo.Reports.CFStatement
+  alias Demo.Reports.EquityStatement
+  alias Demo.AccountBooks.AccountBook
+
   alias Demo.FinancialReports
   alias Demo.BalanceSheets
   alias Demo.IncomeStatements
   alias Demo.CFStatements
   alias Demo.EquityStatements
+  alias Demo.AccountBooks
 
   # alias Demo.Entities
   # alias Demo.Entities.Entity
@@ -25,18 +33,37 @@ defmodule Demo.Supuls do
   def get_supul(id), do: Repo.get(Supul, id)
 
   def create_supul(attrs) do
-    {:ok, supul} = Supul.changeset(attrs) |> Repo.insert()
+    attrs = make_financial_statements(attrs)
+    
+    %Supul{}  
+    |> Supul.changeset(attrs)
+    |> Repo.insert()
+  end
 
-    # ? Create financial statements for the supul.
-    IncomeStatements.create_income_statement(supul)
-    FinancialReports.create_financial_report(supul)
+  defp make_financial_statements(attrs) do
+    ab = %AccountBook{}
+    is = %IncomeStatement{}
+    bs = %BalanceSheet{}
+    cf = %CFStatement{}
+    fr = %FinancialReport{}
+    es = %EquityStatement{}
 
-    BalanceSheets.create_balance_sheet(supul)
-    CFStatements.create_cf_statement(supul)
-    EquityStatements.create_equity_statement(supul)
+    attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr})
+  end
 
+  def update_openhash(%Supul{} = supul, attrs) do
+    IO.puts "update_openhash"
+    supul = Repo.preload(supul, :openhashes)
+    supul
+    |> Supul.changeset_openhash(attrs)
+    |> Repo.update()
+  end
 
-    {:ok, supul}
+  def update_openhash_box(%Supul{} = supul, attrs) do
+    IO.puts "update_openhash_box"
+    supul
+    |> Supul.changeset_openhash_box(attrs)
+    |> Repo.update()
   end
 
   def update_supul(%Supul{} = supul, attrs) do

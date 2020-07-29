@@ -71,14 +71,19 @@ defmodule Demo.Families.Family do
 
     field :openhash_id, :binary_id
 
-    has_many :users, Demo.Accounts.User
-    has_many :entities, Demo.Entities.Entity
-    has_one :account_book, Demo.AccountBooks.AccountBook
-    has_one :group, Demo.Groups.Group
-    has_one :wedding, Demo.Weddings.Wedding
+    has_many :users, Demo.Accounts.User, on_replace: :nilify
+    has_many :entities, Demo.Entities.Entity, on_replace: :nilify
+    has_one :wedding, Demo.Weddings.Wedding, on_replace: :nilify
 
-    belongs_to :nation, Demo.Nations.Nation, type: :binary_id
-    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
+    belongs_to :nation, Demo.Nations.Nation, type: :binary_id, on_replace: :nilify
+    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id, on_replace: :nilify
+
+    has_one :account_book, Demo.AccountBooks.AccountBook, on_replace: :nilify 
+    has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify
+    has_one :balance_sheet, Demo.Reports.BalanceSheet, on_replace: :nilify
+    has_one :cf_statement, Demo.Reports.CFStatement, on_replace: :nilify
+    has_one :equity_statement, Demo.Reports.EquityStatement, on_replace: :nilify
+  
 
     timestamps()
   end
@@ -141,6 +146,7 @@ defmodule Demo.Families.Family do
   ]
 
 
+
   def changeset(family, attrs = %{users: users}) do
     IO.puts "changeset(family, attrs = %{users: users})"
     family
@@ -166,6 +172,11 @@ defmodule Demo.Families.Family do
     family
     |> cast(attrs, @fields)
     |> validate_required([])
+    |> put_assoc(:account_book, attrs.ab)
+    |> put_assoc(:balance_sheet, attrs.bs)
+    |> put_assoc(:financial_report, attrs.fr)
+    |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:equity_statement, attrs.es)
   end
   
 

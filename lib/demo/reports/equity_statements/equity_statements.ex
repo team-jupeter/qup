@@ -23,6 +23,12 @@ defmodule Demo.EquityStatements do
     from(f in query, where: f.entity_id == ^entity_id)
   end
 
+  # ? Default 
+  def create_equity_statement() do
+    %EquityStatement{}
+    |> Repo.insert()
+  end
+
   # ? Taxation 
   def create_equity_statement(%Taxation{} = taxation, attrs = %{}) do
     %EquityStatement{}
@@ -49,10 +55,24 @@ defmodule Demo.EquityStatements do
     |> Repo.insert()
   end
 
+  def create_equity_statement(%Group{} = group, attrs) do
+    %EquityStatement{}
+    |> EquityStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:group, group)
+    |> Repo.insert()
+  end
+
   # ? 가족  
   def create_equity_statement(%Family{} = family) do
     attrs = create_attrs(family)
 
+    %EquityStatement{}
+    |> EquityStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:family, family)
+    |> Repo.insert()
+  end
+
+  def create_equity_statement(%Family{} = family, attrs) do
     %EquityStatement{}
     |> EquityStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:family, family)
@@ -69,16 +89,41 @@ defmodule Demo.EquityStatements do
     |> Repo.insert()
   end
 
+  def create_equity_statement(%Supul{} = supul, attrs) do
+    %EquityStatement{}
+    |> EquityStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:supul, supul)
+    |> Repo.insert()
+  end
+
+  # ? State
   def create_equity_statement(%StateSupul{} = state_supul) do
     attrs = create_attrs(state_supul)
+
     %EquityStatement{}
     |> EquityStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:state_supul, state_supul)
     |> Repo.insert()
   end
 
+  def create_equity_statement(%StateSupul{} = state_supul, attrs) do
+    %EquityStatement{}
+    |> EquityStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:state_supul, state_supul)
+    |> Repo.insert()
+  end
+
+  # ? Nation
   def create_equity_statement(%NationSupul{} = nation_supul) do
     attrs = create_attrs(nation_supul)
+
+    %EquityStatement{}
+    |> EquityStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
+    |> Repo.insert()
+  end
+
+  def create_equity_statement(%NationSupul{} = nation_supul, attrs) do
     %EquityStatement{}
     |> EquityStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
@@ -99,29 +144,39 @@ defmodule Demo.EquityStatements do
     EquityStatement.changeset(equity_statement, %{})
   end
 
-
   def create_attrs(group_or_supul) do
-    list_ES = []
+    list_ES =
+      case group_or_supul do
+        %Group{} ->
+          entities = Repo.preload(group_or_supul, :entities).entities
 
-    case group_or_supul do
-      %Group{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_ES =
-          Enum.map(entities, fn entity -> Repo.preload(entity, :equity_statement).equity_statement end)
-      %Supul{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_ES =
-          Enum.map(entities, fn entity -> Repo.preload(entity, :equity_statement).equity_statement end)
-      %StateSupul{} -> 
-        supuls = Repo.preload(group_or_supul, :supuls).supuls
-        list_ES =
+          Enum.map(entities, fn entity ->
+            Repo.preload(entity, :equity_statement).equity_statement
+          end)
+
+        %Supul{} ->
+          entities = Repo.preload(group_or_supul, :entities).entities
+
+          Enum.map(entities, fn entity ->
+            Repo.preload(entity, :equity_statement).equity_statement
+          end)
+
+        %StateSupul{} ->
+          supuls = Repo.preload(group_or_supul, :supuls).supuls
+
           Enum.map(supuls, fn supul -> Repo.preload(supul, :equity_statement).equity_statement end)
-      %NationSupul{} -> 
-        state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
-        list_ES =
-          Enum.map(state_supuls, fn state_supul -> Repo.preload(state_supul, :equity_statement).equity_statement end)
-      _ -> "error"
-     end
+
+        %NationSupul{} ->
+          state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
+
+          Enum.map(state_supuls, fn state_supul ->
+            Repo.preload(state_supul, :equity_statement).equity_statement
+          end)
+
+        _ ->
+          "error"
+      end
+
     opening_balance =
       Enum.reduce(list_ES, Decimal.from_float(0.00), fn x, acc ->
         Decimal.add(x.opening_balance, acc)
@@ -170,7 +225,5 @@ defmodule Demo.EquityStatements do
       dividends: dividends,
       withdrawal_of_capital: withdrawal_of_capital
     }
-
   end
-
 end

@@ -15,6 +15,12 @@ defmodule Demo.Taxations.Taxation do
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
 
+    has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify
+    has_one :income_statement, Demo.Reports.IncomeStatement, on_replace: :nilify
+    has_one :balance_sheet, Demo.Reports.BalanceSheet, on_replace: :nilify
+    has_one :cf_statement, Demo.Reports.CFStatement, on_replace: :nilify
+    has_one :equity_statement, Demo.Reports.EquityStatement, on_replace: :nilify
+  
     timestamps()
   end
 
@@ -23,7 +29,7 @@ defmodule Demo.Taxations.Taxation do
   def changeset(taxation, attrs = %{auth_code: auth_code}) do
     taxation
     |> cast(attrs, @fields)
-    |> put_change(:auth_code, attrs.auth_code)
+    |> put_change(:auth_code, attrs.auth_code) 
   end
   @doc false 
   def changeset(taxation, attrs) do
@@ -31,5 +37,10 @@ defmodule Demo.Taxations.Taxation do
     |> cast(attrs, @fields)
     |> validate_required([])
     |> put_assoc(:nation, attrs.nation)
+    |> put_assoc(:income_statement, attrs.is)
+    |> put_assoc(:balance_sheet, attrs.bs)
+    |> put_assoc(:financial_report, attrs.fr)
+    |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:equity_statement, attrs.es)
   end
 end

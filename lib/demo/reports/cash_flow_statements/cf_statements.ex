@@ -23,6 +23,13 @@ defmodule Demo.CFStatements do
     from(f in query, where: f.entity_id == ^entity_id)
   end
 
+  # ? Default 
+  def create_cf_statement(attrs \\ %{}) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Repo.insert()
+  end
+
   # ? Taxation 
   def create_cf_statement(%Taxation{} = taxation, attrs) do
     %CFStatement{}
@@ -49,10 +56,24 @@ defmodule Demo.CFStatements do
     |> Repo.insert()
   end
 
+  def create_cf_statement(%Group{} = group, attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:group, group)
+    |> Repo.insert()
+  end
+
   # ? 가족 
   def create_cf_statement(%Family{} = family) do
     attrs = create_attrs(family)
 
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:family, family)
+    |> Repo.insert()
+  end
+
+  def create_cf_statement(%Family{} = family, attrs) do
     %CFStatement{}
     |> CFStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:family, family)
@@ -69,16 +90,41 @@ defmodule Demo.CFStatements do
     |> Repo.insert()
   end
 
+  def create_cf_statement(%Supul{} = supul, attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:supul, supul)
+    |> Repo.insert()
+  end
+
+  # ? State
   def create_cf_statement(%StateSupul{} = state_supul) do
     attrs = create_attrs(state_supul)
+
     %CFStatement{}
     |> CFStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:state_supul, state_supul)
     |> Repo.insert()
   end
 
+  def create_cf_statement(%StateSupul{} = state_supul, attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:state_supul, state_supul)
+    |> Repo.insert()
+  end
+
+  # ? Nation
   def create_cf_statement(%NationSupul{} = nation_supul) do
     attrs = create_attrs(nation_supul)
+
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
+    |> Repo.insert()
+  end
+
+  def create_cf_statement(%NationSupul{} = nation_supul, attrs) do
     %CFStatement{}
     |> CFStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
@@ -102,27 +148,31 @@ defmodule Demo.CFStatements do
   '''
 
   def create_attrs(group_or_supul) do
-    list_CF = []
+    list_CF =
+      case group_or_supul do
+        %Group{} ->
+          entities = Repo.preload(group_or_supul, :entities).entities
+          Enum.map(entities, fn entity -> Repo.preload(entity, :cf_statement).cf_statement end)
 
-    case group_or_supul do
-      %Group{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_CF =
+        %Supul{} ->
+          entities = Repo.preload(group_or_supul, :entities).entities
           Enum.map(entities, fn entity -> Repo.preload(entity, :cf_statement).cf_statement end)
-      %Supul{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_CF =
-          Enum.map(entities, fn entity -> Repo.preload(entity, :cf_statement).cf_statement end)
-      %StateSupul{} -> 
-        supuls = Repo.preload(group_or_supul, :supuls).supuls
-        list_CF =
+
+        %StateSupul{} ->
+          supuls = Repo.preload(group_or_supul, :supuls).supuls
           Enum.map(supuls, fn supul -> Repo.preload(supul, :cf_statement).cf_statement end)
-      %NationSupul{} -> 
-        state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
-        list_CF =
-          Enum.map(state_supuls, fn state_supul -> Repo.preload(state_supul, :cf_statement).cf_statement end)
-      _ -> "error"
-     end
+
+        %NationSupul{} ->
+          state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
+
+          Enum.map(state_supuls, fn state_supul ->
+            Repo.preload(state_supul, :cf_statement).cf_statement
+          end)
+
+        _ ->
+          "error"
+      end
+
     capital_expenditures =
       Enum.reduce(list_CF, Decimal.from_float(0.00), fn x, acc ->
         Decimal.add(x.capital_expenditures, acc)

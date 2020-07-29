@@ -1,4 +1,4 @@
-<b><%= @entity.name  %></b> <%=  @entity.project %></br>
+<b><%= @entity.name  %></b> <%=  @entity.type %></br>
 <table>
   <thead>
     <tr>
@@ -22,18 +22,25 @@
 
 
 </br>
-<b>Products</b>
+<b>Products and Transactions</b>
         <li><%= link "My Products", to: Routes.product_path(@conn, :index) %></li>
         <li><%= link "Market", to: Routes.item_path(@conn, :index) %></li>
         <li><%= link "Invoice Items", to: Routes.invoice_item_path(@conn, :index) %></li>
         <li><%= link "Transactions", to: Routes.transaction_path(@conn, :index) %></li>
 
-<b>Financial Reports</b>
+<b>Entity Financial Statements</b>
     <ul>
         <li><%= link "Account Book", to: Routes.account_book_path(@conn, :show, @entity.id) %></li>
+        <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @entity.id) %></li>
+        </br>
         <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @entity.id) %></li>
         <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :show, @entity.id) %></li>
-        <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @entity.id) %></li>
         <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :show, @entity.id) %></li>
         <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :show, @entity.id) %></li>
     </ul>
+  <p>For a private entity, see <span><%= link "Group Financial Statements", to: Routes.group_path(@conn, :index) %></span>  also.</p>
+  
+  </br>
+  <p>For a default entity, see <span><%= link "Family Financial Statements", to: Routes.family_path(@conn, :index) %></span> also.</p>
+
+  </br>

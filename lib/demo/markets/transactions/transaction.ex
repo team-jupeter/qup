@@ -17,9 +17,10 @@ defmodule Demo.Transactions.Transaction do
     field :buyer_nation_supul_id, :binary_id 
     field :buyer_nation_supul_name, :binary_id
 
+    field :erl_email, :string
     field :erl_supul_name, :string 
     field :erl_supul_id, :binary_id
-    
+
     field :seller_name, :string 
     field :seller_id, :binary_id
     field :seller_state_supul_id, :binary_id 
@@ -27,8 +28,9 @@ defmodule Demo.Transactions.Transaction do
     field :seller_nation_supul_id, :binary_id 
     field :seller_nation_supul_name, :binary_id
 
-    field :ssu_supul_name, :string
+    field :ssu_email, :string
     field :ssu_supul_id, :binary_id
+    field :ssu_supul_name, :string
 
     field :gps, {:array, :map} 
     field :tax, :decimal, default: 0.0
@@ -53,6 +55,9 @@ defmodule Demo.Transactions.Transaction do
     field :archived?, :boolean, default: false
     field :payload, :string
     field :payload_hash, :string
+
+    field :buyer_type, :string
+    field :seller_type, :string
 
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
     has_one :openhash, Demo.Openhashes.Openhash
@@ -87,6 +92,12 @@ defmodule Demo.Transactions.Transaction do
     :seller_nation_supul_id, 
     :seller_nation_supul_name,
 
+    :erl_email,
+    :ssu_email,
+
+    :buyer_type,       
+    :seller_type,       
+
   ]
 
 
@@ -94,8 +105,8 @@ defmodule Demo.Transactions.Transaction do
     transaction
     |> cast(attrs, @fields)
     |> validate_required([])
-    |> put_assoc(:entities, [attrs.entity])
-    |> put_assoc(:invoice, attrs.invoice)
+    # |> put_assoc(:entities, [attrs.entity])
+    |> put_assoc(:invoice, attrs.invoice) 
     |> put_change(:abc_amount, attrs.invoice.total) 
     # |> check_fair_trade(attrs)
   end

@@ -72,7 +72,7 @@ defmodule Demo.Openhashes do
     '''
 
     # ? Add the new openhash to the supul's openhash array.
-    Supuls.update_supul(supul, %{openhash: openhash})
+    Supuls.update_openhash(supul, %{openhash: openhash}) 
     
     # Repo.preload(supul, :openhashes)
     # |> Supul.changeset_openhash(%{openhash: openhash})
@@ -86,7 +86,7 @@ defmodule Demo.Openhashes do
     # ? UPDATE OPENHASH BLOCK
     # ? add openhash_id to the openhash block of the supul.
     openhash_box = [openhash.id | supul.openhash_box]
-    Supuls.update_supul(supul, %{openhash_box: openhash_box})  #? will be sent to the upper supul of this supul.
+    Supuls.update_openhash_box(supul, %{openhash_box: openhash_box})  #? will be sent to the upper supul of this supul.
 
     # ? add openhash to the event. 
     attrs = %{

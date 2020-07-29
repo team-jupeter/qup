@@ -1,14 +1,14 @@
 defmodule DemoWeb.EntityController do
   use DemoWeb, :controller
   alias Demo.Entities
-  alias Demo.Entities.Entity
+  alias Demo.Entities.Entity  
 
   # plug :authenticate_user when action in [:new, :create]
   plug :load_biz_categories when action in [:new, :create, :edit, :update]
 
   defp load_biz_categories(conn, _) do
     assign(conn, :biz_categories, Entities.list_alphabetical_biz_categories())
-  end
+  end 
  
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns.current_user]

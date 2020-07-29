@@ -29,6 +29,12 @@ defmodule Demo.IncomeStatements do
     from(i in query, where: i.entity_id == ^entity_id)
   end
 
+  # ? Default 
+  def create_income_statement() do
+    %IncomeStatement{}
+    |> Repo.insert()
+  end
+
   # ? Taxation 국세청 
   def create_income_statement(%Taxation{} = taxation, attrs) do
     %IncomeStatement{}
@@ -44,33 +50,59 @@ defmodule Demo.IncomeStatements do
     |> Ecto.Changeset.put_assoc(:entity, entity)
     |> Repo.insert()
   end
-
+  
+  # ? Group 
   def create_income_statement(%Group{} = group) do
     attrs = create_attrs(group)
-  
+
     %IncomeStatement{}
     |> IncomeStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:group, group)
     |> Repo.insert()
   end
 
+  def create_income_statement(%Group{} = group, attrs) do
+    %IncomeStatement{}
+    |> IncomeStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:group, group)
+    |> Repo.insert()
+  end
+
+  #? Family
   def create_income_statement(%Family{} = family) do
     attrs = create_attrs(family)
-  
+
     %IncomeStatement{}
     |> IncomeStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:family, family)
     |> Repo.insert()
   end
 
+  def create_income_statement(%Family{} = family, attrs) do
+    %IncomeStatement{}
+    |> IncomeStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:family, family)
+    |> Repo.insert()
+  end
+
+  #? Supul  
   def create_income_statement(%Supul{} = supul) do
     attrs = create_attrs(supul)
+
     %IncomeStatement{}
     |> IncomeStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:supul, supul)
     |> Repo.insert()
   end
 
+  def create_income_statement(%Supul{} = supul, attrs) do
+    %IncomeStatement{}
+    |> IncomeStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:supul, supul)
+    |> Repo.insert()
+  end
+
+  #? State Supul
   def create_income_statement(%StateSupul{} = state_supul) do
     attrs = create_attrs(state_supul)
 
@@ -80,8 +112,24 @@ defmodule Demo.IncomeStatements do
     |> Repo.insert()
   end
 
+  def create_income_statement(%StateSupul{} = state_supul, attrs) do
+    %IncomeStatement{}
+    |> IncomeStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:state_supul, state_supul)
+    |> Repo.insert()
+  end
+
+  #? Nation Supul
   def create_income_statement(%NationSupul{} = nation_supul) do
     attrs = create_attrs(nation_supul)
+
+    %IncomeStatement{}
+    |> IncomeStatement.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
+    |> Repo.insert()
+  end
+
+  def create_income_statement(%NationSupul{} = nation_supul, attrs) do
     %IncomeStatement{}
     |> IncomeStatement.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
@@ -114,30 +162,38 @@ defmodule Demo.IncomeStatements do
     end
   '''
 
-
   defp create_attrs(group_or_supul) do
-    list_IS = []
+    list_IS =
+      case group_or_supul do
+        %Group{} ->
+          entities = Repo.preload(group_or_supul, :entities).entities
 
-    case group_or_supul do
-      %Group{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_IS =
-          Enum.map(entities, fn entity -> Repo.preload(entity, :income_statement).income_statement end)
-      %Supul{} -> 
-        entities = Repo.preload(group_or_supul, :entities).entities
-        list_IS =
-          Enum.map(entities, fn entity -> Repo.preload(entity, :income_statement).income_statement end)
-      %StateSupul{} -> 
-        supuls = Repo.preload(group_or_supul, :supuls).supuls
-        list_IS =
+          Enum.map(entities, fn entity ->
+            Repo.preload(entity, :income_statement).income_statement
+          end)
+
+        %Supul{} ->
+          entities = Repo.preload(group_or_supul, :entities).entities
+
+          Enum.map(entities, fn entity ->
+            Repo.preload(entity, :income_statement).income_statement
+          end)
+
+        %StateSupul{} ->
+          supuls = Repo.preload(group_or_supul, :supuls).supuls
+
           Enum.map(supuls, fn supul -> Repo.preload(supul, :income_statement).income_statement end)
-      %NationSupul{} -> 
-        state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
-        list_IS =
-          Enum.map(state_supuls, fn state_supul -> Repo.preload(state_supul, :income_statement).income_statement end)
-      _ -> "error"
-     end
 
+        %NationSupul{} ->
+          state_supuls = Repo.preload(group_or_supul, :state_supuls).state_supuls
+
+          Enum.map(state_supuls, fn state_supul ->
+            Repo.preload(state_supul, :income_statement).income_statement
+          end)
+
+        _ ->
+          "error"
+      end
 
     compensation =
       Enum.reduce(list_IS, Decimal.from_float(0.00), fn x, acc ->

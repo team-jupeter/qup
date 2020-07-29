@@ -63,11 +63,9 @@ defmodule Demo.Weddings do
       ssu_email: attrs.groom_email
     })
      
-    {:ok, wedding} = %Wedding{}
+    %Wedding{}
     |> Wedding.changeset(attrs)
-    |> Repo.insert() #? 결혼 신고서 
-
-    Events.create_event(wedding, bride_private_key, groom_private_key)
+    |> Repo.insert()
   end
 
   def add_openhash(wedding, attrs) do

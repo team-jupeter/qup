@@ -37,6 +37,7 @@ defmodule Demo.Reports.FinancialReport do
     # has_one :consolidated_FS
 
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+    belongs_to :family, Demo.Families.Family, type: :binary_id
     belongs_to :group, Demo.Groups.Group, type: :binary_id
     belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id

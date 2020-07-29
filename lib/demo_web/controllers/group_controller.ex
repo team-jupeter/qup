@@ -1,13 +1,26 @@
 defmodule DemoWeb.GroupController do
   use DemoWeb, :controller
-
-  alias Demo.Groups
+  alias Demo.Repo 
+  alias Demo.Groups 
   alias Demo.Groups.Group
 
-  def index(conn, _params) do
-    groups = Groups.list_groups()
-    render(conn, "index.html", groups: groups)
+  plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
+
+  def action(conn, _) do
+    args = [conn, conn.params, conn.assigns.current_entity]
+    apply(__MODULE__, action_name(conn), args)  
+  end 
+ 
+  def index(conn, _params, current_entity) do
+    group = Repo.preload(current_entity, :group).group
+    # group = Groups.get_entity_group(current_entity)
+
+    IO.inspect "group"
+    IO.inspect group
+
+    render(conn, "index.html", group: group)
   end
+
 
   def new(conn, _params) do
     changeset = Groups.change_group(%Group{})

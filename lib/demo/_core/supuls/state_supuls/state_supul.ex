@@ -46,8 +46,8 @@ defmodule Demo.StateSupuls.StateSupul do
 
   def changeset(%StateSupul{} = state_supul, attrs = %{
     incoming_hash: incoming_hash, sender: sender}) do
-    previous_hash = state_supul.current_hash
 
+    previous_hash = state_supul.current_hash
     new_current_hash = Pbkdf2.hash_pwd_salt(state_supul.current_hash <> attrs.incoming_hash)
     # new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
     new_hash = Pbkdf2.hash_pwd_salt(new_current_hash)
@@ -78,23 +78,28 @@ defmodule Demo.StateSupuls.StateSupul do
     |> put_assoc(:openhashes, [openhash | state_supul.openhashes])
   end 
 
-  def changeset(state_supul, attrs = %{nation_supul: nation_supul}) do
-    IO.puts "StateSupul nation_supul changeset"
-    state_supul
-    |> cast(attrs, @fields)
-    |> put_assoc(:nation_supul, attrs.nation_supul)
-  end 
-  def changeset(attrs = %{nation_supul: nation_supul}) do
-    IO.puts "StateSupul nation_supul changeset"
-    %StateSupul{}
-    |> cast(attrs, @fields)
-    |> put_assoc(:nation_supul, attrs.nation_supul)
-  end 
-  @doc false
+  # def changeset(state_supul, attrs = %{nation_supul: nation_supul}) do
+  #   IO.puts "StateSupul nation_supul changeset"
+  #   state_supul
+  #   |> cast(attrs, @fields)
+  #   |> put_assoc(:nation_supul, attrs.nation_supul)
+  # end 
+  # def changeset(attrs = %{nation_supul: nation_supul}) do
+  #   IO.puts "StateSupul nation_supul changeset"
+  #   %StateSupul{}
+  #   |> cast(attrs, @fields)
+  #   |> put_assoc(:nation_supul, attrs.nation_supul)
+  # end 
+  @doc false 
   def changeset(attrs) do
-    %StateSupul{}
+    %StateSupul{} 
     |> cast(attrs, @fields)
-    |> validate_required([:name])
+    |> put_assoc(:account_book, attrs.ab)
+    |> put_assoc(:income_statement, attrs.is)
+    |> put_assoc(:balance_sheet, attrs.bs)
+    |> put_assoc(:financial_report, attrs.fr)
+    |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:equity_statement, attrs.es)
   end
 
   def changeset(%StateSupul{} = state_supul, attrs = %{auth_code: auth_code}) do
@@ -105,9 +110,14 @@ defmodule Demo.StateSupuls.StateSupul do
   end
 
   def changeset(%StateSupul{} = state_supul, attrs) do
-    # IO.puts "StateSupul changeset"
+    IO.puts "StateSupul changeset"
     state_supul
     |> cast(attrs, @fields)
-    |> validate_required([])
+    |> put_assoc(:account_book, attrs.ab)
+    |> put_assoc(:income_statement, attrs.is)
+    |> put_assoc(:balance_sheet, attrs.bs)
+    |> put_assoc(:financial_report, attrs.fr)
+    |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:equity_statement, attrs.es)
   end
 end

@@ -20,8 +20,13 @@ defmodule Demo.Supuls.CheckArchiveEvent do
     {:ok, recv_sig_ssu} = Enum.fetch!(parts, 4) |> Base.url_decode64()
 
     # ? Hard coded public keys. Those shall be obtained via public routes.
+    #? For wedding
     erl_pub_key = ExPublicKey.load!("./keys/lee_public_key.pem")
     ssu_pub_key = ExPublicKey.load!("./keys/sung_public_key.pem")
+
+    #? For transaction
+    # erl_pub_key = ExPublicKey.load!("./keys/hong_entity_public_key.pem")
+    # ssu_pub_key = ExPublicKey.load!("./keys/tomi_public_key.pem")
 
     # IO.puts("Do you see me? 1 ^^*")
 
@@ -50,7 +55,7 @@ defmodule Demo.Supuls.CheckArchiveEvent do
               event_id: event.id,
               incoming_hash: recv_event_hash
             })
-
+ 
           openhash = Openhashes.create_openhash(erl_supul, event)
 
           # ? Making a family struct and related financial statements. 
@@ -60,11 +65,11 @@ defmodule Demo.Supuls.CheckArchiveEvent do
           if erl_supul.id != ssu_supul.id do
             IO.puts("Make a ssu supul struct")
 
-            {:ok, ssu_supul} =
+            {:ok, ssu_supul} =  
               Supuls.update_hash_chain(ssu_supul, %{
                 event_sender: event.ssu_email,
                 event_id: event.id,
-                incoming_hash: recv_event_hash
+                incoming_hash: recv_event_hash 
               })
 
             # IO.inspect ssu_supul

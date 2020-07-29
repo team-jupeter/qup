@@ -21,7 +21,7 @@ defmodule Demo.InvoiceItems do
       Repo.all(
         from u in InvoiceItem,
           where: u.buyer_id == ^buyer_id
-      )
+      ) 
     end
 
     def list_invoice_items(current_page, per_page) do
@@ -41,7 +41,7 @@ defmodule Demo.InvoiceItems do
     end
 
     def create_invoice_item(attrs) do 
-    %InvoiceItem{}
+     %InvoiceItem{}
       |> InvoiceItem.changeset(attrs)
       |> Repo.insert()
       # |> notify_subscribers([:invoice_item, :created])

@@ -48,7 +48,13 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add :payload, :text
       add :payload_hash, :text
       add :event_hash, :text
+
+      add :erl_email, :string
+      add :ssu_email, :string
       
+      add :buyer_type, :string
+      add :seller_type, :string
+  
       add :invoice_id, references(:invoices, type: :uuid, null: false)
 
       # add :locked, :boolean, default: false

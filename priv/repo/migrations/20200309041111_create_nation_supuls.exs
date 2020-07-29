@@ -22,6 +22,7 @@ defmodule Demo.Repo.Migrations.CreateNationSupuls do
       add :sender, :binary_id
  
       add :global_supul_id, references(:global_supuls, type: :uuid, null: false)
+      add :nation_supul_id, references(:nation_supuls, type: :uuid, null: false)
 
       timestamps()
     end
