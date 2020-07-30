@@ -196,9 +196,9 @@ defmodule Demo.Entities.Entity do
     # |> put_assoc(:nation, attrs.nation)
   end
 
-  def create_default_entity(entity, _current_user, attrs) do
+  def create_default_entity(entity, current_user, attrs) do
     default_changeset(entity, attrs)
-    # |> put_assoc(:users, [current_user])
+    |> put_assoc(:users, [current_user])
     |> put_assoc(:family, attrs.family)
     |> put_assoc(:supul, attrs.supul)
     |> put_assoc(:family, attrs.family)

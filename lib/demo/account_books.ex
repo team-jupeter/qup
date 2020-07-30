@@ -19,6 +19,15 @@ defmodule Demo.AccountBooks do
 
   def get_account_book!(id), do: Repo.get!(AccountBook, id)
 
+  def get_entity_account_book(entity_id) do
+    AccountBook
+    |> entity_account_book_query(entity_id)
+    |> Repo.one()
+  end
+
+  defp entity_account_book_query(query, entity_id) do
+    from(f in query, where: f.entity_id == ^entity_id)
+  end
 
   def add_expense(%AccountBook{} = account_book, %{amount: amount}) do
     accrued_expense = Decimal.add(account_book.expense, amount)

@@ -45,7 +45,7 @@ defmodule Demo.Openhashes.Openhash do
   #     previous_hash: supul.previous_hash,
   #     incoming_hash: supul.incoming_hash,
   #     current_hash: supul.current_hash,
-  #   }
+  #   } 
 
   #   openhash
   #   |> cast(attrs, @fields)

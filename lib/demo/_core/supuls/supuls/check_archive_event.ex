@@ -6,9 +6,6 @@ defmodule Demo.Supuls.CheckArchiveEvent do
   alias Demo.Supuls.Supul
 
   def check_archive_event(event, payload) do
-    erl_supul = Supuls.get_supul!(event.erl_supul_id)
-    ssu_supul = Supuls.get_supul!(event.ssu_supul_id)
-
     parts = String.split(payload, "|")
 
     # ? reject the payload if the timestamp is newer than the arriving time to supul. 
@@ -20,13 +17,23 @@ defmodule Demo.Supuls.CheckArchiveEvent do
     {:ok, recv_sig_ssu} = Enum.fetch!(parts, 4) |> Base.url_decode64()
 
     # ? Hard coded public keys. Those shall be obtained via public routes.
-    #? For wedding
-    erl_pub_key = ExPublicKey.load!("./keys/lee_public_key.pem")
-    ssu_pub_key = ExPublicKey.load!("./keys/sung_public_key.pem")
 
-    #? For transaction
-    # erl_pub_key = ExPublicKey.load!("./keys/hong_entity_public_key.pem")
-    # ssu_pub_key = ExPublicKey.load!("./keys/tomi_public_key.pem")
+    erl_ssu =
+      case event.type do
+        # ? For wedding
+        "wedding" ->
+          %{
+            erl_pub_key: ExPublicKey.load!("./keys/lee_public_key.pem"),
+            ssu_pub_key: ExPublicKey.load!("./keys/sung_public_key.pem")
+          }
+
+        # #? For transaction
+        "transaction" ->
+          %{
+            erl_pub_key: ExPublicKey.load!("./keys/hong_entity_public_key.pem"),
+            ssu_pub_key: ExPublicKey.load!("./keys/tomi_public_key.pem")
+          }
+      end
 
     # IO.puts("Do you see me? 1 ^^*")
 
@@ -34,17 +41,21 @@ defmodule Demo.Supuls.CheckArchiveEvent do
       ExPublicKey.verify(
         "#{recv_ts}|#{recv_event_id}|#{recv_event_hash}",
         recv_sig_erl,
-        erl_pub_key
+        erl_ssu.erl_pub_key
       )
 
     {:ok, sig_valid_ssu} =
       ExPublicKey.verify(
         "#{recv_ts}|#{recv_event_id}|#{recv_event_hash}",
         recv_sig_ssu,
-        ssu_pub_key
+        erl_ssu.ssu_pub_key
       )
 
     # ? OPENHASH 
+    erl_supul = Supuls.get_supul!(event.erl_supul_id)
+    ssu_supul = Supuls.get_supul!(event.ssu_supul_id)
+
+    openhash =
       cond do
         sig_valid_erl && sig_valid_ssu ->
           IO.puts("Update erl supul with recv_event_hash")
@@ -55,29 +66,27 @@ defmodule Demo.Supuls.CheckArchiveEvent do
               event_id: event.id,
               incoming_hash: recv_event_hash
             })
- 
-          openhash = Openhashes.create_openhash(erl_supul, event)
 
-          # ? Making a family struct and related financial statements. 
-          process_event(event, openhash)
-
+          Openhashes.create_openhash(erl_supul, event)
 
           if erl_supul.id != ssu_supul.id do
             IO.puts("Make a ssu supul struct")
 
-            {:ok, ssu_supul} =  
+            {:ok, ssu_supul} =
               Supuls.update_hash_chain(ssu_supul, %{
                 event_sender: event.ssu_email,
                 event_id: event.id,
-                incoming_hash: recv_event_hash 
+                incoming_hash: recv_event_hash
               })
 
             # IO.inspect ssu_supul
 
             IO.puts("Make an openhash of ssu supul struct")
-            openhash = Openhashes.create_openhash(ssu_supul, event)
+            Openhashes.create_openhash(ssu_supul, event)
           end
 
+          # ? Making a family struct and related financial statements. 
+          process_event(event)
         # ? halt the process 
         true ->
           IO.puts("error")
@@ -85,10 +94,10 @@ defmodule Demo.Supuls.CheckArchiveEvent do
       end
   end
 
-  defp process_event(event, openhash) do
+  defp process_event(event) do
     case event.type do
-      "transaction" -> Supuls.ProcessTransaction.process_transaction(event, openhash)
-      "wedding" -> Supuls.ProcessWedding.process_wedding(event, openhash)
+      "transaction" -> Supuls.ProcessTransaction.process_transaction(event)
+      "wedding" -> Supuls.ProcessWedding.process_wedding(event)
       _ -> IO.puts("Oh ma ma my ... type error")
     end
   end

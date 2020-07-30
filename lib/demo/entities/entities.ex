@@ -70,14 +70,15 @@ defmodule Demo.Entities do
 
     family = Repo.preload(user, :family).family
     supul = Repo.preload(user, :supul).supul
-
-    attrs = Map.merge(attrs, %{family: family, supul: supul})
+    supul_name = supul.name
+    
+    attrs = Map.merge(attrs, %{family: family, supul: supul, supul_name: supul_name})
 
     {:ok, entity} = %Entity{}
-    |> Entity.create_default_entity(user, attrs)
+    |> Entity.create_default_entity(user, attrs)  
     |> Repo.insert()
-
-    {:ok, entity} 
+ 
+    {:ok, entity}  
   end
 
   def create_private_entity(attrs) do

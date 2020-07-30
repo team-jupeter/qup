@@ -15,7 +15,7 @@ defmodule DemoWeb.CFStatementController do
   # end
 
   def show(conn, %{"id" => id}) do
-    [cf_statement] = CFStatements.get_entity_cf_statement!(id) 
+    cf_statement = CFStatements.get_entity_cf_statement(id) 
     case cf_statement do
       nil -> 
         new(conn, "dummy")

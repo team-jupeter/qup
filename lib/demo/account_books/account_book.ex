@@ -4,7 +4,7 @@ defmodule Demo.AccountBooks.AccountBook do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "account_books" do
-    field :revenue, :decimal, precision: 12, scale: 2, default: 1000.0
+    field :revenue, :decimal, precision: 12, scale: 2, default: 0.0
     field :expense, :decimal, precision: 12, scale: 2, default: 0.0
     '''
     01.식료품 · 비주류음료

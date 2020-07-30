@@ -124,6 +124,7 @@ defmodule Demo.Supuls.Supul do
   def changeset(%Supul{} = supul, attrs) do
     %Supul{}
     |> cast(attrs, @fields)
+    |> put_assoc(:state_supul, attrs.state_supul)
     |> put_assoc(:account_book, attrs.ab)
     |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)

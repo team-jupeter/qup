@@ -1,15 +1,15 @@
 <table>
   <thead>
     <tr>
-      <th>seller</th>
-      <th>amount</th>
-      <th>archived?</th>
+      <th>Seller</th>
+      <th>Amount</th>
+      <th>Archived?</th>
     </tr>
   </thead>
   <tbody>
 <%= for transaction <- @transactions do %>
     <tr> 
-      <td><%= transaction.seller_name %></td>
+      <td><%= transaction.ssu_name %></td>
       <td><%= transaction.abc_amount %></td>
       <td><%= transaction.archived? %></td>
     </tr>

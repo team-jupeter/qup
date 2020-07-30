@@ -3,7 +3,7 @@
   <thead>
     <tr>
     </tr>
-  </thead>
+  </thead> 
   <tbody>
     <tr>
       <td>Email</td>
@@ -43,4 +43,7 @@
   </br>
   <p>For a default entity, see <span><%= link "Family Financial Statements", to: Routes.family_path(@conn, :index) %></span> also.</p>
 
-  </br>
+ </br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

@@ -13,10 +13,10 @@ defmodule Demo.CFStatements do
 
   def get_cf_statement!(id), do: Repo.get!(CFStatement, id)
 
-  def get_entity_cf_statement!(entity_id) do
+  def get_entity_cf_statement(entity_id) do
     CFStatement
     |> entity_cf_statements_query(entity_id)
-    |> Repo.all()
+    |> Repo.one()
   end
 
   defp entity_cf_statements_query(query, entity_id) do

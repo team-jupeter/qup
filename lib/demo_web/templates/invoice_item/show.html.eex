@@ -36,4 +36,6 @@
 <span><%= link "Keep Shopping", to: Routes.item_path(@conn, :index) %></span>
 </br>
 <span><%= link "Go to Cart", to: Routes.invoice_item_path(@conn, :index) %></span>
+</br>
+<span><%= link "Home", to: Routes.entity_path(@conn, :index) %></span>
 

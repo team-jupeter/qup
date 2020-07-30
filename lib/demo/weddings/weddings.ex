@@ -15,52 +15,45 @@ defmodule Demo.Weddings do
 
   def get_wedding!(id), do: Repo.get!(Wedding, id)
 
-  def create_wedding(attrs \\ %{}) do
-   %Wedding{}
-    |> Wedding.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def create_wedding(attrs \\ %{}, bride_private_key, groom_private_key) do
-    bride = Repo.one(from u in User, where: u.email == ^attrs.bride_email, select: u)
-    groom = Repo.one(from u in User, where: u.email == ^attrs.groom_email, select: u)
+  def create_wedding(attrs) do
+    erl = Repo.one(from u in User, where: u.email == ^attrs.bride_email, select: u)
+    ssu = Repo.one(from u in User, where: u.email == ^attrs.groom_email, select: u)
 
 
     #? Stop if bride or groom is alread married.
-    case bride.married do
+    case erl.married do
       true -> "error"
       false -> true
     end
 
-    case groom.married do
+    case ssu.married do
       true -> "error"
       false -> true
     end
 
 
 
-    erl_supul = Repo.preload(bride, :supul).supul #? 이몽룡의 수풀
+    erl_supul = Repo.preload(erl, :supul).supul #? 이몽룡의 수풀
     erl_supul_id = erl_supul.id 
     erl_supul_name = erl_supul.name 
 
-    ssu_supul = Repo.preload(groom, :supul).supul #? 성춘향의 수풀
+    ssu_supul = Repo.preload(ssu, :supul).supul #? 성춘향의 수풀
     ssu_supul_id = ssu_supul.id 
     ssu_supul_name = ssu_supul.name 
 
     
     attrs = Map.merge(attrs, %{
-      bride_id: bride.id, 
-      groom_id: groom.id, 
-      bride_name: bride.name, 
-      groom_name: groom.name,
-
+      erl_id: erl.id, 
+      erl_email: erl.email,
+      erl_name: erl.name, 
       erl_supul_id: erl_supul_id, 
       erl_supul_name: erl_supul_name, 
+
+      ssu_id: ssu.id, 
+      ssu_email: ssu.email,
+      ssu_name: ssu.name,
       ssu_supul_id: ssu_supul_id,
       ssu_supul_name: ssu_supul_name,
-
-      erl_email: attrs.bride_email,
-      ssu_email: attrs.groom_email
     })
      
     %Wedding{}

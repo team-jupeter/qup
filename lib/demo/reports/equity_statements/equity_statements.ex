@@ -13,10 +13,10 @@ defmodule Demo.EquityStatements do
 
   def get_equity_statement!(id), do: Repo.get!(EquityStatement, id)
 
-  def get_entity_equity_statement!(id) do
+  def get_entity_equity_statement(id) do
     EquityStatement
     |> entity_equity_statements_query(id)
-    |> Repo.all()
+    |> Repo.one()
   end
 
   defp entity_equity_statements_query(query, entity_id) do

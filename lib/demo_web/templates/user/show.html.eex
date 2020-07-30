@@ -40,9 +40,8 @@
 
 <nav role="navigation">
     <ul>
-        <li><%= link "Family", to: Routes.family_path(@conn, :show, @user) %></li>
-        <li><%= link "Private Entities", to: Routes.entity_path(@conn, :index) %></li>
-    
+        <li><%= link "My Family", to: Routes.family_path(@conn, :show, @user) %></li>
+        <li><%= link "My Entities", to: Routes.entity_path(@conn, :index) %></li>
     </ul>   
 </nav>
 </section>

@@ -58,7 +58,7 @@ defmodule DemoWeb.EntityController do
     |> put_flash(:info, "Entity deleted successfully.")
     |> redirect(to: Routes.entity_path(conn, :index))
   end
-
+ 
   def new(conn, _params, _current_user) do
     IO.puts "entity.new"
     changeset = Entities.new_entity(%Entity{}) 

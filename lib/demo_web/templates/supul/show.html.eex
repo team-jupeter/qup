@@ -1,68 +1,34 @@
-<h4><%= @supul.name %></h4>
-<ul>
-<h5>Permanent Data</h5>
-  <li>
-    <strong>type:</strong>
-    <%= @supul.type %>
-  </li>
-  <li>
-    <strong>supul_code:</strong>
-    <%= @supul.supul_code %>
-  </li>
-  <li>
-    <strong>state_name:</strong>
-    <%= @supul.state_name %>
-  </li>
-  <li>
-    <strong>nation_name:</strong>
-    <%= @supul.nation_name %>
-  </li>
-  <li>
-    <strong>state_supul:</strong>
-  </li>
-  <li>
-    <strong>nation_supul:</strong>
-  </li>
-  <li>
-    <strong>geographical_area:</strong>
-    <%= @supul.geographical_area %>
-  </li>
-  </br>
-  <h5>Temporary Data</h5>
+<b><%= @supul.name %></b>
+<table>
+  <thead>
+    <tr>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr>
+      <td>Type</td>
+      <td><%= @supul.type %></td>
+    </tr> 
+    <tr>
+      <td>Supul Code</td>
+      <td><%= @supul.supul_code %></td>
+    </tr> 
+    <tr>
+      <td>State</td>
+      <td><%= @supul.state_name %></td>
+    </tr> 
+    <tr>
+      <td>Nation</td>
+      <td><%= @supul.nation_name %></td>
+    </tr> 
+    <tr>
+      <td>Geographical_area</td>
+      <td><%= @supul.geographical_area %></td>
+    </tr> 
+  </tbody>
+</table>
 
-  <li>
-    <strong>event_sender:</strong>
-    <%= @supul.event_sender %>
-  </li>
-  <li>
-    <strong>current_hash:</strong>
-    <%= @supul.current_hash %>
-  </li>
-  <li>
-    <strong>incoming_hash:</strong>
-    <%= @supul.incoming_hash %>
-  </li>
-  <li>
-    <strong>previous_hash:</strong>
-    <%= @supul.previous_hash %>
-  </li>
-  <li>
-    <strong>hash_count:</strong>
-    <%= @supul.hash_count %>
-  </li>
-
-  <li>
-    <strong>hash_chain:</strong>
-    <%= @supul.hash_chain %>
-  </li>
-  <li>
-    <strong>openhash_box:</strong>
-    <%= @supul.openhash_box %>
-  </li>
-</ul>
-
-
-<h4>Financial Reports</h4>
+<b>Financial Reports</b>
   <ul>
       <li><%= link "Account Book", to: Routes.account_book_path(@conn, :edit, @supul.id) %></li>
       <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :edit, @supul.id) %></li>
@@ -72,3 +38,39 @@
       <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :edit, @supul.id) %></li>
   </ul>
  
+</br>
+  
+  <b>Openhash Data</b>
+<table>
+  <thead>
+    <tr>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr>
+      <td>current_hash</td>
+      <td><%= @supul.current_hash %></td>
+    </tr> 
+    <tr>
+      <td>incoming_hash</td>
+      <td><%= @supul.incoming_hash %></td>
+    </tr> 
+    <tr>
+      <td>previous_hash</td>
+      <td><%= @supul.previous_hash %></td>
+    </tr> 
+    <tr>
+      <td>hash_count</td>
+      <td><%= @supul.hash_count %></td>
+    </tr> 
+    <tr>
+      <td>hash_chain</td>
+      <td><%= @supul.hash_chain %></td>
+    </tr> 
+    <tr>
+      <td>openhash_box</td>
+      <td><%= @supul.openhash_box %></td>
+    </tr> 
+
+  </tbody>
+</table>

@@ -8,40 +8,40 @@ defmodule Demo.Transactions.Transaction do
     #? previous transaction_id and digital signature of invoice
     field :hash_of_invoice, :string
 
+    field :erl_type, :string
+    field :ssu_type, :string
+
     #? who pays ABC? which t1s in his/her/its wallet?
-    field :buyer_name, :string 
-    field :buyer_id, :binary_id
-    field :buyer_family_id, :binary_id, default: nil
-    field :buyer_state_supul_id, :binary_id 
-    field :buyer_state_supul_name, :binary_id
-    field :buyer_nation_supul_id, :binary_id 
-    field :buyer_nation_supul_name, :binary_id
-
-    field :erl_email, :string
-    field :erl_supul_name, :string 
-    field :erl_supul_id, :binary_id
-
-    field :seller_name, :string 
-    field :seller_id, :binary_id
-    field :seller_state_supul_id, :binary_id 
-    field :seller_state_supul_name, :binary_id
-    field :seller_nation_supul_id, :binary_id 
-    field :seller_nation_supul_name, :binary_id
-
-    field :ssu_email, :string
-    field :ssu_supul_id, :binary_id
-    field :ssu_supul_name, :string
+    field :erl_id, :binary_id
+    field :erl_name, :string 
+    field :erl_email, :string 
+    field :erl_family_id, :binary_id
+    field :erl_group_id, :binary_id
+    field :erl_supul_id, :binary_id 
+    field :erl_state_supul_id, :binary_id
+    field :erl_nation_supul_id, :binary_id 
+    
+    field :ssu_id, :binary_id
+    field :ssu_name, :string 
+    field :ssu_email, :string 
+    field :ssu_family_id, :binary_id
+    field :ssu_group_id, :binary_id
+    field :ssu_supul_id, :binary_id 
+    field :ssu_state_supul_id, :binary_id
+    field :ssu_nation_supul_id, :binary_id 
 
     field :gps, {:array, :map} 
     field :tax, :decimal, default: 0.0
     field :gopang_fee, :decimal, default: 0.0
     field :insurance, :string
-    field :abc_input_id, :string #? public_address of buyer. 
+
+    field :abc_input_id, :binary_id  
     field :abc_input_name, :string 
-    field :abc_output_id, :string #? public_address of buyer. 
-    field :abc_output_name, :string #? public_address of buyer. 
+    field :abc_output_id, :binary_id  
+    field :abc_output_name, :string  
     field :abc_input_t1s, {:array, :map}, default: []
     field :abc_amount, :decimal, precision: 15, scale: 4
+
     field :items, {:array, :binary_id}
     field :fiat_currency, :decimal, precision: 15, scale: 4
     field :transaction_status, :string, default: "Processing..." #? processing, pending, completed
@@ -55,9 +55,6 @@ defmodule Demo.Transactions.Transaction do
     field :archived?, :boolean, default: false
     field :payload, :string
     field :payload_hash, :string
-
-    field :buyer_type, :string
-    field :seller_type, :string
 
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
     has_one :openhash, Demo.Openhashes.Openhash
@@ -74,29 +71,55 @@ defmodule Demo.Transactions.Transaction do
   end
 
   @fields [
-    :type, :hash_of_invoice, :buyer_name, :seller_name, :buyer_id, :buyer_family_id, :seller_id, 
-    :erl_supul_name, :erl_supul_id, :ssu_supul_name, :ssu_supul_id,  
-    :gps, :tax, :insurance, :abc_input_id, :abc_input_name,  
-    :abc_output_id, :abc_output_name, :abc_input_t1s, :abc_amount, 
-    :items, :fiat_currency, :transaction_status, :if_only_item, 
-    :fair?, :gopang_fee, :archived?, :payload, :payload_hash,
-    :event_hash,
+    :type, 
+    #? previous transaction_id and digital signature of invoice
+    :hash_of_invoice, 
+    
+    :erl_type, 
+    :ssu_type, 
 
-    :buyer_state_supul_id, 
-    :buyer_state_supul_name,
-    :buyer_nation_supul_id, 
-    :buyer_nation_supul_name,
+    #? who pays ABC? which t1s in his/her/its wallet?
+    :erl_id, 
+    :erl_name,  
+    :erl_email,  
+    :erl_family_id, 
+    :erl_group_id, 
+    :erl_supul_id,  
+    :erl_state_supul_id, 
+    :erl_nation_supul_id,  
+    
+    :ssu_id, 
+    :ssu_name,  
+    :ssu_email,  
+    :ssu_family_id, 
+    :ssu_group_id, 
+    :ssu_supul_id,  
+    :ssu_state_supul_id, 
+    :ssu_nation_supul_id,  
 
-    :seller_state_supul_id, 
-    :seller_state_supul_name,
-    :seller_nation_supul_id, 
-    :seller_nation_supul_name,
+    :gps,  
+    :tax, 
+    :gopang_fee, 
+    :insurance, 
+    :abc_input_id,   
+    :abc_input_name,  
+    :abc_output_id,   
+    :abc_output_name,   
+    :abc_input_t1s, 
+    :abc_amount, 
+    :items, 
+    :fiat_currency, 
+    :transaction_status, 
+    :if_only_item,  
+    :fair?, 
+    
+    :supul_code, 
+    :event_hash, 
 
-    :erl_email,
-    :ssu_email,
-
-    :buyer_type,       
-    :seller_type,       
+    :locked?, 
+    :archived?, 
+    :payload, 
+    :payload_hash,       
 
   ]
 

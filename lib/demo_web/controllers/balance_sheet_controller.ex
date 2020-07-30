@@ -23,14 +23,14 @@ defmodule DemoWeb.BalanceSheetController do
   # end
 
   def show(conn, %{"id" => id}) do
-    [balance_sheet] = BalanceSheets.get_entity_balance_sheet!(id)
+    balance_sheet = BalanceSheets.get_entity_balance_sheet(id)
 
     case balance_sheet do
       nil ->
         new(conn, "dummy")
 
       balance_sheet ->
-        render(conn, "show.html",balance_sheet: balance_sheet)
+        render(conn, "show.html", balance_sheet: balance_sheet)
     end
   end
 

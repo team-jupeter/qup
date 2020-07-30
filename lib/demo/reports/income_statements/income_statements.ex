@@ -19,10 +19,10 @@ defmodule Demo.IncomeStatements do
 
   def get_income_statement!(id), do: Repo.get!(IncomeStatement, id)
 
-  def get_entity_income_statement!(entity_id) do
+  def get_entity_income_statement(entity_id) do
     IncomeStatement
     |> entity_income_statements_query(entity_id)
-    |> Repo.all()
+    |> Repo.one()
   end
 
   defp entity_income_statements_query(query, entity_id) do
@@ -152,6 +152,9 @@ defmodule Demo.IncomeStatements do
   end
 
   def add_revenue(%IncomeStatement{} = income_statement, %{amount: amount}) do
+    IO.inspect "income_statement"
+    IO.inspect income_statement
+    
     accrued_revenue = Decimal.add(income_statement.revenue, amount)
     update_income_statement(income_statement, %{revenue: accrued_revenue})
   end

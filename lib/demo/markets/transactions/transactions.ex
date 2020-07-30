@@ -26,7 +26,7 @@ defmodule Demo.Transactions do
 
   defp entity_transactions_query(query, entity) do
     from(t in query,
-      where: t.buyer_id == ^entity.id or t.seller_id == ^entity.id,
+      where: t.erl_id == ^entity.id or t.ssu_id == ^entity.id,
       select: t
     )
   end
@@ -38,7 +38,7 @@ defmodule Demo.Transactions do
     |> Transaction.changeset(attrs)
     |> Repo.insert()
   end
-
+ 
   def update_transaction(%Transaction{} = transaction, attrs) do
     transaction = Repo.preload(transaction, :openhash)
 

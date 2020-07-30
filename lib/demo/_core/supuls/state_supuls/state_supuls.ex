@@ -22,7 +22,7 @@ defmodule Demo.StateSupuls do
   alias Demo.AccountBooks
    
   def list_state_supuls do
-    Repo.all(StateSupul)
+    Repo.all(StateSupul) 
   end
 
 

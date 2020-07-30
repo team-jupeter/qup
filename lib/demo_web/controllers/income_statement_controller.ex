@@ -19,35 +19,34 @@ defmodule DemoWeb.IncomeStatementController do
   # end
  
   def show(conn, %{"id" => id}) do
-    [income_statement] = IncomeStatements.get_entity_income_statement!(id) 
+    income_statement = IncomeStatements.get_entity_income_statement(id) 
         
     case income_statement do
       nil -> 
         new(conn, "dummy")
       income_statement ->
-        render(conn, "show.html", is: income_statement)
+        render(conn, "show.html", income_statement: income_statement)
     end
   end 
 
   def edit(conn, %{"id" => id}) do
-    income_statement = %IncomeStatement{}
+    income_statement =
+      cond do
+        Supuls.get_supul(id) != nil ->
+          supul = Supuls.get_supul(id)
+          income_statement = Repo.preload(supul, :income_statement).income_statement
 
-    cond do
-      Supuls.get_supul(id) != nil ->
-        supul = Supuls.get_supul(id)
-        income_statement = Repo.preload(supul, :income_statement).income_statement
+        StateSupuls.get_state_supul(id) != nil ->
+          state_supul = StateSupuls.get_state_supul(id)
+          income_statement = Repo.preload(state_supul, :income_statement).income_statement
 
-      StateSupuls.get_state_supul(id) != nil ->
-        state_supul = StateSupuls.get_state_supul(id)
-        income_statement = Repo.preload(state_supul, :income_statement).income_statement
+        NationSupuls.get_nation_supul(id) != nil ->
+          nation_supul = NationSupuls.get_nation_supul(id)
+          income_statement = Repo.preload(nation_supul, :income_statement).income_statement
 
-      NationSupuls.get_nation_supul(id) != nil ->
-        nation_supul = NationSupuls.get_nation_supul(id)
-        income_statement = Repo.preload(nation_supul, :income_statement).income_statement
-
-      true ->
-        "error"
-    end
+        true ->
+          "error"
+      end
 
     render(conn, "show.html", income_statement: income_statement)
   end

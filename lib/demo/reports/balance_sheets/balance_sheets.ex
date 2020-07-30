@@ -20,10 +20,10 @@ defmodule Demo.BalanceSheets do
     |> Repo.all()
   end
 
-  def get_entity_balance_sheet!(entity_id) do
+  def get_entity_balance_sheet(entity_id) do
     BalanceSheet
     |> entity_balance_sheets_query(entity_id)
-    |> Repo.all()
+    |> Repo.one()
   end
 
   defp entity_balance_sheets_query(query, entity_id) do
@@ -194,7 +194,7 @@ defmodule Demo.BalanceSheets do
 
     seller_BS = Repo.one(query)
 
-    add_t1s(seller_BS, t1_payment)
+    add_t1s(seller_BS, t1_payment) 
   end
 
   def update_gab_balance(bs) do

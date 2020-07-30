@@ -16,7 +16,7 @@ defmodule Demo.Invoices.Invoice do
     field :fiat_currency, :decimal, precision: 12, scale: 2
 
     field :buyer_id, :binary_id
-    field :buyer_name, :string
+    field :buyer_name, :string 
     field :buyer_supul_id, :binary_id
     field :buyer_supul_name, :string
     field :seller_id, :binary_id

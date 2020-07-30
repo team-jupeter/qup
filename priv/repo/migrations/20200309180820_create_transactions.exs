@@ -3,67 +3,68 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
 
   def change do
     create table(:transactions, primary_key: false) do
-      add :id, :uuid, primary_key: true
-      add :type, :string
-      add :hash_of_invoice, :string
+      add(:id, :uuid, primary_key: true)
+      add(:type, :string)
+      # ? previous transaction_id and digital signature of invoice
+      add(:hash_of_invoice, :string)
 
-      add :buyer_name, :string  
-      add :buyer_id, :binary_id
-      add :buyer_family_id, :binary_id, default: nil
-      add :buyer_state_supul_id, :binary_id 
-      add :buyer_state_supul_name, :binary_id
-      add :buyer_nation_supul_id, :binary_id 
-      add :buyer_nation_supul_name, :binary_id
+      add(:erl_type, :string)
+      add(:ssu_type, :string)
 
-      add :erl_supul_name, :string
-      add :erl_supul_id, :binary_id
-      add :seller_name, :string  
-      add :seller_id, :binary_id
-      add :seller_state_supul_id, :binary_id 
-      add :seller_state_supul_name, :binary_id
-      add :seller_nation_supul_id, :binary_id 
-      add :seller_nation_supul_name, :binary_id
+      # ? who pays ABC? which t1s in his/her/its wallet?
+      add(:erl_id, :binary_id)
+      add(:erl_name, :string)
+      add(:erl_email, :string)
+      add(:erl_family_id, :binary_id)
+      add(:erl_group_id, :binary_id)
+      add(:erl_supul_id, :binary_id)
+      add(:erl_state_supul_id, :binary_id)
+      add(:erl_nation_supul_id, :binary_id)
 
-      add :ssu_supul_name, :string
-      add :ssu_supul_id, :binary_id
+      add(:ssu_id, :binary_id)
+      add(:ssu_name, :string)
+      add(:ssu_email, :string)
+      add(:ssu_family_id, :binary_id)
+      add(:ssu_group_id, :binary_id)
+      add(:ssu_supul_id, :binary_id)
+      add(:ssu_state_supul_id, :binary_id)
+      add(:ssu_nation_supul_id, :binary_id)
 
-      add :gps, {:array, :map}
-      add :tax, :decimal, default: 0.0
-      add :gopang_fee, :decimal, default: 0.0
-      add :insurance, :string
-      add :abc_input_id, :string 
-      add :abc_input_name, :string 
-      add :abc_output_id, :string 
-      add :abc_output_name, :string 
-      add :abc_input_t1s, {:array, :map}, default: []
-      add :abc_amount, :decimal, precision: 15, scale: 4
-      add :items, {:array, :binary_id}
-      add :fiat_currency, :decimal, precision: 15, scale: 4
-      add :transaction_status, :string, default: "processing" 
-      add :if_only_item, :string
-      add :fair?, :boolean, default: false
-      add :supul_code, :integer
-      add :locked?, :boolean, default: false
-      add :archived?, :boolean, default: false
-      add :payload, :text
-      add :payload_hash, :text
-      add :event_hash, :text
+      add(:gps, {:array, :map})
+      add(:tax, :decimal, default: 0.0)
+      add(:gopang_fee, :decimal, default: 0.0)
+      add(:insurance, :string)
 
-      add :erl_email, :string
-      add :ssu_email, :string
-      
-      add :buyer_type, :string
-      add :seller_type, :string
-  
-      add :invoice_id, references(:invoices, type: :uuid, null: false)
+      add(:abc_input_id, :binary_id)
+      add(:abc_input_name, :string)
+      add(:abc_output_id, :binary_id)
+      add(:abc_output_name, :string)
+      add(:abc_input_t1s, {:array, :map}, default: [])
+      add(:abc_amount, :decimal, precision: 15, scale: 4)
+
+      add(:items, {:array, :binary_id})
+      add(:fiat_currency, :decimal, precision: 15, scale: 4)
+      # ? processing, pending, completed
+      add(:transaction_status, :string, default: "Processing...")
+      add(:if_only_item, :string)
+      add(:fair?, :boolean, default: false)
+
+      add(:supul_code, :integer, default: 0)
+      add(:event_hash, :string)
+
+      add(:locked?, :boolean, default: false)
+      add(:archived?, :boolean, default: false)
+      add(:payload, :string)
+      add(:payload_hash, :string)
+
+      add(:invoice_id, references(:invoices, type: :uuid, null: false))
 
       # add :locked, :boolean, default: false
       # add :locking_use_area, {:array, :string}, default: []
       # add :locking_use_until, :naive_datetime
       # add :locking_output_entity_catetory, {:array, :string}, default: []
       # add :locking_output_specific_entities, {:array, :string}, default: []
-          
-    
+
       timestamps()
     end
   end

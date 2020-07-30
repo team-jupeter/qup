@@ -37,7 +37,7 @@ defmodule Demo.Supuls do
     
     %Supul{}  
     |> Supul.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert()  
   end
 
   defp make_financial_statements(attrs) do

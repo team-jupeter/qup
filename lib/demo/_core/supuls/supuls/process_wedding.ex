@@ -22,9 +22,9 @@ defmodule Demo.Supuls.ProcessWedding do
   alias Demo.CFStatements
   alias Demo.EquityStatements
 
-  def process_wedding(wedding, openhash) do
-    groom = Repo.one(from u in User, where: u.id == ^wedding.groom_id, select: u)
-    bride = Repo.one(from u in User, where: u.id == ^wedding.bride_id, select: u)
+  def process_wedding(wedding) do
+    bride = Repo.one(from u in User, where: u.id == ^wedding.erl_id, select: u)
+    groom = Repo.one(from u in User, where: u.id == ^wedding.ssu_id, select: u)
 
     #? If any of groom and bride already married, stop the process.
     # any_family_1 = Repo.one(from f in Family, where: f.husband_id == ^groom.id or f.husband_id == ^groom.id, select: f)  
@@ -43,7 +43,7 @@ defmodule Demo.Supuls.ProcessWedding do
     groom_supul = Repo.one(from s in Supul, where: s.id == ^groom.supul.id)
 
     # ? Create a family via wedding.
-    {:ok, family} = Families.create_family_via_wedding(wedding, openhash, bride, groom)
+    {:ok, family} = Families.create_family_via_wedding(wedding, bride, groom)
     
     # ? Update the current marrige status and history, and supul_id etc. of users.
     Accounts.update_user_wedding(bride, %{

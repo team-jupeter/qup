@@ -2,15 +2,11 @@
 
 <table >
   <thead> 
-    <th>Exp.</th>
-    <th>Amt.</th>
+    <th>Account</th>
+    <th>Amount</th>
   </thead>
   <tbody>
 
-    <tr>
-      <td>revenue:</td>
-      <td><%= @account_book.revenue %></td>
-    </tr>
     <tr>
       <td>expense:</td>
       <td><%= @account_book.expense %></td>

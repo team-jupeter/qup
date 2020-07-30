@@ -35,7 +35,7 @@ defmodule Demo.Families do
     %Family{}
     |> Family.changeset(attrs)
     |> Repo.insert()
-  end 
+  end  
 
   defp make_default_financial_statements(attrs) do
     ab = %AccountBook{}
@@ -47,7 +47,7 @@ defmodule Demo.Families do
     attrs = Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr})
   end
 
-  def create_family_via_wedding(wedding, openhash, bride, groom) do
+  def create_family_via_wedding(wedding, bride, groom) do
     #? Family attrs
     attrs = %{
       house_holder_id: bride.id,

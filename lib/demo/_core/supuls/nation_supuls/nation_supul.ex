@@ -109,6 +109,7 @@ defmodule Demo.NationSupuls.NationSupul do
     nation_supul
     |> cast(attrs, @fields)
     |> validate_required([])
+    |> put_assoc(:global_supul, attrs.global_supul)
     |> put_assoc(:account_book, attrs.ab)
     |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)

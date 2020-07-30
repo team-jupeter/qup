@@ -15,12 +15,12 @@ defmodule DemoWeb.EquityStatementController do
   # end
 
   def show(conn, %{"id" => id}) do
-    [equity_statement] = EquityStatements.get_entity_equity_statement!(id) 
+    equity_statement = EquityStatements.get_entity_equity_statement(id) 
     case equity_statement do
       nil -> 
         new(conn, "dummy")
       equity_statement ->
-        render(conn, "show.html", es: equity_statement)
+        render(conn, "show.html", equity_statement: equity_statement)
     end
   end 
 

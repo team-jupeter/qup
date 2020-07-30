@@ -1,42 +1,19 @@
-<h4><%= @nation_supul.name %></h4>
+<b><%= @nation_supul.name %></b>
+<table>
+  <thead>
+    <tr>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr>
+      <td>Type</td>
+      <td><%= @nation_supul.type %></td>
+    </tr> 
+    
+  </tbody>
+</table>  
 
-<ul> 
-<h5>Permanent Data</h5>
-   <li>
-    <strong>type:</strong>
-    <%= @nation_supul.type %>
-  </li>
-   <li>
-    <strong>nation_supul_code:</strong>
-    <%= @nation_supul.nation_supul_code %>
-  </li>
-    </br>
-  <h5>Temporary Data</h5>
-
-  <li>
-    <strong>current_hash:</strong>
-    <%= @nation_supul.current_hash %>
-  </li>
-  <li>
-    <strong>incoming_hash:</strong>
-    <%= @nation_supul.incoming_hash %>
-  </li>
-  <li>
-    <strong>previous_hash:</strong>
-    <%= @nation_supul.previous_hash %>
-  </li>
-  <li>
-    <strong>hash_count:</strong>
-    <%= @nation_supul.hash_count %>
-  </li>
-
-  <li>
-    <strong>openhash_box:</strong>
-    <%= @nation_supul.openhash_box %>
-  </li>
-</ul>
-
-<h4>Financial Reports</h4>
+<b>Financial Reports</b>
   <ul>
       <li><%= link "Account Book", to: Routes.account_book_path(@conn, :edit, @nation_supul.id) %></li>
       <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :edit, @nation_supul.id) %></li>
@@ -47,3 +24,39 @@
   </ul>
  
 
+  </br>
+  
+  <b>Openhash Data</b>
+<table>
+  <thead>
+    <tr>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr>
+      <td>current_hash</td>
+      <td><%= @nation_supul.current_hash %></td>
+    </tr> 
+    <tr>
+      <td>incoming_hash</td>
+      <td><%= @nation_supul.incoming_hash %></td>
+    </tr> 
+    <tr>
+      <td>previous_hash</td>
+      <td><%= @nation_supul.previous_hash %></td>
+    </tr> 
+    <tr>
+      <td>hash_count</td>
+      <td><%= @nation_supul.hash_count %></td>
+    </tr> 
+    <tr>
+      <td>hash_chain</td>
+      <td><%= @nation_supul.hash_chain %></td>
+    </tr> 
+    <tr>
+      <td>openhash_box</td>
+      <td><%= @nation_supul.openhash_box %></td>
+    </tr> 
+
+  </tbody>
+</table>

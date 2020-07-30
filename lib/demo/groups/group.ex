@@ -36,11 +36,19 @@ defmodule Demo.Groups.Group do
     group
     |> cast(attrs, @fields)
     |> put_assoc(:entities, entities)
+    |> put_assoc(:balance_sheet, attrs.bs)
+    |> put_assoc(:financial_report, attrs.fr)
+    |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:equity_statement, attrs.es)
   end
   @doc false
   def changeset(group, attrs) do
     group
     |> cast(attrs, @fields)
     |> validate_required([])
+    |> put_assoc(:balance_sheet, attrs.bs)
+    |> put_assoc(:financial_report, attrs.fr)
+    |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:equity_statement, attrs.es)
   end
 end

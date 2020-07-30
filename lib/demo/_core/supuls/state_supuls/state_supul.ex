@@ -92,8 +92,9 @@ defmodule Demo.StateSupuls.StateSupul do
   # end 
   @doc false 
   def changeset(attrs) do
-    %StateSupul{} 
+    %StateSupul{}  
     |> cast(attrs, @fields)
+    |> put_assoc(:nation_supul, attrs.nation_supul)
     |> put_assoc(:account_book, attrs.ab)
     |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)
@@ -113,6 +114,7 @@ defmodule Demo.StateSupuls.StateSupul do
     IO.puts "StateSupul changeset"
     state_supul
     |> cast(attrs, @fields)
+    |> put_assoc(:nation_supul, attrs.nation_supul)
     |> put_assoc(:account_book, attrs.ab)
     |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)

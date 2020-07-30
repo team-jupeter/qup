@@ -16,7 +16,7 @@ defmodule Demo.Reports.IncomeStatement do
     field :office, :decimal, precision: 12, scale: 2, default: 0.0
     field :payroll, :decimal, precision: 12, scale: 2, default: 0.0
     field :professional_fees, :decimal, precision: 12, scale: 2, default: 0.0
-    field :rent, :decimal, precision: 12, scale: 2, default: 0.0
+    field :rent, :decimal, precision: 12, scale: 2, default: 0.0 
     field :repair_and_maintenance, :decimal, precision: 12, scale: 2, default: 0.0 
     field :revenue, :decimal, precision: 12, scale: 2, default: 0.0
     field :sales_discounts, :decimal, precision: 12, scale: 2, default: 0.0

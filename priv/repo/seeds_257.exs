@@ -518,7 +518,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 #? 시민 성춘향의 또 하나의 비즈니스 = Tomi Lunch Box
 {:ok, tomi_entity} = Entities.create_private_entity(%{
   type: "private",
-  name: "토미 도시락", 
+  name: "토미 김밥", 
   user: ms_sung,
   supul: hanlim_supul,
   nation: korea,
@@ -546,7 +546,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 {:ok, sanche_entity} = Entities.create_private_entity(%{
   type: "private",
-  name: "산채 식당", 
+  name: "산채", 
   user: mr_lim,
   supul: hankyung_supul,
   nation: korea,
@@ -574,7 +574,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 {:ok, sato_entity} = Entities.create_private_entity(%{
   type: "private",
-  name: "사또 아카데미", 
+  name: "사또 학원", 
   user: mr_lee,
   supul: seoguipo_supul,
   nation: korea,
@@ -602,7 +602,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 {:ok, ebang_entity} = Entities.create_private_entity(%{
   type: "private",
-  name: "이방 전문학원", 
+  name: "이방 학원", 
   user: mr_lee,
   supul: seoguipo_supul,
   nation: korea,
@@ -834,12 +834,18 @@ ms_sung married mr_lee.
 
 #? a new family
 alias Demo.Weddings
+#? hard coded bride_private_key, groom_private_key
+
 {:ok, wedding} = Weddings.create_wedding(%{
   type: "wedding", bride_name: "이몽룡", bride_email: mr_lee.email, 
   groom_name: "성춘향", groom_email: ms_sung.email
-  }, lee_priv_key, sung_priv_key)
+  })
 
-#? hard coded bride_private_key, groom_private_key
+# {:ok, wedding} = Weddings.create_wedding(%{
+#   type: "wedding", bride_name: "임꺽정", bride_email: mr_lim.email, 
+#   groom_name: "홍길동", groom_email: mr_hong.email
+#   })
+  
 bride_private_key = ExPublicKey.load!("./keys/lee_private_key.pem")
 groom_private_key = ExPublicKey.load!("./keys/sung_private_key.pem")
 
@@ -932,9 +938,20 @@ alias Demo.Entities.Product
 
 
 #? 임꺽정 산채의 상품
-{:ok, 한정식} = Entities.create_product(lim_entity, %{name: "한정식", gpc_code_id: 한식.id, price: 5.0})
-{:ok, 육개장} = Entities.create_product(lim_entity, %{name: "육개장", gpc_code_id: 한식.id, price: 3.5})
-{:ok, 갈비탕} = Entities.create_product(lim_entity, %{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5})
+{:ok, 한정식} = Entities.create_product(sanche_entity, %{name: "한정식", gpc_code_id: 한식.id, price: 5.0})
+{:ok, 육개장} = Entities.create_product(sanche_entity, %{name: "육개장", gpc_code_id: 한식.id, price: 3.5})
+{:ok, 갈비탕} = Entities.create_product(sanche_entity, %{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5})
+
+ 
+#? 이몽룡 이방 학원의 상품
+{:ok, 중국어} = Entities.create_product(ebang_entity, %{name: "중국어", gpc_code_id: 한식.id, price: 5.0})
+{:ok, 곤장} = Entities.create_product(ebang_entity, %{name: "곤장", gpc_code_id: 한식.id, price: 3.5})
+{:ok, 아부하기} = Entities.create_product(ebang_entity, %{name: "아부하기", gpc_code_id: 한식.id, price: 3.5})
+ 
+#? 이몽룡 사또 학원의 상품
+{:ok, 컴퓨터} = Entities.create_product(ebang_entity, %{name: "컴퓨터", gpc_code_id: 한식.id, price: 5.0})
+{:ok, 폭탄주} = Entities.create_product(ebang_entity, %{name: "폭탄주", gpc_code_id: 한식.id, price: 3.5})
+{:ok, 팔자걸음} = Entities.create_product(ebang_entity, %{name: "팔자걸음", gpc_code_id: 한식.id, price: 3.5})
 
  
 

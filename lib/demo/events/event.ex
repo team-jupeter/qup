@@ -22,4 +22,4 @@ defmodule Demo.Events.Event do
     |> cast(attrs, @fields)
     |> validate_required([])
   end
-end
+end 
