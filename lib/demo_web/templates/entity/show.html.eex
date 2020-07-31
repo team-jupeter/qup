@@ -6,12 +6,12 @@
   </thead> 
   <tbody>
     <tr>
-      <td>Email</td>
-      <td><%= @entity.email %></td>
+      <td>GAB Change</td>
+      <td><%= @entity.gab_balance %></td>
     </tr> 
     <tr>
-      <td>abc</td>
-      <td><%= @entity.gab_balance %></td>
+      <td>Email</td>
+      <td><%= @entity.email %></td>
     </tr> 
     <tr>
       <td>Supul</td>
