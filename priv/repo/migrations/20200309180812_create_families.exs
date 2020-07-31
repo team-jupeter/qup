@@ -5,6 +5,7 @@ defmodule Demo.Repo.Migrations.CreateFamilies do
     create table(:families, primary_key: false) do
       # ? add charater "f" to the email of the house holder.
       add :id, :uuid, primary_key: true
+      add :gab_balance, :decimal, default: 0.0
       add(:family_code, :string)
       add(:nationality, :string)
       add(:auth_code, :string)

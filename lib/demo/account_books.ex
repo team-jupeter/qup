@@ -27,7 +27,7 @@ defmodule Demo.AccountBooks do
 
   defp entity_account_book_query(query, entity_id) do
     from(f in query, where: f.entity_id == ^entity_id)
-  end
+  end 
 
   def add_expense(%AccountBook{} = account_book, %{amount: amount}) do
     accrued_expense = Decimal.add(account_book.expense, amount)
@@ -39,6 +39,9 @@ defmodule Demo.AccountBooks do
     update_account_book(account_book, %{revenue: accrued_revenue})
   end
 
+'''
+  Below are codes to create a new entity or supul based on already existing members.
+'''
   # ? For a user
   def create_account_book(%Entity{} = entity) do
     attrs = create_attrs(entity)

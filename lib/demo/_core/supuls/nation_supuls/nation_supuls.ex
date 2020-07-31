@@ -36,6 +36,16 @@ defmodule Demo.NationSupuls do
     |> Repo.insert()
   end
 
+  def minus_gab_balance(%NationSupul{} = nation_supul, %{amount: amount}) do
+    minus_gab_balance = Decimal.sub(nation_supul.gab_balance, amount)
+    update_nation_supul_gab(nation_supul, %{gab_balance: minus_gab_balance})
+  end
+
+  def plus_gab_balance(%NationSupul{} = nation_supul, %{amount: amount}) do
+    plus_gab_balance = Decimal.add(nation_supul.gab_balance, amount)
+    update_nation_supul_gab(nation_supul, %{gab_balance: plus_gab_balance})
+  end
+
   defp make_financial_statements(attrs) do 
     ab = %AccountBook{}
     is = %IncomeStatement{}
@@ -47,6 +57,11 @@ defmodule Demo.NationSupuls do
     attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr})
   end
 
+  def update_nation_supul_gab(%NationSupul{} = nation_supul, attrs) do
+    nation_supul
+    |> NationSupul.changeset_gab(attrs)
+    |> Repo.update()
+  end
   
   def update_nation_supul(%NationSupul{} = nation_supul, %{
     incoming_hash: incoming_hash, sender: state_supul_id}) do

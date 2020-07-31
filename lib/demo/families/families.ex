@@ -9,6 +9,7 @@ defmodule Demo.Families do
   alias Demo.Nations
   alias Demo.Nations.Nation
   alias Demo.Entities.Entity
+  alias Demo.Reports.UpdateFinacialStatements
   alias Demo.Reports.FinancialReport
   alias Demo.Reports.BalanceSheet
   alias Demo.Reports.IncomeStatement
@@ -36,6 +37,16 @@ defmodule Demo.Families do
     |> Family.changeset(attrs)
     |> Repo.insert()
   end  
+
+  def minus_gab_balance(%Family{} = family, %{amount: amount}) do
+    minus_gab_balance = Decimal.sub(family.gab_balance, amount)
+    update_family(family, %{gab_balance: minus_gab_balance})
+  end
+
+  def plus_gab_balance(%Family{} = family, %{amount: amount}) do
+    plus_gab_balance = Decimal.add(family.gab_balance, amount)
+    update_family(family, %{gab_balance: plus_gab_balance})
+  end
 
   defp make_default_financial_statements(attrs) do
     ab = %AccountBook{}
@@ -79,13 +90,6 @@ defmodule Demo.Families do
     |> Repo.update()  
   end
 
-  def update_family(%Family{} = family, attrs) do  
-    family
-    |> Family.changeset(attrs)  
-    |> Repo.update() 
-  end
-
-
   def delete_family(%Family{} = family) do
     Repo.delete(family)
   end
@@ -97,5 +101,15 @@ defmodule Demo.Families do
 
   def new_family(%Family{} = family) do
     Family.changeset(family, %{}) 
+  end
+
+  def update_family(%Family{} = family, attrs) do  
+    family
+    |> Family.changeset(attrs)  
+    |> Repo.update() 
+  end
+
+  def update_financial_statements(entity) do
+  
   end
 end

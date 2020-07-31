@@ -6,6 +6,7 @@ defmodule Demo.NationSupuls.NationSupul do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "nation_supuls" do
+    field :gab_balance, :decimal, default: 0.0
     field :name, :string
     field :type, :string 
     field :nation_supul_code, :string
@@ -40,7 +41,7 @@ defmodule Demo.NationSupuls.NationSupul do
   end
 
   @fields [
-    :name, :auth_code, :nation_supul_code, :type, :hash_chain,
+    :gab_balance, :name, :auth_code, :nation_supul_code, :type, :hash_chain,
     :openhash_box, :current_hash, :incoming_hash, :hash_count, :global_openhash_id,
     :previous_hash, :sender, :nation_name, 
 
@@ -86,6 +87,11 @@ defmodule Demo.NationSupuls.NationSupul do
     |> put_assoc(:global_supul, attrs.global_supul)
   end
 
+  def changeset(attrs = %{gab_balance: gab_balance}) do 
+    %NationSupul{}
+    |> cast(attrs, @fields)
+  end
+
   def changeset(attrs) do 
     %NationSupul{}
     |> cast(attrs, @fields)
@@ -103,6 +109,12 @@ defmodule Demo.NationSupuls.NationSupul do
     |> cast(attrs, @fields)
     |> validate_required([:name])
     |> put_change(:auth_code, attrs.auth_code)
+  end
+
+  def changeset_gab(%NationSupul{} = nation_supul, attrs = %{gab_balance: gab_balance}) do
+    IO.puts "NationSupul"
+    nation_supul
+    |> cast(attrs, @fields)
   end
 
   def changeset(%NationSupul{} = nation_supul, attrs) do

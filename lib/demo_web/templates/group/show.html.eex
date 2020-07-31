@@ -1,14 +1,27 @@
-<h4>Show Group</h1>
+<b>Show Group</b>
+<table >
+  <thead>
+      <tr>
+      <td></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody> 
+    <tr>
+      <td>GAB Change</td>
+      <td><%= @group.gab_balance %></td>
+    </tr> 
+    <tr>
+      <td>Group Type</td>
+      <td><%= @group.type %></td>
+    </tr> 
+    <tr>
+      <td>Group Title</td>
+      <td><%= @group.title %></td>
+    </tr> 
 
-<ul>
-
-  <li>
-    <strong>Title:</strong>
-    <%= @group.title %>
-  </li>
-
-</ul>
-
+  </tbody>
+</table>
 
 <span><%= link "Edit", to: Routes.group_path(@conn, :edit, @group) %></span>
 <span><%= link "Back", to: Routes.group_path(@conn, :index) %></span>

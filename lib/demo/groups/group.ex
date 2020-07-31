@@ -1,10 +1,11 @@
 defmodule Demo.Groups.Group do
-  use Ecto.Schema
+  use Ecto.Schema 
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "groups" do
+    field :gab_balance, :decimal, default: 0.0
     field :type, :string
     field :name, :string
 
@@ -29,8 +30,7 @@ defmodule Demo.Groups.Group do
   end
 
   @fields [
-    :type,
-    :name
+    :gab_balance, :type, :name
   ]
   @doc false
   def changeset(group, attrs = %{entities: entities}) do
@@ -45,6 +45,13 @@ defmodule Demo.Groups.Group do
   end
 
   @doc false
+  def changeset(group, attrs = %{gab_balance: gab_balance}) do
+    IO.puts("group, changeset")
+
+    group
+    |> cast(attrs, @fields)
+  end
+
   def changeset(group, attrs) do
     IO.puts("group, changeset")
 

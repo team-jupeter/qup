@@ -13,6 +13,7 @@ defmodule Demo.Entities do
   alias Demo.Groups.Group
   alias Demo.Families
   alias Demo.Families.Family
+  alias Demo.Reports.UpdateFinacialStatements
   alias Demo.Reports.FinancialReport
   alias Demo.Reports.BalanceSheet
   alias Demo.Reports.IncomeStatement
@@ -78,6 +79,10 @@ defmodule Demo.Entities do
       %Entity{}
       |> Entity.create_default_entity(user, attrs)
       |> Repo.insert()
+    
+    UpdateFinacialStatements.add_financial_statements(entity)
+
+    {:ok, entity}
   end
 
   def create_private_entity(attrs) do

@@ -135,7 +135,18 @@ defmodule Demo.BalanceSheets do
     |> BalanceSheet.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:nation_supul, nation_supul)
     |> Repo.insert()
+  end 
+
+  def minus_gab_balance(bs, %{amount: amount}) do
+    new_balance = Decimal.sub(bs.gab_balance, amount)
+    update_balance_sheet(bs, %{gab_balance: new_balance})
   end
+  
+  def plus_gab_balance(bs, %{amount: amount}) do
+    new_balance = Decimal.add(bs.gab_balance, amount)
+    update_balance_sheet(bs, %{gab_balance: new_balance})
+  end
+
 
   def add_t1s(%BalanceSheet{} = balance_sheet, attrs) do
     t1s = [attrs.t1s | balance_sheet.t1s]
@@ -173,7 +184,7 @@ defmodule Demo.BalanceSheets do
     |> change
     |> Ecto.Changeset.put_embed(:t1s, t1s)
     |> Repo.update!()
-    |> update_gab_balance()
+    |> update_gab_balance() 
 
     # ? renew Seller's BS
     # ? prepare t1 struct to pay.
@@ -200,7 +211,8 @@ defmodule Demo.BalanceSheets do
   def update_gab_balance(bs) do
     amount_list = Enum.map(bs.t1s, fn item -> item.amount end)
     gab_balance = Enum.reduce(amount_list, 0, fn amount, sum -> Decimal.add(amount, sum) end)
-    update_balance_sheet(bs, %{gab_balance: gab_balance})
+    update_balance_sheet(bs, %{gab_balance: gab_balance}) 
+
   end
 
   # ? gopang_korea_BS = change(gopang_korea_BS) |> Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!

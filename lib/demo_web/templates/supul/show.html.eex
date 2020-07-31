@@ -6,6 +6,10 @@
   </thead> 
   <tbody>
     <tr>
+      <td>GAB Change</td>
+      <td><%= @supul.gab_balance %></td>
+    </tr> 
+    <tr>
       <td>Type</td>
       <td><%= @supul.type %></td>
     </tr> 

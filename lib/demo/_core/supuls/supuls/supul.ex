@@ -7,6 +7,7 @@ defmodule Demo.Supuls.Supul do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "supuls" do
     field :type, :string
+    field :gab_balance, :decimal, default: 0.0
     field :supul_code, :string
     field :supul_name, :string
     field :geographical_area, :string
@@ -49,6 +50,7 @@ defmodule Demo.Supuls.Supul do
 
   @doc false
   @fields [
+    :gab_balance, 
     :type,
     :name,
     :geographical_area,
@@ -120,6 +122,12 @@ defmodule Demo.Supuls.Supul do
     supul
     |> cast(attrs, @fields)
   end
+
+  def changeset_gab(%Supul{} = supul, attrs = %{gab_balance: gab_balance}) do
+    supul
+    |> cast(attrs, @fields)
+  end 
+
 
   def changeset(%Supul{} = supul, attrs) do
     %Supul{}

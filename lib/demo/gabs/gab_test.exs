@@ -108,7 +108,7 @@ ledger = Ledger.changeset(%Ledger{}, %{invoice_id: invoice.id, buyer_id: invoice
 '''
 Adjust balance_sheet of both.
 ''' 
-#? Hankyung GAB Branch
+#? Hankyung GAB Branch 
 hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_sheet]).financial_report
 change(hankyung_gab_FR.gab_balance_sheet) |>
 Ecto.Changeset.put_change(:cash, Decimal.add(hankyung_gab_FR.gab_balance_sheet.cash, ledger.amount)) |>

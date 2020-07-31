@@ -38,6 +38,16 @@ defmodule Demo.StateSupuls do
     |> Repo.insert()
   end
  
+  def minus_gab_balance(%StateSupul{} = state_supul, %{amount: amount}) do
+    minus_gab_balance = Decimal.sub(state_supul.gab_balance, amount)
+    update_state_supul_gab(state_supul, %{gab_balance: minus_gab_balance})
+  end
+
+  def plus_gab_balance(%StateSupul{} = state_supul, %{amount: amount}) do
+    plus_gab_balance = Decimal.add(state_supul.gab_balance, amount)
+    update_state_supul_gab(state_supul, %{gab_balance: plus_gab_balance})
+  end
+
   defp make_financial_statements(attrs) do
     ab = %AccountBook{}
     is = %IncomeStatement{}
@@ -56,6 +66,12 @@ defmodule Demo.StateSupuls do
     Openhashes.make_state_openhash(state_supul)
 
     if state_supul.hash_count == 2, do: report_openhash_box_to_upper_supul(state_supul)
+  end
+ 
+  def update_state_supul_gab(%StateSupul{} = state_supul, attrs) do
+    state_supul
+    |> StateSupul.changeset_gab(attrs)
+    |> Repo.update()
   end
 
   defp make_hash(state_supul, %{incoming_hash: incoming_hash, sender: supul_id}) do

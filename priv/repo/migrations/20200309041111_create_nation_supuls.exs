@@ -4,6 +4,7 @@ defmodule Demo.Repo.Migrations.CreateNationSupuls do
   def change do
     create table(:nation_supuls, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :gab_balance, :decimal, default: 0.0
       add :type, :string
       add :nation_supul_code, :string
       add :name, :string

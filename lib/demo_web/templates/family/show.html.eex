@@ -8,7 +8,10 @@
     </tr>
   </thead>
   <tbody> 
-
+    <tr>
+      <td>GAB Change</td>
+      <td><%= @family.gab_balance %></td>
+    </tr> 
     <tr>
       <td>Houser Holder</td>
       <td><%= @family.house_holder_name %></td>

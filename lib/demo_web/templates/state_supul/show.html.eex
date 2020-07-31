@@ -7,6 +7,10 @@
   </thead> 
   <tbody>
     <tr>
+      <td>GAB Balance</td>
+      <td><%= @state_supul.gab_balance %></td>
+    </tr> 
+    <tr>
       <td>Type</td>
       <td><%= @state_supul.type %></td>
     </tr> 

@@ -14,10 +14,9 @@
       <td><%= @group.type %></td>
 
       <td>
-        <span><%= link "Show", to: Routes.group_path(@conn, :show, group) %></span>
+        <span><%= link "Show", to: Routes.group_path(@conn, :show, @group) %></span>
       </td>
     </tr>
-<% end %>
   </tbody>
 </table>
 

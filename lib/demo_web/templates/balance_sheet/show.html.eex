@@ -11,18 +11,6 @@
     <td><%= @balance_sheet.gab_balance %></td>
     </tr>
     <tr>
-    <td>T1</td>
-    <td></td>
-    </tr>
-    <tr>
-    <td>T2</td>
-    <td></td>
-    </tr>
-    <tr>
-    <td>T3</td>
-    <td></td>
-    </tr>
-    <tr>
     <td>Cash</td>
     <td><%= @balance_sheet.cash %></td>
     </tr>

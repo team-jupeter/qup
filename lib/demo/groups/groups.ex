@@ -36,6 +36,16 @@ s = Repo.preload(g, :supul).supul
     |> Repo.insert()
   end
 
+  def minus_gab_balance(%Group{} = group, %{amount: amount}) do
+    minus_gab_balance = Decimal.sub(group.gab_balance, amount)
+    update_group(group, %{gab_balance: minus_gab_balance})
+  end
+
+  def plus_gab_balance(%Group{} = group, %{amount: amount}) do
+    plus_gab_balance = Decimal.add(group.gab_balance, amount)
+    update_group(group, %{gab_balance: plus_gab_balance})
+  end
+
   defp make_financial_statements(attrs) do
     is = %IncomeStatement{}
     bs = %BalanceSheet{}

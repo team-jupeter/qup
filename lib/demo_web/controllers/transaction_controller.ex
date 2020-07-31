@@ -23,16 +23,24 @@ defmodule DemoWeb.TransactionController do
   end
 
   def new(conn, _params, current_entity) do
+    invoice = Repo.preload(current_entity, :invoice).invoice
+    bs = Repo.preload(current_entity, :balance_sheet).balance_sheet
+
+    if bs.cash < invoice.total, do: "error"
+
     # ? For the erl
     erl = current_entity
     erl_supul = Repo.preload(erl, :supul).supul
-    erl_state_supul = Repo.preload(erl_supul, :state_supul).state_supul    
+    IO.inspect "erl_supul"
+    IO.inspect erl_supul
+    erl_state_supul = Repo.preload(erl_supul, :state_supul).state_supul
+    IO.inspect "erl_state_supul"
+    IO.inspect erl_state_supul
     erl_nation_supul = Repo.preload(erl_state_supul, :nation_supul).nation_supul
     
-    # ? For the seller
-    invoice = Repo.preload(current_entity, :invoice).invoice
     invoice_items = InvoiceItems.list_invoice_items(erl.id)
-
+    
+    # ? For the ssu
     ssu_id = Enum.at(invoice_items, 0).seller_id
 
     ssu =
@@ -41,31 +49,30 @@ defmodule DemoWeb.TransactionController do
           where: e.id == ^ssu_id
       )
 
-    ssu_supul = Repo.preload(ssu, :supul).supul  
+    ssu_supul = Repo.preload(ssu, :supul).supul
     ssu_state_supul = Repo.preload(ssu_supul, :state_supul).state_supul
     ssu_nation_supul = Repo.preload(ssu_state_supul, :nation_supul).nation_supul
-    
-    attrs = %{  
-      type: "transaction",
-      invoice: invoice,  
 
-      erl_type: erl.type,    
+    attrs = %{
+      type: "transaction",
+      invoice: invoice,
+
+      erl_type: erl.type,
       erl_id: erl.id,
       erl_name: erl.name,
       erl_email: erl.email,
       erl_supul_id: erl_supul.id,
       erl_state_supul_id: erl_state_supul.id,
       erl_nation_supul_id: erl_nation_supul.id,
-   
-      ssu_type: ssu.type,       
+
+      ssu_type: ssu.type,
       ssu_id: ssu.id,
       ssu_name: ssu.name,
       ssu_email: ssu.email,
       ssu_supul_id: ssu_supul.id,
       ssu_state_supul_id: ssu_state_supul.id,
       ssu_nation_supul_id: ssu_nation_supul.id,
- 
-      abc_amount: invoice.total,
+      abc_amount: invoice.total
     }
 
     # ? Determine whether the erl is default_entity, private_entity, or public entity.
@@ -74,9 +81,9 @@ defmodule DemoWeb.TransactionController do
         "default" ->
           erl_family_id = Repo.preload(erl, :family).family.id
 
-          attrs = 
+          attrs =
             Map.merge(attrs, %{
-              erl_family_id: erl_family_id,
+              erl_family_id: erl_family_id
             })
 
         "private" ->
@@ -85,49 +92,50 @@ defmodule DemoWeb.TransactionController do
 
           attrs =
             Map.merge(attrs, %{
-              erl_group_id: erl_group_id,
+              erl_group_id: erl_group_id
             })
 
-        "public" -> attrs 
+        "public" ->
+          attrs
       end
 
     # ? For the seller
     attrs =
-    case ssu.type do
-      "default" ->
-        ssu_family_id = Repo.preload(ssu, :family).family.id
+      case ssu.type do
+        "default" ->
+          ssu_family_id = Repo.preload(ssu, :family).family.id
 
+          attrs =
+            Map.merge(attrs, %{
+              ssu_family_id: ssu_family_id
+            })
 
-        attrs = 
-          Map.merge(attrs, %{
-            ssu_family_id: ssu_family_id,
-          }) 
+        "private" ->
+          ssu_group = Repo.preload(ssu, :group).group
+          ssu_group_id = ssu_group.id
 
-      "private" ->
-        ssu_group = Repo.preload(ssu, :group).group
-        ssu_group_id = ssu_group.id
+          attrs =
+            Map.merge(attrs, %{
+              ssu_group_id: ssu_group_id
+            })
 
-        attrs =
-          Map.merge(attrs, %{
-            ssu_group_id: ssu_group_id,
-          })
+        "public" ->
+          attrs
+      end
 
-      "public" -> attrs
-    end
     # ? Determine whether the seller is default_entity, private_entity, or public entity.
-    
 
     # ? different approach: compare two lines below. 
     # invoices = Invoices.list_seller_invoices(erl.id)
 
     {:ok, transaction} = Transactions.create_transaction(attrs)
 
-    #? hard coded keys
+    # ? hard coded keys
     erl_private_key = ExPublicKey.load!("./keys/hong_entity_private_key.pem")
     ssu_private_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
 
     case Events.create_event(transaction, erl_private_key, ssu_private_key) do
-      {:ok, _event} ->  
+      {:ok, _event} ->
         # ? Empty cart
         Enum.map(invoice_items, fn item -> InvoiceItems.delete_invoice_item(item) end)
 
@@ -139,6 +147,8 @@ defmodule DemoWeb.TransactionController do
         render(conn, "new.html", changeset: changeset)
     end
   end
+
+
 
   # def create(conn, invoice, current_entity, erl_rsa_priv_key, sender_rsa_priv_key) do
   #   conn

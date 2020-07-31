@@ -5,6 +5,10 @@
     </tr>
   </thead> 
   <tbody>
+      <tr>
+      <td>GAB Balance</td>
+      <td><%= @nation_supul.gab_balance %></td>
+    </tr> 
     <tr>
       <td>Type</td>
       <td><%= @nation_supul.type %></td>
@@ -33,6 +37,7 @@
     </tr>
   </thead> 
   <tbody>
+
     <tr>
       <td>current_hash</td>
       <td><%= @nation_supul.current_hash %></td>
