@@ -71,23 +71,24 @@ defmodule Demo.Entities do
     family = Repo.preload(user, :family).family
     supul = Repo.preload(user, :supul).supul
     supul_name = supul.name
-    
+
     attrs = Map.merge(attrs, %{family: family, supul: supul, supul_name: supul_name})
 
-    {:ok, entity} = %Entity{}
-    |> Entity.create_default_entity(user, attrs)  
-    |> Repo.insert()
- 
-    {:ok, entity}  
+    {:ok, entity} =
+      %Entity{}
+      |> Entity.create_default_entity(user, attrs)
+      |> Repo.insert()
   end
 
   def create_private_entity(attrs) do
     attrs = make_financial_statements(attrs)
+    supul = Repo.preload(attrs.user, :supul).supul
+    attrs = Map.merge(attrs, %{supul: supul})
 
     attrs =
       case attrs.default_group do
         true ->
-          group = %Group{}
+          {:ok, group} = Groups.create_group()
           attrs = Map.merge(attrs, %{group: group})
 
         false ->
@@ -101,11 +102,13 @@ defmodule Demo.Entities do
 
   def create_private_entity(current_user, attrs) do
     attrs = make_financial_statements(attrs)
+    supul = Repo.preload(current_user, :supul).supul
+    attrs = Map.merge(attrs, %{supul: supul})
 
     attrs =
       case attrs.default_group do
         true ->
-          group = Groups.create_group()
+          {:ok, group} = Groups.create_group()
           attrs = Map.merge(attrs, %{group: group})
 
         false ->
@@ -144,7 +147,7 @@ defmodule Demo.Entities do
 
   def create_GPCCode(attrs \\ %{}) do
     %GPCCode{}
-    |> GPCCode.changeset(attrs) 
+    |> GPCCode.changeset(attrs)
     |> Repo.insert()
   end
 

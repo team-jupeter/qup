@@ -19,33 +19,39 @@ defmodule Demo.Groups.Group do
     #   on_replace: :delete
     # )
 
-    has_one :financial_report, Demo.FinancialReports.FinancialReport
-    has_one :income_statement, Demo.IncomeStatements.IncomeStatement
-    has_one :balance_sheet, Demo.BalanceSheets.BalanceSheet
-    has_one :cf_statement, Demo.CFStatements.CFStatement
-    has_one :equity_statement, Demo.EquityStatements.EquityStatement
+    has_one :financial_report, Demo.Reports.FinancialReport
+    has_one :income_statement, Demo.Reports.IncomeStatement
+    has_one :balance_sheet, Demo.Reports.BalanceSheet
+    has_one :cf_statement, Demo.Reports.CFStatement
+    has_one :equity_statement, Demo.Reports.EquityStatement
 
     timestamps()
-  end 
+  end
 
   @fields [
-    :type, :name, 
+    :type,
+    :name
   ]
   @doc false
   def changeset(group, attrs = %{entities: entities}) do
     group
     |> cast(attrs, @fields)
     |> put_assoc(:entities, entities)
+    |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
   end
+
   @doc false
   def changeset(group, attrs) do
+    IO.puts("group, changeset")
+
     group
     |> cast(attrs, @fields)
     |> validate_required([])
+    |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)

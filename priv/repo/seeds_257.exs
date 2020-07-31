@@ -547,7 +547,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 {:ok, sanche_entity} = Entities.create_private_entity(%{
   type: "private",
   name: "산채", 
-  user: mr_lim,
+  user: mr_lim, 
   supul: hankyung_supul,
   nation: korea,
   taxation: kts,

@@ -10,12 +10,8 @@ defmodule Demo.Groups do
   alias Demo.Reports.CFStatement
   alias Demo.Reports.EquityStatement
   alias Demo.AccountBooks.AccountBook
-  # alias Demo.FinancialReports
-  # alias Demo.BalanceSheets
-  # alias Demo.IncomeStatements
-  # alias Demo.CFStatements
-  # alias Demo.EquityStatements
-  # alias Demo.AccountBooks
+  alias Demo.Entities.Entity
+
 
   def list_groups(entity) do
     Repo.preload(entity, :group).group
@@ -27,10 +23,14 @@ defmodule Demo.Groups do
 
   def get_group!(id), do: Repo.get!(Group, id)
 
+'''
+g = Repo.preload(sanche_entity, :group).group
+s = Repo.preload(g, :supul).supul
+'''
 
   def create_group(attrs \\ %{}) do
+    # supul = Repo.preload(entity, :supul).supul
     attrs = make_financial_statements(attrs)
-
     %Group{} 
     |> Group.changeset(attrs)
     |> Repo.insert()

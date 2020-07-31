@@ -131,9 +131,6 @@ defmodule DemoWeb.TransactionController do
         # ? Empty cart
         Enum.map(invoice_items, fn item -> InvoiceItems.delete_invoice_item(item) end)
 
-        IO.inspect "transaction"
-        IO.inspect transaction
-
         conn
         |> put_flash(:info, "Transaction created successfully.")
         |> redirect(to: Routes.transaction_path(conn, :show, transaction))
