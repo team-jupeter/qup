@@ -441,7 +441,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   entity_address: "제주시 한경면 20-1 해거름전망대",
   gab_balance: Decimal.from_float(0.0),
   }) 
-  {:ok, mr_hong} =  Demo.Accounts.update_user(mr_hong, %{default_entity_id: hong_entity.id})  
+
+{:ok, mr_hong} =  Demo.Accounts.update_user(mr_hong, %{default_entity_id: hong_entity.id})  
 
 msg_serialized = Poison.encode!(hong_entity)
 ts = DateTime.utc_now() |> DateTime.to_unix()

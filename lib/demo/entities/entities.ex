@@ -80,6 +80,9 @@ defmodule Demo.Entities do
       |> Entity.create_default_entity(user, attrs)
       |> Repo.insert()
     
+
+      IO.inspect "entity.type"
+      IO.inspect entity.type
     UpdateFinacialStatements.add_financial_statements(entity)
 
     {:ok, entity}

@@ -442,8 +442,12 @@ defmodule Demo.AccountBooks.AccountBook do
   ]
   @doc false
   def changeset(account_book, attrs) do
+    IO.inspect "changeset account_book"
+    IO.inspect account_book
+    IO.inspect attrs
     account_book
     |> cast(attrs, @fields)
+    |> IO.inspect
     |> validate_required([])
   end
 

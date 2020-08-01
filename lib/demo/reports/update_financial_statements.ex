@@ -11,16 +11,46 @@ defmodule Demo.Reports.UpdateFinacialStatements do
   alias Demo.Taxations.Taxation
   alias Demo.Families.Family
 
+  alias Demo.BalanceSheets
+  alias Demo.IncomeStatements
+  alias Demo.CFStatements
+  alias Demo.EquityStatements
+  alias Demo.AccountBooks
+  alias Demo.AccountBooks.AccountBook
+
   def add_financial_statements(child) do
     case child.type do
       "default" ->
         family = Repo.preload(child, :family).family
+
         add_account_book(child, family)
         add_balance_sheet(child, family)
         add_cf_statement(child, family)
         add_equity_statement(child, family)
 
-        common(child)
+        IO.puts("end of family")
+
+        supul = Repo.preload(child, :supul).supul
+        add_account_book(child, supul)
+        add_balance_sheet(child, supul)
+        add_cf_statement(child, supul)
+        add_equity_statement(child, supul)
+
+        IO.puts("end of supul")
+
+        state_supul = Repo.preload(supul, :state_supul).state_supul
+        add_account_book(child, state_supul)
+        add_balance_sheet(child, state_supul)
+        add_cf_statement(child, state_supul)
+        add_equity_statement(child, state_supul)
+
+        IO.puts("end of state supul")
+
+        nation_supul = Repo.preload(state_supul, :nation_supul).nation_supul
+        add_account_book(child, nation_supul)
+        add_balance_sheet(child, nation_supul)
+        add_cf_statement(child, nation_supul)
+        add_equity_statement(child, nation_supul)
 
       "private" ->
         group = Repo.preload(child, :group).group
@@ -29,7 +59,23 @@ defmodule Demo.Reports.UpdateFinacialStatements do
         add_cf_statement(child, group)
         add_equity_statement(child, group)
 
-        common(child)
+        supul = Repo.preload(child, :supul).supul
+        add_income_statement(child, supul)
+        add_balance_sheet(child, supul)
+        add_cf_statement(child, supul)
+        add_equity_statement(child, supul)
+
+        state_supul = Repo.preload(supul, :state_supul).state_supul
+        add_income_statement(child, state_supul)
+        add_balance_sheet(child, state_supul)
+        add_cf_statement(child, state_supul)
+        add_equity_statement(child, state_supul)
+
+        nation_supul = Repo.preload(state_supul, :nation_supul).nation_supul
+        add_income_statement(child, nation_supul)
+        add_balance_sheet(child, nation_supul)
+        add_cf_statement(child, nation_supul)
+        add_equity_statement(child, nation_supul)
 
       "public" ->
         nation_supul = Repo.preload(child, :nation_supul).nation_supul
@@ -41,52 +87,56 @@ defmodule Demo.Reports.UpdateFinacialStatements do
   end
 
   defp common(child) do
-    supul = Repo.preload(child, :supul).supul
-    add_income_statement(child, supul)
-    add_balance_sheet(child, supul)
-    add_cf_statement(child, supul)
-    add_equity_statement(child, supul)
-
-    state_supul = Repo.preload(child, :state_supul).state_supul
-    add_income_statement(child, state_supul)
-    add_balance_sheet(child, state_supul)
-    add_cf_statement(child, state_supul)
-    add_equity_statement(child, state_supul)
-
-    nation_supul = Repo.preload(child, :nation_supul).nation_supul
-    add_income_statement(child, nation_supul)
-    add_balance_sheet(child, nation_supul)
-    add_cf_statement(child, nation_supul)
-    add_equity_statement(child, nation_supul)
   end
 
   defp add_account_book(child, parent) do
-    added_ab = Map.merge(child.account_book, parent.account_book, fn _, v1, v2 -> v1 + v2 end)
-    AccountBooks.update_account_book(parent, added_ab)
+    a = child.account_book
+    b = parent.account_book
+
+    Map.merge(a, b, fn
+      _key, a, b when is_number(a) and is_number(b) -> a + b
+      key, _a, b -> b
+    end)
   end
 
   defp add_income_statement(child, parent) do
-    added_is =
-      Map.merge(child.income_statement, parent.income_statement, fn _, v1, v2 -> v1 + v2 end)
+    a = child.income_statement
+    b = parent.income_statement
 
-    AccountBooks.update_income_statement(parent, added_is)
+    Map.merge(a, b, fn
+      _key, a, b when is_number(a) and is_number(b) -> a + b
+      key, _a, _b -> b
+    end)
   end
 
   defp add_balance_sheet(child, parent) do
-    added_bs = Map.merge(child.balance_sheet, parent.balance_sheet, fn _, v1, v2 -> v1 + v2 end)
-    AccountBooks.update_balance_sheet(parent, added_bs)
+    a = child.balance_sheet
+    b = parent.balance_sheet
+
+    Map.merge(a, b, fn
+      _key, a, b when is_number(a) and is_number(b) -> a + b
+      key, _a, _b -> b
+    end)
   end
 
   defp add_cf_statement(child, parent) do
-    added_cf = Map.merge(child.cf_statement, parent.cf_statement, fn _, v1, v2 -> v1 + v2 end)
-    AccountBooks.update_cf_statement(parent, added_cf)
+    a = child.cf_statement
+    b = parent.cf_statement
+
+    Map.merge(a, b, fn
+      _key, a, b when is_number(a) and is_number(b) -> a + b
+      key, _a, _b -> b
+    end)
   end
 
   defp add_equity_statement(child, parent) do
-    added_es =
-      Map.merge(child.equity_statement, parent.equity_statement, fn _, v1, v2 -> v1 + v2 end)
+    a = child.equity_statement
+    b = parent.equity_statement
 
-    AccountBooks.update_equity_statement(parent, added_es)
+    Map.merge(a, b, fn
+      _key, a, b when is_number(a) and is_number(b) -> a + b
+      key, _a, _b -> b
+    end)
   end
 
   # '''

@@ -76,7 +76,7 @@ defmodule Demo.AccountBooks do
 
   def create_account_book(%StateSupul{} = state_supul) do
     attrs = create_attrs(state_supul)
-
+ 
     %AccountBook{}
     |> AccountBook.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:state_supul, state_supul)
@@ -92,7 +92,7 @@ defmodule Demo.AccountBooks do
     |> Repo.insert()
   end
 
-  def update_account_book(%AccountBook{} = account_book, attrs) do
+  def update_account_book(%AccountBook{} = account_book, attrs \\ %{}) do
     account_book
     |> AccountBook.changeset(attrs)
     |> Repo.update()
