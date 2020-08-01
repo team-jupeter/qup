@@ -16,8 +16,8 @@
       <td><%= @group.type %></td>
     </tr> 
     <tr>
-      <td>Group Title</td>
-      <td><%= @group.title %></td>
+      <td>Group Name</td>
+      <td><%= @group.name %></td>
     </tr> 
 
   </tbody>

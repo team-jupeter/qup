@@ -3,18 +3,18 @@
 <table>
   <thead>
     <tr>
-      <th>Title</th>
+      <th>Name</th>
 
-      <th></th>
+      <th>Type</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><%= @group.title %></td>
+      <td><%= @group.name %></td>
       <td><%= @group.type %></td>
 
       <td>
-        <span><%= link "Show", to: Routes.group_path(@conn, :show, @group) %></span>
+        <span><%= link "Show", to: Routes.group_path(@conn, :show, @group.id) %></span>
       </td>
     </tr>
   </tbody>

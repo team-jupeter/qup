@@ -12,6 +12,7 @@ defmodule DemoWeb.BalanceSheetController do
   alias Demo.Repo
   alias Demo.BalanceSheets
   alias Demo.Reports.BalanceSheet
+  alias Demo.Groups
   alias Demo.Families
   alias Demo.Supuls
   alias Demo.StateSupuls
@@ -35,28 +36,31 @@ defmodule DemoWeb.BalanceSheetController do
   end
 
   def edit(conn, %{"id" => id}) do
-    balance_sheet = %BalanceSheet{}
+    balance_sheet =
+      cond do
+        Families.get_family(id) != nil ->
+          family = Families.get_family(id)
+          balance_sheet = Repo.preload(family, :balance_sheet).balance_sheet
 
-    cond do
-      Families.get_family(id) != nil ->
-        family = Families.get_family(id)
-        balance_sheet = Repo.preload(family, :balance_sheet).balance_sheet
+        Groups.get_group(id) != nil ->
+          group = Groups.get_group(id)
+          balance_sheet = Repo.preload(group, :balance_sheet).balance_sheet
 
-      Supuls.get_supul(id) != nil ->
-        supul = Supuls.get_supul(id)
-        balance_sheet = Repo.preload(supul, :balance_sheet).balance_sheet
+        Supuls.get_supul(id) != nil ->
+          supul = Supuls.get_supul(id)
+          balance_sheet = Repo.preload(supul, :balance_sheet).balance_sheet
 
-      StateSupuls.get_state_supul(id) != nil ->
-        state_supul = StateSupuls.get_state_supul(id)
-        balance_sheet = Repo.preload(state_supul, :balance_sheet).balance_sheet
+        StateSupuls.get_state_supul(id) != nil ->
+          state_supul = StateSupuls.get_state_supul(id)
+          balance_sheet = Repo.preload(state_supul, :balance_sheet).balance_sheet
 
-      NationSupuls.get_nation_supul(id) != nil ->
-        nation_supul = NationSupuls.get_nation_supul(id)
-        balance_sheet = Repo.preload(nation_supul, :balance_sheet).balance_sheet
+        NationSupuls.get_nation_supul(id) != nil ->
+          nation_supul = NationSupuls.get_nation_supul(id)
+          balance_sheet = Repo.preload(nation_supul, :balance_sheet).balance_sheet
 
-      true ->
-        "error"
-    end
+        true ->
+          "error"
+      end
 
     render(conn, "show.html", balance_sheet: balance_sheet)
   end
@@ -70,7 +74,7 @@ defmodule DemoWeb.BalanceSheetController do
         |> put_flash(:info, "BalanceSheet updated successfully.")
 
         # |> redirect(to: Routes.balance_sheet_path(conn, :show, balance_sheet))
-        render(conn, "show.html",balance_sheet: balance_sheet)
+        render(conn, "show.html", balance_sheet: balance_sheet)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", balance_sheet: balance_sheet, changeset: changeset)

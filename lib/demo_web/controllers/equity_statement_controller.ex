@@ -6,6 +6,7 @@ defmodule DemoWeb.EquityStatementController do
   alias Demo.Reports.EquityStatement
   alias Demo.Repo
   alias Demo.Families
+  alias Demo.Groups
   alias Demo.Supuls
   alias Demo.StateSupuls
   alias Demo.NationSupuls
@@ -37,6 +38,10 @@ defmodule DemoWeb.EquityStatementController do
       Families.get_family(id) != nil ->
         family = Families.get_family(id)
         equity_statement = Repo.preload(family, :equity_statement).equity_statement
+      
+      Groups.get_group(id) != nil ->
+        group = Groups.get_group(id)
+        equity_statement = Repo.preload(group, :equity_statement).equity_statement
       
       Supuls.get_supul(id) != nil ->
         supul = Supuls.get_supul(id)

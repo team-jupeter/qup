@@ -6,6 +6,7 @@ defmodule DemoWeb.CFStatementController do
   alias Demo.Reports.CFStatement
   alias Demo.Repo
   alias Demo.Families
+  alias Demo.Groups
   alias Demo.Supuls
   alias Demo.StateSupuls
   alias Demo.NationSupuls
@@ -36,6 +37,10 @@ defmodule DemoWeb.CFStatementController do
       Families.get_family(id) != nil ->
         family = Families.get_family(id)
         cf_statement = Repo.preload(family, :cf_statement).cf_statement
+
+      Groups.get_group(id) != nil ->
+        group = Groups.get_group(id)
+        cf_statement = Repo.preload(group, :cf_statement).cf_statement
 
       Supuls.get_supul(id) != nil ->
         supul = Supuls.get_supul(id)

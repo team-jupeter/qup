@@ -22,6 +22,7 @@ defmodule Demo.Groups do
   end 
 
   def get_group!(id), do: Repo.get!(Group, id)
+  def get_group(id), do: Repo.get(Group, id)
 
 '''
 g = Repo.preload(sanche_entity, :group).group

@@ -93,7 +93,7 @@ defmodule Demo.Entities do
     attrs =
       case attrs.default_group do
         true ->
-          {:ok, group} = Groups.create_group()
+          {:ok, group} = Groups.create_group(%{type: "default group", name: attrs.user.name})
           attrs = Map.merge(attrs, %{group: group})
 
         false ->

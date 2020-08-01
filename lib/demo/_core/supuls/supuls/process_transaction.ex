@@ -128,23 +128,33 @@ defmodule Demo.Supuls.ProcessTransaction do
           where: a.supul_id == ^transaction.erl_supul_id
       )
 
+    IO.puts("erl_supul")
+    erl_supul = Repo.one(
+        from a in Supul,
+          where: a.id == ^transaction.erl_supul_id
+      )
+    IO.inspect erl_supul
+
     IO.puts("erl_supul_BS")
     BalanceSheets.minus_gab_balance(erl_supul_BS, %{amount: transaction.abc_amount}) |> IO.inspect()
-
+    
     erl_state_supul_BS =
-      Repo.one(
-        from a in BalanceSheet,
-          where: a.state_supul_id == ^transaction.erl_state_supul_id
+    Repo.one(
+      from a in BalanceSheet,
+      where: a.state_supul_id == ^transaction.erl_state_supul_id
       )
-
-    BalanceSheets.minus_gab_balance(erl_state_supul_BS, %{amount: transaction.abc_amount})
-
+      
+    IO.puts("erl_state_supul_BS")
+    IO.inspect erl_state_supul_BS
+    BalanceSheets.minus_gab_balance(erl_state_supul_BS, %{amount: transaction.abc_amount}) |> IO.inspect 
+    
     erl_nation_supul_BS =
-      Repo.one(
-        from a in BalanceSheet,
-          where: a.nation_supul_id == ^transaction.erl_nation_supul_id
+    Repo.one(
+      from a in BalanceSheet,
+      where: a.nation_supul_id == ^transaction.erl_nation_supul_id
       )
-
+      
+    IO.puts("erl_nation_supul_BS")
     BalanceSheets.minus_gab_balance(erl_nation_supul_BS, %{amount: transaction.abc_amount})
   end
 
@@ -210,6 +220,9 @@ defmodule Demo.Supuls.ProcessTransaction do
         from a in BalanceSheet,
           where: a.supul_id == ^transaction.ssu_supul_id
       )
+
+      IO.inspect "ssu_supul_BS"
+      IO.inspect ssu_supul_BS
 
     BalanceSheets.plus_gab_balance(ssu_supul_BS, %{amount: transaction.abc_amount})
 

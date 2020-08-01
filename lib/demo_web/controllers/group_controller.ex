@@ -39,7 +39,7 @@ defmodule DemoWeb.GroupController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id}, _current_user) do 
     group = Groups.get_group!(id)
     render(conn, "show.html", group: group)
   end
