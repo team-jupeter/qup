@@ -24,7 +24,7 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
 
       add :gab_balance, :decimal, precision: 12, scale: 2
 
-      add(:t1s, {:array, :map}, default: [])
+      add(:ts, {:array, :map}, default: [])
       add(:t2s, {:array, :map}, default: []) 
       add(:t3s, {:array, :jsonb}, default: [])
 

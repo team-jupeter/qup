@@ -10,9 +10,9 @@ defmodule Demo.Openhashes do
   alias Demo.Supuls.Supul
   alias Demo.Supuls
   alias Demo.Transactions
-
+ 
   alias Demo.Weddings
-  # alias Demo.Transactions
+  # alias Demo.Transactions 
 
   def list_openhashes do
     Repo.all(Openhash)
@@ -46,10 +46,13 @@ defmodule Demo.Openhashes do
     {:ok, openhash} =
       Openhash.changeset(%Openhash{}, %{
         event_id: event.id,
+
         erl_email: event.erl_email, 
         ssu_email: event.ssu_email, 
+
         supul_id: supul.id,
         supul_name: supul.name,
+
         previous_hash: supul.previous_hash,
         incoming_hash: supul.incoming_hash,
         current_hash: supul.current_hash,
@@ -118,12 +121,13 @@ defmodule Demo.Openhashes do
 
       # ? init supul for the next hash block. 
       Supul.changeset(supul, %{hash_count: 1, openhash_box: []})
-    end
 
+    end
+    
     IO.puts("Do you see me? 2 ^^*")
-        
+    
     #? return openhash
-    openhash
+    {:ok, openhash}
   end
 
   def make_state_openhash(state_supul) do

@@ -73,5 +73,44 @@
   </tbody>
 </table>
 
+<%= for t <- @balance_sheet.ts do %>
+<b>T1</b>
+    <table >
+      <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td>openhash_id</td>
+        <td><%= t.openhash_id %></td>
+        </tr>
+        <tr>
+        <td>input_name</td>
+        <td><%= t.input_name %></td>
+        </tr>
+        <tr>
+        <td>input_id</td>
+        <td><%= t.input_id %></td>
+        </tr>
+        <td>output_name</td>
+        <td><%= t.output_name %></td>
+        </tr>
+        <td>output_id</td>
+        <td><%= t.output_id %></td>
+        </tr>
+        </tr>
+        <td>amount</td>
+        <td><%= t.amount %></td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
 
-</ul>
+
+ </br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

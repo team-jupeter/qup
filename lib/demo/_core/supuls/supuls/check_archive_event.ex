@@ -37,7 +37,7 @@ defmodule Demo.Supuls.CheckArchiveEvent do
 
     # IO.puts("Do you see me? 1 ^^*")
 
-    {:ok, sig_valid_erl} =
+    {:ok, sig_valid_erl} = 
       ExPublicKey.verify(
         "#{recv_ts}|#{recv_event_id}|#{recv_event_hash}",
         recv_sig_erl,
@@ -55,7 +55,7 @@ defmodule Demo.Supuls.CheckArchiveEvent do
     erl_supul = Supuls.get_supul!(event.erl_supul_id)
     ssu_supul = Supuls.get_supul!(event.ssu_supul_id)
 
-    openhash =
+    {:ok, openhash} =
       cond do
         sig_valid_erl && sig_valid_ssu ->
           IO.puts("Update erl supul with recv_event_hash")
@@ -67,7 +67,7 @@ defmodule Demo.Supuls.CheckArchiveEvent do
               incoming_hash: recv_event_hash
             })
 
-          Openhashes.create_openhash(erl_supul, event)
+            {:ok, openhash} = Openhashes.create_openhash(erl_supul, event)
 
           if erl_supul.id != ssu_supul.id do
             IO.puts("Make a ssu supul struct")
@@ -82,11 +82,11 @@ defmodule Demo.Supuls.CheckArchiveEvent do
             # IO.inspect ssu_supul
 
             IO.puts("Make an openhash of ssu supul struct")
-            Openhashes.create_openhash(ssu_supul, event)
+            {:ok, openhash} = Openhashes.create_openhash(ssu_supul, event)
           end
 
           # ? Making a family struct and related financial statements. 
-          process_event(event)
+          process_event(event, openhash)
         # ? halt the process 
         true ->
           IO.puts("error")
@@ -94,10 +94,10 @@ defmodule Demo.Supuls.CheckArchiveEvent do
       end
   end
 
-  defp process_event(event) do
+  defp process_event(event, openhash) do
     case event.type do
-      "transaction" -> Supuls.ProcessTransaction.process_transaction(event)
-      "wedding" -> Supuls.ProcessWedding.process_wedding(event)
+      "transaction" -> Supuls.ProcessTransaction.process_transaction(event, openhash)
+      "wedding" -> Supuls.ProcessWedding.process_wedding(event, openhash)
       _ -> IO.puts("Oh ma ma my ... type error")
     end
   end

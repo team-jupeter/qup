@@ -29,13 +29,10 @@ defmodule DemoWeb.TransactionController do
     if bs.cash < invoice.total, do: "error"
 
     # ? For the erl
+    IO.puts "transaction_controller, erl_supul"
     erl = current_entity
     erl_supul = Repo.preload(erl, :supul).supul
-    IO.inspect "erl_supul"
-    IO.inspect erl_supul
     erl_state_supul = Repo.preload(erl_supul, :state_supul).state_supul
-    IO.inspect "erl_state_supul"
-    IO.inspect erl_state_supul
     erl_nation_supul = Repo.preload(erl_state_supul, :nation_supul).nation_supul
     
     invoice_items = InvoiceItems.list_invoice_items(erl.id)

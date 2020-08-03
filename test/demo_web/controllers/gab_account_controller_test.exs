@@ -3,9 +3,9 @@ defmodule DemoWeb.GabAccountControllerTest do
 
   alias Demo.GabAccounts
 
-  @create_attrs %{balance: "120.5"}
-  @update_attrs %{balance: "456.7"}
-  @invalid_attrs %{balance: nil}
+  @create_attrs %{credit_limit: "some credit_limit", owner: "some owner", t1: "some t1", t2: "some t2", t3: "some t3"}
+  @update_attrs %{credit_limit: "some updated credit_limit", owner: "some updated owner", t1: "some updated t1", t2: "some updated t2", t3: "some updated t3"}
+  @invalid_attrs %{credit_limit: nil, owner: nil, t1: nil, t2: nil, t3: nil}
 
   def fixture(:gab_account) do
     {:ok, gab_account} = GabAccounts.create_gab_account(@create_attrs)
@@ -60,7 +60,7 @@ defmodule DemoWeb.GabAccountControllerTest do
       assert redirected_to(conn) == Routes.gab_account_path(conn, :show, gab_account)
 
       conn = get(conn, Routes.gab_account_path(conn, :show, gab_account))
-      assert html_response(conn, 200)
+      assert html_response(conn, 200) =~ "some updated credit_limit"
     end
 
     test "renders errors when data is invalid", %{conn: conn, gab_account: gab_account} do

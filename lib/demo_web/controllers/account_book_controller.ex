@@ -33,8 +33,8 @@ defmodule DemoWeb.AccountBookController do
   end
 
   def show(conn, %{"id" => id}) do
+    IO.puts "account_book"
     account_book = AccountBooks.get_entity_account_book(id)
-    IO.inspect account_book
     render(conn, "show.html", account_book: account_book)
   end
 

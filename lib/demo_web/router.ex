@@ -106,6 +106,7 @@ defmodule DemoWeb.Router do
     resources "/income_statement", IncomeStatementController
     resources "/cf_statement", CFStatementController
     resources "/equity_statement", EquityStatementController
+    resources "/gab_account", GabAccountController
   end
 
 

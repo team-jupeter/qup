@@ -62,12 +62,12 @@ hong_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong
 kipo_BS = Ecto.build_assoc(kipo_FR, :gov_balance_sheet, 
     %GovBalanceSheet{
         monetary_unit: "KRW", 
-        t1s: [%{input: korea.id, output: kipo.id, amount: Decimal.from_float(100.00)}], 
+        ts: [%{input: korea.id, output: kipo.id, amount: Decimal.from_float(100.00)}], 
         cashes: [%{KRW: Decimal.new(10000.00)}]}) |> Repo.insert!
 hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, 
         %BalanceSheet{
             cash: Decimal.new(50000.00), 
-            t1s: [%{input: korea.id, output: kipo.id, amount: Decimal.from_float(100.00)}]}) \
+            ts: [%{input: korea.id, output: kipo.id, amount: Decimal.from_float(100.00)}]}) \
         |> Repo.insert!
 
 
@@ -202,24 +202,24 @@ alias Demo.ABC.T1
 
 #? Adjust balance_sheet of both.
 #? kipo
-#? The code below NOT consider any other elements in the t1s list. We should find out just enough elements to pay the invoice total. 
-new_t1s = Enum.map(hong_entity_BS.t1s, fn elem ->
+#? The code below NOT consider any other elements in the ts list. We should find out just enough elements to pay the invoice total. 
+new_ts = Enum.map(hong_entity_BS.ts, fn elem ->
     Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, transaction.abc_amount) end)
 end)
 
 hong_entity_BS = change(hong_entity_BS) |> \
-    Ecto.Changeset.put_change(:t1s, new_t1s) \
+    Ecto.Changeset.put_change(:ts, new_ts) \
     |> Repo.update!
 
 #? kipo Korea
 alias Demo.ABC.T1
-new_t1s = Enum.map(kipo_BS.t1s, fn elem ->
+new_ts = Enum.map(kipo_BS.ts, fn elem ->
     Map.update!(elem, :amount, fn curr_value -> Decimal.add(curr_value, transaction.abc_amount) end)
 end)
 
 
 kipo_BS = change(kipo_BS) |> \
-Ecto.Changeset.put_change(:t1s, new_t1s) \
+Ecto.Changeset.put_change(:ts, new_ts) \
 |> Repo.update!
 
 '''

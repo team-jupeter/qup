@@ -1,0 +1,33 @@
+<h1>Show Gab account</h1>
+
+<ul>
+
+  <li>
+    <strong>Owner:</strong>
+    <%= @gab_account.owner %>
+  </li>
+
+  <li>
+    <strong>T1:</strong>
+    <%= @gab_account.t1 %>
+  </li>
+
+  <li>
+    <strong>T2:</strong>
+    <%= @gab_account.t2 %>
+  </li>
+
+  <li>
+    <strong>T3:</strong>
+    <%= @gab_account.t3 %>
+  </li>
+
+  <li>
+    <strong>Credit limit:</strong>
+    <%= @gab_account.credit_limit %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.gab_account_path(@conn, :edit, @gab_account) %></span>
+<span><%= link "Back", to: Routes.gab_account_path(@conn, :index) %></span>

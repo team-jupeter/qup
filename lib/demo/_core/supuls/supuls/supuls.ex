@@ -78,14 +78,14 @@ defmodule Demo.Supuls do
   end
 
   def update_supul(%Supul{} = supul, attrs) do
-    IO.inspect "update_supul"
+    IO.puts "update_supul"
     supul
     |> Supul.changeset(attrs)
     |> Repo.update()
   end
 
   def update_supul_gab(%Supul{} = supul, attrs) do
-    IO.inspect "update_supul_gab"
+    IO.puts "update_supul_gab"
     supul
     |> Supul.changeset_gab(attrs)
     |> Repo.update()

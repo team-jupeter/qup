@@ -15,8 +15,7 @@ defmodule DemoWeb.GroupController do
     group = Repo.preload(current_entity, :group).group
     # group = Groups.get_entity_group(current_entity)
 
-    IO.inspect "group"
-    IO.inspect group
+    IO.puts "group"
 
     render(conn, "index.html", group: group)
   end

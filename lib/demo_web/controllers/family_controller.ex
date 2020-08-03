@@ -16,8 +16,7 @@ defmodule DemoWeb.FamilyController do
     default_entity = Repo.get!(Entity, current_user.default_entity_id)
     family_entity = Families.get_family_entity(default_entity) 
 
-    IO.inspect "family_entity.id"
-    IO.inspect family_entity.id
+    IO.puts "family_entity.id"
 
     render(conn, "index.html", family_entity: family_entity)
   end

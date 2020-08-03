@@ -22,9 +22,9 @@
   <%= text_input f, :abc_output %>
   <%= error_tag f, :abc_output %>
 
-  <%= label f, :abc_input_t1s %>
-  <%= text_input f, :abc_input_t1s %>
-  <%= error_tag f, :abc_input_t1s %>
+  <%= label f, :abc_input_ts %>
+  <%= text_input f, :abc_input_ts %>
+  <%= error_tag f, :abc_input_ts %>
 
   <%= label f, :abc_amount %>
   <%= text_input f, :abc_amount %>

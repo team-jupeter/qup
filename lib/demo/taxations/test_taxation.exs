@@ -74,14 +74,14 @@ tomi_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi
 tesla_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tesla_entity.id}) |> Repo.insert!
 kts_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: south_korea.id}) |> Repo.insert!
 
-hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW", t1s: [%{hankyung: Decimal.from_float(100000000.0)}], cashes: [%{KRW: Decimal.new(1000000.00)}]}) |> Repo.insert!
+hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW", ts: [%{hankyung: Decimal.from_float(100000000.0)}], cashes: [%{KRW: Decimal.new(1000000.00)}]}) |> Repo.insert!
 hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{cash: Decimal.from_float(1000000.0)}) |> Repo.insert!
 tomi_entity_BS = Ecto.build_assoc(tomi_entity_FR, :balance_sheet, %BalanceSheet{fixed_assets: [%{building: 1.0}]}) |> Repo.insert!
 tesla_entity_BS = Ecto.build_assoc(tesla_entity_FR, :balance_sheet, %BalanceSheet{inventory: []}) |> Repo.insert!
 kts_BS = Ecto.build_assoc(kts_FR, :gov_balance_sheet, %BalanceSheet{}) |> Repo.insert!
 
 alias Demo.ABC.T1
-tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:t1s, [%T1{input: "hankyung_gab_public_address", amount: Decimal.from_float(10000000.0), output: "tesla_public_address"}]) |> Repo.update!
+tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:ts, [%T1{input: "hankyung_gab_public_address", amount: Decimal.from_float(10000000.0), output: "tesla_public_address"}]) |> Repo.update!
 
 '''
 
@@ -157,7 +157,7 @@ transaction_1 = Transaction.changeset(%Transaction{
     abc_input: "hankyung_gab_public_address", 
     abc_output: "hong_public_address",
     abc_amount: invoice.total,
-    abc_input_t1s: hankyung_gab_BS.t1s,
+    abc_input_ts: hankyung_gab_BS.ts,
     if_only_item: item.id,
     fiat_currency: item_quantity,
     }) |> Repo.insert!
@@ -177,16 +177,16 @@ invoice = Ecto.build_assoc(transaction_1, :invoice, invoice)
 # hankyung_gab_BS = hankyung_gab_FR.gab_balance_sheet
 
 
-new_t1s = Enum.map(hankyung_gab_BS.t1s, fn elem ->
+new_ts = Enum.map(hankyung_gab_BS.ts, fn elem ->
     Map.update!(elem, :hankyung, fn curr_value -> Decimal.sub(curr_value, transaction_1.abc_amount) end)
 end)
 #? alternatively, we can use code below
-# new_maps = Enum.map(hankyung_gab_BS.t1s, fn elem ->
+# new_maps = Enum.map(hankyung_gab_BS.ts, fn elem ->
 #     Map.update!(elem, :hankyung, &(Decimal.sub(&1, transaction_1.abc_amount)))
 #     end)
 #? or below
-# t1s_hankyung = Enum.at(hankyung_gab_BS.t1s, 0)
-# t1s_hankyung = Map.update(t1s_hankyung, :hankyung, 0, &(Decimal.sub(&1, transaction_1.abc_amount)))
+# ts_hankyung = Enum.at(hankyung_gab_BS.ts, 0)
+# ts_hankyung = Map.update(ts_hankyung, :hankyung, 0, &(Decimal.sub(&1, transaction_1.abc_amount)))
 
 new_cashes = Enum.map(hankyung_gab_BS.cashes, fn elem ->
     Map.update!(elem, :KRW, fn curr_value -> Decimal.add(curr_value, transaction_1.fiat_currency) end)
@@ -194,7 +194,7 @@ end)
 
 hankyung_gab_BS = change(hankyung_gab_BS) |> \
     Ecto.Changeset.put_change(:cashes, new_cashes) |>  \
-    Ecto.Changeset.put_change(:t1s, new_t1s) \
+    Ecto.Changeset.put_change(:ts, new_ts) \
     |> Repo.update!
  
         
@@ -207,9 +207,9 @@ hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_change(
         :cash, Decimal.sub(hong_entity_BS.cash, transaction_1.fiat_currency)) |> Repo.update!
 
-t1s = [%T1{input: "hankyung_gab_public_address", amount: transaction_1.abc_amount, output: "hong_public_address"}]
+ts = [%T1{input: "hankyung_gab_public_address", amount: transaction_1.abc_amount, output: "hong_public_address"}]
 hong_entity_BS = change(hong_entity_BS) |> \
-    Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
+    Ecto.Changeset.put_embed(:ts, ts) |> Repo.update!
 
 
 '''
@@ -290,16 +290,16 @@ Adjust balance_sheet of both.
 ''' 
 #? Tesla
 #? case 
-#? Enum.at(tesla_t1s, 0).output == tesla_entity.id and
+#? Enum.at(tesla_ts, 0).output == tesla_entity.id and
 #? Enum.at(invoice.invoice_items, 0).output == tesla_entity.id
 #? do:
-residual_amount = Decimal.sub(Enum.at(tesla_entity_BS.t1s, 0).amount, invoice.total)
-# [head | tesla_t1s] = tesla_t1s
+residual_amount = Decimal.sub(Enum.at(tesla_entity_BS.ts, 0).amount, invoice.total)
+# [head | tesla_ts] = tesla_ts
 
-new_t1s = [%T1{input: tesla_entity.id, output: tesla_entity.id, amount: residual_amount}]
+new_ts = [%T1{input: tesla_entity.id, output: tesla_entity.id, amount: residual_amount}]
 fixed_assets = tesla_entity_BS.fixed_assets
 
-tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
+tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:ts, new_ts) |> Repo.update!
 
 tesla_entity_BS = change(tesla_entity_BS) \
     |> Ecto.Changeset.put_change(:fixed_assets, [%{building: item_quantity} | fixed_assets]) \
@@ -310,13 +310,13 @@ tesla_entity_BS = change(tesla_entity_BS) \
 # tomi_entity_FR = Repo.preload(tomi_entity, [financial_report: :balance_sheet]).financial_report
 # tomi_entity_BS = tomi_entity_FR.balance_sheet
 
-t1s = [%T1{input: tesla_entity.id, output: tomi_entity.id, amount: invoice.total}]
+ts = [%T1{input: tesla_entity.id, output: tomi_entity.id, amount: invoice.total}]
 item_quantity = Decimal.to_integer(item_quantity)
 [head | updated_fixed_assets] = tomi_entity_BS.fixed_assets
 
 #? code below is hard coded. Find out how to update a map's value in a list. 
 tomi_entity_BS = change(tomi_entity_BS) \
-    |> Ecto.Changeset.put_embed(:t1s, t1s) \
+    |> Ecto.Changeset.put_embed(:ts, ts) \
     |> Ecto.Changeset.put_change(:fixed_assets, updated_fixed_assets) \
     |> Repo.update!
 
@@ -336,15 +336,15 @@ Adjust balance_sheet of both.
 purchase_tax_rate = Decimal.from_float(0.05)
 tax_payable = Decimal.mult(transaction_2.abc_amount, purchase_tax_rate)
 
-residual_amount = Decimal.sub(Enum.at(tesla_entity_BS.t1s, 0).amount, tax_payable)
-# [head | tesla_t1s] = tesla_t1s
+residual_amount = Decimal.sub(Enum.at(tesla_entity_BS.ts, 0).amount, tax_payable)
+# [head | tesla_ts] = tesla_ts
 
-new_t1s = [%T1{input: tesla_entity.id, output: tesla_entity.id, amount: residual_amount}]
-tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
+new_ts = [%T1{input: tesla_entity.id, output: tesla_entity.id, amount: residual_amount}]
+tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:ts, new_ts) |> Repo.update!
 
 #? korea_tax BS
-new_t1s_kts = [%{input: tesla_entity.id, output: kts.id, amount: tax_payable}]
-kts_BS = change(kts_BS) |> Ecto.Changeset.put_change(:t1s, new_t1s_kts) |> Repo.update!
+new_ts_kts = [%{input: tesla_entity.id, output: kts.id, amount: tax_payable}]
+kts_BS = change(kts_BS) |> Ecto.Changeset.put_change(:ts, new_ts_kts) |> Repo.update!
 
 
 
@@ -354,16 +354,16 @@ real_estate_tax_rate = Decimal.from_float(0.30)
 profit_from_sales = Decimal.from_float(해거름전망대.market_value - 해거름전망대.book_value)
 tax_payable = Decimal.mult(profit_from_sales, real_estate_tax_rate)
 
-residual_amount = Decimal.sub(Enum.at(tesla_entity_BS.t1s, 0).amount, tax_payable)
-# [head | tesla_t1s] = tesla_t1s
+residual_amount = Decimal.sub(Enum.at(tesla_entity_BS.ts, 0).amount, tax_payable)
+# [head | tesla_ts] = tesla_ts
 
-new_t1s_tomi = [%T1{input: tesla_entity.id, output: tesla_entity.id, amount: residual_amount}]
-tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
+new_ts_tomi = [%T1{input: tesla_entity.id, output: tesla_entity.id, amount: residual_amount}]
+tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:ts, new_ts) |> Repo.update!
 
 #? korea_tax BS
 
-new_t1s_kts = [%{input: tomi_entity.id, output: kts.id, amount: tax_payable} | kts_BS.t1s]
-kts_BS = change(kts_BS) |> Ecto.Changeset.put_change(:t1s, new_t1s_kts) |> Repo.update!
+new_ts_kts = [%{input: tomi_entity.id, output: kts.id, amount: tax_payable} | kts_BS.ts]
+kts_BS = change(kts_BS) |> Ecto.Changeset.put_change(:ts, new_ts_kts) |> Repo.update!
 
 
 

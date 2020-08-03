@@ -54,7 +54,7 @@ defmodule Demo.Events do
 
     
     ts = DateTime.utc_now() |> DateTime.to_unix()
-    event_id = event.id 
+    event_id = event.id  
 
     event_serialized = Poison.encode!(event)
     event_hash = Pbkdf2.hash_pwd_salt(event_serialized)

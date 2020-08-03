@@ -81,8 +81,7 @@ defmodule Demo.Entities do
       |> Repo.insert()
     
 
-      IO.inspect "entity.type"
-      IO.inspect entity.type
+      IO.puts "entity.type"
     UpdateFinacialStatements.add_financial_statements(entity)
 
     {:ok, entity}

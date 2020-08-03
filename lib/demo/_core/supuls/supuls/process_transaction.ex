@@ -24,7 +24,7 @@ defmodule Demo.Supuls.ProcessTransaction do
   alias Demo.NationSupuls.NationSupul
   alias Demo.GlobalSupuls.GlobalSupul
 
-  def process_transaction(transaction) do
+  def process_transaction(transaction, openhash) do
     # IO.puts "process_transaction"
     # IO.inspect transaction
 
@@ -42,7 +42,7 @@ defmodule Demo.Supuls.ProcessTransaction do
 
     case transaction.ssu_type do
       "default" -> 
-        update_ssu_AB(transaction)
+        update_ssu_AB(transaction) 
         update_ssu_BS(transaction)
       "private" -> 
         update_ssu_private_IS(transaction)
@@ -53,7 +53,7 @@ defmodule Demo.Supuls.ProcessTransaction do
     end
 
     update_gab_balance(transaction)
-    update_t1s(transaction)
+    update_ts(transaction, openhash)
 
     {:ok, transaction}
   end
@@ -75,7 +75,7 @@ defmodule Demo.Supuls.ProcessTransaction do
       )
 
     IO.puts("erl_family_AB")
-    AccountBooks.add_expense(erl_family_AB, %{amount: transaction.abc_amount}) |> IO.inspect()
+    AccountBooks.add_expense(erl_family_AB, %{amount: transaction.abc_amount}) 
 
     erl_supul_AB =
       Repo.one(
@@ -84,7 +84,7 @@ defmodule Demo.Supuls.ProcessTransaction do
       )
 
     IO.puts("erl_supul_AB")
-    AccountBooks.add_expense(erl_supul_AB, %{amount: transaction.abc_amount}) |> IO.inspect()
+    AccountBooks.add_expense(erl_supul_AB, %{amount: transaction.abc_amount}) 
 
     erl_state_supul_AB =
       Repo.one(
@@ -120,7 +120,7 @@ defmodule Demo.Supuls.ProcessTransaction do
       )
 
     IO.puts("erl_family_BS")
-    BalanceSheets.minus_gab_balance(erl_family_BS, %{amount: transaction.abc_amount}) |> IO.inspect()
+    BalanceSheets.minus_gab_balance(erl_family_BS, %{amount: transaction.abc_amount}) 
 
     erl_supul_BS =
       Repo.one(
@@ -133,10 +133,9 @@ defmodule Demo.Supuls.ProcessTransaction do
         from a in Supul,
           where: a.id == ^transaction.erl_supul_id
       )
-    IO.inspect erl_supul
 
     IO.puts("erl_supul_BS")
-    BalanceSheets.minus_gab_balance(erl_supul_BS, %{amount: transaction.abc_amount}) |> IO.inspect()
+    BalanceSheets.minus_gab_balance(erl_supul_BS, %{amount: transaction.abc_amount})
     
     erl_state_supul_BS =
     Repo.one(
@@ -145,7 +144,6 @@ defmodule Demo.Supuls.ProcessTransaction do
       )
       
     IO.puts("erl_state_supul_BS")
-    IO.inspect erl_state_supul_BS
     BalanceSheets.minus_gab_balance(erl_state_supul_BS, %{amount: transaction.abc_amount}) |> IO.inspect 
     
     erl_nation_supul_BS =
@@ -221,8 +219,6 @@ defmodule Demo.Supuls.ProcessTransaction do
           where: a.supul_id == ^transaction.ssu_supul_id
       )
 
-      IO.inspect "ssu_supul_BS"
-      IO.inspect ssu_supul_BS
 
     BalanceSheets.plus_gab_balance(ssu_supul_BS, %{amount: transaction.abc_amount})
 
@@ -333,8 +329,6 @@ defmodule Demo.Supuls.ProcessTransaction do
         from a in IncomeStatement, where: a.group_id == ^transaction.ssu_group_id, select: a
       )
 
-    IO.inspect("ssu_group_is")
-    IO.inspect(ssu_group_is)
 
     IncomeStatements.add_revenue(ssu_group_is, %{amount: transaction.abc_amount})
 
@@ -496,7 +490,7 @@ defmodule Demo.Supuls.ProcessTransaction do
       "private" ->
         query = from g in Group, where: g.id == ^transaction.erl_group_id, select: g
         erl_group = Repo.one(query)
-        Families.minus_gab_balance(erl_group, %{amount: transaction.abc_amount})
+        Groups.minus_gab_balance(erl_group, %{amount: transaction.abc_amount})
         
         query = from s in Supul, where: s.id == ^transaction.erl_supul_id, select: s
         erl_supul = Repo.one(query)
@@ -567,7 +561,7 @@ defmodule Demo.Supuls.ProcessTransaction do
 
   end
 
-  defp update_t1s(transaction) do
+  defp update_ts(transaction, openhash) do
     query =
       from b in Entity,
         where: b.id == ^transaction.erl_id
@@ -580,7 +574,7 @@ defmodule Demo.Supuls.ProcessTransaction do
 
     ssu = Repo.one(query)
 
-    # ? t1s of both
-    BalanceSheets.renew_t1s(%{amount: transaction.abc_amount}, erl, ssu)
+    # ? ts of both
+    BalanceSheets.renew_ts(%{amount: transaction.abc_amount}, erl, ssu, openhash)
   end
 end

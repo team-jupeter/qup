@@ -11,7 +11,7 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add(:erl_type, :string)
       add(:ssu_type, :string)
 
-      # ? who pays ABC? which t1s in his/her/its wallet?
+      # ? who pays ABC? which ts in his/her/its wallet?
       add(:erl_id, :binary_id)
       add(:erl_name, :string)
       add(:erl_email, :string)
@@ -39,7 +39,7 @@ defmodule Demo.Repo.Migrations.CreateTransactions do
       add(:abc_input_name, :string)
       add(:abc_output_id, :binary_id)
       add(:abc_output_name, :string)
-      add(:abc_input_t1s, {:array, :map}, default: [])
+      add(:abc_input_ts, {:array, :map}, default: [])
       add(:abc_amount, :decimal, precision: 15, scale: 4)
 
       add(:items, {:array, :binary_id})

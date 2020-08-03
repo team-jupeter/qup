@@ -46,8 +46,13 @@
 <b>Financial Reports</b>
     <ul>
         <li><%= link "Account Book", to: Routes.account_book_path(@conn, :edit, @family.id) %></li>
-        <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :edit, @family.id) %></li>
         <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :edit, @family.id) %></li>
         <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :edit, @family.id) %></li>
         <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :edit, @family.id) %></li>
+        <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :edit, @family.id) %></li>
     </ul>
+
+ </br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

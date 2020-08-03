@@ -11,7 +11,7 @@ defmodule Demo.Transactions.Transaction do
     field :erl_type, :string
     field :ssu_type, :string
 
-    #? who pays ABC? which t1s in his/her/its wallet?
+    #? who pays ABC? which ts in his/her/its wallet?
     field :erl_id, :binary_id
     field :erl_name, :string 
     field :erl_email, :string 
@@ -39,7 +39,7 @@ defmodule Demo.Transactions.Transaction do
     field :abc_input_name, :string 
     field :abc_output_id, :binary_id  
     field :abc_output_name, :string  
-    field :abc_input_t1s, {:array, :map}, default: []
+    field :abc_input_ts, {:array, :map}, default: []
     field :abc_amount, :decimal, precision: 15, scale: 4
 
     field :items, {:array, :binary_id}
@@ -78,7 +78,7 @@ defmodule Demo.Transactions.Transaction do
     :erl_type, 
     :ssu_type, 
 
-    #? who pays ABC? which t1s in his/her/its wallet?
+    #? who pays ABC? which ts in his/her/its wallet?
     :erl_id, 
     :erl_name,  
     :erl_email,  
@@ -105,7 +105,7 @@ defmodule Demo.Transactions.Transaction do
     :abc_input_name,  
     :abc_output_id,   
     :abc_output_name,   
-    :abc_input_t1s, 
+    :abc_input_ts, 
     :abc_amount, 
     :items, 
     :fiat_currency, 

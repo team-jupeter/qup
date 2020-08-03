@@ -26,7 +26,7 @@ defmodule Demo.Reports.BalanceSheet do
     
     field :gab_balance, :decimal, precision: 12, scale: 2, default: 0.0
 
-    embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
+    embeds_many :ts, Demo.ABC.T1, on_replace: :delete
     embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
     embeds_many :t3s, Demo.ABC.T3, on_replace: :delete
  
@@ -68,10 +68,10 @@ defmodule Demo.Reports.BalanceSheet do
     |> cast(attrs, @fields)
   end 
   
-  def changeset_t1s(balance_sheet, attrs \\ %{}) do
+  def changeset_ts(balance_sheet, attrs \\ %{}) do
     balance_sheet
     |> cast(attrs, @fields)
-    |> cast_embed(:t1s, attrs.t1)
+    |> cast_embed(:ts, attrs.t1)
   end 
   
 

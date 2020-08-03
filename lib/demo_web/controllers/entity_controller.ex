@@ -19,7 +19,7 @@ defmodule DemoWeb.EntityController do
     entities = Entities.list_user_entities(current_user) 
     render(conn, "index.html", entities: entities)
   end
-  
+   
   def show(conn, %{"id" => id}, current_user) do
     entity = Entities.get_user_entity!(current_user, id) 
 

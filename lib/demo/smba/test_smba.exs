@@ -92,7 +92,7 @@ hong_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong
 tomi_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi_entity.id}) |> Repo.insert!
 tesla_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tesla_entity.id}) |> Repo.insert!
 
-smba_BS = Ecto.build_assoc(smba_FR, :gov_balance_sheet, %GovBalanceSheet{monetary_unit: "KRW", t1s: [%{input: korea.id, output: smba.id, amount: Decimal.from_float(10000000.00)}], cashes: [%{KRW: Decimal.new(10000000000.00)}]}) |> Repo.insert!
+smba_BS = Ecto.build_assoc(smba_FR, :gov_balance_sheet, %GovBalanceSheet{monetary_unit: "KRW", ts: [%{input: korea.id, output: smba.id, amount: Decimal.from_float(10000000.00)}], cashes: [%{KRW: Decimal.new(10000000000.00)}]}) |> Repo.insert!
 hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{cash: Decimal.new(50000000.00)}) |> Repo.insert!
 tomi_entity_BS = Ecto.build_assoc(tomi_entity_FR, :balance_sheet, %BalanceSheet{fixed_assets: [%{building: 1.0}]}) |> Repo.insert!
 tesla_entity_BS = Ecto.build_assoc(tesla_entity_FR, :balance_sheet, %BalanceSheet{inventory: []}) |> Repo.insert!
@@ -232,20 +232,20 @@ alias Demo.ABC.T1
 
 #? Adjust balance_sheet of both.
 #? SMBA
-#? The code below NOT consider any other elements in the t1s list. We should find out just enough elements to pay the invoice total. 
-new_t1s = Enum.map(smba_BS.t1s, fn elem ->
+#? The code below NOT consider any other elements in the ts list. We should find out just enough elements to pay the invoice total. 
+new_ts = Enum.map(smba_BS.ts, fn elem ->
     Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, transaction.abc_amount) end)
 end)
 
 smba_BS = change(smba_BS) |> \
-    Ecto.Changeset.put_change(:t1s, new_t1s) \
+    Ecto.Changeset.put_change(:ts, new_ts) \
     |> Repo.update!
 
         
 #? Tesla Korea
-t1s = [%T1{input: "smba_public_address", amount: transaction.abc_amount, output: "smba_public_address"}]
+ts = [%T1{input: "smba_public_address", amount: transaction.abc_amount, output: "smba_public_address"}]
 tesla_entity_BS = change(tesla_entity_BS) |> \
-    Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
+    Ecto.Changeset.put_embed(:ts, ts) |> Repo.update!
 
 
 

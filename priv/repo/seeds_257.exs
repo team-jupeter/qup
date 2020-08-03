@@ -670,7 +670,7 @@ T1
 alias Demo.BalanceSheets
 alias Demo.ABC.T1
 #? 국세청 
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: kts.name, 
@@ -678,20 +678,20 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(1000.0),
   }}
 
-BalanceSheets.add_t1s(kts.balance_sheet, new_t1s)  
+BalanceSheets.add_ts(kts.balance_sheet, new_ts)  
 
 #? 국가 물류 인프라  
-new_t1s = %{t1s: %T1{
+new_ts = %{ts: %T1{
   input_name: gab_korea.name, 
   input_id: gab_korea.id, 
   output_name: gopang_korea.name, 
   output_id: gopang_korea.id, 
   amount: Decimal.from_float(1000.0)}}
 
-BalanceSheets.add_t1s(gopang_korea.balance_sheet, new_t1s)  
+BalanceSheets.add_ts(gopang_korea.balance_sheet, new_ts)  
 
 #? 국가 금융 인프라
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: gab_korea.name, 
@@ -699,11 +699,11 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(1000.0),
   }}
 
-BalanceSheets.add_t1s(gab_korea.balance_sheet, new_t1s)  
+BalanceSheets.add_ts(gab_korea.balance_sheet, new_ts)  
 
 
 #? 홍길동 1인 법인
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: hong_entity.name, 
@@ -711,10 +711,10 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(100.0),
   }}
 
-BalanceSheets.add_t1s(hong_entity.balance_sheet, new_t1s)  
+BalanceSheets.add_ts(hong_entity.balance_sheet, new_ts)  
 
 #? 임꺽정 1인 법인
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: lim_entity.name, 
@@ -722,10 +722,10 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(100.0),
   }}
 
-BalanceSheets.add_t1s(lim_entity.balance_sheet, new_t1s)  
+BalanceSheets.add_ts(lim_entity.balance_sheet, new_ts)  
 
 #? 성춘향 1인 법인
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: sung_entity.name, 
@@ -733,10 +733,10 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(100.0),
   }}
 
-BalanceSheets.add_t1s(sung_entity.balance_sheet, new_t1s)  
+BalanceSheets.add_ts(sung_entity.balance_sheet, new_ts)  
 
 #? 이몽룡 1인 법인
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: lee_entity.name, 
@@ -744,10 +744,10 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(100.0),
   }}
 
-BalanceSheets.add_t1s(lee_entity.balance_sheet, new_t1s)  
+BalanceSheets.add_ts(lee_entity.balance_sheet, new_ts)  
 
 #? 토미 도시락 일반 법인
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: tomi_entity.name, 
@@ -755,12 +755,12 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(100.0),
   }}
 
-tomi_entity_BS = BalanceSheets.add_t1s(tomi_entity.balance_sheet, new_t1s)  
+tomi_entity_BS = BalanceSheets.add_ts(tomi_entity.balance_sheet, new_ts)  
 
 
 
 #? Hankyung Supul
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: hankyung_supul.name, 
@@ -768,10 +768,10 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(1000.0),
   }}
 
-hankyung_supul_BS = BalanceSheets.add_t1s(hankyung_supul.balance_sheet, new_t1s) 
+hankyung_supul_BS = BalanceSheets.add_ts(hankyung_supul.balance_sheet, new_ts) 
 
 #? Hanlim Supul
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: hanlim_supul.name, 
@@ -779,10 +779,10 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(1000.0),
   }}
 
-hanlim_supul_BS = BalanceSheets.add_t1s(hanlim_supul.balance_sheet, new_t1s)  
+hanlim_supul_BS = BalanceSheets.add_ts(hanlim_supul.balance_sheet, new_ts)  
 
 #? Seoguipo Supul
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: seoguipo_supul.name, 
@@ -790,20 +790,20 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(1000.0),
   }}
 
-seoguipo_supul_BS = BalanceSheets.add_t1s(seoguipo_supul.balance_sheet, new_t1s)  
+seoguipo_supul_BS = BalanceSheets.add_ts(seoguipo_supul.balance_sheet, new_ts)  
 
 #? Seoul Supul
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: seoul_supul.name, 
   output_id: seoul_supul.id, 
   amount: Decimal.from_float(1000.0),
   }}
-seoul_supul_BS = BalanceSheets.add_t1s(seoul_supul.balance_sheet, new_t1s)  
+seoul_supul_BS = BalanceSheets.add_ts(seoul_supul.balance_sheet, new_ts)  
 
 #? Jejudo Supul
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: jejudo_supul.name, 
@@ -811,11 +811,11 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(1000.0),
   }}
 
-jejudo_supul_BS = BalanceSheets.add_t1s(jejudo_supul.balance_sheet, new_t1s)  
+jejudo_supul_BS = BalanceSheets.add_ts(jejudo_supul.balance_sheet, new_ts)  
 
     
 #? Korea Supul
-new_t1s =  %{t1s: %T1{
+new_ts =  %{ts: %T1{
   input_name: korea.name, 
   input_id: korea.id, 
   output_name: korea_supul.name, 
@@ -823,7 +823,7 @@ new_t1s =  %{t1s: %T1{
   amount: Decimal.from_float(1000.0),
   }}
 
-korea_supul_BS = BalanceSheets.add_t1s(korea_supul.balance_sheet, new_t1s)  
+korea_supul_BS = BalanceSheets.add_ts(korea_supul.balance_sheet, new_ts)  
 
     
 
