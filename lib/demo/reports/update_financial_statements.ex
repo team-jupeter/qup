@@ -17,6 +17,7 @@ defmodule Demo.Reports.UpdateFinacialStatements do
   alias Demo.EquityStatements
   alias Demo.AccountBooks
   alias Demo.AccountBooks.AccountBook
+  alias Demo.GabAccounts.GabAccount
 
   def add_financial_statements(child) do
     case child.type do
@@ -27,6 +28,7 @@ defmodule Demo.Reports.UpdateFinacialStatements do
         add_balance_sheet(child, family)
         add_cf_statement(child, family)
         add_equity_statement(child, family)
+        add_gab_account(child, family)
 
         IO.puts("end of family")
 
@@ -35,6 +37,7 @@ defmodule Demo.Reports.UpdateFinacialStatements do
         add_balance_sheet(child, supul)
         add_cf_statement(child, supul)
         add_equity_statement(child, supul)
+        add_gab_account(child, supul)
 
         IO.puts("end of supul")
 
@@ -43,6 +46,7 @@ defmodule Demo.Reports.UpdateFinacialStatements do
         add_balance_sheet(child, state_supul)
         add_cf_statement(child, state_supul)
         add_equity_statement(child, state_supul)
+        add_gab_account(child, state_supul)
 
         IO.puts("end of state supul")
 
@@ -51,6 +55,7 @@ defmodule Demo.Reports.UpdateFinacialStatements do
         add_balance_sheet(child, nation_supul)
         add_cf_statement(child, nation_supul)
         add_equity_statement(child, nation_supul)
+        add_gab_account(child, nation_supul)
 
       "private" ->
         group = Repo.preload(child, :group).group
@@ -58,24 +63,28 @@ defmodule Demo.Reports.UpdateFinacialStatements do
         add_balance_sheet(child, group)
         add_cf_statement(child, group)
         add_equity_statement(child, group)
+        add_gab_account(child, group)
 
         supul = Repo.preload(child, :supul).supul
         add_income_statement(child, supul)
         add_balance_sheet(child, supul)
         add_cf_statement(child, supul)
         add_equity_statement(child, supul)
+        add_gab_account(child, supul)
 
         state_supul = Repo.preload(supul, :state_supul).state_supul
         add_income_statement(child, state_supul)
         add_balance_sheet(child, state_supul)
         add_cf_statement(child, state_supul)
         add_equity_statement(child, state_supul)
+        add_gab_account(child, state_supul)
 
         nation_supul = Repo.preload(state_supul, :nation_supul).nation_supul
         add_income_statement(child, nation_supul)
         add_balance_sheet(child, nation_supul)
         add_cf_statement(child, nation_supul)
         add_equity_statement(child, nation_supul)
+        add_gab_account(child, nation_supul)
 
       "public" ->
         nation_supul = Repo.preload(child, :nation_supul).nation_supul
@@ -83,6 +92,8 @@ defmodule Demo.Reports.UpdateFinacialStatements do
         add_balance_sheet(child, nation_supul)
         add_cf_statement(child, nation_supul)
         add_equity_statement(child, nation_supul)
+        add_gab_account(child, nation_supul)
+
     end
   end
 
@@ -132,6 +143,16 @@ defmodule Demo.Reports.UpdateFinacialStatements do
   defp add_equity_statement(child, parent) do
     a = child.equity_statement
     b = parent.equity_statement
+
+    Map.merge(a, b, fn
+      _key, a, b when is_number(a) and is_number(b) -> a + b
+      key, _a, _b -> b
+    end)
+  end
+
+  defp add_gab_account(child, parent) do
+    a = child.gab_account
+    b = parent.gab_account
 
     Map.merge(a, b, fn
       _key, a, b when is_number(a) and is_number(b) -> a + b

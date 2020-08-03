@@ -25,6 +25,7 @@ defmodule Demo.Groups.Group do
     has_one :balance_sheet, Demo.Reports.BalanceSheet
     has_one :cf_statement, Demo.Reports.CFStatement
     has_one :equity_statement, Demo.Reports.EquityStatement
+    has_one :gab_account, Demo.GabAccounts.GabAccount, on_replace: :nilify
 
     timestamps()
   end
@@ -42,6 +43,7 @@ defmodule Demo.Groups.Group do
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
+    |> put_assoc(:gab_account, attrs.ga)
   end
 
   @doc false
@@ -63,5 +65,6 @@ defmodule Demo.Groups.Group do
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
+    |> put_assoc(:gab_account, attrs.ga)
   end
 end

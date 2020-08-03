@@ -3,8 +3,8 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
 
   def change do 
     create table(:balance_sheets, primary_key: false) do
-      add :entity_name, :string
       add :id, :uuid, primary_key: true
+      add :entity_name, :string
       add :cash, :decimal, precision: 12, scale: 2, default: 0.0
       add :marketable_securities, :decimal, precision: 12, scale: 2, default: 0.0
       add :prepaid_expenses, :decimal, precision: 12, scale: 2, default: 0.0

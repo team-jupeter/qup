@@ -8,97 +8,98 @@ defmodule Demo.GabAccounts do
 
   alias Demo.GabAccounts.GabAccount
 
-  @doc """
-  Returns the list of gab_accounts.
-
-  ## Examples
-
-      iex> list_gab_accounts()
-      [%GabAccount{}, ...]
-
-  """
   def list_gab_accounts do
     Repo.all(GabAccount)
   end
 
-  @doc """
-  Gets a single gab_account.
-
-  Raises `Ecto.NoResultsError` if the Gab account does not exist.
-
-  ## Examples
-
-      iex> get_gab_account!(123)
-      %GabAccount{}
-
-      iex> get_gab_account!(456)
-      ** (Ecto.NoResultsError)
-
-  """
   def get_gab_account!(id), do: Repo.get!(GabAccount, id)
+  
+  def get_entity_gab_account(entity_id) do
+    GabAccount
+    |> entity_gab_account_query(entity_id)
+    |> Repo.one()
+  end
 
-  @doc """
-  Creates a gab_account.
+  defp entity_gab_account_query(query, entity_id) do
+    from(f in query, where: f.entity_id == ^entity_id)
+  end 
 
-  ## Examples
-
-      iex> create_gab_account(%{field: value})
-      {:ok, %GabAccount{}}
-
-      iex> create_gab_account(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def create_gab_account(attrs \\ %{}) do
     %GabAccount{}
     |> GabAccount.changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a gab_account.
 
-  ## Examples
-
-      iex> update_gab_account(gab_account, %{field: new_value})
-      {:ok, %GabAccount{}}
-
-      iex> update_gab_account(gab_account, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def update_gab_account(%GabAccount{} = gab_account, attrs) do
     gab_account
     |> GabAccount.changeset(attrs)
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a gab_account.
 
-  ## Examples
-
-      iex> delete_gab_account(gab_account)
-      {:ok, %GabAccount{}}
-
-      iex> delete_gab_account(gab_account)
-      {:error, %Ecto.Changeset{}}
-
-  """
   def delete_gab_account(%GabAccount{} = gab_account) do
     Repo.delete(gab_account)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking gab_account changes.
 
-  ## Examples
-
-      iex> change_gab_account(gab_account)
-      %Ecto.Changeset{source: %GabAccount{}}
-
-  """
   def change_gab_account(%GabAccount{} = gab_account) do
     GabAccount.changeset(gab_account, %{})
+  end
+
+
+
+  alias Demo.ABC.T1
+
+  def renew_ts(attrs, buyer, seller) do
+    # ? Find buyer's BS
+    query =
+      from g in GabAccount,
+        where: g.entity_id == ^buyer.id
+
+    buyer_GA = Repo.one(query)
+
+    # ? renew Buyer's BS T1
+    t_change = Decimal.sub(buyer_GA.gab_balance, attrs.amount)
+
+    ts = [
+      %T1{
+        input_name: buyer.name,
+        output_name: buyer.name,
+        amount: t_change
+      }
+    ]
+
+    buyer_GA
+    |> GabAccount.changeset()
+    |> Ecto.Changeset.put_embed(:ts, ts)
+    |> Repo.update!()
+
+    # ? renew Seller's BS
+    # ? prepare t struct to pay.
+    t_payment = %{
+      ts: %T1{
+        input_name: buyer.name,
+        output_name: seller.name,
+        amount: attrs.amount
+      }
+    }
+
+    # ? Find seller's GA
+    query =
+      from b in GabAccount,
+        where: b.entity_id == ^seller.id
+
+    seller_GA = Repo.one(query)
+
+    add_ts(seller_GA, t_payment) 
+  end
+
+  def add_ts(%GabAccount{} = gab_account, attrs) do
+    ts = [attrs.ts | gab_account.ts]
+    gab_account
+    |> GabAccount.changeset()
+    |> Ecto.Changeset.put_embed(:ts, ts)
+    |> Repo.update!()
   end
 end

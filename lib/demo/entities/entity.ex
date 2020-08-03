@@ -66,6 +66,7 @@ defmodule Demo.Entities.Entity do
     has_one :income_statement, Demo.Reports.IncomeStatement, on_replace: :delete
     has_one :cf_statement, Demo.Reports.CFStatement, on_replace: :delete
     has_one :equity_statement, Demo.Reports.EquityStatement, on_replace: :delete
+    has_one :gab_account, Demo.GabAccounts.GabAccount, on_replace: :delete
 
     has_many :licenses, Demo.Licenses.License
 
@@ -207,6 +208,7 @@ defmodule Demo.Entities.Entity do
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
+    |> put_assoc(:gab_account, attrs.ga)
   end
 
   def create_private_entity(entity, current_user, attrs) do
@@ -221,6 +223,7 @@ defmodule Demo.Entities.Entity do
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
+    |> put_assoc(:gab_account, attrs.ga)
     |> assoc_constraint(:taxation)
   end
 
@@ -235,6 +238,7 @@ defmodule Demo.Entities.Entity do
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
+    |> put_assoc(:gab_account, attrs.ga)
     |> assoc_constraint(:taxation)
   end
 
@@ -246,6 +250,7 @@ defmodule Demo.Entities.Entity do
     |> put_assoc(:balance_sheet, attrs.bs)
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:gab_account, attrs.ga)
     |> put_assoc(:equity_statement, attrs.es)
   end
 
@@ -257,6 +262,7 @@ defmodule Demo.Entities.Entity do
     |> put_assoc(:balance_sheet, attrs.bs)
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:gab_account, attrs.ga)
     |> put_assoc(:equity_statement, attrs.es)
   end
 

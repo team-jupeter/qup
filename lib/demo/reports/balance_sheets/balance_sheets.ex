@@ -11,6 +11,7 @@ defmodule Demo.BalanceSheets do
   alias Demo.NationSupuls.NationSupul
   alias Demo.Taxations.Taxation
   alias Demo.Families.Family
+  alias Demo.GabAccounts.GabAccount
 
   def get_balance_sheet!(id), do: Repo.get!(BalanceSheet, id)
 
@@ -120,8 +121,8 @@ defmodule Demo.BalanceSheets do
 
   def add_ts(%BalanceSheet{} = balance_sheet, attrs) do
     ts = [attrs.ts | balance_sheet.ts]
-    IO.puts "T1"
-    IO.inspect ts
+    # IO.puts "T1"
+    # IO.inspect ts
     # bs_owner = Repo.preload(balance_sheet, :bs_owner).bs_owner
     # GabAccounts.update_gab_account(%{balance_sheet_id: balance_sheet.id, ts: ts}
 
@@ -136,7 +137,6 @@ defmodule Demo.BalanceSheets do
     amount_list = Enum.map(bs.ts, fn item -> item.amount end)
     gab_balance = Enum.reduce(amount_list, 0, fn amount, sum -> Decimal.add(amount, sum) end)
     update_balance_sheet(bs, %{gab_balance: gab_balance}) 
-
   end
 
   # ? gopang_korea_BS = change(gopang_korea_BS) |> Ecto.Changeset.put_embed(:ts, ts) |> Repo.update!

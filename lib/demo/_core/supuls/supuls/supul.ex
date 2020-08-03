@@ -40,6 +40,7 @@ defmodule Demo.Supuls.Supul do
     has_one :balance_sheet, Demo.Reports.BalanceSheet, on_replace: :nilify
     has_one :cf_statement, Demo.Reports.CFStatement, on_replace: :nilify
     has_one :equity_statement, Demo.Reports.EquityStatement, on_replace: :nilify
+    has_one :gab_account, Demo.GabAccounts.GabAccount, on_replace: :nilify
     # has_one :mulet, Demo.Mulets.Mulet
     has_one :gopang, Demo.Gopangs.Gopang
 
@@ -139,5 +140,6 @@ defmodule Demo.Supuls.Supul do
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
+    |> put_assoc(:gab_account, attrs.ga)
   end
 end

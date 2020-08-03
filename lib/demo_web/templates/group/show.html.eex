@@ -25,7 +25,8 @@
 
 <b>Financial Reports</b>
     <ul>
-        <li><%= link "Account Book", to: Routes.account_book_path(@conn, :edit, @group.id) %></li>
+                <li><%= link "GAB Account", to: Routes.gab_account_path(@conn, :show, @group.id) %></li>
+        <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :edit, @group.id) %></li>
         <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :edit, @group.id) %></li>
         <li><%= link "Cash Flow Statement", to: Routes.cf_statement_path(@conn, :edit, @group.id) %></li>
         <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :edit, @group.id) %></li>

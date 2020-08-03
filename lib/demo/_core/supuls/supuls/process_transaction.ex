@@ -10,6 +10,7 @@ defmodule Demo.Supuls.ProcessTransaction do
   alias Demo.Entities.Entity
   alias Demo.AccountBooks
   alias Demo.AccountBooks.AccountBook
+  alias Demo.GabAccounts
 
   alias Demo.Groups
   alias Demo.Families
@@ -52,7 +53,6 @@ defmodule Demo.Supuls.ProcessTransaction do
         update_ssu_public_BS(transaction)
     end
 
-    update_gab_balance(transaction)
     update_ts(transaction, openhash)
 
     {:ok, transaction}
@@ -576,5 +576,8 @@ defmodule Demo.Supuls.ProcessTransaction do
 
     # ? ts of both
     BalanceSheets.renew_ts(%{amount: transaction.abc_amount}, erl, ssu, openhash)
+    GabAccounts.renew_ts(%{amount: transaction.abc_amount}, erl, ssu)
   end
+
+
 end

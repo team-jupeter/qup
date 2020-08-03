@@ -97,7 +97,7 @@ defmodule Demo.Supuls.CheckArchiveEvent do
   defp process_event(event, openhash) do
     case event.type do
       "transaction" -> Supuls.ProcessTransaction.process_transaction(event, openhash)
-      "wedding" -> Supuls.ProcessWedding.process_wedding(event, openhash)
+      "wedding" -> Supuls.ProcessWedding.process_wedding(event)
       _ -> IO.puts("Oh ma ma my ... type error")
     end
   end

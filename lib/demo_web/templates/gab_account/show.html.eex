@@ -1,33 +1,51 @@
-<h1>Show Gab account</h1>
+<b>GAB account</b>
 
-<ul>
+<table>
+      <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        </tr>
+      </thead>
+  <tbody>
+   <tr> 
+    <td>Credit limit:</td>
+    <td><%= @gab_account.credit_limit %></td>
+  </tr>
+</tbody>
+</table>
+<%= for t <- @gab_account.ts do %>
+<b>T1</b>
+    <table >
+      <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        </tr>
+      </thead>
+      <tbody>
 
-  <li>
-    <strong>Owner:</strong>
-    <%= @gab_account.owner %>
-  </li>
+        <tr>
+        <td>Sender</td>
+        <td><%= t.input_name %></td>
+        </tr>
 
-  <li>
-    <strong>T1:</strong>
-    <%= @gab_account.t1 %>
-  </li>
+        <td>Receiver</td>
+        <td><%= t.output_name %></td>
+ 
+        </tr>
+        <td>Amount</td>
+        <td><%= t.amount %></td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
 
-  <li>
-    <strong>T2:</strong>
-    <%= @gab_account.t2 %>
-  </li>
 
-  <li>
-    <strong>T3:</strong>
-    <%= @gab_account.t3 %>
-  </li>
-
-  <li>
-    <strong>Credit limit:</strong>
-    <%= @gab_account.credit_limit %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.gab_account_path(@conn, :edit, @gab_account) %></span>
-<span><%= link "Back", to: Routes.gab_account_path(@conn, :index) %></span>
+   
+ <tbody>
+</table>
+</br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

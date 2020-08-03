@@ -20,7 +20,9 @@ defmodule Demo.StateSupuls do
   alias Demo.CFStatements
   alias Demo.EquityStatements
   alias Demo.AccountBooks
-   
+  alias Demo.GabAccounts.GabAccount
+  alias Demo.GabAccounts
+
   def list_state_supuls do
     Repo.all(StateSupul) 
   end
@@ -55,8 +57,9 @@ defmodule Demo.StateSupuls do
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
+    ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr})
+    attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga})  
   end
  
  

@@ -84,6 +84,7 @@ defmodule Demo.Families.Family do
     has_one :balance_sheet, Demo.Reports.BalanceSheet, on_replace: :nilify
     has_one :cf_statement, Demo.Reports.CFStatement, on_replace: :nilify
     has_one :equity_statement, Demo.Reports.EquityStatement, on_replace: :nilify
+    has_one :gab_account, Demo.GabAccounts.GabAccount, on_replace: :nilify
   
 
     timestamps()
@@ -184,6 +185,7 @@ defmodule Demo.Families.Family do
     |> put_assoc(:financial_report, attrs.fr)
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
+    |> put_assoc(:gab_account, attrs.ga)
   end
   
 

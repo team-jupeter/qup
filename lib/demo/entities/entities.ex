@@ -20,6 +20,7 @@ defmodule Demo.Entities do
   alias Demo.Reports.CFStatement
   alias Demo.Reports.EquityStatement
   alias Demo.AccountBooks.AccountBook
+  alias Demo.GabAccounts.GabAccount
 
   def create_biz_category!(%{standard: standard, name: name, code: code}) do
     Repo.insert!(%BizCategory{standard: standard, name: name, code: code}, on_conflict: :nothing)
@@ -69,6 +70,9 @@ defmodule Demo.Entities do
   def create_default_entity(user, attrs) do
     attrs = make_default_financial_statements(attrs)
 
+    IO.puts "attrs.ga.id"
+    IO.inspect attrs.ga.id
+    
     family = Repo.preload(user, :family).family
     supul = Repo.preload(user, :supul).supul
     supul_name = supul.name
@@ -81,7 +85,6 @@ defmodule Demo.Entities do
       |> Repo.insert()
     
 
-      IO.puts "entity.type"
     UpdateFinacialStatements.add_financial_statements(entity)
 
     {:ok, entity}
@@ -144,7 +147,6 @@ defmodule Demo.Entities do
   end
 
   def create_product(%Entity{} = entity, attrs \\ %{}) do
-    attrs = make_financial_statements(attrs)
 
     %Product{}
     |> Product.changeset(attrs)
@@ -172,8 +174,9 @@ defmodule Demo.Entities do
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
+    ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr})
+    attrs = Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end
 
   defp make_financial_statements(attrs) do
@@ -182,7 +185,8 @@ defmodule Demo.Entities do
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
+    ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr})
+    attrs = Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end
 end

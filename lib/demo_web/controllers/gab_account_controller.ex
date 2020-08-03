@@ -27,7 +27,9 @@ defmodule DemoWeb.GabAccountController do
   end
 
   def show(conn, %{"id" => id}) do
-    gab_account = GabAccounts.get_gab_account!(id)
+    IO.puts "gab_account"
+    gab_account = GabAccounts.get_entity_gab_account(id)
+    IO.inspect gab_account
     render(conn, "show.html", gab_account: gab_account)
   end
 

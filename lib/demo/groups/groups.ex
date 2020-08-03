@@ -11,7 +11,8 @@ defmodule Demo.Groups do
   alias Demo.Reports.EquityStatement
   alias Demo.AccountBooks.AccountBook
   alias Demo.Entities.Entity
-
+  alias Demo.GabAccounts.GabAccount
+  alias Demo.GabAccounts
 
   def list_groups(entity) do
     Repo.preload(entity, :group).group
@@ -53,8 +54,9 @@ s = Repo.preload(g, :supul).supul
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
+    ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr})
+    attrs = Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga}) 
   end
 
   def update_group(%Group{} = group, attrs) do

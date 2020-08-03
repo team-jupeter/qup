@@ -16,7 +16,9 @@ defmodule Demo.Families do
   alias Demo.Reports.CFStatement
   alias Demo.Reports.EquityStatement
   alias Demo.AccountBooks.AccountBook
-
+  alias Demo.GabAccounts.GabAccount
+  alias Demo.GabAccounts.GabAccount
+  alias Demo.GabAccounts
 
   def get_user_family!(%User{} = user) do
     Repo.preload(user, :family).family
@@ -54,8 +56,9 @@ defmodule Demo.Families do
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
+    ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr})
+    attrs = Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr, ga: ga}) 
   end
 
   def create_family_via_wedding(wedding, bride, groom) do

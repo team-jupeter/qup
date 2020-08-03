@@ -30,6 +30,7 @@
 
 <b>Entity Financial Statements</b>
     <ul>
+        <li><%= link "GAB Account", to: Routes.gab_account_path(@conn, :show, @entity.id) %></li>
         <li><%= link "Account Book", to: Routes.account_book_path(@conn, :show, @entity.id) %></li>
         <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @entity.id) %></li>
         <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :show, @entity.id) %></li>

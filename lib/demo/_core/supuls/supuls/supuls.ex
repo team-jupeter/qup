@@ -9,6 +9,7 @@ defmodule Demo.Supuls do
   alias Demo.Reports.CFStatement
   alias Demo.Reports.EquityStatement
   alias Demo.AccountBooks.AccountBook
+  alias Demo.GabAccounts.GabAccount
 
   alias Demo.FinancialReports
   alias Demo.BalanceSheets
@@ -16,6 +17,7 @@ defmodule Demo.Supuls do
   alias Demo.CFStatements
   alias Demo.EquityStatements
   alias Demo.AccountBooks
+  alias Demo.GabAccounts
 
   # alias Demo.Entities
   # alias Demo.Entities.Entity
@@ -58,8 +60,9 @@ defmodule Demo.Supuls do
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
+    ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr})
+    attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end
 
   def update_openhash(%Supul{} = supul, attrs) do
