@@ -33,7 +33,7 @@ defmodule Demo.BalanceSheets do
 
   # ? Default 
   def create_balance_sheet(attrs \\ %{}) do
-    %BalanceSheet{} 
+    %BalanceSheet{}
     |> BalanceSheet.changeset(attrs)
     |> Repo.insert()
   end
@@ -53,18 +53,6 @@ defmodule Demo.BalanceSheets do
     |> Ecto.Changeset.put_assoc(:entity, entity)
     |> Repo.insert()
   end
-
-  def minus_gab_balance(bs, %{amount: amount}) do
-    new_balance = Decimal.sub(bs.gab_balance, amount)
-    update_balance_sheet(bs, %{gab_balance: new_balance})
-  end
-  
-  def plus_gab_balance(bs, %{amount: amount}) do
-    new_balance = Decimal.add(bs.gab_balance, amount)
-    update_balance_sheet(bs, %{gab_balance: new_balance})
-  end
-
-
 
   alias Demo.ABC.T1
 
@@ -94,7 +82,7 @@ defmodule Demo.BalanceSheets do
     |> change
     |> Ecto.Changeset.put_embed(:ts, ts)
     |> Repo.update!()
-    |> update_gab_balance() 
+    |> update_gab_balance()
 
     # ? renew Seller's BS
     # ? prepare t struct to pay.
@@ -116,7 +104,7 @@ defmodule Demo.BalanceSheets do
 
     seller_BS = Repo.one(query)
 
-    add_ts(seller_BS, t_payment) 
+    add_ts(seller_BS, t_payment)
   end
 
   def add_ts(%BalanceSheet{} = balance_sheet, attrs) do
@@ -136,7 +124,7 @@ defmodule Demo.BalanceSheets do
   def update_gab_balance(bs) do
     amount_list = Enum.map(bs.ts, fn item -> item.amount end)
     gab_balance = Enum.reduce(amount_list, 0, fn amount, sum -> Decimal.add(amount, sum) end)
-    update_balance_sheet(bs, %{gab_balance: gab_balance}) 
+    update_balance_sheet(bs, %{gab_balance: gab_balance})
   end
 
   # ? gopang_korea_BS = change(gopang_korea_BS) |> Ecto.Changeset.put_embed(:ts, ts) |> Repo.update!
@@ -147,13 +135,13 @@ defmodule Demo.BalanceSheets do
   end
 
   def minus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
-    minus_gab_balance = Decimal.sub(balance_sheet.gab_balance, amount)
-    update_balance_sheet(balance_sheet, %{gab_balance: minus_gab_balance})
+    new_balance = Decimal.sub(balance_sheet.gab_balance, amount)
+    update_balance_sheet(balance_sheet, %{gab_balance: new_balance}) 
   end
 
   def plus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
-    plus_gab_balance = Decimal.add(balance_sheet.gab_balance, amount)
-    update_balance_sheet(balance_sheet, %{gab_balance: plus_gab_balance})
+    new_balance = Decimal.add(balance_sheet.gab_balance, amount)
+    update_balance_sheet(balance_sheet, %{gab_balance: new_balance})
   end
 
   def change_balance_sheet(%BalanceSheet{} = balance_sheet) do
@@ -169,7 +157,6 @@ defmodule Demo.BalanceSheets do
   '''
     Create balance sheets of supuls etc. using already existing members.
   '''
-
 
   # # ? 그룹  
   # def create_balance_sheet(%Group{} = group) do
@@ -382,7 +369,3 @@ defmodule Demo.BalanceSheets do
   #   }
   # end
 end
-
-'''
-
-'''

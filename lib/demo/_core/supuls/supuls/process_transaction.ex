@@ -26,8 +26,11 @@ defmodule Demo.Supuls.ProcessTransaction do
   alias Demo.GlobalSupuls.GlobalSupul
 
   def process_transaction(transaction, openhash) do
-    # IO.puts "process_transaction"
-    # IO.inspect transaction
+    erl = Repo.one(from e in Entity, where: e.id == ^transaction.erl_id, select: e)
+    ssu = Repo.one(from e in Entity, where: e.id == ^transaction.ssu_id, select: e)
+
+    Entities.minus_gab_balance(erl, %{amount: transaction.abc_amount})
+    Entities.plus_gab_balance(ssu, %{amount: transaction.abc_amount})
 
     case transaction.erl_type do
       "default" -> 
@@ -108,10 +111,10 @@ defmodule Demo.Supuls.ProcessTransaction do
 
     # ? trader can be either erl or erl
     # ? Update BS of erl's or erl's entity
-    erl_ab = Repo.one(from a in BalanceSheet, where: a.entity_id == ^transaction.erl_id, select: a)
+    erl_bs = Repo.one(from a in BalanceSheet, where: a.entity_id == ^transaction.erl_id, select: a)
 
     # ? update BS or IS of erl's or erl's family, supul, state_supul, and nation_supul.
-    BalanceSheets.minus_gab_balance(erl_ab, %{amount: transaction.abc_amount})
+    BalanceSheets.minus_gab_balance(erl_bs, %{amount: transaction.abc_amount})
 
     erl_family_BS =
       Repo.one(
