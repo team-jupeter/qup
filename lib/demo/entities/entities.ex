@@ -56,6 +56,21 @@ defmodule Demo.Entities do
   def minus_gab_balance(%Entity{} = entity, %{amount: amount}) do
     minus_gab_balance = Decimal.sub(entity.gab_balance, amount)
     update_entity(entity, %{gab_balance: minus_gab_balance})
+
+    # case entity.type do
+    #   "default" ->
+    #     family = Repo.preload(entity, :family).family
+    #     new_gab_balance = Decimal.sub(family.gab_balance, amount)
+    #     Families.update_family(family, %{gab_balance: new_gab_balance})
+
+    #   "private" ->
+    #     group = Repo.preload(entity, :group).group
+    #     new_gab_balance = Decimal.sub(group.gab_balance, amount)
+    #     Groups.update_group(group, %{gab_balance: new_gab_balance})
+
+    #   "public" ->
+    #     true
+    # end
   end
 
   def plus_gab_balance(%Entity{} = entity, %{amount: amount}) do
@@ -70,9 +85,9 @@ defmodule Demo.Entities do
   def create_default_entity(user, attrs) do
     attrs = make_default_financial_statements(attrs)
 
-    IO.puts "attrs.ga.id"
-    IO.inspect attrs.ga.id
-    
+    IO.puts("attrs.ga.id")
+    IO.inspect(attrs.ga.id)
+
     family = Repo.preload(user, :family).family
     supul = Repo.preload(user, :supul).supul
     supul_name = supul.name
@@ -83,7 +98,6 @@ defmodule Demo.Entities do
       %Entity{}
       |> Entity.create_default_entity(user, attrs)
       |> Repo.insert()
-    
 
     UpdateFinacialStatements.add_financial_statements(entity)
 
@@ -109,7 +123,7 @@ defmodule Demo.Entities do
     |> Entity.create_private_entity(attrs)
     |> Repo.insert()
   end
-
+ 
   def create_private_entity(current_user, attrs) do
     attrs = make_financial_statements(attrs)
     supul = Repo.preload(current_user, :supul).supul
@@ -147,7 +161,6 @@ defmodule Demo.Entities do
   end
 
   def create_product(%Entity{} = entity, attrs \\ %{}) do
-
     %Product{}
     |> Product.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, entity)

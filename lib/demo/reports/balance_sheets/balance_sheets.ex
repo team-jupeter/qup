@@ -57,6 +57,9 @@ defmodule Demo.BalanceSheets do
   alias Demo.ABC.T1
 
   def renew_ts(attrs, buyer, seller, openhash) do
+
+    IO.inspect "attrs.amount"
+    IO.inspect attrs.amount
     # ? Find buyer's BS
     query =
       from b in BalanceSheet,
@@ -65,7 +68,13 @@ defmodule Demo.BalanceSheets do
     buyer_BS = Repo.one(query)
 
     # ? renew Buyer's BS T1
-    t_change = Decimal.sub(buyer_BS.gab_balance, attrs.amount)
+    # t_change = Decimal.sub(buyer_BS.gab_balance, attrs.amount)
+
+
+    IO.inspect "buyer_BS.gab_balance"
+    IO.inspect buyer_BS.gab_balance
+    # IO.inspect "t_change"
+    # IO.inspect t_change
 
     ts = [
       %T1{
@@ -74,7 +83,7 @@ defmodule Demo.BalanceSheets do
         input_name: buyer.name,
         output_id: buyer.id,
         output_name: buyer.name,
-        amount: t_change
+        amount: buyer_BS.gab_balance
       }
     ]
 
@@ -136,7 +145,7 @@ defmodule Demo.BalanceSheets do
 
   def minus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
     new_balance = Decimal.sub(balance_sheet.gab_balance, amount)
-    update_balance_sheet(balance_sheet, %{gab_balance: new_balance}) 
+    update_balance_sheet(balance_sheet, %{gab_balance: new_balance}) |> IO.inspect()
   end
 
   def plus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
