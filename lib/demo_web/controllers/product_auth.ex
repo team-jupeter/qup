@@ -1,11 +1,13 @@
 defmodule DemoWeb.ProductAuth do
   import Plug.Conn
 
+  alias Demo.Products
+
   def init(opts), do: opts
 
   def call(conn, _opts) do
     product_id = get_session(conn, :product_id) 
-    product = product_id && Demo.Entities.get_product!(product_id)
+    product = product_id && Products.get_product!(product_id)
     assign(conn, :current_product, product)
   end
 

@@ -26,7 +26,7 @@ defmodule DemoWeb.TransactionController do
     invoice = Repo.preload(current_entity, :invoice).invoice
     bs = Repo.preload(current_entity, :balance_sheet).balance_sheet
 
-    if bs.cash < invoice.total, do: "error"
+    if bs.t1 < invoice.total, do: "error"
 
     # ? For the erl
     IO.puts "transaction_controller, erl_supul"

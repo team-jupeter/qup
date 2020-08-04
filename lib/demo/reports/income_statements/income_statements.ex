@@ -151,8 +151,10 @@ defmodule Demo.IncomeStatements do
     update_income_statement(income_statement, %{expense: accrued_expense})
   end
 
-  def add_revenue(%IncomeStatement{} = income_statement, %{amount: amount}) do   
+  def add_revenue(%IncomeStatement{} = income_statement, %{amount: amount}) do
     accrued_revenue = Decimal.add(income_statement.revenue, amount)
+    IO.inspect "accrued_revenue"   
+    IO.inspect accrued_revenue   
     update_income_statement(income_statement, %{revenue: accrued_revenue})
   end
 

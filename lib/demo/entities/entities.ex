@@ -3,8 +3,8 @@ defmodule Demo.Entities do
 
   alias Demo.Repo
   alias Demo.Entities.Entity
-  alias Demo.Entities.Product
-  alias Demo.Entities.GPCCode
+  alias Demo.Products.Product
+  alias Demo.Products.GPCCode
   alias Demo.Entities.BizCategory
   alias Demo.Accounts.User
   alias Demo.Accounts
@@ -38,6 +38,13 @@ defmodule Demo.Entities do
     user.entities
   end
 
+  def list_entity_products(%Entity{} = entity) do 
+    Repo.preload(entity, :products).products
+    # Product
+    # |> entity_products_query(entity)
+    # |> Repo.all()
+  end
+
   def get_user_entity!(%User{} = _user, id) do
     Entity
     # |> user_entities_query(user)
@@ -45,7 +52,16 @@ defmodule Demo.Entities do
   end
 
   def get_entity!(id), do: Repo.get!(Entity, id)
-  def get_product!(id), do: Repo.get!(Product, id)
+
+  def get_entity_product!(%Entity{} = entity, id) do
+    Product
+    |> entity_products_query(entity)
+    |> Repo.get!(id)
+  end 
+
+  defp entity_products_query(query, %Entity{id: entity_id}) do
+    from(p in query, where: p.entity_id == ^entity_id)
+  end
 
   def update_entity(%Entity{} = entity, attrs) do
     entity
@@ -54,8 +70,8 @@ defmodule Demo.Entities do
   end
 
   def minus_gab_balance(%Entity{} = entity, %{amount: amount}) do
-    minus_gab_balance = Decimal.sub(entity.gab_balance, amount)
-    update_entity(entity, %{gab_balance: minus_gab_balance})
+    new_gab_balance = Decimal.sub(entity.gab_balance, amount)
+    update_entity(entity, %{gab_balance: new_gab_balance})
 
     # case entity.type do
     #   "default" ->
@@ -74,19 +90,19 @@ defmodule Demo.Entities do
   end
 
   def plus_gab_balance(%Entity{} = entity, %{amount: amount}) do
-    plus_gab_balance = Decimal.add(entity.gab_balance, amount)
-    update_entity(entity, %{gab_balance: plus_gab_balance})
+    new_gab_balance = Decimal.add(entity.gab_balance, amount)
+    update_entity(entity, %{gab_balance: new_gab_balance})
   end
 
   def delete_entity(%Entity{} = entity) do
     Repo.delete(entity)
   end
 
+
   def create_default_entity(user, attrs) do
     attrs = make_default_financial_statements(attrs)
 
     IO.puts("attrs.ga.id")
-    IO.inspect(attrs.ga.id)
 
     family = Repo.preload(user, :family).family
     supul = Repo.preload(user, :supul).supul
@@ -160,18 +176,7 @@ defmodule Demo.Entities do
     |> Repo.insert()
   end
 
-  def create_product(%Entity{} = entity, attrs \\ %{}) do
-    %Product{}
-    |> Product.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:entity, entity)
-    |> Repo.insert()
-  end
 
-  def create_GPCCode(attrs \\ %{}) do
-    %GPCCode{}
-    |> GPCCode.changeset(attrs)
-    |> Repo.insert()
-  end
 
   def change_entity(%Entity{} = entity) do
     Entity.changeset(entity, %{})

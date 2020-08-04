@@ -1,4 +1,4 @@
-defmodule Demo.Entities.GPCCode do
+defmodule Demo.Products.GPCCode do
   use Ecto.Schema
   import Ecto.Changeset
  
@@ -10,7 +10,7 @@ defmodule Demo.Entities.GPCCode do
     field :name, :string
     field :standard, :string
 
-    has_many :products, Demo.Entities.Product
+    has_many :products, Demo.Products.Product
 
     timestamps()
   end

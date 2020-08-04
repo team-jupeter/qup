@@ -53,8 +53,8 @@ defmodule Demo.GlobalSupuls do
   # end
 
   def minus_gab_balance(%GlobalSupul{} = global_supul, %{amount: amount}) do
-    minus_gab_balance = Decimal.sub(global_supul.gab_balance, amount)
-    update_global_supul_gab(global_supul, %{gab_balance: minus_gab_balance})
+    newe_gab_balance = Decimal.sub(global_supul.gab_balance, amount)
+    update_global_supul_gab(global_supul, %{gab_balance: newe_gab_balance})
   end
 
   def plus_gab_balance(%GlobalSupul{} = global_supul, %{amount: amount}) do

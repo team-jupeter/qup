@@ -11,6 +11,7 @@ defmodule Demo.BalanceSheets do
   alias Demo.NationSupuls.NationSupul
   alias Demo.Taxations.Taxation
   alias Demo.Families.Family
+  alias Demo.GabAccounts
   alias Demo.GabAccounts.GabAccount
 
   def get_balance_sheet!(id), do: Repo.get!(BalanceSheet, id)
@@ -57,9 +58,6 @@ defmodule Demo.BalanceSheets do
   alias Demo.ABC.T1
 
   def renew_ts(attrs, buyer, seller, openhash) do
-
-    IO.inspect "attrs.amount"
-    IO.inspect attrs.amount
     # ? Find buyer's BS
     query =
       from b in BalanceSheet,
@@ -68,14 +66,6 @@ defmodule Demo.BalanceSheets do
     buyer_BS = Repo.one(query)
 
     # ? renew Buyer's BS T1
-    # t_change = Decimal.sub(buyer_BS.gab_balance, attrs.amount)
-
-
-    IO.inspect "buyer_BS.gab_balance"
-    IO.inspect buyer_BS.gab_balance
-    # IO.inspect "t_change"
-    # IO.inspect t_change
-
     ts = [
       %T1{
         openhash_id: openhash.id,
@@ -117,6 +107,7 @@ defmodule Demo.BalanceSheets do
   end
 
   def add_ts(%BalanceSheet{} = balance_sheet, attrs) do
+    IO.inspect "balance_sheet.ts"
     ts = [attrs.ts | balance_sheet.ts]
     # IO.puts "T1"
     # IO.inspect ts
@@ -130,10 +121,19 @@ defmodule Demo.BalanceSheets do
     |> update_gab_balance()
   end
 
+  alias Demo.Entities
+  alias Demo.GabAccounts
   def update_gab_balance(bs) do
+    
     amount_list = Enum.map(bs.ts, fn item -> item.amount end)
     gab_balance = Enum.reduce(amount_list, 0, fn amount, sum -> Decimal.add(amount, sum) end)
     update_balance_sheet(bs, %{gab_balance: gab_balance})
+
+    entity = Demo.Repo.preload(bs, :entity).entity
+    Entities.update_entity(entity, %{gab_balance: gab_balance})
+
+    gab_account = Repo.preload(entity, :gab_account).gab_account
+    GabAccounts.update_gab_account(gab_account, %{gab_balance: gab_balance})
   end
 
   # ? gopang_korea_BS = change(gopang_korea_BS) |> Ecto.Changeset.put_embed(:ts, ts) |> Repo.update!
@@ -145,7 +145,7 @@ defmodule Demo.BalanceSheets do
 
   def minus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
     new_balance = Decimal.sub(balance_sheet.gab_balance, amount)
-    update_balance_sheet(balance_sheet, %{gab_balance: new_balance}) |> IO.inspect()
+    update_balance_sheet(balance_sheet, %{gab_balance: new_balance})
   end
 
   def plus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do

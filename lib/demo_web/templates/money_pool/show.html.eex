@@ -1,0 +1,43 @@
+<h1>Show Money pool</h1>
+
+<ul>
+
+  <li>
+    <strong>Krw:</strong>
+    <%= @money_pool.krw %>
+  </li>
+
+  <li>
+    <strong>Usd:</strong>
+    <%= @money_pool.usd %>
+  </li>
+
+  <li>
+    <strong>Gbp:</strong>
+    <%= @money_pool.gbp %>
+  </li>
+
+  <li>
+    <strong>Jpy:</strong>
+    <%= @money_pool.jpy %>
+  </li>
+
+  <li>
+    <strong>Cny:</strong>
+    <%= @money_pool.cny %>
+  </li>
+
+  <li>
+    <strong>Eur:</strong>
+    <%= @money_pool.eur %>
+  </li>
+
+  <li>
+    <strong>Cad:</strong>
+    <%= @money_pool.cad %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.money_pool_path(@conn, :edit, @money_pool) %></span>
+<span><%= link "Back", to: Routes.money_pool_path(@conn, :index) %></span>

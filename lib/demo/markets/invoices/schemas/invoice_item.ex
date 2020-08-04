@@ -23,7 +23,7 @@ defmodule Demo.Invoices.InvoiceItem do
     field :subtotal, :decimal, precision: 16, scale: 6, default: 0.0
      
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
-    belongs_to :product, Demo.Entities.Product, type: :binary_id
+    belongs_to :product, Demo.Products.Product, type: :binary_id
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
 
     timestamps()

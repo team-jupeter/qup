@@ -6,14 +6,21 @@ defmodule Demo.GabAccounts.GabAccount do
 
   schema "gab_accounts" do
     field :credit_limit, :string
-    field :owner, :string
+    field :entity_name, :string
     field :gab_balance, :decimal, default: 0.0
+    field :unique_digits, :string
+
+    field :t1, :decimal, default: 0.0
+    field :t2, :decimal, default: 0.0
+    field :t3, :decimal, default: 0.0
+    field :t4, :decimal, default: 0.0
+    field :t5, :decimal, default: 0.0
 
     embeds_many :ts, Demo.ABC.T1, on_replace: :delete
 
-    belongs_to :group, Demo.Groups.Group, type: :binary_id
-    belongs_to :family, Demo.Families.Family, type: :binary_id
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
+    belongs_to :family, Demo.Families.Family, type: :binary_id
+    belongs_to :group, Demo.Groups.Group, type: :binary_id
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
@@ -21,7 +28,8 @@ defmodule Demo.GabAccounts.GabAccount do
     timestamps()
   end
   @fields [
-    :credit_limit, :owner, :gab_balance, 
+    :t1, :t2, :t3, :t4, :t5,
+    :credit_limit, :entity_name, :gab_balance, :unique_digits, 
   ]
   @doc false
   def changeset(gab_account, attrs \\ %{}) do

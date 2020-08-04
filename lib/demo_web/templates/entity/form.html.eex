@@ -15,6 +15,11 @@
     <%= error_tag f, :name %>
   </div> 
 
+  <div>
+    <%= text_input f, :tel, placeholder: "Permanant Tel" %>
+    <%= error_tag f, :tel %>
+  </div> 
+
 
   <div>
     <%= text_input f, :email, placeholder: "Email" %>

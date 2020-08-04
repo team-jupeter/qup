@@ -11,7 +11,7 @@ defmodule Demo.Entities.BizCategory do
     field :code, :string
 
     has_many :entities, Demo.Entities.Entity
-    has_many :products, Demo.Entities.Product
+    has_many :products, Demo.Products.Product
     
     timestamps()
   end

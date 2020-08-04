@@ -3,9 +3,10 @@ defmodule DemoWeb.ItemWatchController do
 
   alias Demo.Multimedia 
   alias Demo.Entities 
+  alias Demo.Products 
 
   def show(conn, %{"id" => id}) do 
-    item = Entities.get_product!(id)  
+    item = Products.get_product!(id)  
     conn = conn
     |> DemoWeb.ProductAuth.product_login(item)
     

@@ -54,7 +54,8 @@ alias Demo.Supuls
   name: "글로벌 수풀", 
   pasword: "p",
   email: "golobal@un", 
-  gab_balance: Decimal.from_float(0.0),
+  gab_balance: Decimal.from_float(10_000.0),
+  current_hash: "global"
   }) 
 
 msg_serialized = Poison.encode!(global_supul)
@@ -80,26 +81,6 @@ korea_rsa_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
 korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
    
 
-'''
-corea
-'''
-alias Demo.Accounts
-{:ok, corea} = Accounts.create_corea(%{
-  name: "COREA", 
-  username: "corea", 
-  password: "p",
-  email: "corea@un1",
-  family_code: nil,
-  supul: nil, 
-  nation: korea,
-  default_family: true,
-  }) 
-
-# #? private and pulbic key of korea
-# korea_rsa_priv_key = ExPublicKey.load!("./keys/korea_private_key.pem")
-# korea_rsa_pub_key = ExPublicKey.load!("./keys/korea_public_key.pem")
-   
-
 
 
 '''
@@ -114,10 +95,9 @@ SUPUL
   nation_supul_code: "82",
   name: "한국", 
   global_supul: global_supul, 
-  user_id: corea.id,
   global_supul_id: global_supul.id,
-  gab_balance: Decimal.from_float(0.0),
-  }) 
+  current_hash: "korea"
+    }) 
 
 msg_serialized = Poison.encode!(korea_supul)
 ts = DateTime.utc_now() |> DateTime.to_unix()
@@ -135,8 +115,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   type: "State Supul", 
   state_supul_code: "8201",
   nation_supul: korea_supul, 
-  gab_balance: Decimal.from_float(0.0),
-  }) 
+  current_hash: "seoul"
+    }) 
 
 msg_serialized = Poison.encode!(seoul_supul)
 ts = DateTime.utc_now() |> DateTime.to_unix()
@@ -152,8 +132,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   type: "State Supul", 
   state_supul_code: "8213",
   nation_supul: korea_supul, 
-  gab_balance: Decimal.from_float(0.0),
-  }) 
+  current_hash: "jejudo"
+    }) 
 
 msg_serialized = Poison.encode!(jejudo_supul)
 ts = DateTime.utc_now() |> DateTime.to_unix()
@@ -171,7 +151,6 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   type: "Unit Supul", 
   supul_code: "821311",
   state_supul: jejudo_supul,
-  gab_balance: Decimal.from_float(0.0),
   current_hash: "hankyung"
   }) 
 
@@ -191,7 +170,6 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
     type: "Unit Supul", 
     supul_code: "821312",
     state_supul: jejudo_supul,
-    gab_balance: Decimal.from_float(0.0),
     current_hash: "hanlim"
     }) 
 
@@ -211,7 +189,6 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
     type: "Unit Supul",  
     supul_code: "821313",
     state_supul: jejudo_supul,
-    gab_balance: Decimal.from_float(0.0),
     current_hash: "seoguipo"
     }) 
 
@@ -227,10 +204,20 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 # Repo.preload(seoguipo_supul, :income_statement).income_statement
 
 '''
+USER 
 
-HUMAN USER 
- 
 '''
+alias Demo.Accounts
+{:ok, corea} = Accounts.create_corea(%{
+  name: "COREA", 
+  username: "corea", 
+  nation: korea,
+  password: "p",
+  email: "corea@un",
+  supul: hankyung_supul, 
+  default_family: true,
+  }) 
+
 #? A human being with nationality he or she claims.
 {:ok, mr_hong} = Accounts.create_user(%{
   type: "Human",
@@ -297,7 +284,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   supul_name: "한경면",
   email: "lim@0000.kr",
   type: "Human",
-  auth_code: "5410051898822kr",
+  auth_code: "54051898822kr",
   birth_date: ~N[1970-11-11 09:14:09],
   username: "mr_lim",
   default_family: true, 
@@ -358,16 +345,21 @@ sung_pub_key = ExPublicKey.load!("./keys/sung_public_key.pem")
 ENTITIES & OTHERS
 
 '''
-alias Demo.Taxations
+alias Demo.Groups
+{:ok, korea_group} = Groups.create_group(%{name: "Korean Public Group"})
+
+alias Demo.Entities
 
 #? 국세청 korea's Entity == a governmental organization  
-{:ok, kts} = Taxations.create_taxation(%{
+{:ok, kts} = Entities.create_public_entity(%{
   name: "Korea Tax Service", 
+  supul: hankyung_supul,
   nation: korea,
-  nation_supul: korea_supul,
-  supul_anme: "korea_supul",
-  group_name: "국세청",
-  group_type: "Taxation Service",
+  user: corea,
+  email: "kts@kr",
+  group: korea_group,
+  unique_digits: "82111110",
+  tels: ["82111110"],
   }) 
   
   
@@ -378,23 +370,23 @@ alias Demo.Taxations
   {:ok, signature} = ExPublicKey.sign(ts_msg_serialized, korea_rsa_priv_key)
   signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downcase()
   # kts = change(kts) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
-  {:ok, kts} = Taxations.update_taxation(kts, %{auth_code: signature}) 
+  {:ok, kts} = Entities.update_entity(kts, %{auth_code: signature}) 
   
   
-alias Demo.Entities
 
 #? 국가 금융 인프라 Korea's Entity == a governmental organization  
 {:ok, gab_korea} = Entities.create_public_entity(%{
   type: "public",
   name: "GAB Korea", 
-  user: corea, 
+  supul: hankyung_supul,
   nation: korea,
-  nation_supul: korea_supul, 
-  project: "반자동 금융 인프라", 
-  supul_name: "한국",
-  pasword: "temppass",
+  user: corea,
+  pasword: "p",
   email: "gab_korea@kr",
-  gab_balance: Decimal.from_float(1000.0),
+  group: korea_group,
+  gab_balance: Decimal.from_float(100000.0),
+  unique_digits: "82111100",
+  tels: ["82111100"],
   })
 
 msg_serialized = Poison.encode!(gab_korea)
@@ -405,21 +397,21 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 # gab_korea = change(gab_korea) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
 {:ok, gab_korea} = Entities.update_entity(gab_korea, %{auth_code: signature}) 
 
+alias Demo.Entities
+
 #? 국가 교통물류 인프라 Korea's Entity == a governmental organization  
 {:ok, gopang_korea} = Entities.create_public_entity(%{
   type: "public",
   name: "Gopang", 
   user: corea, 
+  supul: hankyung_supul,
   nation: korea,
-  nation_supul: korea_supul, 
-  project: "반자동 물류 인프라",
-  supul_name: "한국",
   pasword: "temppass",
-  email: "gopang_korea@kr0",
+  email: "gopang_korea@kr",
+  group: korea_group,
   gab_balance: Decimal.from_float(0.0),
-  default_group: true,
-  group_name: "물류 인프라",
-  group_type: "Logistics",
+  unique_digits: "8211111111",
+  telephones: ["8211111111"],
   }) 
 
 msg_serialized = Poison.encode!(gopang_korea)
@@ -440,6 +432,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   email: "hong@0000.kr", 
   entity_address: "제주시 한경면 20-1 해거름전망대",
   gab_balance: Decimal.from_float(0.0),
+  unique_digits: "8211111112",
+  tels: ["8211111112"],
   }) 
 
 {:ok, mr_hong} =  Demo.Accounts.update_user(mr_hong, %{default_entity_id: hong_entity.id})  
@@ -461,7 +455,10 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   email: "sung@0000.kr", 
   pasword: "temppass",
   gab_balance: Decimal.from_float(0.0),
+  unique_digits: "8211111113",
+  tels: ["8211111113"],
   }) 
+
   {:ok, ms_sung} =  Demo.Accounts.update_user(ms_sung, %{default_entity_id: sung_entity.id})  
 
 msg_serialized = Poison.encode!(sung_entity)
@@ -481,7 +478,9 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   email: "lim@0000.kr", 
   pasword: "temppass",
   user_id: mr_lim.id,
-  gab_balance: Decimal.from_float(0.0), 
+  gab_balance: Decimal.from_float(0.0),
+  unique_digits: "8211111114",
+  tels: ["8211111114"],
   }) 
   {:ok, mr_lim} =  Demo.Accounts.update_user(mr_lim, %{default_entity_id: lim_entity.id})  
 
@@ -501,8 +500,10 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   email: "lee@0000.kr", 
   pasword: "temppass",
   user_id: mr_lee.id,
-  gab_balance: Decimal.from_float(0.0), 
+  gab_balance: Decimal.from_float(0.0),
   default_entity: true,
+  unique_digits: "8211111115",
+  tels: ["8211111115"],
   }) 
 
 {:ok, mr_lee} =  Demo.Accounts.update_user(mr_lee, %{default_entity_id: lee_entity.id})  
@@ -523,7 +524,6 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   user: ms_sung,
   supul: hanlim_supul,
   nation: korea,
-  taxation: kts,
   project: "일반 법인", 
   supul_name: "한림읍",
   pasword: "temppass",
@@ -533,6 +533,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   default_group: true,
   group_name: "Sung Group",
   group_type: "Private Group",
+  unique_digits: "8211111116",
+  tels: ["8211111116"],
   }) 
 
 msg_serialized = Poison.encode!(tomi_entity)
@@ -551,7 +553,6 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   user: mr_lim, 
   supul: hankyung_supul,
   nation: korea,
-  taxation: kts,
   project: "일반 법인", 
   supul_name: "한경면",
   pasword: "temppass",
@@ -561,6 +562,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   default_group: true,
   group_name: "Lim Group",
   group_type: "Private Group",
+  unique_digits: "8211111117",
+  tels: ["8211111117"],
   }) 
 
 msg_serialized = Poison.encode!(sanche_entity)
@@ -579,7 +582,6 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   user: mr_lee,
   supul: seoguipo_supul,
   nation: korea,
-  taxation: kts,
   project: "일반 법인", 
   supul_name: "서귀포시",
   pasword: "temppass",
@@ -589,6 +591,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   default_group: true,
   group_name: "Lee Group",
   group_type: "Private Group",
+  unique_digits: "8211111118",
+  tels: ["8211111118"],
   }) 
 
 msg_serialized = Poison.encode!(sato_entity)
@@ -607,7 +611,6 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   user: mr_lee,
   supul: seoguipo_supul,
   nation: korea,
-  taxation: kts,
   project: "일반 법인", 
   supul_name: "서귀포시",
   pasword: "temppass",
@@ -617,6 +620,8 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   default_group: true,
   group_name: "Lee Group",
   group_type: "Private Group",
+  unique_digits: "8211111119",
+  tels: ["8211111119"],
   }) 
 
 msg_serialized = Poison.encode!(ebang_entity)
@@ -627,206 +632,86 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 {:ok, ebang_entity} = Entities.update_entity(ebang_entity, %{auth_code: signature}) 
 
-'''
-SET DEFAULT ENTITY OF EACH USER
-'''
-# {:ok, mr_hong} = Accounts.update_user(mr_hong, %{default_entity_id: hong_entity.id, default_entity_name: "hong_entity"}) 
-# {:ok, ms_sung} = Accounts.update_user(ms_sung, %{default_entity_id: sung_entity.id, default_entity_name: "sung_entity"}) 
-# {:ok, mr_lim} = Accounts.update_user(mr_lim, %{default_entity_id: lim_entity.id, default_entity_name: "lim_entity"}) 
-# {:ok, mr_lee} = Accounts.update_user(mr_lee, %{default_entity_id: lee_entity.id, default_entity_name: "lee_entity"}) 
+# alias Demo.Transactions.Transaction
+# alias Demo.Invoices.{Item, Invoice, InvoiceItem}
+# alias Demo.Products.Product
 
 
+#? From now on, let's write invoice for trade between mr_hong and gab_korea.
+#? First, let "krw" a product of hong_entity
+alias Demo.Products
+Products.create_product(gab_korea, %{
+  name: "T1", 
+  price: 1000.0,
+  }) 
+  
+Products.create_product(gab_korea, %{
+  name: "T2", 
+  price: 1000.0,
+  }) 
+  
 
-'''   
+alias Demo.Entities.BizCategory
 
-PUT_ASSOC 
-user and entity
-
-
-
-#? 홍길동과 그의 비즈니스
-mr_hong = Accounts.update_entities(mr_hong, [hong_entity])
-
-#? 임꺽정과 그의 비즈니스
-mr_lim = Accounts.update_entities(mr_lim, [lim_entity])
-
-#? 성춘향과 그녀의 비즈니스들
-ms_sung = Accounts.update_entities(ms_sung, [sung_entity, tomi_entity])
-
-#? Corea와 정부 또는 공공 기관들
-korea = Accounts.update_entities(korea, [
-  kts, gab_korea, gopang_korea, global_supul, korea_supul, jejudo_supul, 
-  hankyung_supul, hanlim_supul
-])
-'''
+for category <- [%{name: "한식 일반 음식점업", standard: "한국표준산업분류표", code: "56111"}, %{name: "김밥 및 기타 간이 음식점업", standard: "한국표준산업분류표", code: "56194"}] do
+  Entities.create_biz_category!(category)
+end
 
 
-
-'''   
-T1 
-'''
-# ? prepare financial statements for entities.
-#? Balance Sheet
-alias Demo.BalanceSheets
-alias Demo.ABC.T1
-#? 국세청 
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: kts.name, 
-  output_id: kts.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
-
-BalanceSheets.add_ts(kts.balance_sheet, new_ts)  
-
-#? 국가 물류 인프라  
-new_ts = %{ts: %T1{
-  input_name: gab_korea.name, 
-  input_id: gab_korea.id, 
-  output_name: gopang_korea.name, 
-  output_id: gopang_korea.id, 
-  amount: Decimal.from_float(1000.0)}}
-
-BalanceSheets.add_ts(gopang_korea.balance_sheet, new_ts)  
-
-#? 국가 금융 인프라
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: gab_korea.name, 
-  output_id: gab_korea.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
-
-BalanceSheets.add_ts(gab_korea.balance_sheet, new_ts)  
+alias Demo.Products.GPCCode
+# 분식 = GPCCode.changeset(%GPCCode{name: "분식", code: "345445", standard: "GTIN"}) |> Repo.insert!
+# 한식 = GPCCode.changeset(%GPCCode{name: "한식", code: "345446", standard: "GTIN"}) |> Repo.insert!
+{:ok, 분식} = Products.create_GPCCode(%{name: "분식", code: "345445", standard: "GTIN"}) 
+{:ok, 한식} = Products.create_GPCCode(%{name: "한식", code: "345446", standard: "GTIN"}) 
 
 
-#? 홍길동 1인 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: hong_entity.name, 
-  output_id: hong_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(hong_entity.balance_sheet, new_ts)  
-
-#? 임꺽정 1인 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: lim_entity.name, 
-  output_id: lim_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(lim_entity.balance_sheet, new_ts)  
-
-#? 성춘향 1인 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: sung_entity.name, 
-  output_id: sung_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(sung_entity.balance_sheet, new_ts)  
-
-#? 이몽룡 1인 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: lee_entity.name, 
-  output_id: lee_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(lee_entity.balance_sheet, new_ts)  
-
-#? 토미 도시락 일반 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: tomi_entity.name, 
-  output_id: tomi_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-tomi_entity_BS = BalanceSheets.add_ts(tomi_entity.balance_sheet, new_ts)  
+alias Demo.Products.Product
+#? 토미 김밥의 상품
+# 김밥 = Product.changeset(%Product{name: "김밥", gpc_code_id: 분식.id, price: 1.0}) |> Repo.insert!
+{:ok, 김밥} = Products.create_product(tomi_entity, %{
+  name: "김밥", 
+  gpc_code_id: 분식.id, 
+  price: 1.0
+  }) 
+{:ok, 떡볶이} =  Products.create_product(tomi_entity, %{name: "떡볶이", gpc_code_id: 분식.id, price: 1.5}) 
+{:ok, 우동} = Products.create_product(tomi_entity, %{name: "우동", gpc_code_id: 분식.id, price: 1.5}) 
 
 
+#? 임꺽정 산채의 상품
+{:ok, 한정식} = Products.create_product(sanche_entity, %{name: "한정식", gpc_code_id: 한식.id, price: 5.0})
+{:ok, 육개장} = Products.create_product(sanche_entity, %{name: "육개장", gpc_code_id: 한식.id, price: 3.5})
+{:ok, 갈비탕} = Products.create_product(sanche_entity, %{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5})
 
-#? Hankyung Supul
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: hankyung_supul.name, 
-  output_id: hankyung_supul.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
+ 
+#? 이몽룡 이방 학원의 상품
+{:ok, 중국어} = Products.create_product(ebang_entity, %{name: "중국어", gpc_code_id: 한식.id, price: 5.0})
+{:ok, 곤장} = Products.create_product(ebang_entity, %{name: "곤장", gpc_code_id: 한식.id, price: 3.5})
+{:ok, 아부하기} = Products.create_product(ebang_entity, %{name: "아부하기", gpc_code_id: 한식.id, price: 3.5})
+ 
+#? 이몽룡 사또 학원의 상품
+{:ok, 컴퓨터} = Products.create_product(ebang_entity, %{name: "컴퓨터", gpc_code_id: 한식.id, price: 5.0})
+{:ok, 폭탄주} = Products.create_product(ebang_entity, %{name: "폭탄주", gpc_code_id: 한식.id, price: 3.5})
+{:ok, 팔자걸음} = Products.create_product(ebang_entity, %{name: "팔자걸음", gpc_code_id: 한식.id, price: 3.5})
 
-hankyung_supul_BS = BalanceSheets.add_ts(hankyung_supul.balance_sheet, new_ts) 
+ 
 
-#? Hanlim Supul
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: hanlim_supul.name, 
-  output_id: hanlim_supul.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
+alias Demo.Multimedia
+# 한정식_video = Video.changeset(%Video{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 한정식.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
+{:ok, 한정식_video} = Multimedia.create_video(한정식, %{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 한정식.id, description: "엄청 맛있데요. 글쎄..."})
+{:ok, 육개장_video} = Multimedia.create_video(육개장, %{title: "육개장", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 육개장.id, description: "엄청 맛있데요. 글쎄..."})
+{:ok, 갈비탕_video} = Multimedia.create_video(갈비탕, %{title: "갈비탕", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 갈비탕.id, description: "엄청 맛있데요. 글쎄..."})
 
-hanlim_supul_BS = BalanceSheets.add_ts(hanlim_supul.balance_sheet, new_ts)  
+{:ok, 김밥_video} = Multimedia.create_video(김밥, %{title: "김밥", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 김밥.id, description: "엄청 맛있데요. 글쎄..."})
+{:ok, 떡볶이_video} = Multimedia.create_video(떡볶이, %{title: "떡볶이", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 떡볶이.id, description: "엄청 맛있데요. 글쎄..."})
+{:ok, 우동_video} = Multimedia.create_video(우동, %{title: "우동", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 우동.id, description: "엄청 맛있데요. 글쎄..."})
 
-#? Seoguipo Supul
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: seoguipo_supul.name, 
-  output_id: seoguipo_supul.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
+#? 계좌 
+Products.create_product(hong_entity, %{name: "mr_hong@0000.kr", unique_digits: "8211111112", tel: "8211111112", amount: 0})
+Products.create_product(sung_entity, %{name: "ms_sung@0000.kr", unique_digits: "8211111113", tel: "8211111113", amount: 0})
+Products.create_product(lim_entity, %{name: "mr_lim@0000.kr", unique_digits: "8211111114", tel: "8211111114", amount: 0})
+Products.create_product(lee_entity, %{name: "Money Transfer", unique_digits: "8211111115", tel: "8211111115", amount: 0})
 
-seoguipo_supul_BS = BalanceSheets.add_ts(seoguipo_supul.balance_sheet, new_ts)  
-
-#? Seoul Supul
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: seoul_supul.name, 
-  output_id: seoul_supul.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
-seoul_supul_BS = BalanceSheets.add_ts(seoul_supul.balance_sheet, new_ts)  
-
-#? Jejudo Supul
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: jejudo_supul.name, 
-  output_id: jejudo_supul.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
-
-jejudo_supul_BS = BalanceSheets.add_ts(jejudo_supul.balance_sheet, new_ts)  
-
-    
-#? Korea Supul
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: korea_supul.name, 
-  output_id: korea_supul.id, 
-  amount: Decimal.from_float(1000.0),
-  }}
-
-korea_supul_BS = BalanceSheets.add_ts(korea_supul.balance_sheet, new_ts)  
-
-    
-
+ 
 
 '''
 EVENT
@@ -888,82 +773,226 @@ Transaction between gab_korea_entity and hong_entity.
 The price of ABC T1, T2, T3 will be updated every second.
 The code below is hard coded. We need write codes for invoice_items with only one item.
 '''
-# alias Demo.Transactions.Transaction
-alias Demo.Invoices.{Item, Invoice, InvoiceItem}
-# alias Demo.Entities.Product
-alias Demo.Entities
 
 
-#? From now on, let's write invoice for trade between mr_hong and gab_korea.
-#? First, let "krw" a product of hong_entity
-{:ok, krw} = Entities.create_product(hong_entity, %{
-  name: "KRW", 
-  seller_id: hong_entity.id,
-  seller_name: hong_entity.name,
-  seller_supul_name: "hanlim_supul",
-  seller_supul_id: hanlim_supul.id,
-  price: Decimal.from_float(0.0012),
-  }) 
-  
+'''
+SET DEFAULT ENTITY OF EACH USER
+'''
+# {:ok, mr_hong} = Accounts.update_user(mr_hong, %{default_entity_id: hong_entity.id, default_entity_name: "hong_entity"}) 
+# {:ok, ms_sung} = Accounts.update_user(ms_sung, %{default_entity_id: sung_entity.id, default_entity_name: "sung_entity"}) 
+# {:ok, mr_lim} = Accounts.update_user(mr_lim, %{default_entity_id: lim_entity.id, default_entity_name: "lim_entity"}) 
+# {:ok, mr_lee} = Accounts.update_user(mr_lee, %{default_entity_id: lee_entity.id, default_entity_name: "lee_entity"}) 
 
 
 
+'''   
+
+PUT_ASSOC 
+user and entity
 
 
 
-alias Demo.Entities
-alias Demo.Entities.BizCategory
+#? 홍길동과 그의 비즈니스
+mr_hong = Accounts.update_entities(mr_hong, [hong_entity])
 
-for category <- [%{name: "한식 일반 음식점업", standard: "한국표준산업분류표", code: "56111"}, %{name: "김밥 및 기타 간이 음식점업", standard: "한국표준산업분류표", code: "56194"}] do
-  Entities.create_biz_category!(category)
-end
+#? 임꺽정과 그의 비즈니스
+mr_lim = Accounts.update_entities(mr_lim, [lim_entity])
 
+#? 성춘향과 그녀의 비즈니스들
+ms_sung = Accounts.update_entities(ms_sung, [sung_entity, tomi_entity])
 
-alias Demo.Entities.GPCCode
-# 분식 = GPCCode.changeset(%GPCCode{name: "분식", code: "345445", standard: "GTIN"}) |> Repo.insert!
-# 한식 = GPCCode.changeset(%GPCCode{name: "한식", code: "345446", standard: "GTIN"}) |> Repo.insert!
-{:ok, 분식} = Entities.create_GPCCode(%{name: "분식", code: "345445", standard: "GTIN"}) 
-{:ok, 한식} = Entities.create_GPCCode(%{name: "한식", code: "345446", standard: "GTIN"}) 
-
-
-alias Demo.Entities.Product
-#? 토미 김밥의 상품
-# 김밥 = Product.changeset(%Product{name: "김밥", gpc_code_id: 분식.id, price: 1.0}) |> Repo.insert!
-{:ok, 김밥} = Entities.create_product(tomi_entity, %{
-  name: "김밥", 
-  gpc_code_id: 분식.id, 
-  price: 1.0
-  }) 
-{:ok, 떡볶이} =  Entities.create_product(tomi_entity, %{name: "떡볶이", gpc_code_id: 분식.id, price: 1.5}) 
-{:ok, 우동} = Entities.create_product(tomi_entity, %{name: "우동", gpc_code_id: 분식.id, price: 1.5}) 
+#? Corea와 정부 또는 공공 기관들
+korea = Accounts.update_entities(korea, [
+  kts, gab_korea, gopang_korea, global_supul, korea_supul, jejudo_supul, 
+  hankyung_supul, hanlim_supul
+])
+'''
 
 
-#? 임꺽정 산채의 상품
-{:ok, 한정식} = Entities.create_product(sanche_entity, %{name: "한정식", gpc_code_id: 한식.id, price: 5.0})
-{:ok, 육개장} = Entities.create_product(sanche_entity, %{name: "육개장", gpc_code_id: 한식.id, price: 3.5})
-{:ok, 갈비탕} = Entities.create_product(sanche_entity, %{name: "갈비탕", gpc_code_id: 한식.id, price: 3.5})
 
- 
-#? 이몽룡 이방 학원의 상품
-{:ok, 중국어} = Entities.create_product(ebang_entity, %{name: "중국어", gpc_code_id: 한식.id, price: 5.0})
-{:ok, 곤장} = Entities.create_product(ebang_entity, %{name: "곤장", gpc_code_id: 한식.id, price: 3.5})
-{:ok, 아부하기} = Entities.create_product(ebang_entity, %{name: "아부하기", gpc_code_id: 한식.id, price: 3.5})
- 
-#? 이몽룡 사또 학원의 상품
-{:ok, 컴퓨터} = Entities.create_product(ebang_entity, %{name: "컴퓨터", gpc_code_id: 한식.id, price: 5.0})
-{:ok, 폭탄주} = Entities.create_product(ebang_entity, %{name: "폭탄주", gpc_code_id: 한식.id, price: 3.5})
-{:ok, 팔자걸음} = Entities.create_product(ebang_entity, %{name: "팔자걸음", gpc_code_id: 한식.id, price: 3.5})
 
- 
 
-alias Demo.Multimedia
-# 한정식_video = Video.changeset(%Video{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 한정식.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
-{:ok, 한정식_video} = Multimedia.create_video(한정식, %{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 한정식.id, description: "엄청 맛있데요. 글쎄..."})
-{:ok, 육개장_video} = Multimedia.create_video(육개장, %{title: "육개장", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 육개장.id, description: "엄청 맛있데요. 글쎄..."})
-{:ok, 갈비탕_video} = Multimedia.create_video(갈비탕, %{title: "갈비탕", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 갈비탕.id, description: "엄청 맛있데요. 글쎄..."})
 
-{:ok, 김밥_video} = Multimedia.create_video(김밥, %{title: "김밥", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 김밥.id, description: "엄청 맛있데요. 글쎄..."})
-{:ok, 떡볶이_video} = Multimedia.create_video(떡볶이, %{title: "떡볶이", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 떡볶이.id, description: "엄청 맛있데요. 글쎄..."})
-{:ok, 우동_video} = Multimedia.create_video(우동, %{title: "우동", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 우동.id, description: "엄청 맛있데요. 글쎄..."})
+# ? prepare financial statements for entities.
+#? Balance Sheet
+alias Demo.BalanceSheets
+alias Demo.ABC.T1
+#? 국세청 
+new_ts =  %{ts: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: kts.name, 
+  output_id: kts.id, 
+  amount: Decimal.from_float(100.0),
+  }}
 
- 
+BalanceSheets.add_ts(kts.balance_sheet, new_ts)  
+
+#? 국가 물류 인프라  
+new_ts = %{ts: %T1{
+  input_name: gab_korea.name, 
+  input_id: gab_korea.id, 
+  output_name: gopang_korea.name, 
+  output_id: gopang_korea.id, 
+  amount: Decimal.from_float(100.0)}}
+
+BalanceSheets.add_ts(gopang_korea.balance_sheet, new_ts)  
+
+#? 국가 금융 인프라
+new_ts =  %{ts: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: gab_korea.name, 
+  output_id: gab_korea.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_ts(gab_korea.balance_sheet, new_ts)  
+
+
+#? 홍길동 1인 법인
+new_ts =  %{ts: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: hong_entity.name, 
+  output_id: hong_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_ts(hong_entity.balance_sheet, new_ts)  
+
+#? 임꺽정 1인 법인
+new_ts =  %{ts: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: lim_entity.name, 
+  output_id: lim_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_ts(lim_entity.balance_sheet, new_ts)  
+
+#? 성춘향 1인 법인
+new_ts =  %{ts: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: sung_entity.name, 
+  output_id: sung_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_ts(sung_entity.balance_sheet, new_ts)  
+
+#? 이몽룡 1인 법인
+new_ts =  %{ts: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: lee_entity.name, 
+  output_id: lee_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+BalanceSheets.add_ts(lee_entity.balance_sheet, new_ts)  
+
+#? 토미 도시락 일반 법인
+new_ts =  %{ts: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: tomi_entity.name, 
+  output_id: tomi_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+tomi_entity_BS = BalanceSheets.add_ts(tomi_entity.balance_sheet, new_ts)  
+
+#? 이방 학원 
+new_ts =  %{ts: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: ebang_entity.name, 
+  output_id: ebang_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+ebang_entity_BS = BalanceSheets.add_ts(ebang_entity.balance_sheet, new_ts)  
+
+#? 사또 학원 
+new_ts =  %{ts: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: sato_entity.name, 
+  output_id: sato_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+sato_entity_BS = BalanceSheets.add_ts(sato_entity.balance_sheet, new_ts)  
+
+
+
+# #? Hankyung Supul
+# new_ts =  %{ts: %T1{
+#   input_name: korea.name, 
+#   input_id: korea.id, 
+#   output_name: hankyung_supul.name, 
+#   output_id: hankyung_supul.id, 
+#   amount: Decimal.from_float(100.0),
+#   }}
+
+# hankyung_supul_BS = BalanceSheets.add_ts(hankyung_supul.balance_sheet, new_ts) 
+
+# #? Hanlim Supul
+# new_ts =  %{ts: %T1{
+#   input_name: korea.name, 
+#   input_id: korea.id, 
+#   output_name: hanlim_supul.name, 
+#   output_id: hanlim_supul.id, 
+#   amount: Decimal.from_float(100.0),
+#   }}
+
+# hanlim_supul_BS = BalanceSheets.add_ts(hanlim_supul.balance_sheet, new_ts)  
+
+# #? Seoguipo Supul
+# new_ts =  %{ts: %T1{
+#   input_name: korea.name, 
+#   input_id: korea.id, 
+#   output_name: seoguipo_supul.name, 
+#   output_id: seoguipo_supul.id, 
+#   amount: Decimal.from_float(100.0),
+#   }}
+
+# seoguipo_supul_BS = BalanceSheets.add_ts(seoguipo_supul.balance_sheet, new_ts)  
+
+# #? Seoul Supul
+# new_ts =  %{ts: %T1{
+#   input_name: korea.name, 
+#   input_id: korea.id, 
+#   output_name: seoul_supul.name, 
+#   output_id: seoul_supul.id, 
+#   amount: Decimal.from_float(100.0),
+#   }}
+# seoul_supul_BS = BalanceSheets.add_ts(seoul_supul.balance_sheet, new_ts)  
+
+# #? Jejudo Supul
+# new_ts =  %{ts: %T1{
+#   input_name: korea.name, 
+#   input_id: korea.id, 
+#   output_name: jejudo_supul.name, 
+#   output_id: jejudo_supul.id, 
+#   amount: Decimal.from_float(100.0),
+#   }}
+
+# jejudo_supul_BS = BalanceSheets.add_ts(jejudo_supul.balance_sheet, new_ts)  
+
+    
+# #? Korea Supul
+# new_ts =  %{ts: %T1{
+#   input_name: korea.name, 
+#   input_id: korea.id, 
+#   output_name: korea_supul.name, 
+#   output_id: korea_supul.id, 
+#   amount: Decimal.from_float(100.0),
+#   }}
+
+# korea_supul_BS = BalanceSheets.add_ts(korea_supul.balance_sheet, new_ts)  
+# '''
+    

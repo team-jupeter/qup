@@ -1,0 +1,26 @@
+<h1>Listing Tels</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for tel <- @tels do %>
+    <tr>
+      <td><%= tel.number %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.tel_path(@conn, :show, tel) %></span>
+        <span><%= link "Edit", to: Routes.tel_path(@conn, :edit, tel) %></span>
+        <span><%= link "Delete", to: Routes.tel_path(@conn, :delete, tel), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Tel", to: Routes.tel_path(@conn, :new) %></span>

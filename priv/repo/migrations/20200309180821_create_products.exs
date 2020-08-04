@@ -31,6 +31,7 @@ defmodule Demo.Repo.Migrations.CreateProducts do
       add :biz_category_id, references(:biz_categories, type: :uuid)
       add :gpc_code_id, references(:gpc_codes, type: :uuid)
       add :entity_id, references(:entities, type: :uuid)
+      add :gab_id, references(:gabs, type: :uuid)
 
       timestamps()
     end

@@ -2,10 +2,10 @@ defmodule DemoWeb.ProductWatchController do
   use DemoWeb, :controller
 
   alias Demo.Multimedia 
-  alias Demo.Entities
+  alias Demo.Products
 
   def show(conn, %{"id" => id}) do
-    current_product = Entities.get_product!(id)  
+    current_product = Products.get_product!(id)  
     conn = conn
     |> DemoWeb.ProductAuth.product_login(current_product)
     

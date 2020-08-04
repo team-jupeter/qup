@@ -181,7 +181,7 @@ PRODUCTS, COMMENTS AND ENTITIES
 
 '''
 #? PRODUCTS
-alias Demo.Entities.Product
+alias Demo.Products.Product
 alias Demo.Entities.CommentEmbed
 
 lunchbox_1 = Product.changeset(%Product{}, %{

@@ -1,0 +1,13 @@
+<h1>Show Gab</h1>
+
+<ul>
+
+  <li>
+    <strong>Nationality:</strong>
+    <%= @gab.nationality %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.gab_path(@conn, :edit, @gab) %></span>
+<span><%= link "Back", to: Routes.gab_path(@conn, :index) %></span>

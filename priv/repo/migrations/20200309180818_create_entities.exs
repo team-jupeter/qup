@@ -8,6 +8,8 @@ defmodule Demo.Repo.Migrations.CreateEntities do
       add :auth_code, :string
       add :industry_classification, :string
       add :name, :string 
+      add :unique_digits, :string
+      add :telephones, {:array, :string}
       add :project, :string 
       add :supul_name, :string 
       add :email, :string

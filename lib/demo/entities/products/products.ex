@@ -1,9 +1,9 @@
-defmodule Demo.Entities.Products do
+defmodule Demo.Products do
   import Ecto.Query, warn: false
 
   alias Demo.Repo
-  alias Demo.Entities.Product 
-  alias Demo.Entities.GPCCode
+  alias Demo.Products.Product 
+  alias Demo.Products.GPCCode
   alias Demo.Entities.Entity
 
   def create_category!(name) do
@@ -14,24 +14,11 @@ defmodule Demo.Entities.Products do
     Repo.all(Product)
   end 
 
-  def list_entity_products(%Entity{} = entity) do 
-    Repo.preload(entity, :products).products
-    # Product
-    # |> entity_products_query(entity)
-    # |> Repo.all()
-  end
 
-  def get_entity_product!(%Entity{} = entity, id) do
-    Product
-    |> entity_products_query(entity)
-    |> Repo.get!(id)
-  end 
+
 
   def get_product!(id), do: Repo.get!(Product, id)
 
-  defp entity_products_query(query, %Entity{id: entity_id}) do
-    from(p in query, where: p.entity_id == ^entity_id)
-  end
 
   def update_product(%Product{} = product, attrs) do
     product
@@ -45,10 +32,26 @@ defmodule Demo.Entities.Products do
     Repo.delete(product)
   end 
 
-  def create_product(%Entity{} = entity, attrs \\ %{}) do
+  def create_product(%Entity{} = entity, attrs) do
     %Product{}
     |> Product.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:entity, entity)
+    |> Repo.insert()
+  end
+
+  
+
+  def create_GPCCode(attrs \\ %{}) do
+    %GPCCode{}
+    |> GPCCode.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  alias Demo.Gabs.Gab
+  def create_product(%Gab{} = gab, attrs) do
+    %Product{}
+    |> Product.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:gab, gab)
     |> Repo.insert()
   end
 
@@ -56,7 +59,7 @@ defmodule Demo.Entities.Products do
     Product.changeset(product, %{})
   end
 
-  alias Demo.Entities.ProductAnnotation
+  alias Demo.Products.ProductAnnotation
 
   def annotate_product(%Entity{id: entity_id}, product_id, attrs) do 
     %ProductAnnotation{product_id: product_id, entity_id: entity_id}

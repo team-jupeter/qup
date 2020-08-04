@@ -4,7 +4,7 @@ defmodule Demo.Entities.Entity do
   alias Demo.Invoices.Invoice
 
   alias Demo.Accounts.User
-  # alias Demo.Entities.Product
+  # alias Demo.Products.Product
   alias Demo.Entities.Entity
   alias Demo.Repo
   # alias Demo.Supuls.Supul
@@ -22,6 +22,8 @@ defmodule Demo.Entities.Entity do
   schema "entities" do
     field :type, :string
     field :name, :string
+    field :unique_digits, :string
+    field :telephones, {:array, :string}
     field :project, :string
     field :supul_name, :string
     field :email, :string
@@ -44,7 +46,6 @@ defmodule Demo.Entities.Entity do
     # ? AAA, ..., FFF => 24 rates
     field :credit_rate, :string
     field :supul_code, :binary_id
-    field :taxation_code, :binary_id
 
     field :password, :string, virtual: true
     field :password_hash, :string
@@ -79,14 +80,13 @@ defmodule Demo.Entities.Entity do
     belongs_to :supul, Demo.Supuls.Supul, type: :binary_id, on_replace: :delete
     belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id, on_replace: :delete
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id, on_replace: :delete
-    belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id, on_replace: :delete
     belongs_to :biz_category, Demo.Taxations.Taxation, type: :binary_id, on_replace: :delete
 
     has_many :reports, Demo.Reports.Report
     # has_many :certificates, Demo.Certificates.Certificate
     has_many :machines, Demo.Machines.Machine
     has_many :labs, Demo.Labs.Lab
-    has_many :products, Demo.Entities.Product
+    has_many :products, Demo.Products.Product
 
     has_one :invoice, Demo.Invoices.Invoice
     # many_to_many(
@@ -136,8 +136,9 @@ defmodule Demo.Entities.Entity do
     :auth_code,
     :nation_id,
     :email,
-    :taxation_id,
     :name,
+    :unique_digits, 
+    :telephones, 
     :entity_address,
     :nation_signature,
     :biz_category_id,
@@ -175,6 +176,7 @@ defmodule Demo.Entities.Entity do
   end
 
   def changeset(entity, attrs \\ %{}) do
+
     entity
     |> cast(attrs, @fields)
     |> validate_required([])
@@ -216,7 +218,6 @@ defmodule Demo.Entities.Entity do
     changeset(entity, attrs)
     |> put_assoc(:supul, attrs.supul)
     |> put_assoc(:users, [current_user])
-    |> put_assoc(:taxation, attrs.taxation)
     |> put_assoc(:group, attrs.group)
     |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)
@@ -224,14 +225,12 @@ defmodule Demo.Entities.Entity do
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
     |> put_assoc(:gab_account, attrs.ga)
-    |> assoc_constraint(:taxation)
   end
 
   def create_private_entity(entity, attrs) do
     changeset(entity, attrs)
     |> put_assoc(:users, [attrs.user])
     |> put_assoc(:supul, attrs.supul)
-    |> put_assoc(:taxation, attrs.taxation)
     |> put_assoc(:group, attrs.group)
     |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)
@@ -239,12 +238,12 @@ defmodule Demo.Entities.Entity do
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
     |> put_assoc(:gab_account, attrs.ga)
-    |> assoc_constraint(:taxation)
   end
 
   def create_public_entity(entity, current_user, attrs) do
     changeset(entity, attrs)
-    |> put_assoc(:nation_supul, attrs.nation_supul)
+    |> put_assoc(:group, attrs.group)
+    |> put_assoc(:supul, attrs.supul)
     |> put_assoc(:users, [current_user])
     |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)
@@ -257,7 +256,8 @@ defmodule Demo.Entities.Entity do
   def create_public_entity(entity, attrs) do
     changeset(entity, attrs)
     |> put_assoc(:users, [attrs.user])
-    |> put_assoc(:nation_supul, attrs.nation_supul)
+    |> put_assoc(:group, attrs.group)
+    |> put_assoc(:supul, attrs.supul)
     |> put_assoc(:income_statement, attrs.is)
     |> put_assoc(:balance_sheet, attrs.bs)
     |> put_assoc(:financial_report, attrs.fr)

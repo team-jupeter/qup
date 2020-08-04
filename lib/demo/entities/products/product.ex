@@ -1,8 +1,8 @@
-defmodule Demo.Entities.Product do
+defmodule Demo.Products.Product do
   use Ecto.Schema
   import Ecto.Changeset 
-  # alias Demo.Entities.Entity
-  alias Demo.Entities.Product
+  # alias Demo.Products.Entity
+  alias Demo.Products.Product
   alias Demo.Repo
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -11,7 +11,7 @@ defmodule Demo.Entities.Product do
   schema "products" do
     field :type, :string
     field :name, :string
-    field :price, :decimal
+    field :price, :decimal 
     field :quantity, :decimal
     field :stars, :decimal
     field :pvr, :decimal #? price to value ratio 가성비 
@@ -34,11 +34,12 @@ defmodule Demo.Entities.Product do
     has_many :documents, Demo.Documents.Document
     
     embeds_many :comments, Demo.Entities.CommentEmbed
-    embeds_many :product_logs, Demo.Entities.ProductLogEmbed
+    embeds_many :product_logs, Demo.Products.ProductLogEmbed
 
-    belongs_to :gpc_code, Demo.Entities.GPCCode
-    belongs_to :biz_category, Demo.Entities.BizCategory
-    belongs_to :entity, Demo.Entities.Entity
+    belongs_to :gpc_code, Demo.Products.GPCCode, type: :binary_id, on_replace: :delete 
+    belongs_to :biz_category, Demo.Entities.BizCategory, type: :binary_id, on_replace: :delete
+    belongs_to :entity, Demo.Entities.Entity, type: :binary_id, on_replace: :delete
+    belongs_to :gab, Demo.Gabs.Gab, type: :binary_id, on_replace: :delete
 
     # many_to_many(
     #   :entities,

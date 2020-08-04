@@ -1,0 +1,13 @@
+<h1>Show Tel</h1>
+
+<ul>
+
+  <li>
+    <strong>Number:</strong>
+    <%= @tel.number %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.tel_path(@conn, :edit, @tel) %></span>
+<span><%= link "Back", to: Routes.tel_path(@conn, :index) %></span>

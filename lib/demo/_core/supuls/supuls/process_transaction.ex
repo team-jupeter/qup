@@ -163,7 +163,7 @@ defmodule Demo.Supuls.ProcessTransaction do
       Repo.one(from a in BalanceSheet, where: a.entity_id == ^transaction.erl_id, select: a)
 
     # ? update BS or IS of erl's or erl's family, supul, state_supul, and nation_supul.
-    BalanceSheets.minus_gab_balance(erl_bs, %{amount: transaction.abc_amount}) |> IO.inspect()
+    BalanceSheets.minus_gab_balance(erl_bs, %{amount: transaction.abc_amount})
 
     IO.puts("erl_family_BS")
     erl_family_BS =
@@ -174,7 +174,7 @@ defmodule Demo.Supuls.ProcessTransaction do
 
 
     BalanceSheets.minus_gab_balance(erl_family_BS, %{amount: transaction.abc_amount})
-    |> IO.inspect()
+
 
     IO.puts("erl_supul_BS")
     erl_supul_BS =
@@ -202,7 +202,6 @@ defmodule Demo.Supuls.ProcessTransaction do
     IO.puts("erl_state_supul_BS")
 
     BalanceSheets.minus_gab_balance(erl_state_supul_BS, %{amount: transaction.abc_amount})
-    |> IO.inspect()
 
     erl_nation_supul_BS =
       Repo.one(
@@ -486,7 +485,7 @@ defmodule Demo.Supuls.ProcessTransaction do
   defp update_ssu_public_IS(transaction) do
     # ? trader can be either erl or erl
     # ? Update IS of trader, trader's family, supul, state_supul, and nation_supul.
-    ssu_IS = Repo.one(from a in AccountBook, where: a.entity_id == ^transaction.ssu_id, select: a)
+    ssu_IS = Repo.one(from a in IncomeStatement, where: a.entity_id == ^transaction.ssu_id, select: a)
 
     IncomeStatements.add_revenue(ssu_IS, %{amount: transaction.abc_amount})
 
@@ -632,7 +631,7 @@ defmodule Demo.Supuls.ProcessTransaction do
 
     # ? ts of both
     IO.inspect "transaction.abc_amount"
-    IO.inspect transaction.abc_amount
+
     BalanceSheets.renew_ts(%{amount: transaction.abc_amount}, erl, ssu, openhash)
     GabAccounts.renew_ts(%{amount: transaction.abc_amount}, erl, ssu)
   end

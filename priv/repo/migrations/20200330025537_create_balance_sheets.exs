@@ -5,7 +5,6 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
     create table(:balance_sheets, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :entity_name, :string
-      add :cash, :decimal, precision: 12, scale: 2, default: 0.0
       add :marketable_securities, :decimal, precision: 12, scale: 2, default: 0.0
       add :prepaid_expenses, :decimal, precision: 12, scale: 2, default: 0.0
       add :accounts_receivable, :decimal, precision: 12, scale: 2, default: 0.0
@@ -22,11 +21,16 @@ defmodule Demo.Repo.Migrations.CreateBalanceSheets do
       add :retained_earnings, :decimal, precision: 12, scale: 2, default: 0.0
       add :treasury_stock, :decimal, precision: 12, scale: 2, default: 0.0
 
-      add :gab_balance, :decimal, precision: 12, scale: 2
+      add :gab_balance, :decimal, precision: 12, scale: 2, default: 0.0
 
+      add :t1, :decimal, precision: 12, scale: 2, default: 0.0 
+      add :t2, :decimal, precision: 12, scale: 2, default: 0.0 
+      add :t3, :decimal, precision: 12, scale: 2, default: 0.0 
+      add :t4, :decimal, precision: 12, scale: 2, default: 0.0 
+      add :t5, :decimal, precision: 12, scale: 2, default: 0.0 
+      
       add(:ts, {:array, :map}, default: [])
-      add(:t2s, {:array, :map}, default: []) 
-      add(:t3s, {:array, :jsonb}, default: [])
+
 
       add :financial_report_id, references(:financial_reports, type: :uuid, null: false)
       add :entity_id, references(:entities, type: :uuid, null: false)

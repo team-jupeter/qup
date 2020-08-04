@@ -71,7 +71,7 @@ hong_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong
 tomi_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi_entity.id}) |> Repo.insert!
 tesla_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tesla_entity.id}) |> Repo.insert!
 
-hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW", ts: [%{hankyung: Decimal.new(1000.00)}], cashes: [%{KRW: Decimal.new(1000000.00)}]}) |> Repo.insert!
+hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_change_sheet, %GabBalanceSheet{monetary_unit: "KRW", ts: [%{hankyung: Decimal.new(1000.00)}], cashes: [%{KRW: Decimal.new(1000000.00)}]}) |> Repo.insert!
 hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{cash: Decimal.new(50000000.00)}) |> Repo.insert!
 tomi_entity_BS = Ecto.build_assoc(tomi_entity_FR, :balance_sheet, %BalanceSheet{fixed_assets: [%{building: 1.0}]}) |> Repo.insert!
 tesla_entity_BS = Ecto.build_assoc(tesla_entity_FR, :balance_sheet, %BalanceSheet{inventory: []}) |> Repo.insert!
@@ -168,8 +168,8 @@ invoice = Ecto.build_assoc(transaction_1, :invoice, invoice)
 
 #? Adjust balance_sheet of both.
 #? Hankyung GAB
-# hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_sheet]).financial_report
-# hankyung_gab_BS = hankyung_gab_FR.gab_balance_sheet
+# hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_change_sheet]).financial_report
+# hankyung_gab_BS = hankyung_gab_FR.gab_change_sheet
 
 
 new_t1s = Enum.map(hankyung_gab_BS.t1s, fn elem ->

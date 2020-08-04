@@ -4,10 +4,17 @@ defmodule Demo.Repo.Migrations.CreateGabAccounts do
   def change do
     create table(:gab_accounts, primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :owner, :string
+      add :entity_name, :string
       add :credit_limit, :string
       add :gab_balance, :decimal, default: 0.0
-  
+      add :unique_digits, :string
+
+      add :t1, :decimal, default: 0.0
+      add :t2, :decimal, default: 0.0
+      add :t3, :decimal, default: 0.0
+      add :t4, :decimal, default: 0.0
+      add :t5, :decimal, default: 0.0 
+
       add :entity_id, references(:entities, type: :uuid, null: false)
       add :group_id, references(:groups, type: :uuid, null: false)
       add :family_id, references(:families, type: :uuid, null: false)

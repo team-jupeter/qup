@@ -1,4 +1,4 @@
-defmodule Demo.Entities.ProductAnnotation do
+defmodule Demo.Products.ProductAnnotation do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,7 +8,7 @@ defmodule Demo.Entities.ProductAnnotation do
     field :star, :integer
 
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
-    belongs_to :product, Demo.Entities.Product, type: :binary_id
+    belongs_to :product, Demo.Products.Product, type: :binary_id
 
     timestamps()
   end

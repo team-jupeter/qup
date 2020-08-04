@@ -2,8 +2,9 @@
 defmodule DemoWeb.ProductController do
   use DemoWeb, :controller
 
-  alias Demo.Entities.Products
-  alias Demo.Entities.Product
+  alias Demo.Products
+  alias Demo.Products.Product
+  alias Demo.Entities
  
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show, :delete, :update]
 
@@ -13,23 +14,23 @@ defmodule DemoWeb.ProductController do
   end 
  
   def index(conn, _params, current_entity) do
-    products = Products.list_entity_products(current_entity) 
+    products = Entities.list_entity_products(current_entity) 
     render(conn, "index.html", products: products)
   end 
 
   def show(conn, %{"id" => id}, current_entity) do
-    product = Products.get_entity_product!(current_entity, id) 
+    product = Entities.get_entity_product!(current_entity, id) 
     render(conn, "show.html", product: product) 
   end
   
   def edit(conn, %{"id" => id}, current_entity) do
-    product = Products.get_entity_product!(current_entity, id) 
+    product = Entities.get_entity_product!(current_entity, id) 
     changeset = Products.change_product(product)
     render(conn, "edit.html", product: product, changeset: changeset)
   end 
 
   def update(conn, %{"id" => id, "product" => product_params}, current_entity) do
-    product = Products.get_entity_product!(current_entity, id) 
+    product = Entities.get_entity_product!(current_entity, id) 
  
     case Products.update_product(product, product_params) do
       {:ok, product} ->
@@ -43,7 +44,7 @@ defmodule DemoWeb.ProductController do
   end
 
   def delete(conn, %{"id" => id}, current_entity) do
-    product = Products.get_entity_product!(current_entity, id) 
+    product = Entities.get_entity_product!(current_entity, id) 
 
     {:ok, _product} = Products.delete_product(product)
 

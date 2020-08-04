@@ -11,7 +11,13 @@ defmodule Demo.Reports.BalanceSheet do
     field :accounts_receivable, :decimal, precision: 12, scale: 2, default: 0.0
     field :accrued_liabilities, :decimal, precision: 12, scale: 2, default: 0.0
     field :additional_paid_in_capital, :decimal, precision: 12, scale: 2, default: 0.0
-    field :cash, :decimal, precision: 12, scale: 2, default: 0.0
+    
+    field :t1, :decimal, precision: 12, scale: 2, default: 0.0
+    field :t2,:decimal, precision: 12, scale: 2, default: 0.0
+    field :t3,:decimal, precision: 12, scale: 2, default: 0.0
+    field :t4,:decimal, precision: 12, scale: 2, default: 0.0
+    field :t5,:decimal, precision: 12, scale: 2, default: 0.0
+
     field :customer_prepayments, :decimal, precision: 12, scale: 2, default: 0.0
     field :fixed_assets, {:array, :map}, default: []
     field :inventory, {:array, :map}, default: []
@@ -27,8 +33,6 @@ defmodule Demo.Reports.BalanceSheet do
     field :gab_balance, :decimal, precision: 12, scale: 2, default: 0.0
 
     embeds_many :ts, Demo.ABC.T1, on_replace: :delete
-    embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
-    embeds_many :t3s, Demo.ABC.T3, on_replace: :delete
  
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
     belongs_to :group, Demo.Groups.Group, type: :binary_id
@@ -48,7 +52,9 @@ defmodule Demo.Reports.BalanceSheet do
     :accounts_receivable,
     :accrued_liabilities,
     :additional_paid_in_capital,
-    :cash,
+
+    :t1, :t2, :t3, :t4, :t5,
+
     :customer_prepayments,
     :fixed_assets,
     :inventory, 

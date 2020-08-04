@@ -11,8 +11,8 @@
     <td><%= @balance_sheet.gab_balance %></td>
     </tr>
     <tr>
-    <td>Cash</td>
-    <td><%= @balance_sheet.cash %></td>
+    <td>T1</td>
+    <td><%= @balance_sheet.t1 %></td>
     </tr>
     <tr>
     <td>Accounts Payable</td>

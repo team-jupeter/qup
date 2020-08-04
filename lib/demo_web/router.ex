@@ -53,7 +53,6 @@ defmodule DemoWeb.Router do
     live "/invoices-live/:id/edit", InvoiceLive.Edit
 
 
-
     live "/aviation/page/:page", Aviation.Index
     live "/aviation", Aviation.Index
     live "/aviation-auto-scroll", Aviation.IndexAutoScroll
@@ -93,6 +92,7 @@ defmodule DemoWeb.Router do
       get "/payload", TransactionController, :payload, as: :payload
     end
     resources "/jangs", JangController
+    resources "/tels", TelController
 
   end
 
@@ -144,6 +144,13 @@ defmodule DemoWeb.Router do
     pipe_through [:browser]
 
     resources "/tickets", TicketController
+  end
+
+  scope "/gab", DemoWeb do
+    pipe_through [:browser]
+
+    resources "/", GABController
+    resources "/money_pools", MoneyPoolController
   end
 
 

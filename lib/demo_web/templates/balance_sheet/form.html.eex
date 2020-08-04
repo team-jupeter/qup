@@ -21,10 +21,6 @@
   <%= text_input f, :additional_paid_in_capital %>
   <%= error_tag f, :additional_paid_in_capital %>
 
-  <%= label f, :cash %>
-  <%= text_input f, :cash %>
-  <%= error_tag f, :cash %>
-
   <%= label f, :customer_prepayments %>
   <%= text_input f, :customer_prepayments %>
   <%= error_tag f, :customer_prepayments %>

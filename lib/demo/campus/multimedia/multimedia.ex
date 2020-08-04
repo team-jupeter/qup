@@ -5,7 +5,7 @@ defmodule Demo.Multimedia do
   alias Demo.Multimedia.Video
   alias Demo.Multimedia.Category
   alias Demo.Accounts.User
-  alias Demo.Entities.Product
+  alias Demo.Products.Product
 
   def create_category!(name) do
     Repo.insert!(%Category{name: name}, on_conflict: :nothing)

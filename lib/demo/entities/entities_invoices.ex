@@ -10,7 +10,7 @@ defmodule Demo.Products.EntitiesInvoices do
   
     schema "entities_invoices" do
       belongs_to :entity, Demo.Entities.Entity, type: :binary_id
-      belongs_to :invoice, Demo.Entities.Product, type: :binary_id
+      belongs_to :invoice, Demo.Products.Product, type: :binary_id
       timestamps()
     end
   end

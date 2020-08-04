@@ -9,6 +9,10 @@
       </thead>
   <tbody>
    <tr> 
+    <td>GAB Balance:</td>
+    <td><%= @gab_account.gab_balance %></td>
+  </tr>
+   <tr> 
     <td>Credit limit:</td>
     <td><%= @gab_account.credit_limit %></td>
   </tr>

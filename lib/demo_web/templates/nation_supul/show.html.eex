@@ -45,6 +45,11 @@
   <tbody>
 
     <tr>
+      <td>gab_balance</td>
+      <td><%= @nation_supul.gab_balance %></td>
+    </tr> 
+
+    <tr>
       <td>current_hash</td>
       <td><%= @nation_supul.current_hash %></td>
     </tr> 

@@ -6,7 +6,7 @@
   </thead> 
   <tbody>
     <tr>
-      <td>GAB Change</td>
+      <td>GAB Balance</td>
       <td><%= @entity.gab_balance %></td>
     </tr> 
     <tr>

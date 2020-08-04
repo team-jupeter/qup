@@ -13,7 +13,7 @@ defmodule Demo.GabAccounts do
   end
 
   def get_gab_account!(id), do: Repo.get!(GabAccount, id)
-  
+
   def get_entity_gab_account(entity_id) do
     GabAccount
     |> entity_gab_account_query(entity_id)
@@ -22,7 +22,7 @@ defmodule Demo.GabAccounts do
 
   defp entity_gab_account_query(query, entity_id) do
     from(f in query, where: f.entity_id == ^entity_id)
-  end 
+  end
 
   def create_gab_account(attrs \\ %{}) do
     %GabAccount{}
@@ -30,24 +30,19 @@ defmodule Demo.GabAccounts do
     |> Repo.insert()
   end
 
-
   def update_gab_account(%GabAccount{} = gab_account, attrs) do
     gab_account
     |> GabAccount.changeset(attrs)
     |> Repo.update()
   end
 
-
   def delete_gab_account(%GabAccount{} = gab_account) do
     Repo.delete(gab_account)
   end
 
-
   def change_gab_account(%GabAccount{} = gab_account) do
     GabAccount.changeset(gab_account, %{})
   end
-
-
 
   alias Demo.ABC.T1
 
@@ -60,30 +55,21 @@ defmodule Demo.GabAccounts do
     buyer_GA = Repo.one(query)
 
     # ? renew Buyer's BS T1
-    t_change = Decimal.sub(buyer_GA.gab_balance, attrs.amount)
+    t_change = Decimal.sub(buyer_GA.t1, attrs.amount)
 
-    ts = [
-      %T1{
-        input_name: buyer.name,
-        output_name: buyer.name,
-        amount: t_change
-      }
-    ]
+    IO.inspect "t_change"
+    IO.inspect t_change
 
-    buyer_GA
-    |> GabAccount.changeset()
-    |> Ecto.Changeset.put_embed(:ts, ts)
-    |> Repo.update!()
-
-    # ? renew Seller's BS
-    # ? prepare t struct to pay.
-    t_payment = %{
+    attrs = %{
+      gab_balance: t_change,
       ts: %T1{
         input_name: buyer.name,
         output_name: seller.name,
         amount: attrs.amount
       }
     }
+
+    add_ts(buyer_GA, attrs)
 
     # ? Find seller's GA
     query =
@@ -92,11 +78,12 @@ defmodule Demo.GabAccounts do
 
     seller_GA = Repo.one(query)
 
-    add_ts(seller_GA, t_payment) 
+    add_ts(seller_GA, attrs)
   end
 
   def add_ts(%GabAccount{} = gab_account, attrs) do
     ts = [attrs.ts | gab_account.ts]
+    
     gab_account
     |> GabAccount.changeset()
     |> Ecto.Changeset.put_embed(:ts, ts)
