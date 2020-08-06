@@ -8,6 +8,7 @@ defmodule Demo.Repo.Migrations.CreateGabAccounts do
       add :credit_limit, :string
       add :gab_balance, :decimal, default: 0.0
       add :unique_digits, :string
+      add :default_fiat, :string
 
       add :t1, :decimal, default: 0.0
       add :t2, :decimal, default: 0.0

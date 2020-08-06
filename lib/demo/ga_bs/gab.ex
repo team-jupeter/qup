@@ -10,7 +10,7 @@ defmodule Demo.Gabs.Gab do
     field :unique_digits, :string
     field :tels, {:array, :string}
 
-    has_one :money_pool, Demo.MoneyPools.MoneyPool
+    has_one :fiat_pool, Demo.FiatPools.FiatPool
     belongs_to :nation, Demo.Nations.Nation
 
     timestamps()

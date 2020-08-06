@@ -1,0 +1,18 @@
+<h1>Show T3</h1>
+
+<ul>
+
+  <li>
+    <strong>Current owner:</strong>
+    <%= @t3.current_owner %>
+  </li>
+
+  <li>
+    <strong>Book price:</strong>
+    <%= @t3.book_price %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.t3_path(@conn, :edit, @t3) %></span>
+<span><%= link "Back", to: Routes.t3_path(@conn, :index) %></span>

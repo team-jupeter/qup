@@ -1,0 +1,5 @@
+<h1>Edit T2 list</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.t2_list_path(@conn, :update, @t2_list)) %>
+
+<span><%= link "Back", to: Routes.t2_list_path(@conn, :index) %></span>

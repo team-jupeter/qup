@@ -1,0 +1,83 @@
+<h1>Show T2 list</h1>
+
+<ul>
+
+  <li>
+    <strong>Usd:</strong>
+    <%= @t2_list.USD %>
+  </li>
+
+  <li>
+    <strong>Eur:</strong>
+    <%= @t2_list.EUR %>
+  </li>
+
+  <li>
+    <strong>Jpy:</strong>
+    <%= @t2_list.JPY %>
+  </li>
+
+  <li>
+    <strong>Gbp:</strong>
+    <%= @t2_list.GBP %>
+  </li>
+
+  <li>
+    <strong>Aud:</strong>
+    <%= @t2_list.AUD %>
+  </li>
+
+  <li>
+    <strong>Cad:</strong>
+    <%= @t2_list.CAD %>
+  </li>
+
+  <li>
+    <strong>Chf:</strong>
+    <%= @t2_list.CHF %>
+  </li>
+
+  <li>
+    <strong>Cny:</strong>
+    <%= @t2_list.CNY %>
+  </li>
+
+  <li>
+    <strong>Sek:</strong>
+    <%= @t2_list.SEK %>
+  </li>
+
+  <li>
+    <strong>Mxn:</strong>
+    <%= @t2_list.MXN %>
+  </li>
+
+  <li>
+    <strong>Nzd:</strong>
+    <%= @t2_list.NZD %>
+  </li>
+
+  <li>
+    <strong>Sgd:</strong>
+    <%= @t2_list.SGD %>
+  </li>
+
+  <li>
+    <strong>Hkd:</strong>
+    <%= @t2_list.HKD %>
+  </li>
+
+  <li>
+    <strong>Nok:</strong>
+    <%= @t2_list.NOK %>
+  </li>
+
+  <li>
+    <strong>Krw:</strong>
+    <%= @t2_list.KRW %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.t2_list_path(@conn, :edit, @t2_list) %></span>
+<span><%= link "Back", to: Routes.t2_list_path(@conn, :index) %></span>

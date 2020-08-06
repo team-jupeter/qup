@@ -9,6 +9,7 @@ defmodule Demo.GabAccounts.GabAccount do
     field :entity_name, :string
     field :gab_balance, :decimal, default: 0.0
     field :unique_digits, :string
+    field :default_fiat, :string
 
     field :t1, :decimal, default: 0.0
     field :t2, :decimal, default: 0.0
@@ -29,7 +30,7 @@ defmodule Demo.GabAccounts.GabAccount do
   end
   @fields [
     :t1, :t2, :t3, :t4, :t5,
-    :credit_limit, :entity_name, :gab_balance, :unique_digits, 
+    :credit_limit, :entity_name, :gab_balance, :unique_digits, :default_fiat, 
   ]
   @doc false
   def changeset(gab_account, attrs \\ %{}) do

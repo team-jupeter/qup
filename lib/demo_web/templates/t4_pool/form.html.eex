@@ -1,0 +1,67 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :NYSE %>
+  <%= text_input f, :NYSE %>
+  <%= error_tag f, :NYSE %>
+
+  <%= label f, :NASDAQ %>
+  <%= text_input f, :NASDAQ %>
+  <%= error_tag f, :NASDAQ %>
+
+  <%= label f, :JPX %>
+  <%= text_input f, :JPX %>
+  <%= error_tag f, :JPX %>
+
+  <%= label f, :LSE %>
+  <%= text_input f, :LSE %>
+  <%= error_tag f, :LSE %>
+
+  <%= label f, :SSE %>
+  <%= text_input f, :SSE %>
+  <%= error_tag f, :SSE %>
+
+  <%= label f, :SEHK %>
+  <%= text_input f, :SEHK %>
+  <%= error_tag f, :SEHK %>
+
+  <%= label f, :ENX %>
+  <%= text_input f, :ENX %>
+  <%= error_tag f, :ENX %>
+
+  <%= label f, :SZSE %>
+  <%= text_input f, :SZSE %>
+  <%= error_tag f, :SZSE %>
+
+  <%= label f, :TSX %>
+  <%= text_input f, :TSX %>
+  <%= error_tag f, :TSX %>
+
+  <%= label f, :BSE %>
+  <%= text_input f, :BSE %>
+  <%= error_tag f, :BSE %>
+
+  <%= label f, :NSE %>
+  <%= text_input f, :NSE %>
+  <%= error_tag f, :NSE %>
+
+  <%= label f, :DB %>
+  <%= text_input f, :DB %>
+  <%= error_tag f, :DB %>
+
+  <%= label f, :SIX %>
+  <%= text_input f, :SIX %>
+  <%= error_tag f, :SIX %>
+
+  <%= label f, :KRX %>
+  <%= text_input f, :KRX %>
+  <%= error_tag f, :KRX %>
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+<% end %>

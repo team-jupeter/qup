@@ -1,0 +1,28 @@
+<h1>Listing T3 lists</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Num of stocks</th>
+      <th>Price per share</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for t3_list <- @t3_lists do %>
+    <tr>
+      <td><%= t3_list.num_of_stocks %></td>
+      <td><%= t3_list.price_per_share %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.t3_list_path(@conn, :show, t3_list) %></span>
+        <span><%= link "Edit", to: Routes.t3_list_path(@conn, :edit, t3_list) %></span>
+        <span><%= link "Delete", to: Routes.t3_list_path(@conn, :delete, t3_list), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New T3 list", to: Routes.t3_list_path(@conn, :new) %></span>

@@ -1,11 +1,11 @@
-defmodule Demo.MoneyPools.MoneyPool do
+defmodule Demo.FiatPools.FiatPool do
   use Ecto.Schema
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
-  schema "money_pools" do
+  schema "fiat_pools" do
     field :t1, :decimal, default: 0.0 #? A specific fiat currency
     field :t2, :decimal, integer: 0 #? neuralized fiat curency
     field :t3, :decimal, integer: 0 #? PASS stock pools
@@ -24,8 +24,8 @@ defmodule Demo.MoneyPools.MoneyPool do
   ]
 
   @doc false
-  def changeset(money_pool, attrs) do
-    money_pool
+  def changeset(fiat_pool, attrs) do
+    fiat_pool
     |> cast(attrs, @fields)
     |> validate_required([])
   end

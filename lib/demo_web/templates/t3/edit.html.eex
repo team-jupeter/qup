@@ -1,0 +1,5 @@
+<h1>Edit T3</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.t3_path(@conn, :update, @t3)) %>
+
+<span><%= link "Back", to: Routes.t3_path(@conn, :index) %></span>

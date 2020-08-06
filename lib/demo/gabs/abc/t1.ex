@@ -11,7 +11,8 @@ defmodule Demo.ABC.T1 do
     field :output_name, :string
     field :output_id, :string
     field :amount, :decimal, precision: 12, scale: 2
-
+    field :currency, :string
+    
     #? locking script and conditions of spending moneny by recipient.
     embeds_one :abc_locker, Demo.ABC.ABCLockeEmbed
 

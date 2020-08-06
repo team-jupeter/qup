@@ -18,6 +18,7 @@ defmodule Demo.Products.Product do
     field :description, :string 
     field :document_hash, :string
     field :owner, {:array, :string}
+    field :currency, :string
 
     field :seller_id, :binary_id
     field :seller_name, :string
@@ -54,7 +55,7 @@ defmodule Demo.Products.Product do
 
   @fields [
     :type, :name, :arrived_when, :stored_at, :managed_by, :expiration_date, :produced_by, 
-    :name, :price, :quantity, :stars, :pvr, :description, :biz_category_id,
+    :name, :price, :quantity, :stars, :pvr, :description, :biz_category_id, :currency, 
     :seller_name, :seller_id, :seller_supul_name, :seller_supul_id
   ]
   @doc false

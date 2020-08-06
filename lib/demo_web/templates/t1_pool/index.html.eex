@@ -1,0 +1,54 @@
+<h1>Listing T1 lists</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Usd</th>
+      <th>Eur</th>
+      <th>Jpy</th>
+      <th>Gbp</th>
+      <th>Aud</th>
+      <th>Cad</th>
+      <th>Chf</th>
+      <th>Cny</th>
+      <th>Sek</th>
+      <th>Mxn</th>
+      <th>Nzd</th>
+      <th>Sgd</th>
+      <th>Hkd</th>
+      <th>Nok</th>
+      <th>Krw</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for t1_list <- @t1_lists do %>
+    <tr>
+      <td><%= t1_list.USD %></td>
+      <td><%= t1_list.EUR %></td>
+      <td><%= t1_list.JPY %></td>
+      <td><%= t1_list.GBP %></td>
+      <td><%= t1_list.AUD %></td>
+      <td><%= t1_list.CAD %></td>
+      <td><%= t1_list.CHF %></td>
+      <td><%= t1_list.CNY %></td>
+      <td><%= t1_list.SEK %></td>
+      <td><%= t1_list.MXN %></td>
+      <td><%= t1_list.NZD %></td>
+      <td><%= t1_list.SGD %></td>
+      <td><%= t1_list.HKD %></td>
+      <td><%= t1_list.NOK %></td>
+      <td><%= t1_list.KRW %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.t1_list_path(@conn, :show, t1_list) %></span>
+        <span><%= link "Edit", to: Routes.t1_list_path(@conn, :edit, t1_list) %></span>
+        <span><%= link "Delete", to: Routes.t1_list_path(@conn, :delete, t1_list), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New T1 list", to: Routes.t1_list_path(@conn, :new) %></span>

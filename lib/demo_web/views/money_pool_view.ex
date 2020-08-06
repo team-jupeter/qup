@@ -1,3 +1,3 @@
-defmodule DemoWeb.MoneyPoolView do
+defmodule DemoWeb.FiatPoolView do
   use DemoWeb, :view
 end

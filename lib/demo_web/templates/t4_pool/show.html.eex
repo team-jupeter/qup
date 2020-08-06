@@ -1,0 +1,78 @@
+<h1>Show T4 list</h1>
+
+<ul>
+
+  <li>
+    <strong>Nyse:</strong>
+    <%= @t4_list.NYSE %>
+  </li>
+
+  <li>
+    <strong>Nasdaq:</strong>
+    <%= @t4_list.NASDAQ %>
+  </li>
+
+  <li>
+    <strong>Jpx:</strong>
+    <%= @t4_list.JPX %>
+  </li>
+
+  <li>
+    <strong>Lse:</strong>
+    <%= @t4_list.LSE %>
+  </li>
+
+  <li>
+    <strong>Sse:</strong>
+    <%= @t4_list.SSE %>
+  </li>
+
+  <li>
+    <strong>Sehk:</strong>
+    <%= @t4_list.SEHK %>
+  </li>
+
+  <li>
+    <strong>Enx:</strong>
+    <%= @t4_list.ENX %>
+  </li>
+
+  <li>
+    <strong>Szse:</strong>
+    <%= @t4_list.SZSE %>
+  </li>
+
+  <li>
+    <strong>Tsx:</strong>
+    <%= @t4_list.TSX %>
+  </li>
+
+  <li>
+    <strong>Bse:</strong>
+    <%= @t4_list.BSE %>
+  </li>
+
+  <li>
+    <strong>Nse:</strong>
+    <%= @t4_list.NSE %>
+  </li>
+
+  <li>
+    <strong>Db:</strong>
+    <%= @t4_list.DB %>
+  </li>
+
+  <li>
+    <strong>Six:</strong>
+    <%= @t4_list.SIX %>
+  </li>
+
+  <li>
+    <strong>Krx:</strong>
+    <%= @t4_list.KRX %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.t4_list_path(@conn, :edit, @t4_list) %></span>
+<span><%= link "Back", to: Routes.t4_list_path(@conn, :index) %></span>

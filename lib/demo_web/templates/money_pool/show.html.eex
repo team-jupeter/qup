@@ -4,40 +4,40 @@
 
   <li>
     <strong>Krw:</strong>
-    <%= @money_pool.krw %>
+    <%= @fiat_pool.krw %>
   </li>
 
   <li>
     <strong>Usd:</strong>
-    <%= @money_pool.usd %>
+    <%= @fiat_pool.usd %>
   </li>
 
   <li>
     <strong>Gbp:</strong>
-    <%= @money_pool.gbp %>
+    <%= @fiat_pool.gbp %>
   </li>
 
   <li>
     <strong>Jpy:</strong>
-    <%= @money_pool.jpy %>
+    <%= @fiat_pool.jpy %>
   </li>
 
   <li>
     <strong>Cny:</strong>
-    <%= @money_pool.cny %>
+    <%= @fiat_pool.cny %>
   </li>
 
   <li>
     <strong>Eur:</strong>
-    <%= @money_pool.eur %>
+    <%= @fiat_pool.eur %>
   </li>
 
   <li>
     <strong>Cad:</strong>
-    <%= @money_pool.cad %>
+    <%= @fiat_pool.cad %>
   </li>
 
 </ul>
 
-<span><%= link "Edit", to: Routes.money_pool_path(@conn, :edit, @money_pool) %></span>
-<span><%= link "Back", to: Routes.money_pool_path(@conn, :index) %></span>
+<span><%= link "Edit", to: Routes.fiat_pool_path(@conn, :edit, @fiat_pool) %></span>
+<span><%= link "Back", to: Routes.fiat_pool_path(@conn, :index) %></span>

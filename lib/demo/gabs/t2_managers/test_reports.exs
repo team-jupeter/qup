@@ -264,17 +264,17 @@ item =
 
 
 # ? init T2 Manager for Korean capital market.
-alias Demo.ABC.T2Pool
+alias Demo.ABC.T2List
 alias Demo.ABC.T2Item
 
-t2_korea = T2Pool.changeset(%T2Pool{}) |> Repo.insert!
+t2_korea = T2List.changeset(%T2List{}) |> Repo.insert!
 
 tomi_stock =
   T2Item.changeset(
     %T2Item{},
     %{
       entity_id: tomi_entity.id, 
-      t2_pool_id: t2_korea.id, 
+      t2_list_id: t2_korea.id, 
       stock_price: tomi_entity_FR.stock_price,
       amount: Decimal.from_float(45345.45),
       proportion_in_pool: Decimal.from_float(0.45), #? proportion in the pool
@@ -284,7 +284,7 @@ tomi_stock =
   ) |> Repo.insert!
 
 
-Repo.preload(tomi_stock, [:entity, :t2_pool])
+Repo.preload(tomi_stock, [:entity, :t2_list])
 t2_korea = Repo.preload(t2_korea, [:t2_items])
 
 

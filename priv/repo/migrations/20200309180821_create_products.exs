@@ -3,8 +3,8 @@ defmodule Demo.Repo.Migrations.CreateProducts do
 
   def change do
     create table(:products, primary_key: false) do
-      add :type, :string
       add :id, :uuid, primary_key: true
+      add :type, :string
       add :name, :string 
       add :price, :decimal
       add :quantity, :decimal
@@ -13,6 +13,7 @@ defmodule Demo.Repo.Migrations.CreateProducts do
       add :description, :text 
       add :document_hash, :string
       add :owner, {:array, :string}
+      add :currency, :string
 
       add :seller_id, :binary_id
       add :seller_name, :string

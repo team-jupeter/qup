@@ -11,7 +11,7 @@ defmodule Demo.Repo.Migrations.CreateT2Items do
       add :intrinsic_price_gab, :decimal, precision: 7, scale: 2 #? difference between market price and re_fmv.
   
       add :entity_id, references(:entities, type: :uuid, null: false)
-      add :t2_pool_id, references(:t2_pools, type: :uuid, null: false)
+      add :t2_list_id, references(:t2_lists, type: :uuid, null: false)
 
       timestamps()
     end
