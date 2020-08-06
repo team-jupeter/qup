@@ -150,6 +150,7 @@ defmodule DemoWeb.Router do
     pipe_through [:browser]
 
     resources "/", GABController
+    resources "/money_pools", MoneyPoolController
     resources "/fiat_pools", FiatPoolController
     resources "/t1_lists", T1ListController
     resources "/t2_lists", T2ListController

@@ -1,8 +1,8 @@
-defmodule Demo.Repo.Migrations.CreateFiatPools do
+defmodule Demo.Repo.Migrations.CreateMoneyPools do
   use Ecto.Migration
 
   def change do
-    create table(:fiat_pools, primary_key: false) do
+    create table(:money_pools, primary_key: false) do
       add :id, :uuid, primary_key: true
 
       add :t1, :decimal, default: 0.0 #? fiat currency

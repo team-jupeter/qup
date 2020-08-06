@@ -15,24 +15,24 @@
     </tr>
   </thead>
   <tbody>
-<%= for fiat_pool <- @fiat_pools do %>
+<%= for money_pool <- @money_pools do %>
     <tr>
-      <td><%= fiat_pool.krw %></td>
-      <td><%= fiat_pool.usd %></td>
-      <td><%= fiat_pool.gbp %></td>
-      <td><%= fiat_pool.jpy %></td>
-      <td><%= fiat_pool.cny %></td>
-      <td><%= fiat_pool.eur %></td>
-      <td><%= fiat_pool.cad %></td>
+      <td><%= money_pool.krw %></td>
+      <td><%= money_pool.usd %></td>
+      <td><%= money_pool.gbp %></td>
+      <td><%= money_pool.jpy %></td>
+      <td><%= money_pool.cny %></td>
+      <td><%= money_pool.eur %></td>
+      <td><%= money_pool.cad %></td>
 
       <td>
-        <span><%= link "Show", to: Routes.fiat_pool_path(@conn, :show, fiat_pool) %></span>
-        <span><%= link "Edit", to: Routes.fiat_pool_path(@conn, :edit, fiat_pool) %></span>
-        <span><%= link "Delete", to: Routes.fiat_pool_path(@conn, :delete, fiat_pool), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <span><%= link "Show", to: Routes.money_pool_path(@conn, :show, money_pool) %></span>
+        <span><%= link "Edit", to: Routes.money_pool_path(@conn, :edit, money_pool) %></span>
+        <span><%= link "Delete", to: Routes.money_pool_path(@conn, :delete, money_pool), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<span><%= link "New Money pool", to: Routes.fiat_pool_path(@conn, :new) %></span>
+<span><%= link "New Money pool", to: Routes.money_pool_path(@conn, :new) %></span>

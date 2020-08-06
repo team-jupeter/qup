@@ -18,7 +18,7 @@ defmodule DemoWeb.FiatPoolController do
     case FiatPools.create_fiat_pool(fiat_pool_params) do
       {:ok, fiat_pool} ->
         conn
-        |> put_flash(:info, "Money pool created successfully.")
+        |> put_flash(:info, "Fiat pool created successfully.")
         |> redirect(to: Routes.fiat_pool_path(conn, :show, fiat_pool))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -43,7 +43,7 @@ defmodule DemoWeb.FiatPoolController do
     case FiatPools.update_fiat_pool(fiat_pool, fiat_pool_params) do
       {:ok, fiat_pool} ->
         conn
-        |> put_flash(:info, "Money pool updated successfully.")
+        |> put_flash(:info, "Fiat pool updated successfully.")
         |> redirect(to: Routes.fiat_pool_path(conn, :show, fiat_pool))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -56,7 +56,7 @@ defmodule DemoWeb.FiatPoolController do
     {:ok, _fiat_pool} = FiatPools.delete_fiat_pool(fiat_pool)
 
     conn
-    |> put_flash(:info, "Money pool deleted successfully.")
+    |> put_flash(:info, "Fiat pool deleted successfully.")
     |> redirect(to: Routes.fiat_pool_path(conn, :index))
   end
 end

@@ -1,0 +1,71 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :USD %>
+  <%= text_input f, :USD %>
+  <%= error_tag f, :USD %>
+
+  <%= label f, :EUR %>
+  <%= text_input f, :EUR %>
+  <%= error_tag f, :EUR %>
+
+  <%= label f, :JPY %>
+  <%= text_input f, :JPY %>
+  <%= error_tag f, :JPY %>
+
+  <%= label f, :GBP %>
+  <%= text_input f, :GBP %>
+  <%= error_tag f, :GBP %>
+
+  <%= label f, :AUD %>
+  <%= text_input f, :AUD %>
+  <%= error_tag f, :AUD %>
+
+  <%= label f, :CAD %>
+  <%= text_input f, :CAD %>
+  <%= error_tag f, :CAD %>
+
+  <%= label f, :CHF %>
+  <%= text_input f, :CHF %>
+  <%= error_tag f, :CHF %>
+
+  <%= label f, :CNY %>
+  <%= text_input f, :CNY %>
+  <%= error_tag f, :CNY %>
+
+  <%= label f, :SEK %>
+  <%= text_input f, :SEK %>
+  <%= error_tag f, :SEK %>
+
+  <%= label f, :MXN %>
+  <%= text_input f, :MXN %>
+  <%= error_tag f, :MXN %>
+
+  <%= label f, :NZD %>
+  <%= text_input f, :NZD %>
+  <%= error_tag f, :NZD %>
+
+  <%= label f, :SGD %>
+  <%= text_input f, :SGD %>
+  <%= error_tag f, :SGD %>
+
+  <%= label f, :HKD %>
+  <%= text_input f, :HKD %>
+  <%= error_tag f, :HKD %>
+
+  <%= label f, :NOK %>
+  <%= text_input f, :NOK %>
+  <%= error_tag f, :NOK %>
+
+  <%= label f, :KRW %>
+  <%= text_input f, :KRW %>
+  <%= error_tag f, :KRW %>
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+<% end %>

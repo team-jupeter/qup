@@ -1,5 +1,5 @@
 <h1>Edit Money pool</h1>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.fiat_pool_path(@conn, :update, @fiat_pool)) %>
+<%= render "form.html", Map.put(assigns, :action, Routes.money_pool_path(@conn, :update, @money_pool)) %>
 
-<span><%= link "Back", to: Routes.fiat_pool_path(@conn, :index) %></span>
+<span><%= link "Back", to: Routes.money_pool_path(@conn, :index) %></span>
