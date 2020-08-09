@@ -9,7 +9,7 @@
   <tbody> 
     <tr>
       <td>GAB Change</td>
-      <td><%= @group.gab_balance %></td>
+      <td><%= @group.t1_balance %></td>
     </tr> 
     <tr>
       <td>Group Type</td>
@@ -37,6 +37,3 @@
 <span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
 </br>
 <span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>
-
-<span><%= link "Edit", to: Routes.group_path(@conn, :edit, @group) %></span>
-<span><%= link "Back", to: Routes.group_path(@conn, :index) %></span>

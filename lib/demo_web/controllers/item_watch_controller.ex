@@ -2,7 +2,7 @@ defmodule DemoWeb.ItemWatchController do
   use DemoWeb, :controller
 
   alias Demo.Multimedia 
-  alias Demo.Entities 
+  # alias Demo.Entities 
   alias Demo.Products 
 
   def show(conn, %{"id" => id}) do 

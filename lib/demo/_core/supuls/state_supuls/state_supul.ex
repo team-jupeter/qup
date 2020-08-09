@@ -6,7 +6,7 @@ defmodule Demo.StateSupuls.StateSupul do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "state_supuls" do
     field :type, :string 
-    field :gab_balance, :decimal, default: 0.0
+    field :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
     field :state_supul_code, :string
     field :name, :string
     field :nation_name, :string
@@ -41,7 +41,7 @@ defmodule Demo.StateSupuls.StateSupul do
   end
 
   @fields [
-    :gab_balance, :type, :name, :nation_name, :auth_code, :state_supul_code, :hash_chain,
+    :t1_balance, :type, :name, :nation_name, :auth_code, :state_supul_code, :hash_chain,
     :openhash_box, :current_hash, :incoming_hash, :hash_count, :nation_openhash_id,
     :previous_hash, :sender, 
   ]
@@ -93,7 +93,7 @@ defmodule Demo.StateSupuls.StateSupul do
   #   |> put_assoc(:nation_supul, attrs.nation_supul)
   # end 
   @doc false 
-  def changeset(attrs = %{gab_balance: gab_balance}) do
+  def changeset(attrs = %{t1_balance: t1_balance}) do
     %StateSupul{}  
     |> cast(attrs, @fields)
   end
@@ -118,7 +118,7 @@ defmodule Demo.StateSupuls.StateSupul do
     |> put_change(:auth_code, attrs.auth_code)
   end
 
-  def changeset_gab(%StateSupul{} = state_supul, attrs = %{gab_balance: gab_balance}) do
+  def changeset_gab(%StateSupul{} = state_supul, attrs = %{t1_balance: t1_balance}) do
     IO.puts "StateSupul"
     state_supul
     |> cast(attrs, @fields)

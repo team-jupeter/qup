@@ -183,7 +183,7 @@ Invoicies are stored by entities and transactions are stored by supuls.
 transaction = Transaction.changeset(%Transaction{
     abc_input: hong_entity.id,
     abc_output: kipo.id,
-    abc_amount: invoice.total,
+    t1_amount: invoice.total,
     items: [%{report: "final_report"}]
     }) |> Repo.insert!
     
@@ -203,8 +203,8 @@ alias Demo.ABC.T1
 #? Adjust balance_sheet of both.
 #? kipo
 #? The code below NOT consider any other elements in the ts list. We should find out just enough elements to pay the invoice total. 
-new_ts = Enum.map(hong_entity_BS.ts, fn elem ->
-    Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, transaction.abc_amount) end)
+new_ts = Enum.map(hong_entity_BS.t1s, fn elem ->
+    Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, transaction.t1_amount) end)
 end)
 
 hong_entity_BS = change(hong_entity_BS) |> \
@@ -213,8 +213,8 @@ hong_entity_BS = change(hong_entity_BS) |> \
 
 #? kipo Korea
 alias Demo.ABC.T1
-new_ts = Enum.map(kipo_BS.ts, fn elem ->
-    Map.update!(elem, :amount, fn curr_value -> Decimal.add(curr_value, transaction.abc_amount) end)
+new_ts = Enum.map(kipo_BS.t1s, fn elem ->
+    Map.update!(elem, :amount, fn curr_value -> Decimal.add(curr_value, transaction.t1_amount) end)
 end)
 
 

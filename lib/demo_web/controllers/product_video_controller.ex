@@ -4,7 +4,7 @@ defmodule DemoWeb.ProductVideoController do
   alias Demo.Multimedia
   alias Demo.Multimedia.Video
   alias Demo.Products
-  alias Demo.Entities
+  # alias Demo.Entities
 
   plug DemoWeb.ProductAuth when action in [:new, :edit, :create]
 

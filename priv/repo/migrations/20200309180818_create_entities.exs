@@ -28,15 +28,16 @@ defmodule Demo.Repo.Migrations.CreateEntities do
       add :credit_rate, :string #? AAA, ..., FFF => 24 rates
       add :supul_code, :binary_id 
       add :taxation_code, :binary_id 
-
+      
       add :password_hash, :string
-
+      
       add :locked, :boolean, default: false
       add :nation_signature, :text
-
-      add :gab_balance, :decimal, default: 0.0
-
+      
+      add :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
+      
       add :default_group, :boolean, default: false
+      add :default_currency, :string, default: "KRW"
 
       # add :user_id, references(:users, type: :uuid)
       add :nation_id, references(:nations, type: :uuid)

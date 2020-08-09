@@ -6,8 +6,8 @@
   </thead> 
   <tbody>
     <tr>
-      <td>GAB Balance</td>
-      <td><%= @entity.gab_balance %></td>
+      <td>Currency</td>
+      <td><%= @entity.default_currency %></td>
     </tr> 
     <tr>
       <td>Email</td>
@@ -32,7 +32,11 @@
     <ul>
         <li><%= link "GAB Account", to: Routes.gab_account_path(@conn, :show, @entity.id) %></li>
         <li><%= link "Account Book", to: Routes.account_book_path(@conn, :show, @entity.id) %></li>
-        <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @entity.id) %></li>
+        
+        <%= if @entity.income_statement do %>
+          <li><%= link "Income Statement", to: Routes.income_statement_path(@conn, :show, @entity.id) %></li>
+        <% end %>
+        
         <li><%= link "Balance Sheet", to: Routes.balance_sheet_path(@conn, :show, @entity.id) %></li>
         </br>
         <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :show, @entity.id) %></li>

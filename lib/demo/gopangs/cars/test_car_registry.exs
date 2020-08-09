@@ -72,7 +72,7 @@ hong_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong
 tomi_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tomi_entity.id}) |> Repo.insert!
 tesla_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: tesla_entity.id}) |> Repo.insert!
 
-hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW", t1: 9999990.00}) |> Repo.insert!
+hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :t1_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW", t1: 9999990.00}) |> Repo.insert!
 hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{cash: 50000000.00}) |> Repo.insert!
 tomi_entity_BS = Ecto.build_assoc(tomi_entity_FR, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
 tesla_entity_BS = Ecto.build_assoc(tesla_entity_FR, :balance_sheet, %BalanceSheet{inventory: [%{model_y: 25}]}) |> Repo.insert!
@@ -112,7 +112,7 @@ transaction_1 = Transaction.changeset(%Transaction{
 
 item_quantity = Enum.at(invoice.invoice_items, 0).quantity
 transaction_1 = change(transaction_1) \
-    |> Ecto.Changeset.put_change(:abc_amount, invoice.total) \
+    |> Ecto.Changeset.put_change(:t1_amount, invoice.total) \
     |> Ecto.Changeset.put_change(:items, [%{"KRW" => item_quantity}]) \
     |> Repo.update!
 
@@ -123,14 +123,14 @@ invoice = Ecto.build_assoc(transaction_1, :invoice, invoice)
 
 #? Adjust balance_sheet of both.
 #? Hankyung GAB
-hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_sheet]).financial_report
+hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :t1_balance_sheet]).financial_report
 
-hankyung_gab_BS = hankyung_gab_FR.gab_balance_sheet
+hankyung_gab_BS = hankyung_gab_FR.t1_balance_sheet
 hankyung_gab_BS = change(hankyung_gab_BS) |> \
     Ecto.Changeset.put_change(
         :cash, Decimal.add(hankyung_gab_BS.cash, Enum.at(transaction_1.items, 0)["KRW"])) |>  \
     Ecto.Changeset.put_change(:t1, 
-        Decimal.sub(hankyung_gab_BS.t1, transaction_1.abc_amount)) |> Repo.update!
+        Decimal.sub(hankyung_gab_BS.t1, transaction_1.t1_amount)) |> Repo.update!
 
         
 
@@ -144,7 +144,7 @@ hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_change(
         :cash, Decimal.sub(hong_entity_BS.cash,  Enum.at(transaction_1.items, 0)["KRW"])) |> Repo.update!
 
-t1s = [%T1{input: "gab dummy address", amount: transaction_1.abc_amount, output: "hong dummy address"}]
+t1s = [%T1{input: "gab dummy address", amount: transaction_1.t1_amount, output: "hong dummy address"}]
 hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 
@@ -207,7 +207,7 @@ Invoicies are stored by entities and transactions are stored by supuls.
 transaction_2 = Transaction.changeset(%Transaction{
     abc_input: hong_entity.id,
     abc_output: tesla_entity.id,
-    abc_amount: invoice.total,
+    t1_amount: invoice.total,
     }) |> Repo.insert!
     
 

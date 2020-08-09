@@ -2,7 +2,7 @@ defmodule Demo.Repo.Migrations.CreateGabBalanceSheets do
   use Ecto.Migration
 
   def change do
-    create table(:gab_balance_sheets, primary_key: false) do
+    create table(:t1_balance_sheets, primary_key: false) do
       add :id, :uuid, primary_key: true
 
       add :monetary_unit, :string

@@ -61,7 +61,7 @@ defmodule DemoWeb.EntityController do
  
   def new(conn, _params, _current_user) do
     IO.puts "entity.new"
-    changeset = Entities.new_entity(%Entity{}) 
+    changeset = Entities.create_entity(%Entity{}) 
     render(conn, "new.html", changeset: changeset)
   end
 

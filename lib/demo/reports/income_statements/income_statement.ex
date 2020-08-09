@@ -27,7 +27,9 @@ defmodule Demo.Reports.IncomeStatement do
 
     embeds_many :t1, Demo.ABC.T1
     embeds_many :t2, Demo.ABC.T2
-    embeds_many :t3, Demo.ABC.T3
+    embeds_many :t4, Demo.T4s.T4
+
+    has_many :t3s, Demo.T3s.T3
 
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id

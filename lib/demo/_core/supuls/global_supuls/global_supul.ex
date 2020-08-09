@@ -6,7 +6,7 @@ defmodule Demo.GlobalSupuls.GlobalSupul do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "global_supuls" do
-    field :gab_balance, :decimal, default: 0.0
+    field :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
     field :type, :string
     field :name, :string
 
@@ -26,7 +26,7 @@ defmodule Demo.GlobalSupuls.GlobalSupul do
   end
 
   @fields [
-    :gab_balance,
+    :t1_balance,
     :name,
     :auth_code,
     :openhash_box,

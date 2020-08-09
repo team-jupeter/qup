@@ -14,5 +14,7 @@
     </tr>
   <% end %>
 </table> 
-<span><%= link "New User", to: Routes.user_path(@conn, :new) %></span>
- 
+ </br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

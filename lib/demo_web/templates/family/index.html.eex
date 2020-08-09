@@ -52,3 +52,8 @@
         <li><%= link "Equity Statement", to: Routes.equity_statement_path(@conn, :edit, @family_entity.id) %></li>
         <li><%= link "Financial Report", to: Routes.financial_report_path(@conn, :edit, @family_entity.id) %></li>
     </ul>
+
+    </br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

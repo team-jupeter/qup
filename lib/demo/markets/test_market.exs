@@ -356,7 +356,7 @@ transaction_1 =
   Transaction.changeset(%Transaction{
     abc_input: hong_entity.id,
     abc_output: tomi_entity.id,
-    abc_amount: invoice_1.total,
+    t1_amount: invoice_1.total,
     items: [item_1.id],
   }) \
   |> Repo.insert!()
@@ -369,7 +369,7 @@ transaction_2 =
   Transaction.changeset(%Transaction{
     abc_input: lim_entity.id,
     abc_output: gopang.id,
-    abc_amount: invoice_2.total,
+    t1_amount: invoice_2.total,
     items: [item_2.id],
   }) \
   |> Repo.insert!()

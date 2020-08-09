@@ -9,10 +9,10 @@ defmodule Demo.Groups do
   alias Demo.Reports.IncomeStatement
   alias Demo.Reports.CFStatement
   alias Demo.Reports.EquityStatement
-  alias Demo.AccountBooks.AccountBook
-  alias Demo.Entities.Entity
+  # alias Demo.AccountBooks.AccountBook
+  # alias Demo.Entities.Entity
   alias Demo.GabAccounts.GabAccount
-  alias Demo.GabAccounts
+  # alias Demo.GabAccounts
 
   def list_groups(entity) do
     Repo.preload(entity, :group).group
@@ -38,14 +38,14 @@ s = Repo.preload(g, :supul).supul
     |> Repo.insert()
   end
 
-  def minus_gab_balance(%Group{} = group, %{amount: amount}) do
-    minus_gab_balance = Decimal.sub(group.gab_balance, amount)
-    update_group(group, %{gab_balance: minus_gab_balance})
+  def minus_t1_balance(%Group{} = group, %{amount: amount}) do
+    minus_t1_balance = Decimal.sub(group.t1_balance, amount)
+    update_group(group, %{t1_balance: minus_t1_balance})
   end
 
-  def plus_gab_balance(%Group{} = group, %{amount: amount}) do
-    plus_gab_balance = Decimal.add(group.gab_balance, amount)
-    update_group(group, %{gab_balance: plus_gab_balance})
+  def plus_t1_balance(%Group{} = group, %{amount: amount}) do
+    plus_t1_balance = Decimal.add(group.t1_balance, amount)
+    update_group(group, %{t1_balance: plus_t1_balance})
   end
 
   defp make_financial_statements(attrs) do
@@ -56,7 +56,7 @@ s = Repo.preload(g, :supul).supul
     es = %EquityStatement{}
     ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga}) 
+    Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga}) 
   end
 
   def update_group(%Group{} = group, attrs) do

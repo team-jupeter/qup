@@ -11,13 +11,13 @@ defmodule Demo.Supuls do
   alias Demo.AccountBooks.AccountBook
   alias Demo.GabAccounts.GabAccount
 
-  alias Demo.FinancialReports
-  alias Demo.BalanceSheets
-  alias Demo.IncomeStatements
-  alias Demo.CFStatements
-  alias Demo.EquityStatements
-  alias Demo.AccountBooks
-  alias Demo.GabAccounts
+  # alias Demo.FinancialReports
+  # alias Demo.BalanceSheets
+  # alias Demo.IncomeStatements
+  # alias Demo.CFStatements
+  # alias Demo.EquityStatements
+  # alias Demo.AccountBooks
+  # alias Demo.GabAccounts
 
   # alias Demo.Entities
   # alias Demo.Entities.Entity
@@ -43,14 +43,14 @@ defmodule Demo.Supuls do
   end
 
 
-  def minus_gab_balance(%Supul{} = supul, %{amount: amount}) do
-    minus_gab_balance = Decimal.sub(supul.gab_balance, amount)
-    update_supul_gab(supul, %{gab_balance: minus_gab_balance})
+  def minus_t1_balance(%Supul{} = supul, %{amount: amount}) do
+    minus_t1_balance = Decimal.sub(supul.t1_balance, amount)
+    update_supul_gab(supul, %{t1_balance: minus_t1_balance})
   end
 
-  def plus_gab_balance(%Supul{} = supul, %{amount: amount}) do
-    plus_gab_balance = Decimal.add(supul.gab_balance, amount)
-    update_supul_gab(supul, %{gab_balance: plus_gab_balance})
+  def plus_t1_balance(%Supul{} = supul, %{amount: amount}) do
+    plus_t1_balance = Decimal.add(supul.t1_balance, amount)
+    update_supul_gab(supul, %{t1_balance: plus_t1_balance})
   end
 
   defp make_financial_statements(attrs) do
@@ -62,7 +62,7 @@ defmodule Demo.Supuls do
     es = %EquityStatement{}
     ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
+    Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end
 
   def update_openhash(%Supul{} = supul, attrs) do

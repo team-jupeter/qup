@@ -13,10 +13,10 @@ defmodule Demo.Entities.BusinessEmbed do
     field :addresses, {:array, :map} #? office, factory, lab ...
     field :employees, {:array, :map} #? user_ids
     field :products, {:array, :map} #? GTIN 
-    field :yearly_sales, :decimal, default: 0.0
+    field :yearly_sales, :decimal, precision: 12, scale: 4, default: 0.0
     field :num_of_shares, {:array, :map}
     field :share_price, {:array, :map}
-    field :accrued_tax_payment, :decimal, default: 0.0
+    field :accrued_tax_payment, :decimal, precision: 12, scale: 4, default: 0.0
     field :credit_rate, :string #? AAA, ..., FFF => 24 rates
     field :credit_rate_of_members, {:array, :map} #? AAA, ..., FFF => 24 rates
     

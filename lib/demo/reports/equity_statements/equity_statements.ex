@@ -215,7 +215,7 @@ defmodule Demo.EquityStatements do
         Decimal.add(x.withdrawal_of_capital, acc)
       end)
 
-    attrs = %{
+    %{
       opening_balance: opening_balance,
       net_income: net_income,
       other_income: other_income,

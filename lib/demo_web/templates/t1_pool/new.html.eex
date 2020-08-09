@@ -1,5 +1,0 @@
-<h1>New T1 list</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.t1_list_path(@conn, :create)) %>
-
-<span><%= link "Back", to: Routes.t1_list_path(@conn, :index) %></span>

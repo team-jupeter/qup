@@ -11,12 +11,12 @@ defmodule Demo.ABC.T2Item do
     field :intrinsic_price_gab, :decimal, precision: 7, scale: 2 #? difference between market price and re_fmv.
 
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id 
-    belongs_to :t2_list, Demo.ABC.T2List, type: :binary_id 
+    belongs_to :t2, Demo.ABC.T2, type: :binary_id 
 
     timestamps()
   end
 
-  @fields [:entity_id, :stock_price, :t2_list_id, :amount, :proportion_in_pool, :proportion_in_market, :intrinsic_price_gab,]
+  @fields [:entity_id, :stock_price, :t2_id, :amount, :proportion_in_pool, :proportion_in_market, :intrinsic_price_gab,]
   @doc false
   def changeset(t2_item, attrs \\ %{}) do
     t2_item

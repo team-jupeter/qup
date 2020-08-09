@@ -163,7 +163,7 @@ defmodule Demo.FinancialReports do
         Decimal.add(x.debt_int_rate, acc)
       end)
 
-    attrs = %{
+    %{
       num_of_shares: num_of_shares,
       num_of_shares_issued: num_of_shares_issued,
       num_of_treasury_stocks: num_of_treasury_stocks,

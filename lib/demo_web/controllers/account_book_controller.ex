@@ -33,25 +33,29 @@ defmodule DemoWeb.AccountBookController do
   end
 
   def show(conn, %{"id" => id}) do
-    IO.puts "account_book"
+    IO.puts("account_book")
     account_book = AccountBooks.get_entity_account_book(id)
     render(conn, "show.html", account_book: account_book)
   end
 
   def edit(conn, %{"id" => id}) do
-    account_book = 
-      cond do 
-        Families.get_family(id) != nil -> family = Families.get_family(id) 
-          account_book = Repo.preload(family, :account_book).account_book
+    account_book =
+      cond do
+        Families.get_family(id) != nil ->
+          family = Families.get_family(id)
+          Repo.preload(family, :account_book).account_book
 
-        Supuls.get_supul(id) != nil -> supul = Supuls.get_supul(id) 
-          account_book = Repo.preload(supul, :account_book).account_book
+        Supuls.get_supul(id) != nil ->
+          supul = Supuls.get_supul(id)
+          Repo.preload(supul, :account_book).account_book
 
-        StateSupuls.get_state_supul(id) != nil -> state_supul = StateSupuls.get_state_supul(id) 
-          account_book = Repo.preload(state_supul, :account_book).account_book
+        StateSupuls.get_state_supul(id) != nil ->
+          state_supul = StateSupuls.get_state_supul(id)
+          Repo.preload(state_supul, :account_book).account_book
 
-        NationSupuls.get_nation_supul(id) != nil -> nation_supul = NationSupuls.get_nation_supul(id) 
-          account_book = Repo.preload(nation_supul, :account_book).account_book
+        NationSupuls.get_nation_supul(id) != nil ->
+          nation_supul = NationSupuls.get_nation_supul(id)
+          Repo.preload(nation_supul, :account_book).account_book
 
         true ->
           "error"

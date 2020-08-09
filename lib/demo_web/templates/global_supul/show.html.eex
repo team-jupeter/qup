@@ -4,7 +4,7 @@
 
   <li>
     <strong>Name:</strong>
-    <%= @global_supul.gab_balance %>
+    <%= @global_supul.t1_balance %>
   </li>
 
 

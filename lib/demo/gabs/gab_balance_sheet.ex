@@ -3,7 +3,7 @@ defmodule Demo.Reports.GabBalanceSheet do
     import Ecto.Changeset
   
     @primary_key {:id, :binary_id, autogenerate: true}
-    schema "gab_balance_sheets" do
+    schema "t1_balance_sheets" do
       field :monetary_unit, :string 
       
       field :t1, :decimal, precision: 15, scale: 2

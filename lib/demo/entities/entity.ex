@@ -8,13 +8,13 @@ defmodule Demo.Entities.Entity do
   alias Demo.Entities.Entity
   alias Demo.Repo
   # alias Demo.Supuls.Supul
-  alias Demo.Groups.Group
-  alias Demo.Groups
-  alias Demo.FinancialReports
-  alias Demo.BalanceSheets
-  alias Demo.IncomeStatements
-  alias Demo.CFStatements
-  alias Demo.EquityStatements
+  # alias Demo.Groups.Group
+  # alias Demo.Groups
+  # alias Demo.FinancialReports
+  # alias Demo.BalanceSheets
+  # alias Demo.IncomeStatements
+  # alias Demo.CFStatements
+  # alias Demo.EquityStatements
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -34,7 +34,7 @@ defmodule Demo.Entities.Entity do
     field :entity_address, :string
     field :entity_code, :string
     field :founding_date, :date
-    field :gab_balance, :decimal, default: Decimal.from_float(0.0)
+    field :t1_balance, :decimal, default: Decimal.from_float(0.0)
     # ? Standard Industrial Classification
     field :sic_code, :string
     # ? Corporation, Foundation, NGO ...
@@ -56,6 +56,7 @@ defmodule Demo.Entities.Entity do
 
     # ? true if this entity is the first entity of the group.
     field :default_group, :boolean, default: false
+    field :default_currency, :string, default: "KRW"
 
     # embeds_many :business_embeds, Demo.Entities.BusinessEmbed, on_replace: :delete
 
@@ -147,123 +148,55 @@ defmodule Demo.Entities.Entity do
     :year_started,
     :num_of_shares,
     :supul_name,
-    :gab_balance,
+    :t1_balance,
     :supul_id,
     :share_price,
     :credit_rate,
     :project,
     :default_group,
+    :default_currency,
   ]
 
-  def changeset(%Entity{} = entity, attrs = %{supul: supul}) do
-    entity
-    |> cast(attrs, @fields)
-    |> put_assoc(:supul, attrs.supul)
-  end
-
-  def changeset(%Entity{} = entity, attrs = %{user: user, account_book: account_book}) do
-    entity
-    |> cast(attrs, @fields)
-    |> put_assoc(:users, [attrs.user])
-    |> put_assoc(:account_book, attrs.account_book)
-  end
-
-  def default_changeset(entity, attrs \\ %{}) do
+  def changeset(entity, attrs ) do
     entity
     |> cast(attrs, @fields)
     |> validate_required([])
     |> validate_format(:email, ~r/@/)
-  end
-
-  def changeset(entity, attrs \\ %{}) do
-
-    entity
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> validate_format(:email, ~r/@/)
-    |> assoc_constraint(:biz_category)
-    |> assoc_constraint(:nation)
-    |> assoc_constraint(:supul)
     |> put_assoc(:nation, attrs.nation)
-  end
-
-  def new_changeset(entity, attrs \\ %{}) do
-    entity
-    |> cast(attrs, @fields)
-    |> validate_required([])
-    |> validate_format(:email, ~r/@/)
-
-    # |> assoc_constraint(:biz_category)
-    # |> assoc_constraint(:nation)
-    # |> assoc_constraint(:supul)
-    # |> put_assoc(:nation, attrs.nation)
+    |> put_assoc(:supul, attrs.supul)
+    |> put_assoc(:gab_account, attrs.ga)
+    |> put_assoc(:balance_sheet, attrs.bs)
+    |> put_assoc(:cf_statement, attrs.cf)
+    |> put_assoc(:equity_statement, attrs.es)
+    |> put_assoc(:financial_report, attrs.fr)
   end
 
   def create_default_entity(entity, current_user, attrs) do
-    default_changeset(entity, attrs)
+    changeset(entity, attrs)
     |> put_assoc(:users, [current_user])
-    |> put_assoc(:family, attrs.family)
-    |> put_assoc(:supul, attrs.supul)
     |> put_assoc(:family, attrs.family)
     |> put_assoc(:account_book, attrs.ab)
-    |> put_assoc(:balance_sheet, attrs.bs)
-    |> put_assoc(:financial_report, attrs.fr)
-    |> put_assoc(:cf_statement, attrs.cf)
-    |> put_assoc(:equity_statement, attrs.es)
-    |> put_assoc(:gab_account, attrs.ga)
   end
 
-  def create_private_entity(entity, current_user, attrs) do
-
+  def create_default_entity(entity, attrs) do
     changeset(entity, attrs)
-    |> put_assoc(:supul, attrs.supul)
+    |> put_assoc(:users, [attrs.user])
+    |> put_assoc(:family, attrs.family)
+    |> put_assoc(:account_book, attrs.ab)
+  end
+
+  def create_other_entity(entity, current_user, attrs) do
+    changeset(entity, attrs)
     |> put_assoc(:users, [current_user])
     |> put_assoc(:group, attrs.group)
     |> put_assoc(:income_statement, attrs.is)
-    |> put_assoc(:balance_sheet, attrs.bs)
-    |> put_assoc(:financial_report, attrs.fr)
-    |> put_assoc(:cf_statement, attrs.cf)
-    |> put_assoc(:equity_statement, attrs.es)
-    |> put_assoc(:gab_account, attrs.ga)
   end
 
-  def create_private_entity(entity, attrs) do
-    changeset(entity, attrs)
-    |> put_assoc(:users, [attrs.user])
-    |> put_assoc(:supul, attrs.supul)
-    |> put_assoc(:group, attrs.group)
-    |> put_assoc(:income_statement, attrs.is)
-    |> put_assoc(:balance_sheet, attrs.bs)
-    |> put_assoc(:financial_report, attrs.fr)
-    |> put_assoc(:cf_statement, attrs.cf)
-    |> put_assoc(:equity_statement, attrs.es)
-    |> put_assoc(:gab_account, attrs.ga)
-  end
-
-  def create_public_entity(entity, current_user, attrs) do
-    changeset(entity, attrs)
-    |> put_assoc(:group, attrs.group)
-    |> put_assoc(:supul, attrs.supul)
-    |> put_assoc(:users, [current_user])
-    |> put_assoc(:income_statement, attrs.is)
-    |> put_assoc(:balance_sheet, attrs.bs)
-    |> put_assoc(:financial_report, attrs.fr)
-    |> put_assoc(:cf_statement, attrs.cf)
-    |> put_assoc(:gab_account, attrs.ga)
-    |> put_assoc(:equity_statement, attrs.es)
-  end
-
-  def create_public_entity(entity, attrs) do
+  def create_other_entity(entity, attrs) do
     changeset(entity, attrs)
     |> put_assoc(:users, [attrs.user])
     |> put_assoc(:group, attrs.group)
-    |> put_assoc(:supul, attrs.supul)
     |> put_assoc(:income_statement, attrs.is)
-    |> put_assoc(:balance_sheet, attrs.bs)
-    |> put_assoc(:financial_report, attrs.fr)
-    |> put_assoc(:cf_statement, attrs.cf)
-    |> put_assoc(:gab_account, attrs.ga)
-    |> put_assoc(:equity_statement, attrs.es)
   end
 
   def changeset_update_users(%Entity{} = entity, users) do

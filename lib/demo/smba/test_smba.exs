@@ -213,7 +213,7 @@ Invoicies are stored by entities and transactions are stored by supuls.
 transaction = Transaction.changeset(%Transaction{
     abc_input: smba.id,
     abc_output: tesla_entity.id,
-    abc_amount: invoice.total,
+    t1_amount: invoice.total,
     items: [%{report: "final_report"}]
     }) |> Repo.insert!
     
@@ -233,8 +233,8 @@ alias Demo.ABC.T1
 #? Adjust balance_sheet of both.
 #? SMBA
 #? The code below NOT consider any other elements in the ts list. We should find out just enough elements to pay the invoice total. 
-new_ts = Enum.map(smba_BS.ts, fn elem ->
-    Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, transaction.abc_amount) end)
+new_ts = Enum.map(smba_BS.t1s, fn elem ->
+    Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, transaction.t1_amount) end)
 end)
 
 smba_BS = change(smba_BS) |> \
@@ -243,7 +243,7 @@ smba_BS = change(smba_BS) |> \
 
         
 #? Tesla Korea
-ts = [%T1{input: "smba_public_address", amount: transaction.abc_amount, output: "smba_public_address"}]
+ts = [%T1{input: "smba_public_address", amount: transaction.t1_amount, output: "smba_public_address"}]
 tesla_entity_BS = change(tesla_entity_BS) |> \
     Ecto.Changeset.put_embed(:ts, ts) |> Repo.update!
 

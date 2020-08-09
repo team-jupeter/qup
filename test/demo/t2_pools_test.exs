@@ -1,92 +1,92 @@
-defmodule Demo.T2ListsTest do
+defmodule Demo.T2sTest do
   use Demo.DataCase
 
-  alias Demo.T2Lists
+  alias Demo.T2s
 
-  describe "t2_lists" do
-    alias Demo.T2Lists.T2List
+  describe "t2s" do
+    alias Demo.T2s.T2
 
     @valid_attrs %{AUD: "some AUD", CAD: "some CAD", CHF: "some CHF", CNY: "some CNY", EUR: "some EUR", GBP: "some GBP", HKD: "some HKD", JPY: "some JPY", KRW: "some KRW", MXN: "some MXN", NOK: "some NOK", NZD: "some NZD", SEK: "some SEK", SGD: "some SGD", USD: "some USD"}
     @update_attrs %{AUD: "some updated AUD", CAD: "some updated CAD", CHF: "some updated CHF", CNY: "some updated CNY", EUR: "some updated EUR", GBP: "some updated GBP", HKD: "some updated HKD", JPY: "some updated JPY", KRW: "some updated KRW", MXN: "some updated MXN", NOK: "some updated NOK", NZD: "some updated NZD", SEK: "some updated SEK", SGD: "some updated SGD", USD: "some updated USD"}
     @invalid_attrs %{AUD: nil, CAD: nil, CHF: nil, CNY: nil, EUR: nil, GBP: nil, HKD: nil, JPY: nil, KRW: nil, MXN: nil, NOK: nil, NZD: nil, SEK: nil, SGD: nil, USD: nil}
 
-    def t2_list_fixture(attrs \\ %{}) do
-      {:ok, t2_list} =
+    def t2_fixture(attrs \\ %{}) do
+      {:ok, t2} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> T2Lists.create_t2_list()
+        |> T2s.create_t2()
 
-      t2_list
+      t2
     end
 
-    test "list_t2_lists/0 returns all t2_lists" do
-      t2_list = t2_list_fixture()
-      assert T2Lists.list_t2_lists() == [t2_list]
+    test "list_t2s/0 returns all t2s" do
+      t2 = t2_fixture()
+      assert T2s.list_t2s() == [t2]
     end
 
-    test "get_t2_list!/1 returns the t2_list with given id" do
-      t2_list = t2_list_fixture()
-      assert T2Lists.get_t2_list!(t2_list.id) == t2_list
+    test "get_t2!/1 returns the t2 with given id" do
+      t2 = t2_fixture()
+      assert T2s.get_t2!(t2.id) == t2
     end
 
-    test "create_t2_list/1 with valid data creates a t2_list" do
-      assert {:ok, %T2List{} = t2_list} = T2Lists.create_t2_list(@valid_attrs)
-      assert t2_list.AUD == "some AUD"
-      assert t2_list.CAD == "some CAD"
-      assert t2_list.CHF == "some CHF"
-      assert t2_list.CNY == "some CNY"
-      assert t2_list.EUR == "some EUR"
-      assert t2_list.GBP == "some GBP"
-      assert t2_list.HKD == "some HKD"
-      assert t2_list.JPY == "some JPY"
-      assert t2_list.KRW == "some KRW"
-      assert t2_list.MXN == "some MXN"
-      assert t2_list.NOK == "some NOK"
-      assert t2_list.NZD == "some NZD"
-      assert t2_list.SEK == "some SEK"
-      assert t2_list.SGD == "some SGD"
-      assert t2_list.USD == "some USD"
+    test "create_t2/1 with valid data creates a t2" do
+      assert {:ok, %T2{} = t2} = T2s.create_t2(@valid_attrs)
+      assert t2.AUD == "some AUD"
+      assert t2.CAD == "some CAD"
+      assert t2.CHF == "some CHF"
+      assert t2.CNY == "some CNY"
+      assert t2.EUR == "some EUR"
+      assert t2.GBP == "some GBP"
+      assert t2.HKD == "some HKD"
+      assert t2.JPY == "some JPY"
+      assert t2.KRW == "some KRW"
+      assert t2.MXN == "some MXN"
+      assert t2.NOK == "some NOK"
+      assert t2.NZD == "some NZD"
+      assert t2.SEK == "some SEK"
+      assert t2.SGD == "some SGD"
+      assert t2.USD == "some USD"
     end
 
-    test "create_t2_list/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = T2Lists.create_t2_list(@invalid_attrs)
+    test "create_t2/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = T2s.create_t2(@invalid_attrs)
     end
 
-    test "update_t2_list/2 with valid data updates the t2_list" do
-      t2_list = t2_list_fixture()
-      assert {:ok, %T2List{} = t2_list} = T2Lists.update_t2_list(t2_list, @update_attrs)
-      assert t2_list.AUD == "some updated AUD"
-      assert t2_list.CAD == "some updated CAD"
-      assert t2_list.CHF == "some updated CHF"
-      assert t2_list.CNY == "some updated CNY"
-      assert t2_list.EUR == "some updated EUR"
-      assert t2_list.GBP == "some updated GBP"
-      assert t2_list.HKD == "some updated HKD"
-      assert t2_list.JPY == "some updated JPY"
-      assert t2_list.KRW == "some updated KRW"
-      assert t2_list.MXN == "some updated MXN"
-      assert t2_list.NOK == "some updated NOK"
-      assert t2_list.NZD == "some updated NZD"
-      assert t2_list.SEK == "some updated SEK"
-      assert t2_list.SGD == "some updated SGD"
-      assert t2_list.USD == "some updated USD"
+    test "update_t2/2 with valid data updates the t2" do
+      t2 = t2_fixture()
+      assert {:ok, %T2{} = t2} = T2s.update_t2(t2, @update_attrs)
+      assert t2.AUD == "some updated AUD"
+      assert t2.CAD == "some updated CAD"
+      assert t2.CHF == "some updated CHF"
+      assert t2.CNY == "some updated CNY"
+      assert t2.EUR == "some updated EUR"
+      assert t2.GBP == "some updated GBP"
+      assert t2.HKD == "some updated HKD"
+      assert t2.JPY == "some updated JPY"
+      assert t2.KRW == "some updated KRW"
+      assert t2.MXN == "some updated MXN"
+      assert t2.NOK == "some updated NOK"
+      assert t2.NZD == "some updated NZD"
+      assert t2.SEK == "some updated SEK"
+      assert t2.SGD == "some updated SGD"
+      assert t2.USD == "some updated USD"
     end
 
-    test "update_t2_list/2 with invalid data returns error changeset" do
-      t2_list = t2_list_fixture()
-      assert {:error, %Ecto.Changeset{}} = T2Lists.update_t2_list(t2_list, @invalid_attrs)
-      assert t2_list == T2Lists.get_t2_list!(t2_list.id)
+    test "update_t2/2 with invalid data returns error changeset" do
+      t2 = t2_fixture()
+      assert {:error, %Ecto.Changeset{}} = T2s.update_t2(t2, @invalid_attrs)
+      assert t2 == T2s.get_t2!(t2.id)
     end
 
-    test "delete_t2_list/1 deletes the t2_list" do
-      t2_list = t2_list_fixture()
-      assert {:ok, %T2List{}} = T2Lists.delete_t2_list(t2_list)
-      assert_raise Ecto.NoResultsError, fn -> T2Lists.get_t2_list!(t2_list.id) end
+    test "delete_t2/1 deletes the t2" do
+      t2 = t2_fixture()
+      assert {:ok, %T2{}} = T2s.delete_t2(t2)
+      assert_raise Ecto.NoResultsError, fn -> T2s.get_t2!(t2.id) end
     end
 
-    test "change_t2_list/1 returns a t2_list changeset" do
-      t2_list = t2_list_fixture()
-      assert %Ecto.Changeset{} = T2Lists.change_t2_list(t2_list)
+    test "change_t2/1 returns a t2 changeset" do
+      t2 = t2_fixture()
+      assert %Ecto.Changeset{} = T2s.change_t2(t2)
     end
   end
 end

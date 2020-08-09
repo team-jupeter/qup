@@ -278,7 +278,7 @@ defmodule Demo.IncomeStatements do
         Decimal.add(x.utilities, acc)
       end)
 
-    attrs = %{
+    %{
       compensation: compensation,
       cost_of_goods_sold: cost_of_goods_sold,
       depreciation_and_amortization: depreciation_and_amortization,

@@ -54,7 +54,7 @@ alias Demo.Supuls
   name: "글로벌 수풀", 
   pasword: "p",
   email: "golobal@un", 
-  gab_balance: Decimal.from_float(10_000.0),
+  t1_balance: Decimal.from_float(10_000.0),
   current_hash: "global"
   }) 
 
@@ -317,6 +317,22 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   default_family: true, 
   })
 
+{:ok, mr_park} = Accounts.create_user(%{
+  type: "Human",
+  name: "박문수", 
+  nation: korea,
+  supul: seoguipo_supul, 
+  username: "mr_park", 
+  password: "p",
+  nationality: "한국",
+  supul_name: "서귀포시",
+  email: "park@0000.kr",
+  birth_date: ~N[2000-05-05 06:14:09],
+  family_code: nil, 
+  username: "mr_park",
+  default_family: true, 
+  })
+
 #? Korea authorizes mr_lee as her citizen.
 msg_serialized = Poison.encode!(mr_lee)
 ts = DateTime.utc_now() |> DateTime.to_unix()
@@ -384,7 +400,7 @@ alias Demo.Entities
   pasword: "p",
   email: "gab_korea@kr",
   group: korea_group,
-  gab_balance: Decimal.from_float(100000.0),
+  t1_balance: Decimal.from_float(100000.0),
   unique_digits: "82111100",
   tels: ["82111100"],
   })
@@ -409,7 +425,7 @@ alias Demo.Entities
   pasword: "temppass",
   email: "gopang_korea@kr",
   group: korea_group,
-  gab_balance: Decimal.from_float(0.0),
+  t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111111",
   telephones: ["8211111111"],
   }) 
@@ -428,10 +444,11 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   type: "default",
   name: "Hong Entity", 
   user: mr_hong, 
+  nation: korea,
   pasword: "temppass",
   email: "hong@0000.kr", 
   entity_address: "제주시 한경면 20-1 해거름전망대",
-  gab_balance: Decimal.from_float(0.0),
+  t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111112",
   tels: ["8211111112"],
   }) 
@@ -452,9 +469,10 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   type: "default",
   name: "Sung Entity", 
   user: ms_sung,
+  nation: korea,
   email: "sung@0000.kr", 
   pasword: "temppass",
-  gab_balance: Decimal.from_float(0.0),
+  t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111113",
   tels: ["8211111113"],
   }) 
@@ -475,10 +493,11 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   type: "default",
   name: "Lim Entity", 
   user: mr_lim,
+  nation: korea,
   email: "lim@0000.kr", 
   pasword: "temppass",
   user_id: mr_lim.id,
-  gab_balance: Decimal.from_float(0.0),
+  t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111114",
   tels: ["8211111114"],
   }) 
@@ -497,10 +516,11 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   type: "default",
   name: "Lee Entity", 
   user: mr_lee,
+  nation: korea,
   email: "lee@0000.kr", 
   pasword: "temppass",
   user_id: mr_lee.id,
-  gab_balance: Decimal.from_float(0.0),
+  t1_balance: Decimal.from_float(0.0),
   default_entity: true,
   unique_digits: "8211111115",
   tels: ["8211111115"],
@@ -529,7 +549,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   pasword: "temppass",
   email: "tomi@3532.kr", 
   entity_address: "제주시 한림읍 11-1",
-  gab_balance: Decimal.from_float(0.0),
+  t1_balance: Decimal.from_float(0.0),
   default_group: true,
   group_name: "Sung Group",
   group_type: "Private Group",
@@ -558,7 +578,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   pasword: "temppass",
   email: "sanche@3532.kr", 
   entity_address: "제주시 한경면 11-1",
-  gab_balance: Decimal.from_float(0.0),
+  t1_balance: Decimal.from_float(0.0),
   default_group: true,
   group_name: "Lim Group",
   group_type: "Private Group",
@@ -587,7 +607,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   pasword: "temppass",
   email: "sato@3532.kr", 
   entity_address: "서귀포시 11-1",
-  gab_balance: Decimal.from_float(0.0),
+  t1_balance: Decimal.from_float(0.0),
   default_group: true,
   group_name: "Lee Group",
   group_type: "Private Group",
@@ -616,7 +636,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   pasword: "temppass",
   email: "sato@3538.kr", 
   entity_address: "서귀포시 11-1",
-  gab_balance: Decimal.from_float(0.0),
+  t1_balance: Decimal.from_float(0.0),
   default_group: true,
   group_name: "Lee Group",
   group_type: "Private Group",
@@ -639,16 +659,16 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 
 #? From now on, let's write invoice for trade between mr_hong and gab_korea.
 #? First, let "krw" a product of hong_entity
-alias Demo.Products
-Products.create_product(gab_korea, %{
-  name: "T1", 
-  price: 1000.0,
-  }) 
+# alias Demo.Products
+# Products.create_product(gab_korea, %{
+#   name: "T1", 
+#   price: 1000.0,
+#   }) 
   
-Products.create_product(gab_korea, %{
-  name: "T2", 
-  price: 1000.0,
-  }) 
+# Products.create_product(gab_korea, %{
+#   name: "T2", 
+#   price: 1000.0,
+#   }) 
   
 
 alias Demo.Entities.BizCategory
@@ -712,6 +732,136 @@ Products.create_product(lim_entity, %{name: "mr_lim@0000.kr", unique_digits: "82
 Products.create_product(lee_entity, %{name: "Money Transfer", unique_digits: "8211111115", tel: "8211111115", amount: 0})
 
  
+
+
+# ? prepare financial statements for entities.
+#? Balance Sheet
+alias Demo.GabAccounts
+alias Demo.ABC.T1
+#? 국세청 
+new_t1 =  %{t1: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: kts.name,  
+  output_id: kts.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+GabAccounts.add_t1s(kts.gab_account, new_t1)  
+
+#? 국가 물류 인프라  
+new_t1 = %{t1: %T1{
+  input_name: gab_korea.name, 
+  input_id: gab_korea.id, 
+  output_name: gopang_korea.name, 
+  output_id: gopang_korea.id, 
+  amount: Decimal.from_float(100.0)}}
+
+GabAccounts.add_t1s(gopang_korea.gab_account, new_t1)  
+
+#? 국가 금융 인프라
+new_t1 =  %{t1: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: gab_korea.name, 
+  output_id: gab_korea.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+GabAccounts.add_t1s(gab_korea.gab_account, new_t1)  
+
+
+#? 홍길동 1인 법인
+new_t1 =  %{t1: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: hong_entity.name, 
+  output_id: hong_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+GabAccounts.add_t1s(hong_entity.gab_account, new_t1)  
+
+#? 임꺽정 1인 법인
+new_t1 =  %{t1: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: lim_entity.name, 
+  output_id: lim_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+GabAccounts.add_t1s(lim_entity.gab_account, new_t1)  
+
+#? 성춘향 1인 법인
+new_t1 =  %{t1: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: sung_entity.name, 
+  output_id: sung_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+GabAccounts.add_t1s(sung_entity.gab_account, new_t1)  
+
+#? 이몽룡 1인 법인
+new_t1 =  %{t1: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: lee_entity.name, 
+  output_id: lee_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+GabAccounts.add_t1s(lee_entity.gab_account, new_t1)  
+
+#? 토미 도시락 일반 법인
+new_t1 =  %{t1: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: tomi_entity.name, 
+  output_id: tomi_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+tomi_entity_BS = GabAccounts.add_t1s(tomi_entity.gab_account, new_t1)  
+
+#? 이방 학원 
+new_t1 =  %{t1: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: ebang_entity.name, 
+  output_id: ebang_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+ebang_entity_BS = GabAccounts.add_t1s(ebang_entity.gab_account, new_t1)  
+
+#? 사또 학원 
+new_t1 =  %{t1: %T1{
+  input_name: korea.name, 
+  input_id: korea.id, 
+  output_name: sato_entity.name, 
+  output_id: sato_entity.id, 
+  amount: Decimal.from_float(100.0),
+  }}
+
+sato_entity_BS = GabAccounts.add_t1s(sato_entity.gab_account, new_t1)  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 '''
 EVENT
@@ -812,125 +962,8 @@ korea = Accounts.update_entities(korea, [
 
 
 
-
-# ? prepare financial statements for entities.
-#? Balance Sheet
-alias Demo.BalanceSheets
-alias Demo.ABC.T1
-#? 국세청 
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: kts.name, 
-  output_id: kts.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(kts.balance_sheet, new_ts)  
-
-#? 국가 물류 인프라  
-new_ts = %{ts: %T1{
-  input_name: gab_korea.name, 
-  input_id: gab_korea.id, 
-  output_name: gopang_korea.name, 
-  output_id: gopang_korea.id, 
-  amount: Decimal.from_float(100.0)}}
-
-BalanceSheets.add_ts(gopang_korea.balance_sheet, new_ts)  
-
-#? 국가 금융 인프라
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: gab_korea.name, 
-  output_id: gab_korea.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(gab_korea.balance_sheet, new_ts)  
-
-
-#? 홍길동 1인 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: hong_entity.name, 
-  output_id: hong_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(hong_entity.balance_sheet, new_ts)  
-
-#? 임꺽정 1인 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: lim_entity.name, 
-  output_id: lim_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(lim_entity.balance_sheet, new_ts)  
-
-#? 성춘향 1인 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: sung_entity.name, 
-  output_id: sung_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(sung_entity.balance_sheet, new_ts)  
-
-#? 이몽룡 1인 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: lee_entity.name, 
-  output_id: lee_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-BalanceSheets.add_ts(lee_entity.balance_sheet, new_ts)  
-
-#? 토미 도시락 일반 법인
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: tomi_entity.name, 
-  output_id: tomi_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-tomi_entity_BS = BalanceSheets.add_ts(tomi_entity.balance_sheet, new_ts)  
-
-#? 이방 학원 
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: ebang_entity.name, 
-  output_id: ebang_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-ebang_entity_BS = BalanceSheets.add_ts(ebang_entity.balance_sheet, new_ts)  
-
-#? 사또 학원 
-new_ts =  %{ts: %T1{
-  input_name: korea.name, 
-  input_id: korea.id, 
-  output_name: sato_entity.name, 
-  output_id: sato_entity.id, 
-  amount: Decimal.from_float(100.0),
-  }}
-
-sato_entity_BS = BalanceSheets.add_ts(sato_entity.balance_sheet, new_ts)  
-
-
-
 # #? Hankyung Supul
-# new_ts =  %{ts: %T1{
+# new_ts =  %{t1: %T1{
 #   input_name: korea.name, 
 #   input_id: korea.id, 
 #   output_name: hankyung_supul.name, 
@@ -938,7 +971,7 @@ sato_entity_BS = BalanceSheets.add_ts(sato_entity.balance_sheet, new_ts)
 #   amount: Decimal.from_float(100.0),
 #   }}
 
-# hankyung_supul_BS = BalanceSheets.add_ts(hankyung_supul.balance_sheet, new_ts) 
+# hankyung_supul_BS = GabAccounts.add_ts(hankyung_supul.balance_sheet, new_ts) 
 
 # #? Hanlim Supul
 # new_ts =  %{ts: %T1{

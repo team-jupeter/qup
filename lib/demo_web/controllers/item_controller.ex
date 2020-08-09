@@ -4,7 +4,7 @@ defmodule DemoWeb.ItemController do
   alias Demo.Items
   alias Demo.Invoices.Item
   alias Demo.Products
-  alias Demo.Products.Product
+  # alias Demo.Products.Product
   alias Demo.Entities.Entity
   alias DemoWeb.InvoiceItemController
   alias Demo.Repo

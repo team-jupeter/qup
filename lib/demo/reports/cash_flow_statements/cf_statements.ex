@@ -23,12 +23,7 @@ defmodule Demo.CFStatements do
     from(f in query, where: f.entity_id == ^entity_id)
   end
 
-  # ? Default 
-  def create_cf_statement(attrs \\ %{}) do
-    %CFStatement{}
-    |> CFStatement.changeset(attrs)
-    |> Repo.insert()
-  end
+
 
   # ? Taxation 
   def create_cf_statement(%Taxation{} = taxation, attrs) do
@@ -141,6 +136,13 @@ defmodule Demo.CFStatements do
     CFStatement.changeset(cf_statement, %{})
   end
 
+  # ? Default 
+  def create_cf_statement(attrs) do
+    %CFStatement{}
+    |> CFStatement.changeset(attrs)
+    |> Repo.insert()
+  end
+
   '''
     def delete_cf_statement(%CFStatement{} = cf_statement) do
       Repo.delete(cf_statement)
@@ -208,7 +210,7 @@ defmodule Demo.CFStatements do
         Decimal.add(x.opening_cash_balance, acc)
       end)
 
-    attrs = %{
+    %{
       capital_expenditures: capital_expenditures,
       changes_in_working_capital: changes_in_working_capital,
       debt_issuance: debt_issuance,

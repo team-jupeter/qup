@@ -16,8 +16,8 @@ defmodule DemoWeb.WeddingController do
   end 
 
   #? hard coded bride_private_key, groom_private_key
-  bride_private_key = ExPublicKey.load!("./keys/lee_private_key.pem")
-  groom_private_key = ExPublicKey.load!("./keys/sung_private_key.pem")
+  # bride_private_key = ExPublicKey.load!("./keys/lee_private_key.pem")
+  # groom_private_key = ExPublicKey.load!("./keys/sung_private_key.pem")
 
   def create(conn, %{"wedding" => wedding_params}, bride_private_key, groom_private_key) do
     

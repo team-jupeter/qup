@@ -9,16 +9,16 @@ defmodule Demo.Families do
   alias Demo.Nations
   alias Demo.Nations.Nation
   alias Demo.Entities.Entity
-  alias Demo.Reports.UpdateFinacialStatements
+  # alias Demo.Reports.UpdateFinacialStatements
   alias Demo.Reports.FinancialReport
   alias Demo.Reports.BalanceSheet
-  alias Demo.Reports.IncomeStatement
+  # alias Demo.Reports.IncomeStatement
   alias Demo.Reports.CFStatement
   alias Demo.Reports.EquityStatement
   alias Demo.AccountBooks.AccountBook
   alias Demo.GabAccounts.GabAccount
   alias Demo.GabAccounts.GabAccount
-  alias Demo.GabAccounts
+  # alias Demo.GabAccounts
 
   def get_user_family!(%User{} = user) do
     Repo.preload(user, :family).family
@@ -40,14 +40,18 @@ defmodule Demo.Families do
     |> Repo.insert()
   end  
 
-  def minus_gab_balance(%Family{} = family, %{amount: amount}) do
-    minus_gab_balance = Decimal.sub(family.gab_balance, amount)
-    update_family(family, %{gab_balance: minus_gab_balance})
+  def minus_t1_balance(%Family{} = family, %{amount: amount}) do
+    IO.inspect "families minus_t1_balance"
+    IO.inspect family.t1_balance
+    minus_t1_balance = Decimal.sub(family.t1_balance, amount)
+    update_family(family, %{t1_balance: minus_t1_balance})
+    IO.inspect family.t1_balance
+
   end
 
-  def plus_gab_balance(%Family{} = family, %{amount: amount}) do
-    plus_gab_balance = Decimal.add(family.gab_balance, amount)
-    update_family(family, %{gab_balance: plus_gab_balance})
+  def plus_t1_balance(%Family{} = family, %{amount: amount}) do
+    plus_t1_balance = Decimal.add(family.t1_balance, amount)
+    update_family(family, %{t1_balance: plus_t1_balance})
   end
 
   defp make_default_financial_statements(attrs) do
@@ -58,7 +62,7 @@ defmodule Demo.Families do
     es = %EquityStatement{}
     ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr, ga: ga}) 
+    Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr, ga: ga}) 
   end
 
   def create_family_via_wedding(wedding, bride, groom) do
@@ -112,7 +116,7 @@ defmodule Demo.Families do
     |> Repo.update() 
   end
 
-  def update_financial_statements(entity) do
+  # def update_financial_statements(entity) do
   
-  end
+  # end
 end

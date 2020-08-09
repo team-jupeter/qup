@@ -4,15 +4,15 @@ defmodule Demo.Entities do
   alias Demo.Repo
   alias Demo.Entities.Entity
   alias Demo.Products.Product
-  alias Demo.Products.GPCCode
+  # alias Demo.Products.GPCCode
   alias Demo.Entities.BizCategory
   alias Demo.Accounts.User
-  alias Demo.Accounts
-  alias Demo.AccountBooks
+  # alias Demo.Accounts
+  # alias Demo.AccountBooks
   alias Demo.Groups
-  alias Demo.Groups.Group
-  alias Demo.Families
-  alias Demo.Families.Family
+  # alias Demo.Groups.Group
+  # alias Demo.Families
+  # alias Demo.Families.Family
   alias Demo.Reports.UpdateFinacialStatements
   alias Demo.Reports.FinancialReport
   alias Demo.Reports.BalanceSheet
@@ -69,29 +69,14 @@ defmodule Demo.Entities do
     |> Repo.update()
   end
 
-  def minus_gab_balance(%Entity{} = entity, %{amount: amount}) do
-    new_gab_balance = Decimal.sub(entity.gab_balance, amount)
-    update_entity(entity, %{gab_balance: new_gab_balance})
-
-    # case entity.type do
-    #   "default" ->
-    #     family = Repo.preload(entity, :family).family
-    #     new_gab_balance = Decimal.sub(family.gab_balance, amount)
-    #     Families.update_family(family, %{gab_balance: new_gab_balance})
-
-    #   "private" ->
-    #     group = Repo.preload(entity, :group).group
-    #     new_gab_balance = Decimal.sub(group.gab_balance, amount)
-    #     Groups.update_group(group, %{gab_balance: new_gab_balance})
-
-    #   "public" ->
-    #     true
-    # end
+  def minus_t1_balance(%Entity{} = entity, %{amount: amount}) do
+    new_t1_balance = Decimal.sub(entity.t1_balance, amount)
+    update_entity(entity, %{t1_balance: new_t1_balance})
   end
 
-  def plus_gab_balance(%Entity{} = entity, %{amount: amount}) do
-    new_gab_balance = Decimal.add(entity.gab_balance, amount)
-    update_entity(entity, %{gab_balance: new_gab_balance})
+  def plus_t1_balance(%Entity{} = entity, %{amount: amount}) do
+    new_t1_balance = Decimal.add(entity.t1_balance, amount)
+    update_entity(entity, %{t1_balance: new_t1_balance})
   end
 
   def delete_entity(%Entity{} = entity) do
@@ -101,9 +86,6 @@ defmodule Demo.Entities do
 
   def create_default_entity(user, attrs) do
     attrs = make_default_financial_statements(attrs)
-
-    IO.puts("attrs.ga.id")
-
     family = Repo.preload(user, :family).family
     supul = Repo.preload(user, :supul).supul
     supul_name = supul.name
@@ -129,14 +111,14 @@ defmodule Demo.Entities do
       case attrs.default_group do
         true ->
           {:ok, group} = Groups.create_group(%{type: "default group", name: attrs.user.name})
-          attrs = Map.merge(attrs, %{group: group})
+          Map.merge(attrs, %{group: group})
 
         false ->
-          attrs = Map.merge(attrs, %{group: attrs.group})
+          Map.merge(attrs, %{group: attrs.group})
       end
 
     %Entity{}
-    |> Entity.create_private_entity(attrs)
+    |> Entity.create_other_entity(attrs)
     |> Repo.insert()
   end
  
@@ -149,22 +131,22 @@ defmodule Demo.Entities do
       case attrs.default_group do
         true ->
           {:ok, group} = Groups.create_group()
-          attrs = Map.merge(attrs, %{group: group})
+          Map.merge(attrs, %{group: group})
 
         false ->
-          attrs = Map.merge(attrs, %{group: attrs.group})
+          Map.merge(attrs, %{group: attrs.group})
       end
 
     %Entity{}
-    |> Entity.create_private_entity(current_user, attrs)
+    |> Entity.create_other_entity(current_user, attrs)
     |> Repo.insert()
   end
 
   def create_public_entity(attrs) do
     attrs = make_financial_statements(attrs)
-
+ 
     %Entity{}
-    |> Entity.create_public_entity(attrs)
+    |> Entity.create_other_entity(attrs)
     |> Repo.insert()
   end
 
@@ -172,18 +154,16 @@ defmodule Demo.Entities do
     attrs = make_financial_statements(attrs)
 
     %Entity{}
-    |> Entity.create_public_entity(current_user, attrs)
+    |> Entity.create_other_entity(current_user, attrs)
     |> Repo.insert()
   end
-
-
 
   def change_entity(%Entity{} = entity) do
     Entity.changeset(entity, %{})
   end
 
-  def new_entity(%Entity{} = entity) do
-    Entity.new_changeset(entity, %{})
+  def create_entity(%Entity{} = entity) do
+    Entity.changeset(entity, %{})
   end
 
   defp make_default_financial_statements(attrs) do
@@ -194,7 +174,7 @@ defmodule Demo.Entities do
     es = %EquityStatement{}
     ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
+    Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end
 
   defp make_financial_statements(attrs) do
@@ -205,6 +185,6 @@ defmodule Demo.Entities do
     es = %EquityStatement{}
     ga = %GabAccount{}
 
-    attrs = Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
+    Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end
 end

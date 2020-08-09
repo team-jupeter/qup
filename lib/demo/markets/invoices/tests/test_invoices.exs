@@ -416,7 +416,7 @@ new_hs_gab_account = Decimal.sub(hs_bs.gab_account, invoice.total)
 delta_bs_cs =  BalanceSheet.changeset(delta_bs, %{gab_account: new_delta_gab_account})
 hs_bs_cs =  BalanceSheet.changeset(hs_bs, %{gab_account: new_hs_gab_account})
 
-#? Adjust gab_balances of seller and buyer
+#? Adjust t1_balances of seller and buyer
 #? both update  will succeed or both fail, not just one.
 Ecto.Multi.new() |>
    Ecto.Multi.update(:seller, delta_bs_cs) |>

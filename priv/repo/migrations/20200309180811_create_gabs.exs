@@ -5,7 +5,7 @@ defmodule Demo.Repo.Migrations.CreateGabs do
     create table(:gabs, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :name, :string
-      add :t1_balance, :decimal, default: 0.0
+      add :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
       add :unique_digits, :string
       add :tels, {:array, :string}
 

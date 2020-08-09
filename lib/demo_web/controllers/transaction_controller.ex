@@ -6,9 +6,9 @@ defmodule DemoWeb.TransactionController do
   alias Demo.InvoiceItems
   alias Demo.Repo
   alias Demo.Events
-  alias Demo.Supuls.Supul
-  alias Demo.StateSupuls.StateSupul
-  alias Demo.NationSupuls.NationSupul
+  # alias Demo.Supuls.Supul
+  # alias Demo.StateSupuls.StateSupul
+  # alias Demo.NationSupuls.NationSupul
 
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show]
 
@@ -26,17 +26,17 @@ defmodule DemoWeb.TransactionController do
     invoice = Repo.preload(current_entity, :invoice).invoice
     bs = Repo.preload(current_entity, :balance_sheet).balance_sheet
 
-    if bs.t1 < invoice.total, do: "error"
+    if bs.t1_balance < invoice.total, do: "error"
 
     # ? For the erl
-    IO.puts "transaction_controller, erl_supul"
+    IO.puts("transaction_controller, erl_supul")
     erl = current_entity
     erl_supul = Repo.preload(erl, :supul).supul
     erl_state_supul = Repo.preload(erl_supul, :state_supul).state_supul
     erl_nation_supul = Repo.preload(erl_state_supul, :nation_supul).nation_supul
-    
+
     invoice_items = InvoiceItems.list_invoice_items(erl.id)
-    
+
     # ? For the ssu
     ssu_id = Enum.at(invoice_items, 0).seller_id
 
@@ -53,7 +53,6 @@ defmodule DemoWeb.TransactionController do
     attrs = %{
       type: "transaction",
       invoice: invoice,
-
       erl_type: erl.type,
       erl_id: erl.id,
       erl_name: erl.name,
@@ -61,7 +60,6 @@ defmodule DemoWeb.TransactionController do
       erl_supul_id: erl_supul.id,
       erl_state_supul_id: erl_state_supul.id,
       erl_nation_supul_id: erl_nation_supul.id,
-
       ssu_type: ssu.type,
       ssu_id: ssu.id,
       ssu_name: ssu.name,
@@ -69,7 +67,7 @@ defmodule DemoWeb.TransactionController do
       ssu_supul_id: ssu_supul.id,
       ssu_state_supul_id: ssu_state_supul.id,
       ssu_nation_supul_id: ssu_nation_supul.id,
-      abc_amount: invoice.total
+      t1_amount: invoice.total
     }
 
     # ? Determine whether the erl is default_entity, private_entity, or public entity.
@@ -78,19 +76,17 @@ defmodule DemoWeb.TransactionController do
         "default" ->
           erl_family_id = Repo.preload(erl, :family).family.id
 
-          attrs =
-            Map.merge(attrs, %{
-              erl_family_id: erl_family_id
-            })
+          Map.merge(attrs, %{
+            erl_family_id: erl_family_id
+          })
 
         "private" ->
           erl_group = Repo.preload(erl, :group).group
           erl_group_id = erl_group.id
 
-          attrs =
-            Map.merge(attrs, %{
-              erl_group_id: erl_group_id
-            })
+          Map.merge(attrs, %{
+            erl_group_id: erl_group_id
+          })
 
         "public" ->
           attrs
@@ -102,19 +98,17 @@ defmodule DemoWeb.TransactionController do
         "default" ->
           ssu_family_id = Repo.preload(ssu, :family).family.id
 
-          attrs =
-            Map.merge(attrs, %{
-              ssu_family_id: ssu_family_id
-            })
+          Map.merge(attrs, %{
+            ssu_family_id: ssu_family_id
+          })
 
         "private" ->
           ssu_group = Repo.preload(ssu, :group).group
           ssu_group_id = ssu_group.id
 
-          attrs =
-            Map.merge(attrs, %{
-              ssu_group_id: ssu_group_id
-            })
+          Map.merge(attrs, %{
+            ssu_group_id: ssu_group_id
+          })
 
         "public" ->
           attrs
@@ -145,13 +139,11 @@ defmodule DemoWeb.TransactionController do
     end
   end
 
-
-
   # def create(conn, invoice, current_entity, erl_rsa_priv_key, sender_rsa_priv_key) do
   #   conn
   # end
 
-  def show(conn, %{"id" => id}, current_entity) do
+  def show(conn, %{"id" => id}, _current_entity) do
     transaction = Transactions.get_transaction!(id)
     render(conn, "show.html", transaction: transaction)
   end

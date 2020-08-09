@@ -2,7 +2,7 @@ defmodule Demo.ABC.T1 do
   use Ecto.Schema
   import Ecto.Changeset
   alias Demo.ABC.T1
-  
+   
   embedded_schema do 
     field :openhash_id, :binary_id
 
@@ -11,10 +11,10 @@ defmodule Demo.ABC.T1 do
     field :output_name, :string
     field :output_id, :string
     field :amount, :decimal, precision: 12, scale: 2
-    field :currency, :string
+    field :currency_type, :string
     
     #? locking script and conditions of spending moneny by recipient.
-    embeds_one :abc_locker, Demo.ABC.ABCLockeEmbed
+    embeds_one :abc_locker, Demo.ABC.ABCLockerEmbed
 
   end
 

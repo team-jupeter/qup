@@ -6,7 +6,7 @@ defmodule Demo.Families.Family do
 
   schema "families" do
     # ? add charater "f" to the email of the house holder.
-    field :gab_balance, :decimal, default: 0.0
+    field :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
     field :family_code, :string
     field :nationality, :string
     field :auth_code, :string
@@ -91,7 +91,7 @@ defmodule Demo.Families.Family do
   end
 
   @fields [
-    :gab_balance, 
+    :t1_balance, 
     :family_code,
     :nationality,
     :auth_code,
@@ -171,12 +171,13 @@ defmodule Demo.Families.Family do
     |> put_assoc(:group, attrs.group)
   end
 
-  def changeset(family, attrs = %{gab_balance: gab_balance}) do
+  def changeset(family, attrs = %{t1_balance: t1_balance}) do
     family
     |> cast(attrs, @fields)
   end
   
   def changeset(family, attrs) do
+    IO.puts "Families.changeset"
     family
     |> cast(attrs, @fields)
     |> validate_required([])

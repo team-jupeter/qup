@@ -12,7 +12,7 @@ defmodule Demo.Taxations do
   alias Demo.Reports.IncomeStatement
   alias Demo.Reports.CFStatement
   alias Demo.Reports.EquityStatement
-  alias Demo.AccountBooks.AccountBook
+  # alias Demo.AccountBooks.AccountBook
 
   def list_taxations do
     Repo.all(Taxation)
@@ -35,7 +35,7 @@ defmodule Demo.Taxations do
     fr = %FinancialReport{}
     es = %EquityStatement{}
 
-    attrs = Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr})
+    Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr})
   end
 
 

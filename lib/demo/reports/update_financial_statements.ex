@@ -301,9 +301,9 @@ defmodule Demo.Reports.UpdateFinacialStatements do
   #       Decimal.add(x.treasury_stock, acc)
   #     end)
 
-  #   gab_balance =
+  #   t1_balance =
   #     Enum.reduce(list_BS, Decimal.from_float(0.00), fn x, acc ->
-  #       Decimal.add(x.gab_balance, acc)
+  #       Decimal.add(x.t1_balance, acc)
   #     end)
 
   #   attrs = %{
@@ -323,7 +323,7 @@ defmodule Demo.Reports.UpdateFinacialStatements do
   #     stock: stock,
   #     taxes: taxes,
   #     treasury_stock: treasury_stock,
-  #     gab_balance: gab_balance
+  #     t1_balance: t1_balance
   #   }
 
   #   BalanceSheets.update_balance_sheet(parent, attrs)

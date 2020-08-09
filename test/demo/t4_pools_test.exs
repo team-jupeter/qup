@@ -1,90 +1,90 @@
-defmodule Demo.T4ListsTest do
+defmodule Demo.T4sTest do
   use Demo.DataCase
 
-  alias Demo.T4Lists
+  alias Demo.T4s
 
-  describe "t4_lists" do
-    alias Demo.T4Lists.T4List
+  describe "t4s" do
+    alias Demo.T4s.T4
 
     @valid_attrs %{BSE: "some BSE", DB: "some DB", ENX: "some ENX", JPX: "some JPX", KRX: "some KRX", LSE: "some LSE", NASDAQ: "some NASDAQ", NSE: "some NSE", NYSE: "some NYSE", SEHK: "some SEHK", SIX: "some SIX", SSE: "some SSE", SZSE: "some SZSE", TSX: "some TSX"}
     @update_attrs %{BSE: "some updated BSE", DB: "some updated DB", ENX: "some updated ENX", JPX: "some updated JPX", KRX: "some updated KRX", LSE: "some updated LSE", NASDAQ: "some updated NASDAQ", NSE: "some updated NSE", NYSE: "some updated NYSE", SEHK: "some updated SEHK", SIX: "some updated SIX", SSE: "some updated SSE", SZSE: "some updated SZSE", TSX: "some updated TSX"}
     @invalid_attrs %{BSE: nil, DB: nil, ENX: nil, JPX: nil, KRX: nil, LSE: nil, NASDAQ: nil, NSE: nil, NYSE: nil, SEHK: nil, SIX: nil, SSE: nil, SZSE: nil, TSX: nil}
 
-    def t4_list_fixture(attrs \\ %{}) do
-      {:ok, t4_list} =
+    def t4_fixture(attrs \\ %{}) do
+      {:ok, t4} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> T4Lists.create_t4_list()
+        |> T4s.create_t4()
 
-      t4_list
+      t4
     end
 
-    test "list_t4_lists/0 returns all t4_lists" do
-      t4_list = t4_list_fixture()
-      assert T4Lists.list_t4_lists() == [t4_list]
+    test "list_t4s/0 returns all t4s" do
+      t4 = t4_fixture()
+      assert T4s.list_t4s() == [t4]
     end
 
-    test "get_t4_list!/1 returns the t4_list with given id" do
-      t4_list = t4_list_fixture()
-      assert T4Lists.get_t4_list!(t4_list.id) == t4_list
+    test "get_t4!/1 returns the t4 with given id" do
+      t4 = t4_fixture()
+      assert T4s.get_t4!(t4.id) == t4
     end
 
-    test "create_t4_list/1 with valid data creates a t4_list" do
-      assert {:ok, %T4List{} = t4_list} = T4Lists.create_t4_list(@valid_attrs)
-      assert t4_list.BSE == "some BSE"
-      assert t4_list.DB == "some DB"
-      assert t4_list.ENX == "some ENX"
-      assert t4_list.JPX == "some JPX"
-      assert t4_list.KRX == "some KRX"
-      assert t4_list.LSE == "some LSE"
-      assert t4_list.NASDAQ == "some NASDAQ"
-      assert t4_list.NSE == "some NSE"
-      assert t4_list.NYSE == "some NYSE"
-      assert t4_list.SEHK == "some SEHK"
-      assert t4_list.SIX == "some SIX"
-      assert t4_list.SSE == "some SSE"
-      assert t4_list.SZSE == "some SZSE"
-      assert t4_list.TSX == "some TSX"
+    test "create_t4/1 with valid data creates a t4" do
+      assert {:ok, %T4{} = t4} = T4s.create_t4(@valid_attrs)
+      assert t4.BSE == "some BSE"
+      assert t4.DB == "some DB"
+      assert t4.ENX == "some ENX"
+      assert t4.JPX == "some JPX"
+      assert t4.KRX == "some KRX"
+      assert t4.LSE == "some LSE"
+      assert t4.NASDAQ == "some NASDAQ"
+      assert t4.NSE == "some NSE"
+      assert t4.NYSE == "some NYSE"
+      assert t4.SEHK == "some SEHK"
+      assert t4.SIX == "some SIX"
+      assert t4.SSE == "some SSE"
+      assert t4.SZSE == "some SZSE"
+      assert t4.TSX == "some TSX"
     end
 
-    test "create_t4_list/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = T4Lists.create_t4_list(@invalid_attrs)
+    test "create_t4/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = T4s.create_t4(@invalid_attrs)
     end
 
-    test "update_t4_list/2 with valid data updates the t4_list" do
-      t4_list = t4_list_fixture()
-      assert {:ok, %T4List{} = t4_list} = T4Lists.update_t4_list(t4_list, @update_attrs)
-      assert t4_list.BSE == "some updated BSE"
-      assert t4_list.DB == "some updated DB"
-      assert t4_list.ENX == "some updated ENX"
-      assert t4_list.JPX == "some updated JPX"
-      assert t4_list.KRX == "some updated KRX"
-      assert t4_list.LSE == "some updated LSE"
-      assert t4_list.NASDAQ == "some updated NASDAQ"
-      assert t4_list.NSE == "some updated NSE"
-      assert t4_list.NYSE == "some updated NYSE"
-      assert t4_list.SEHK == "some updated SEHK"
-      assert t4_list.SIX == "some updated SIX"
-      assert t4_list.SSE == "some updated SSE"
-      assert t4_list.SZSE == "some updated SZSE"
-      assert t4_list.TSX == "some updated TSX"
+    test "update_t4/2 with valid data updates the t4" do
+      t4 = t4_fixture()
+      assert {:ok, %T4{} = t4} = T4s.update_t4(t4, @update_attrs)
+      assert t4.BSE == "some updated BSE"
+      assert t4.DB == "some updated DB"
+      assert t4.ENX == "some updated ENX"
+      assert t4.JPX == "some updated JPX"
+      assert t4.KRX == "some updated KRX"
+      assert t4.LSE == "some updated LSE"
+      assert t4.NASDAQ == "some updated NASDAQ"
+      assert t4.NSE == "some updated NSE"
+      assert t4.NYSE == "some updated NYSE"
+      assert t4.SEHK == "some updated SEHK"
+      assert t4.SIX == "some updated SIX"
+      assert t4.SSE == "some updated SSE"
+      assert t4.SZSE == "some updated SZSE"
+      assert t4.TSX == "some updated TSX"
     end
 
-    test "update_t4_list/2 with invalid data returns error changeset" do
-      t4_list = t4_list_fixture()
-      assert {:error, %Ecto.Changeset{}} = T4Lists.update_t4_list(t4_list, @invalid_attrs)
-      assert t4_list == T4Lists.get_t4_list!(t4_list.id)
+    test "update_t4/2 with invalid data returns error changeset" do
+      t4 = t4_fixture()
+      assert {:error, %Ecto.Changeset{}} = T4s.update_t4(t4, @invalid_attrs)
+      assert t4 == T4s.get_t4!(t4.id)
     end
 
-    test "delete_t4_list/1 deletes the t4_list" do
-      t4_list = t4_list_fixture()
-      assert {:ok, %T4List{}} = T4Lists.delete_t4_list(t4_list)
-      assert_raise Ecto.NoResultsError, fn -> T4Lists.get_t4_list!(t4_list.id) end
+    test "delete_t4/1 deletes the t4" do
+      t4 = t4_fixture()
+      assert {:ok, %T4{}} = T4s.delete_t4(t4)
+      assert_raise Ecto.NoResultsError, fn -> T4s.get_t4!(t4.id) end
     end
 
-    test "change_t4_list/1 returns a t4_list changeset" do
-      t4_list = t4_list_fixture()
-      assert %Ecto.Changeset{} = T4Lists.change_t4_list(t4_list)
+    test "change_t4/1 returns a t4 changeset" do
+      t4 = t4_fixture()
+      assert %Ecto.Changeset{} = T4s.change_t4(t4)
     end
   end
 end

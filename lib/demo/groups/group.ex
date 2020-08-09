@@ -5,7 +5,7 @@ defmodule Demo.Groups.Group do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "groups" do
-    field :gab_balance, :decimal, default: 0.0
+    field :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
     field :type, :string
     field :name, :string
 
@@ -31,7 +31,7 @@ defmodule Demo.Groups.Group do
   end
 
   @fields [
-    :gab_balance, :type, :name
+    :t1_balance, :type, :name
   ]
   @doc false
   def changeset(group, attrs = %{entities: entities}) do
@@ -47,7 +47,7 @@ defmodule Demo.Groups.Group do
   end
 
   @doc false
-  def changeset(group, attrs = %{gab_balance: gab_balance}) do
+  def changeset(group, attrs = %{t1_balance: t1_balance}) do
     IO.puts("group, changeset")
 
     group

@@ -37,23 +37,23 @@ defmodule DemoWeb.IncomeStatementController do
       cond do
         Families.get_family(id) != nil ->
           family = Families.get_family(id)
-          income_statement = Repo.preload(family, :income_statement).income_statement
+          Repo.preload(family, :income_statement).income_statement
 
         Groups.get_group(id) != nil ->
           group = Groups.get_group(id)
-          income_statement = Repo.preload(group, :income_statement).income_statement
+          Repo.preload(group, :income_statement).income_statement
 
         Supuls.get_supul(id) != nil ->
           supul = Supuls.get_supul(id)
-          income_statement = Repo.preload(supul, :income_statement).income_statement
+          Repo.preload(supul, :income_statement).income_statement
 
         StateSupuls.get_state_supul(id) != nil ->
           state_supul = StateSupuls.get_state_supul(id)
-          income_statement = Repo.preload(state_supul, :income_statement).income_statement
+          Repo.preload(state_supul, :income_statement).income_statement
 
         NationSupuls.get_nation_supul(id) != nil ->
           nation_supul = NationSupuls.get_nation_supul(id)
-          income_statement = Repo.preload(nation_supul, :income_statement).income_statement
+          Repo.preload(nation_supul, :income_statement).income_statement
 
         true ->
           "error"

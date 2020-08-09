@@ -7,7 +7,7 @@
   <tbody>
       <tr>
       <td>GAB Balance</td>
-      <td><%= @nation_supul.gab_balance %></td>
+      <td><%= @nation_supul.t1_balance %></td>
     </tr> 
     <tr>
       <td>Type</td>
@@ -45,8 +45,8 @@
   <tbody>
 
     <tr>
-      <td>gab_balance</td>
-      <td><%= @nation_supul.gab_balance %></td>
+      <td>t1_balance</td>
+      <td><%= @nation_supul.t1_balance %></td>
     </tr> 
 
     <tr>

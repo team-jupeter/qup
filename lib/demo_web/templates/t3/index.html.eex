@@ -1,28 +1,20 @@
-<h1>Listing T3s</h1>
+<%= form_for @conn, Routes.user_path(@conn, :index), [method: :get, class: "pull-right"], fn f -> %>
+      <%= search_input f, :query %>
+      <%= submit "Search" %>
+    <% end %>
+
+
+<h4>Listing T3s</h4>
 
 <table>
-  <thead>
+  <%= for t3 <- @t3s do %>
     <tr>
-      <th>Current owner</th>
-      <th>Book price</th>
-
-      <th></th>
+      <td><%= render "t3.html", t3: t3 %></td>
+      <td><%= link "Show", to: Routes.t3_path(@conn, :show, t3.id) %></td>
     </tr>
-  </thead>
-  <tbody>
-<%= for t3 <- @t3s do %>
-    <tr>
-      <td><%= t3.current_owner %></td>
-      <td><%= t3.book_price %></td>
-
-      <td>
-        <span><%= link "Show", to: Routes.t3_path(@conn, :show, t3) %></span>
-        <span><%= link "Edit", to: Routes.t3_path(@conn, :edit, t3) %></span>
-        <span><%= link "Delete", to: Routes.t3_path(@conn, :delete, t3), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<span><%= link "New T3", to: Routes.t3_path(@conn, :new) %></span>
+  <% end %>
+</table> 
+ </br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

@@ -12,11 +12,11 @@ defmodule Demo.Reports.BalanceSheet do
     field :accrued_liabilities, :decimal, precision: 12, scale: 2, default: 0.0
     field :additional_paid_in_capital, :decimal, precision: 12, scale: 2, default: 0.0
     
-    field :t1, :decimal, precision: 12, scale: 2, default: 0.0
-    field :t2,:decimal, precision: 12, scale: 2, default: 0.0
-    field :t3,:decimal, precision: 12, scale: 2, default: 0.0
-    field :t4,:decimal, precision: 12, scale: 2, default: 0.0
-    field :t5,:decimal, precision: 12, scale: 2, default: 0.0
+    # field :t1, :decimal, precision: 12, scale: 2, default: 0.0
+    # field :t2, :decimal, precision: 12, scale: 2, default: 0.0
+    # field :t3, :decimal, precision: 12, scale: 2, default: 0.0
+    # field :t4, :decimal, precision: 12, scale: 2, default: 0.0
+    # field :t5, :decimal, precision: 12, scale: 2, default: 0.0
 
     field :customer_prepayments, :decimal, precision: 12, scale: 2, default: 0.0
     field :fixed_assets, {:array, :map}, default: []
@@ -30,9 +30,17 @@ defmodule Demo.Reports.BalanceSheet do
     field :taxes, :decimal, precision: 12, scale: 2, default: 0.0
     field :treasury_stock, :decimal, precision: 12, scale: 2, default: 0.0
     
-    field :gab_balance, :decimal, precision: 12, scale: 2, default: 0.0
+    field :t1_balance, :decimal, precision: 12, scale: 2, default: 0.0
+    field :t2_balance, :decimal, precision: 12, scale: 2, default: 0.0
+    field :t3_balance, :decimal, precision: 12, scale: 2, default: 0.0
+    field :t4_balance, :decimal, precision: 12, scale: 2, default: 0.0
+    field :t5_balance, :decimal, precision: 12, scale: 2, default: 0.0
 
-    embeds_many :ts, Demo.ABC.T1, on_replace: :delete
+    embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
+    embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
+    # embeds_many :t3s, Demo.ABC.T3, on_replace: :delete
+    embeds_many :t4s, Demo.ABC.T4, on_replace: :delete
+    # embeds_many :t5s, Demo.ABC.T5, on_replace: :delete
  
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
     belongs_to :group, Demo.Groups.Group, type: :binary_id
@@ -43,6 +51,11 @@ defmodule Demo.Reports.BalanceSheet do
     belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
     belongs_to :taxation, Demo.Taxations.Taxation, type: :binary_id
 
+    # has_many :t1s, Demo.T1s.T1, on_replace: :delete
+    # has_many :t2s, Demo.T2s.T2, on_replace: :delete
+    has_many :t3s, Demo.T3s.T3, on_replace: :delete
+    # has_many :t4s, Demo.T4s.T4, on_replace: :delete
+    # has_many :t5s, Demo.T5s.T5, on_replace: :delete
 
     timestamps()
   end
@@ -53,7 +66,11 @@ defmodule Demo.Reports.BalanceSheet do
     :accrued_liabilities,
     :additional_paid_in_capital,
 
-    :t1, :t2, :t3, :t4, :t5,
+    :t1_balance,
+    :t2_balance,
+    :t3_balance,
+    :t4_balance,
+    :t5_balance,
 
     :customer_prepayments,
     :fixed_assets,
@@ -66,7 +83,7 @@ defmodule Demo.Reports.BalanceSheet do
     :stock,
     :taxes,
     :treasury_stock,
-    :gab_balance,
+    :t1_balance,
   ]
   @doc false
   def changeset(balance_sheet, attrs \\ %{}) do
@@ -81,15 +98,15 @@ defmodule Demo.Reports.BalanceSheet do
   end 
   
 
-  def changeset_minus_gab_balance(balance_sheet, attrs \\ %{}) do
+  def changeset_minus_t1_balance(balance_sheet, attrs \\ %{}) do
     balance_sheet
     |> cast(attrs, @fields)
-    |> put_change(:gab_balance, Decimal.sub(balance_sheet.gab_balance, attrs.amount)) 
+    |> put_change(:t1_balance, Decimal.sub(balance_sheet.t1_balance, attrs.amount)) 
   end
   
-  def changeset_plus_gab_balance(balance_sheet, attrs \\ %{}) do
+  def changeset_plus_t1_balance(balance_sheet, attrs \\ %{}) do
     balance_sheet
     |> cast(attrs, @fields)
-    |> put_change(:gab_balance, Decimal.add(balance_sheet.gab_balance, attrs.amount)) 
+    |> put_change(:t1_balance, Decimal.add(balance_sheet.t1_balance, attrs.amount)) 
   end
 end

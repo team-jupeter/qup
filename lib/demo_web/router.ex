@@ -149,14 +149,14 @@ defmodule DemoWeb.Router do
   scope "/gab", DemoWeb do
     pipe_through [:browser]
 
-    resources "/", GABController
+    resources "/", GabController
     resources "/money_pools", MoneyPoolController
     resources "/fiat_pools", FiatPoolController
-    resources "/t1_lists", T1ListController
-    resources "/t2_lists", T2ListController
-    resources "/t3_lists", T3ListController
-    resources "/t4_lists", T4ListController
+    resources "/t1s", T1Controller
+    resources "/t2s", T2Controller
     resources "/t3s", T3Controller
+    resources "/t4s", T4Controller
+    # resources "/t3s", T3Controller
   end
 
 

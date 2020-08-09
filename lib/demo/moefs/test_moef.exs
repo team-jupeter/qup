@@ -214,7 +214,7 @@ Invoicies are stored by entities and transactions are stored by supuls.
 transaction = Transaction.changeset(%Transaction{
     abc_input: moef.id,
     abc_output: tesla_entity.id,
-    abc_amount: invoice.total,
+    t1_amount: invoice.total,
     items: [%{report: "final_report"}]
     }) |> Repo.insert!
     
@@ -234,8 +234,8 @@ alias Demo.ABC.T1
 #? Adjust balance_sheet of both.
 #? moef
 #? The code below NOT consider any other elements in the ts list. We should find out just enough elements to pay the invoice total. 
-new_ts = Enum.map(moef_BS.ts, fn elem ->
-    Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, transaction.abc_amount) end)
+new_ts = Enum.map(moef_BS.t1s, fn elem ->
+    Map.update!(elem, :amount, fn curr_value -> Decimal.sub(curr_value, transaction.t1_amount) end)
 end)
 
 moef_BS = change(moef_BS) |> \
@@ -245,7 +245,7 @@ moef_BS = change(moef_BS) |> \
 #? Tesla Korea
 t1s = [%T1{
     input: "moef_public_address", 
-    amount: transaction.abc_amount, 
+    amount: transaction.t1_amount, 
     output: "moef_public_address",
     locked: true, 
     locking_use_until: "2015-01-23 23:50:07",

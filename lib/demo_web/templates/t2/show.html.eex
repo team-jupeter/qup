@@ -1,0 +1,75 @@
+<h1>Show T2 list</h1>
+<table >
+      <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td>USD</td>
+        <td><%= @t2.usd %></td>
+        </tr>
+        <tr>
+        <td>EUR</td>
+        <td><%= @t2.eur %></td>
+        </tr>
+        <tr>
+        <td>JPY</td>
+        <td><%= @t2.jpy %></td>
+        </tr>
+        <tr>
+        <td>GBP</td>
+        <td><%= @t2.gbp %></td>
+        </tr>
+        <tr>
+        <td>AUD</td>
+        <td><%= @t2.aud %></td>
+        </tr>
+        <tr>
+        <td>CAD</td>
+        <td><%= @t2.cad %></td>
+        </tr>
+        <tr>
+        <td>CHF</td>
+        <td><%= @t2.chf %></td>
+        </tr>
+        <tr>
+        <td>CNY</td>
+        <td><%= @t2.cny %></td>
+        </tr>
+        <tr>
+        <td>SEK</td>
+        <td><%= @t2.sek %></td>
+        </tr>
+        <tr>
+        <td>MXN</td>
+        <td><%= @t2.mxn %></td>
+        </tr>
+        <tr>
+        <td>NZD</td>
+        <td><%= @t2.nzd %></td>
+        </tr>
+        <tr>
+        <td>SGD</td>
+        <td><%= @t2.sgd %></td>
+        </tr>
+        <tr>
+        <td>HKD</td>
+        <td><%= @t2.hkd %></td>
+        </tr>
+        <tr>
+        <td>NOK</td>
+        <td><%= @t2.nok %></td>
+        </tr>
+        <tr>
+        <td>KRW</td>
+        <td><%= @t2.krw %></td>
+        </tr>
+      </tbody>
+    </table>
+</br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

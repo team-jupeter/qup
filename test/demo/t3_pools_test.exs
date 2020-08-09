@@ -1,66 +1,66 @@
-defmodule Demo.T3ListsTest do
+defmodule Demo.T3sTest do
   use Demo.DataCase
 
-  alias Demo.T3Lists
+  alias Demo.T3s
 
-  describe "t3_lists" do
-    alias Demo.T3Lists.T3List
+  describe "t3s" do
+    alias Demo.T3s.T3
 
     @valid_attrs %{num_of_stocks: "some num_of_stocks", price_per_share: "some price_per_share"}
     @update_attrs %{num_of_stocks: "some updated num_of_stocks", price_per_share: "some updated price_per_share"}
     @invalid_attrs %{num_of_stocks: nil, price_per_share: nil}
 
-    def t3_list_fixture(attrs \\ %{}) do
-      {:ok, t3_list} =
+    def t3_fixture(attrs \\ %{}) do
+      {:ok, t3} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> T3Lists.create_t3_list()
+        |> T3s.create_t3()
 
-      t3_list
+      t3
     end
 
-    test "list_t3_lists/0 returns all t3_lists" do
-      t3_list = t3_list_fixture()
-      assert T3Lists.list_t3_lists() == [t3_list]
+    test "list_t3s/0 returns all t3s" do
+      t3 = t3_fixture()
+      assert T3s.list_t3s() == [t3]
     end
 
-    test "get_t3_list!/1 returns the t3_list with given id" do
-      t3_list = t3_list_fixture()
-      assert T3Lists.get_t3_list!(t3_list.id) == t3_list
+    test "get_t3!/1 returns the t3 with given id" do
+      t3 = t3_fixture()
+      assert T3s.get_t3!(t3.id) == t3
     end
 
-    test "create_t3_list/1 with valid data creates a t3_list" do
-      assert {:ok, %T3List{} = t3_list} = T3Lists.create_t3_list(@valid_attrs)
-      assert t3_list.num_of_stocks == "some num_of_stocks"
-      assert t3_list.price_per_share == "some price_per_share"
+    test "create_t3/1 with valid data creates a t3" do
+      assert {:ok, %T3{} = t3} = T3s.create_t3(@valid_attrs)
+      assert t3.num_of_stocks == "some num_of_stocks"
+      assert t3.price_per_share == "some price_per_share"
     end
 
-    test "create_t3_list/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = T3Lists.create_t3_list(@invalid_attrs)
+    test "create_t3/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = T3s.create_t3(@invalid_attrs)
     end
 
-    test "update_t3_list/2 with valid data updates the t3_list" do
-      t3_list = t3_list_fixture()
-      assert {:ok, %T3List{} = t3_list} = T3Lists.update_t3_list(t3_list, @update_attrs)
-      assert t3_list.num_of_stocks == "some updated num_of_stocks"
-      assert t3_list.price_per_share == "some updated price_per_share"
+    test "update_t3/2 with valid data updates the t3" do
+      t3 = t3_fixture()
+      assert {:ok, %T3{} = t3} = T3s.update_t3(t3, @update_attrs)
+      assert t3.num_of_stocks == "some updated num_of_stocks"
+      assert t3.price_per_share == "some updated price_per_share"
     end
 
-    test "update_t3_list/2 with invalid data returns error changeset" do
-      t3_list = t3_list_fixture()
-      assert {:error, %Ecto.Changeset{}} = T3Lists.update_t3_list(t3_list, @invalid_attrs)
-      assert t3_list == T3Lists.get_t3_list!(t3_list.id)
+    test "update_t3/2 with invalid data returns error changeset" do
+      t3 = t3_fixture()
+      assert {:error, %Ecto.Changeset{}} = T3s.update_t3(t3, @invalid_attrs)
+      assert t3 == T3s.get_t3!(t3.id)
     end
 
-    test "delete_t3_list/1 deletes the t3_list" do
-      t3_list = t3_list_fixture()
-      assert {:ok, %T3List{}} = T3Lists.delete_t3_list(t3_list)
-      assert_raise Ecto.NoResultsError, fn -> T3Lists.get_t3_list!(t3_list.id) end
+    test "delete_t3/1 deletes the t3" do
+      t3 = t3_fixture()
+      assert {:ok, %T3{}} = T3s.delete_t3(t3)
+      assert_raise Ecto.NoResultsError, fn -> T3s.get_t3!(t3.id) end
     end
 
-    test "change_t3_list/1 returns a t3_list changeset" do
-      t3_list = t3_list_fixture()
-      assert %Ecto.Changeset{} = T3Lists.change_t3_list(t3_list)
+    test "change_t3/1 returns a t3 changeset" do
+      t3 = t3_fixture()
+      assert %Ecto.Changeset{} = T3s.change_t3(t3)
     end
   end
 end

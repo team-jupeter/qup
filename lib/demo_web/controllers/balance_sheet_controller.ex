@@ -24,6 +24,7 @@ defmodule DemoWeb.BalanceSheetController do
   # end
 
   def show(conn, %{"id" => id}) do
+    IO.inspect("balanc sheet controller show")
     balance_sheet = BalanceSheets.get_entity_balance_sheet!(id)
 
     case balance_sheet do
@@ -36,27 +37,28 @@ defmodule DemoWeb.BalanceSheetController do
   end
 
   def edit(conn, %{"id" => id}) do
+    IO.inspect("balanc sheet controller edit")
     balance_sheet =
       cond do
         Families.get_family(id) != nil ->
           family = Families.get_family(id)
-          balance_sheet = Repo.preload(family, :balance_sheet).balance_sheet
+          Repo.preload(family, :balance_sheet).balance_sheet
 
         Groups.get_group(id) != nil ->
           group = Groups.get_group(id)
-          balance_sheet = Repo.preload(group, :balance_sheet).balance_sheet
+          Repo.preload(group, :balance_sheet).balance_sheet
 
         Supuls.get_supul(id) != nil ->
           supul = Supuls.get_supul(id)
-          balance_sheet = Repo.preload(supul, :balance_sheet).balance_sheet
+          Repo.preload(supul, :balance_sheet).balance_sheet
 
         StateSupuls.get_state_supul(id) != nil ->
           state_supul = StateSupuls.get_state_supul(id)
-          balance_sheet = Repo.preload(state_supul, :balance_sheet).balance_sheet
+          Repo.preload(state_supul, :balance_sheet).balance_sheet
 
         NationSupuls.get_nation_supul(id) != nil ->
           nation_supul = NationSupuls.get_nation_supul(id)
-          balance_sheet = Repo.preload(nation_supul, :balance_sheet).balance_sheet
+          Repo.preload(nation_supul, :balance_sheet).balance_sheet
 
         true ->
           "error"

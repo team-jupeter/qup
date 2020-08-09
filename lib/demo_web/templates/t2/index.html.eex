@@ -1,0 +1,20 @@
+<%= form_for @conn, Routes.user_path(@conn, :index), [method: :get, class: "pull-right"], fn f -> %>
+      <%= search_input f, :query %>
+      <%= submit "Search" %>
+    <% end %>
+
+
+<h4>Listing T2s</h4>
+
+<table>
+  <%= for t2 <- @t2s do %>
+    <tr>
+      <td><%= render "t2.html", t2: t2 %></td>
+      <td><%= link "Show", to: Routes.t2_path(@conn, :show, t2.id) %></td>
+    </tr>
+  <% end %>
+</table> 
+ </br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

@@ -66,7 +66,7 @@ alias Demo.Reports.GabBalanceSheet
 hankyung_gab_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hankyung_gab.id}) |> Repo.insert!
 hong_entity_FR = FinancialReport.changeset(%FinancialReport{}, %{entity_id: hong_entity.id}) |> Repo.insert!
 
-hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :gab_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW"}) |> Repo.insert!
+hankyung_gab_BS = Ecto.build_assoc(hankyung_gab_FR, :t1_balance_sheet, %GabBalanceSheet{monetary_unit: "KRW"}) |> Repo.insert!
 hong_entity_BS = Ecto.build_assoc(hong_entity_FR, :balance_sheet, %BalanceSheet{}) |> Repo.insert!
 
 '''
@@ -109,10 +109,10 @@ ledger = Ledger.changeset(%Ledger{}, %{invoice_id: invoice.id, buyer_id: invoice
 Adjust balance_sheet of both.
 ''' 
 #? Hankyung GAB Branch 
-hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :gab_balance_sheet]).financial_report
-change(hankyung_gab_FR.gab_balance_sheet) |>
-Ecto.Changeset.put_change(:cash, Decimal.add(hankyung_gab_FR.gab_balance_sheet.cash, ledger.amount)) |>
-Ecto.Changeset.put_change(:t1, Decimal.sub(hankyung_gab_FR.gab_balance_sheet.t1, ledger.quantity)) |>
+hankyung_gab_FR = Repo.preload(hankyung_gab, [financial_report: :t1_balance_sheet]).financial_report
+change(hankyung_gab_FR.t1_balance_sheet) |>
+Ecto.Changeset.put_change(:cash, Decimal.add(hankyung_gab_FR.t1_balance_sheet.cash, ledger.amount)) |>
+Ecto.Changeset.put_change(:t1, Decimal.sub(hankyung_gab_FR.t1_balance_sheet.t1, ledger.quantity)) |>
 Repo.update!
 
 

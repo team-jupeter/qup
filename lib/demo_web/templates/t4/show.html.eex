@@ -1,0 +1,75 @@
+<h1>Show T4 list</h1>
+<table >
+      <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td>BSE</td>
+        <td><%= @t4.bse %></td>
+        </tr>
+        <tr>
+        <td>DB</td>
+        <td><%= @t4.db %></td>
+        </tr>
+        <tr>
+        <td>ENS</td>
+        <td><%= @t4.ens %></td>
+        </tr>
+        <tr>
+        <td>JPX</td>
+        <td><%= @t4.jpx %></td>
+        </tr>
+        <tr>
+        <td>KRX</td>
+        <td><%= @t4.krx %></td>
+        </tr>
+        <tr>
+        <td>LSE</td>
+        <td><%= @t4.lse %></td>
+        </tr>
+        <tr>
+        <td>BSE</td>
+        <td><%= @t4.bse %></td>
+        </tr>
+        <tr>
+        <td>NASDAQ</td>
+        <td><%= @t4.nasdaq %></td>
+        </tr>
+        <tr>
+        <td>NSE</td>
+        <td><%= @t4.nse %></td>
+        </tr>
+        <tr>
+        <td>NYSE</td>
+        <td><%= @t4.nyse %></td>
+        </tr>
+        <tr>
+        <td>SEHK</td>
+        <td><%= @t4.sehk %></td>
+        </tr>
+        <tr>
+        <td>SIX</td>
+        <td><%= @t4.six %></td>
+        </tr>
+        <tr>
+        <td>SSE</td>
+        <td><%= @t4.sse %></td>
+        </tr>
+        <tr>
+        <td>SZSE</td>
+        <td><%= @t4.szse %></td>
+        </tr>
+        <tr>
+        <td>TSX</td>
+        <td><%= @t4.t1sx %></td>
+        </tr>
+      </tbody>
+    </table>
+</br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

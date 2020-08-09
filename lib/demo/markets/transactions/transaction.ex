@@ -31,16 +31,16 @@ defmodule Demo.Transactions.Transaction do
     field :ssu_nation_supul_id, :binary_id 
 
     field :gps, {:array, :map} 
-    field :tax, :decimal, default: 0.0
-    field :gopang_fee, :decimal, default: 0.0
+    field :tax, :decimal, precision: 12, scale: 4, default: 0.0
+    field :gopang_fee, :decimal, precision: 12, scale: 4, default: 0.0
     field :insurance, :string
 
-    field :abc_input_id, :binary_id  
-    field :abc_input_name, :string 
-    field :abc_output_id, :binary_id  
-    field :abc_output_name, :string  
-    field :abc_input_ts, {:array, :map}, default: []
-    field :abc_amount, :decimal, precision: 15, scale: 4
+    field :t1_input_id, :binary_id  
+    field :t1_input_name, :string 
+    field :t1_output_id, :binary_id  
+    field :t1_output_name, :string  
+    field :t1_input_ts, {:array, :map}, default: []
+    field :t1_amount, :decimal, precision: 15, scale: 4
 
     field :items, {:array, :binary_id}
     field :fiat_currency, :decimal, precision: 15, scale: 4
@@ -101,12 +101,12 @@ defmodule Demo.Transactions.Transaction do
     :tax, 
     :gopang_fee, 
     :insurance, 
-    :abc_input_id,   
-    :abc_input_name,  
-    :abc_output_id,   
-    :abc_output_name,   
-    :abc_input_ts, 
-    :abc_amount, 
+    :t1_input_id,   
+    :t1_input_name,  
+    :t1_output_id,   
+    :t1_output_name,   
+    :t1_input_ts, 
+    :t1_amount, 
     :items, 
     :fiat_currency, 
     :transaction_status, 
@@ -130,7 +130,7 @@ defmodule Demo.Transactions.Transaction do
     |> validate_required([])
     # |> put_assoc(:entities, [attrs.entity])
     |> put_assoc(:invoice, attrs.invoice) 
-    |> put_change(:abc_amount, attrs.invoice.total) 
+    |> put_change(:t1_amount, attrs.invoice.total) 
     # |> check_fair_trade(attrs)
   end
   

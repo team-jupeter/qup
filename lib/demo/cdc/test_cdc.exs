@@ -303,7 +303,7 @@ transaction =
   Transaction.changeset(%Transaction{
     abc_input: hong_entity.id,
     abc_output: tomi_clinic.id,
-    abc_amount: invoice.total,
+    t1_amount: invoice.total,
     items: [item.id],
   }) \
   |> Repo.insert!()

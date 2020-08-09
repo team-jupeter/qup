@@ -48,7 +48,7 @@
   </tr>
    <tr> 
     <td>Amount:</td>
-    <td><%= @transaction.abc_amount %></td>
+    <td><%= @transaction.t1_amount %></td>
   </tr>
    <tr> 
     <td>Transaction Status:</td>

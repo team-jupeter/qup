@@ -25,3 +25,7 @@
 <% end %>
   </tbody>
 </table>
+</br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

@@ -6,7 +6,7 @@ defmodule Demo.Gabs.Gab do
 
   schema "gabs" do
     field :name, :string
-    field :t1_balance, :decimal, default: 0.0
+    field :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
     field :unique_digits, :string
     field :tels, {:array, :string}
 

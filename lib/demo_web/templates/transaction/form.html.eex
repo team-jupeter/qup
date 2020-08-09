@@ -26,9 +26,9 @@
   <%= text_input f, :abc_input_ts %>
   <%= error_tag f, :abc_input_ts %>
 
-  <%= label f, :abc_amount %>
-  <%= text_input f, :abc_amount %>
-  <%= error_tag f, :abc_amount %>
+  <%= label f, :t1_amount %>
+  <%= text_input f, :t1_amount %>
+  <%= error_tag f, :t1_amount %>
 
   <%= label f, :gopang_fee %> 
   <%= select f, :gopang_fee, 1..10 %>

@@ -4,7 +4,7 @@ defmodule Demo.Repo.Migrations.CreateSupuls do
   def change do
     create table(:supuls, primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :gab_balance, :decimal, default: 0.0
+      add :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
       add :type, :string
       add :txn_id, :binary_id
       add :supul_code, :string

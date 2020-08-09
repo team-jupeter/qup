@@ -16,10 +16,8 @@
     <strong>Constitution Signature:</strong>
     <%= @nation.constitution_signature %>
   </li>
-
-
-
 </ul>
 
 <span><%= link "Edit", to: Routes.nation_path(@conn, :edit, @nation) %></span>
+</br>
 <span><%= link "Back", to: Routes.nation_path(@conn, :index) %></span>

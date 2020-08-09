@@ -1,18 +1,60 @@
-<h1>Show T3</h1>
+<h1>Show T3 list</h1>
+<table >
+      <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td>id</td>
+        <td><%= @t3.id %></td>
+        </tr>
+        <tr>
+        <td>price</td>
+        <td><%= @t3.price %></td>
+        </tr>
+        <tr>
+        <td>current_owner</td>
+        <td><%= @t3.current_owner %></td>
+        </tr>
+        <tr>
+        <td>issuer</td>
+        <td><%= @t3.issuer %></td>
+        </tr>
+        <tr>
+        <td>issuer_code</td>
+        <td><%= @t3.issuer_code %></td>
+        </tr>
+        <tr>
+        <td>number_of_issues</td>
+        <td><%= @t3.number_of_issues %></td>
+        </tr>
+        <tr>
+        <td>put_price</td>
+        <td><%= @t3.put_price %></td>
+        </tr>
+        <tr>
+        <td>call_price</td>
+        <td><%= @t3.call_price %></td>
+        </tr>
+        <tr>
+        <td>issued_at</td>
+        <td><%= @t3.issued_at %></td>
+        </tr>
+        <tr>
+        <td>putable_from</td>
+        <td><%= @t3.putable_from %></td>
+        </tr>
+        <tr>
+        <td>callable_from</td>
+        <td><%= @t3.callable_from %></td>
+        </tr>
+      </tbody>
+    </table>
 
-<ul>
-
-  <li>
-    <strong>Current owner:</strong>
-    <%= @t3.current_owner %>
-  </li>
-
-  <li>
-    <strong>Book price:</strong>
-    <%= @t3.book_price %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.t3_path(@conn, :edit, @t3) %></span>
-<span><%= link "Back", to: Routes.t3_path(@conn, :index) %></span>
+    </br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>

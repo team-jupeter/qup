@@ -209,7 +209,7 @@ transaction =
   Transaction.changeset(%Transaction{
     abc_input: hong_entity.id,
     abc_output: gopang.id,
-    abc_amount: invoice.total,
+    t1_amount: invoice.total,
     items: [%{김밥: 5}],
   }) \
   |> Repo.insert!()
@@ -316,12 +316,12 @@ gopang_BS = change(gopang_BS) |> Ecto.Changeset.put_change(:t1s, new_t1s) |> Rep
 
 
 # ? mr_hong
-residual_amount = Decimal.sub(Enum.at(hong_entity_BS.t1s, 0).amount, transaction.abc_amount)
+residual_amount = Decimal.sub(Enum.at(hong_entity_BS.t1s, 0).amount, transaction.t1_amount)
 new_t1s = [%T1{input: hong_entity.id, output: hong_entity.id, amount: residual_amount}]
 hong_entity_BS = change(hong_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
 
 # ? tomi
-new_t1s = [%T1{input: hong_entity.id, output: tomi_entity.id, amount: transaction.abc_amount} | tomi_entity_BS.t1s]
+new_t1s = [%T1{input: hong_entity.id, output: tomi_entity.id, amount: transaction.t1_amount} | tomi_entity_BS.t1s]
 tomi_entity_BS = change(tomi_entity_BS) |> Ecto.Changeset.put_embed(:t1s, new_t1s) |> Repo.update!
 
 

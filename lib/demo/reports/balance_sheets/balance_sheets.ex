@@ -5,16 +5,16 @@ defmodule Demo.BalanceSheets do
 
   alias Demo.Reports.BalanceSheet
   alias Demo.Entities.Entity
-  alias Demo.Groups.Group
-  alias Demo.Supuls.Supul
-  alias Demo.StateSupuls.StateSupul
-  alias Demo.NationSupuls.NationSupul
+  # alias Demo.Groups.Group
+  # alias Demo.Supuls.Supul
+  # alias Demo.StateSupuls.StateSupul
+  # alias Demo.NationSupuls.NationSupul
   alias Demo.Taxations.Taxation
-  alias Demo.Families.Family
+  # alias Demo.Families.Family
   alias Demo.GabAccounts
-  alias Demo.GabAccounts.GabAccount
+  # alias Demo.GabAccounts.GabAccount
 
-  def get_balance_sheet!(id), do: Repo.get!(BalanceSheet, id)
+  # def get_balance_sheet!(id), do: Repo.get!(BalanceSheet, id)
 
   def get_balance_sheet!(entity_id) do
     BalanceSheet
@@ -29,7 +29,8 @@ defmodule Demo.BalanceSheets do
   end
 
   defp entity_balance_sheets_query(query, entity_id) do
-    from(f in query, where: f.entity_id == ^entity_id)
+    IO.inspect "entity_balance_sheets_query"
+    from(b in query, where: b.entity_id == ^entity_id)
   end
 
   # ? Default 
@@ -57,7 +58,7 @@ defmodule Demo.BalanceSheets do
 
   alias Demo.ABC.T1
 
-  def renew_ts(attrs, buyer, seller, openhash) do
+  def renew_t1s(attrs, buyer, seller, openhash) do
     # ? Find buyer's BS
     query =
       from b in BalanceSheet,
@@ -66,27 +67,27 @@ defmodule Demo.BalanceSheets do
     buyer_BS = Repo.one(query)
 
     # ? renew Buyer's BS T1
-    ts = [
+    t1s = [
       %T1{
         openhash_id: openhash.id,
         input_id: buyer.id,
         input_name: buyer.name,
         output_id: buyer.id,
         output_name: buyer.name,
-        amount: buyer_BS.gab_balance
+        amount: buyer_BS.t1_balance
       }
     ]
 
     buyer_BS
     |> change
-    |> Ecto.Changeset.put_embed(:ts, ts)
+    |> Ecto.Changeset.put_embed(:t1s, t1s)
     |> Repo.update!()
-    |> update_gab_balance()
+    |> update_t1_balance()
 
     # ? renew Seller's BS
     # ? prepare t struct to pay.
     t_payment = %{
-      ts: %T1{
+      t1: %T1{
         openhash_id: openhash.id,
         input_name: buyer.name,
         input_id: buyer.id,
@@ -103,37 +104,35 @@ defmodule Demo.BalanceSheets do
 
     seller_BS = Repo.one(query)
 
-    add_ts(seller_BS, t_payment)
+    add_t1s(seller_BS, t_payment)
   end
 
-  def add_ts(%BalanceSheet{} = balance_sheet, attrs) do
-    IO.inspect "balance_sheet.ts"
-    ts = [attrs.ts | balance_sheet.ts]
-    # IO.puts "T1"
-    # IO.inspect ts
-    # bs_owner = Repo.preload(balance_sheet, :bs_owner).bs_owner
-    # GabAccounts.update_gab_account(%{balance_sheet_id: balance_sheet.id, ts: ts}
-
+  def add_t1s(%BalanceSheet{} = balance_sheet, attrs) do
+    t1s = [attrs.t1 | balance_sheet.t1s]
     balance_sheet
     |> change
-    |> Ecto.Changeset.put_embed(:ts, ts)
+    |> Ecto.Changeset.put_embed(:t1s, t1s)
     |> Repo.update!()
-    |> update_gab_balance()
+    |> update_t1_balance()
   end
 
   alias Demo.Entities
   alias Demo.GabAccounts
-  def update_gab_balance(bs) do
-    
-    amount_list = Enum.map(bs.ts, fn item -> item.amount end)
-    gab_balance = Enum.reduce(amount_list, 0, fn amount, sum -> Decimal.add(amount, sum) end)
-    update_balance_sheet(bs, %{gab_balance: gab_balance})
+
+  def update_t1_balance(bs) do
+    amount_list = Enum.map(bs.t1s, fn item -> item.amount end)
+    t1_balance = Enum.reduce(amount_list, 0, fn amount, sum -> Decimal.add(amount, sum) end)
+    update_balance_sheet(bs, %{t1_balance: t1_balance})
 
     entity = Demo.Repo.preload(bs, :entity).entity
-    Entities.update_entity(entity, %{gab_balance: gab_balance})
+    Entities.update_entity(entity, %{t1_balance: t1_balance})
 
     gab_account = Repo.preload(entity, :gab_account).gab_account
-    GabAccounts.update_gab_account(gab_account, %{gab_balance: gab_balance})
+
+    IO.inspect " GabAccounts.update_gab_account"
+    IO.inspect t1_balance
+    
+    GabAccounts.update_gab_account(gab_account, %{t1_balance: t1_balance})
   end
 
   # ? gopang_korea_BS = change(gopang_korea_BS) |> Ecto.Changeset.put_embed(:ts, ts) |> Repo.update!
@@ -143,14 +142,14 @@ defmodule Demo.BalanceSheets do
     |> Repo.update!()
   end
 
-  def minus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
-    new_balance = Decimal.sub(balance_sheet.gab_balance, amount)
-    update_balance_sheet(balance_sheet, %{gab_balance: new_balance})
+  def minus_t1_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
+    new_balance = Decimal.sub(balance_sheet.t1_balance, amount)
+    update_balance_sheet(balance_sheet, %{t1_balance: new_balance})
   end
 
-  def plus_gab_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
-    new_balance = Decimal.add(balance_sheet.gab_balance, amount)
-    update_balance_sheet(balance_sheet, %{gab_balance: new_balance})
+  def plus_t1_balance(%BalanceSheet{} = balance_sheet, %{amount: amount}) do
+    new_balance = Decimal.add(balance_sheet.t1_balance, amount)
+    update_balance_sheet(balance_sheet, %{t1_balance: new_balance})
   end
 
   def change_balance_sheet(%BalanceSheet{} = balance_sheet) do
@@ -352,9 +351,9 @@ defmodule Demo.BalanceSheets do
   #       Decimal.add(x.treasury_stock, acc)
   #     end)
 
-  #   gab_balance =
+  #   t1_balance =
   #     Enum.reduce(list_BS, Decimal.from_float(0.00), fn x, acc ->
-  #       Decimal.add(x.gab_balance, acc)
+  #       Decimal.add(x.t1_balance, acc)
   #     end)
 
   #   attrs = %{
@@ -374,7 +373,7 @@ defmodule Demo.BalanceSheets do
   #     stock: stock,
   #     taxes: taxes,
   #     treasury_stock: treasury_stock,
-  #     gab_balance: gab_balance
+  #     t1_balance: t1_balance
   #   }
   # end
 end

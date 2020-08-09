@@ -27,7 +27,7 @@ defmodule Demo.Reports.FinancialReport do
 
 
     has_one :balance_sheet, Demo.Reports.BalanceSheet
-    # has_one :gab_balance_sheet, Demo.Reports.GabBalanceSheet
+    # has_one :t1_balance_sheet, Demo.Reports.GabBalanceSheet
     # has_one :gov_balance_sheet, Demo.Reports.GovBalanceSheet
     # has_one :supul_balance_sheet, Demo.Reports.SupulBalanceSheet
     has_one :income_statement, Demo.Reports.IncomeStatement

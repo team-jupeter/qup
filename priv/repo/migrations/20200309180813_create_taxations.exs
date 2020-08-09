@@ -8,7 +8,7 @@ defmodule Demo.Repo.Migrations.CreateTaxations do
       add :auth_code, :string
       add :unique_digits, :string
       add :tels, {:array, :string}
-      add :gab_balance, :decimal, default: 0.0
+      add :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
 
       add :nation_id, references(:nations, type: :uuid, null: false)
       add :nation_supul_id, references(:nation_supuls, type: :uuid, null: false)

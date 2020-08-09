@@ -7,13 +7,10 @@
   </thead>
   <tbody>
     <tr>
-    <td>GAB Balance</td>
-    <td><%= @balance_sheet.gab_balance %></td>
+    <td>T1 Balance</td>
+    <td><%= @balance_sheet.t1_balance %></td>
     </tr>
     <tr>
-    <td>T1</td>
-    <td><%= @balance_sheet.t1 %></td>
-    </tr>
     <tr>
     <td>Accounts Payable</td>
     <td><%= @balance_sheet.accounts_payable %></td>
@@ -73,7 +70,7 @@
   </tbody>
 </table>
 
-<%= for t <- @balance_sheet.ts do %>
+<%= for t <- @balance_sheet.t1s do %>
 <b>T1</b>
     <table >
       <thead>

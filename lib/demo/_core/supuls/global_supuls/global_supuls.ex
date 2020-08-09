@@ -52,14 +52,14 @@ defmodule Demo.GlobalSupuls do
   #   attrs = Map.merge(attrs, %{ab: ab, is: is, bs: bs, cf: cf, es: es, fr: fr})
   # end
 
-  def minus_gab_balance(%GlobalSupul{} = global_supul, %{amount: amount}) do
-    newe_gab_balance = Decimal.sub(global_supul.gab_balance, amount)
-    update_global_supul_gab(global_supul, %{gab_balance: newe_gab_balance})
+  def minus_t1_balance(%GlobalSupul{} = global_supul, %{amount: amount}) do
+    newe_t1_balance = Decimal.sub(global_supul.t1_balance, amount)
+    update_global_supul_gab(global_supul, %{t1_balance: newe_t1_balance})
   end
 
-  def plus_gab_balance(%GlobalSupul{} = global_supul, %{amount: amount}) do
-    plus_gab_balance = Decimal.add(global_supul.gab_balance, amount)
-    update_global_supul_gab(global_supul, %{gab_balance: plus_gab_balance})
+  def plus_t1_balance(%GlobalSupul{} = global_supul, %{amount: amount}) do
+    plus_t1_balance = Decimal.add(global_supul.t1_balance, amount)
+    update_global_supul_gab(global_supul, %{t1_balance: plus_t1_balance})
   end
 
   def update_global_supul_gab(%GlobalSupul{} = global_supul, attrs) do

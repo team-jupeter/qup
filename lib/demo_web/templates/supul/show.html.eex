@@ -7,7 +7,7 @@
   <tbody>
     <tr>
       <td>GAB Change</td>
-      <td><%= @supul.gab_balance %></td>
+      <td><%= @supul.t1_balance %></td>
     </tr> 
     <tr>
       <td>Type</td>
