@@ -679,6 +679,7 @@ end
 
 
 alias Demo.Products.GPCCode
+alias Demo.Products
 # 분식 = GPCCode.changeset(%GPCCode{name: "분식", code: "345445", standard: "GTIN"}) |> Repo.insert!
 # 한식 = GPCCode.changeset(%GPCCode{name: "한식", code: "345446", standard: "GTIN"}) |> Repo.insert!
 {:ok, 분식} = Products.create_GPCCode(%{name: "분식", code: "345445", standard: "GTIN"}) 
@@ -717,7 +718,10 @@ alias Demo.Products.Product
 
 alias Demo.Multimedia
 # 한정식_video = Video.changeset(%Video{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 한정식.id, description: "엄청 맛있데요. 글쎄..."}) |> Repo.insert!
-{:ok, 한정식_video} = Multimedia.create_video(한정식, %{title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 한정식.id, description: "엄청 맛있데요. 글쎄..."})
+{:ok, 한정식_video} = Multimedia.create_video(한정식, %{
+  title: "산채 한정식", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", 
+  product_id: 한정식.id, 
+  description: "엄청 맛있데요. 글쎄..."})
 {:ok, 육개장_video} = Multimedia.create_video(육개장, %{title: "육개장", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 육개장.id, description: "엄청 맛있데요. 글쎄..."})
 {:ok, 갈비탕_video} = Multimedia.create_video(갈비탕, %{title: "갈비탕", url: "https://www.youtube.com/watch?v=mskMTVSUKX8", product_id: 갈비탕.id, description: "엄청 맛있데요. 글쎄..."})
 
