@@ -1,10 +1,13 @@
-<span><%= link "Money Transfer", to: Routes.transfer_path(@conn, :new) %></span>
+<span><%= link "Send money to other", to: Routes.transfer_path(@conn, :new) %></span>
+</br>
+<span><%= link "Manage Portpolio", to: Routes.gab_account_path(@conn, :edit, @gab_account) %></span>
 
 <table>
   <tbody>
    <tr> 
   <td><b> Balance </b></td>
-   </tr> 
+    <td><%= @gab_account.total_book_value %></td>
+  </tr>
    <tr> 
     <td>T1(국적 통화):</td>
     <td><%= @gab_account.t1_balance %></td>
@@ -33,7 +36,9 @@
     <td><%= @gab_account.default_currency %></td>
   </tr>
   <tr>
-  <td><b> Market Value </b></td>
+    <td><b> Market Value </b></td>
+    <td><%= @gab_account.total_market_value %></td>
+  </tr>
   </tr>
    <tr> 
     <td>T1:</td>

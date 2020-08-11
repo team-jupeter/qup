@@ -7,7 +7,9 @@ defmodule Demo.Repo.Migrations.CreateGabAccounts do
       add :entity_name, :string
       add :credit_limit, :decimal, precision: 12, scale: 4, default: 0.0
       add :total_balance, :decimal, precision: 12, scale: 4, default: 0.0
-
+      add :total_book_value, :decimal, precision: 12, scale: 4, default: 0.0
+      add :total_market_value, :decimal, precision: 12, scale: 4, default: 0.0
+  
       add :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
       add :t2_balance, :decimal, precision: 12, scale: 4, default: 0.0
       add :t3_balance, :decimal, precision: 12, scale: 4, default: 0.0
@@ -24,7 +26,7 @@ defmodule Demo.Repo.Migrations.CreateGabAccounts do
       add :return_on_t4, :decimal, precision: 12, scale: 4, default: 0.0
   
       add :unique_digits, :string
-      add :default_currency, :string, default: "KRW"
+      add :default_currency, :string
 
       add(:t1s, {:array, :map}, default: [])
       add(:t2s, {:array, :map}, default: [])

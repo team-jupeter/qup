@@ -10,6 +10,8 @@ defmodule Demo.GabAccounts.GabAccount do
     field :credit_limit, :decimal, precision: 12, scale: 4, default: 0.0
 
     field :total_balance, :decimal, precision: 12, scale: 4, default: 0.0
+    field :total_book_value, :decimal, precision: 12, scale: 4, default: 0.0
+    field :total_market_value, :decimal, precision: 12, scale: 4, default: 0.0
 
     field :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
     field :t2_balance, :decimal, precision: 12, scale: 4, default: 0.0
@@ -27,7 +29,7 @@ defmodule Demo.GabAccounts.GabAccount do
     field :return_on_t4, :decimal, precision: 12, scale: 4, default: 0.0
 
     field :unique_digits, :string
-    field :default_currency, :string, default: "KRW"
+    field :default_currency, :string
 
     embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
     embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
@@ -50,7 +52,9 @@ defmodule Demo.GabAccounts.GabAccount do
      :credit_limit,
      :entity_name,
      :total_balance, 
-     
+     :total_book_value, 
+     :total_market_value,
+ 
      :t1_balance,
      :t2_balance,
      :t3_balance,
@@ -71,20 +75,11 @@ defmodule Demo.GabAccounts.GabAccount do
   ]
   @doc false
   def changeset(gab_account, attrs \\ %{}) do
-
-    entity = Repo.preload(gab_account, :entity).entity
-    nation = Repo.preload(entity, :nation).nation
-    currency = case nation.name do
-      "South Korea" -> "KRW"
-      "USA" -> "USD"
-      "China" -> "CHY"
-      _ -> "KRW"
-    end
-    attrs = Map.merge(%{default_currency: currency}, attrs)
     gab_account
     |> cast(attrs, @fields)
     |> validate_required([])
   end
+
 
   
 end

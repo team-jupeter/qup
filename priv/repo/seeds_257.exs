@@ -786,7 +786,7 @@ t1 =  %T1{
   currency: "krw"
   }
 
-{:ok, gab_account} = GabAccounts.new_deposit(t1)  
+GabAccounts.new_deposit(t1)  
 
 #? 임꺽정 1인 법인
 t1 =  %T1{
@@ -834,7 +834,7 @@ t1 =  %T1{
   currency: "eur"
   }
 
-GabAccounts.new_deposit(t1)  
+GabAccounts.new_deposit(t1, type)  
 
 #? 이방 학원 
 t1 =  %T1{
@@ -859,6 +859,8 @@ t1 =  %T1{
   }
 
 GabAccounts.new_deposit(t1)  
+
+
 
 
 

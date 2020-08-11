@@ -21,7 +21,7 @@ defmodule Demo.Gabs do
 
 
   def create_gab(attrs \\ %{}) do
-    attrs = pools()
+    attrs = Map.merge(pools(), attrs)
     %Gab{}
     |> Gab.changeset(attrs)
     |> Repo.insert()

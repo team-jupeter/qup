@@ -5,7 +5,10 @@
     </div>
   <% end %>
 
-  <p>increase in t2, t3 or t4 matches decrease in t1.</p>
+  <%= label f, :default_currency %>
+  <%= text_input f, :default_currency %>
+  <%= error_tag f, :default_currency %>
+
   <%= label f, :total_balance %>
   <%= number_input f, :total_balance %>
   <%= error_tag f, :total_balance %>
@@ -28,6 +31,6 @@
 
 
   <div>
-    <%= submit "Save" %>
+    <%= submit "Adjust Portpolio" %>
   </div>
 <% end %>
