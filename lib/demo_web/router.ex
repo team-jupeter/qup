@@ -156,6 +156,11 @@ defmodule DemoWeb.Router do
     resources "/t2s", T2Controller
     resources "/t3s", T3Controller
     resources "/t4s", T4Controller
+    resources "/t1_pools", T1PoolController
+    resources "/t2_pools", T2PoolController
+    resources "/t3_pools", T3PoolController
+    resources "/t4_pools", T4PoolController
+    resources "/transfers", TransferController
     # resources "/t3s", T3Controller
   end
 

@@ -1,0 +1,5 @@
+<h1>Edit T3 pool</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.t3_pool_path(@conn, :update, @t3_pool)) %>
+
+<span><%= link "Back", to: Routes.t3_pool_path(@conn, :index) %></span>

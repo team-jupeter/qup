@@ -12,8 +12,8 @@ defmodule Demo.T1s.T1 do
     field :input_id, :string
     field :output_name, :string
     field :output_id, :string
-    field :amount, :decimal, precision: 12, scale: 2
-    field :currency_type, :string
+    field :amount, :decimal, precision: 12, scale: 2, default: 0.0
+    field :currency, :string
 
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
 
@@ -27,7 +27,7 @@ defmodule Demo.T1s.T1 do
     :output_name, 
     :output_id, 
     :amount, 
-    :currency_type, 
+    :currency, 
   ]
   @doc false
   def changeset(t1, attrs) do

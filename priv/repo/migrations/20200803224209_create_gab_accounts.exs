@@ -6,6 +6,8 @@ defmodule Demo.Repo.Migrations.CreateGabAccounts do
       add :id, :uuid, primary_key: true
       add :entity_name, :string
       add :credit_limit, :decimal, precision: 12, scale: 4, default: 0.0
+      add :total_balance, :decimal, precision: 12, scale: 4, default: 0.0
+
       add :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
       add :t2_balance, :decimal, precision: 12, scale: 4, default: 0.0
       add :t3_balance, :decimal, precision: 12, scale: 4, default: 0.0
@@ -27,6 +29,8 @@ defmodule Demo.Repo.Migrations.CreateGabAccounts do
       add(:t1s, {:array, :map}, default: [])
       add(:t2s, {:array, :map}, default: [])
       add(:t4s, {:array, :map}, default: [])
+      
+      add :gab_id, references(:gabs, type: :uuid, null: false)
       
       add :entity_id, references(:entities, type: :uuid, null: false)
       add :group_id, references(:groups, type: :uuid, null: false)

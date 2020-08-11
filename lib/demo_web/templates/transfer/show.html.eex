@@ -1,0 +1,27 @@
+
+<table>
+  <tbody>
+   <tr> 
+  <td><b> Balance </b></td>
+   </tr> 
+   <tr> 
+    <td>Receiver Email:</td>
+    <td><%= @transfer.ssu_email %></td>
+  </tr>
+   <tr> 
+    <td>Receiver Name:</td>
+    <td><%= @transfer.ssu_name %></td>
+  </tr>
+   <tr> 
+    <td>Amount:</td>
+    <td><%= @transfer.t1_amount %></td>
+  </tr>
+</tbody>
+</table>
+
+
+</br>
+<span><%= link "Entity Home", to: Routes.entity_path(@conn, :index) %></span>
+</br>
+<span><%= link "User Home", to: Routes.user_path(@conn, :index) %></span>
+

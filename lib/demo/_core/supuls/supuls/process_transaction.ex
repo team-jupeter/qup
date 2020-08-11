@@ -25,6 +25,7 @@ defmodule Demo.Supuls.ProcessTransaction do
   alias Demo.NationSupuls.NationSupul
   # alias Demo.GlobalSupuls.GlobalSupul
   alias Demo.GabAccounts
+  alias Demo.Gabs
 
   def process_transaction(transaction, openhash) do
     # update_GA(transaction)
@@ -57,12 +58,11 @@ defmodule Demo.Supuls.ProcessTransaction do
         update_ssu_public_BS(transaction)
     end
 
-    update_t1_balance(transaction) 
+    update_t1_balance(transaction)
     update_t1s(transaction, openhash)
 
     {:ok, transaction}
   end
-
 
   defp update_erl_AB(transaction) do
     IO.puts("update_AB")
@@ -121,17 +121,17 @@ defmodule Demo.Supuls.ProcessTransaction do
     BalanceSheets.minus_t1_balance(erl_bs, %{amount: transaction.t1_amount})
 
     IO.puts("erl_family_BS")
+
     erl_family_BS =
       Repo.one(
         from a in BalanceSheet,
           where: a.family_id == ^transaction.erl_family_id
       )
 
-
     BalanceSheets.minus_t1_balance(erl_family_BS, %{amount: transaction.t1_amount})
 
-
     IO.puts("erl_supul_BS")
+
     erl_supul_BS =
       Repo.one(
         from a in BalanceSheet,
@@ -244,7 +244,7 @@ defmodule Demo.Supuls.ProcessTransaction do
 
     ssu_nation_supul_BS =
       Repo.one(
-        from a in BalanceSheet, 
+        from a in BalanceSheet,
           where: a.nation_supul_id == ^transaction.ssu_nation_supul_id
       )
 
@@ -440,7 +440,8 @@ defmodule Demo.Supuls.ProcessTransaction do
   defp update_ssu_public_IS(transaction) do
     # ? trader can be either erl or erl
     # ? Update IS of trader, trader's family, supul, state_supul, and nation_supul.
-    ssu_IS = Repo.one(from a in IncomeStatement, where: a.entity_id == ^transaction.ssu_id, select: a)
+    ssu_IS =
+      Repo.one(from a in IncomeStatement, where: a.entity_id == ^transaction.ssu_id, select: a)
 
     IncomeStatements.add_revenue(ssu_IS, %{amount: transaction.t1_amount})
 
@@ -473,14 +474,29 @@ defmodule Demo.Supuls.ProcessTransaction do
   defp update_t1_balance(transaction) do
     # ? Update t1_balance of both erl and erl.
     # ? Buyer's t1_balance
+    # ? erl
     query =
       from b in Entity,
         where: b.id == ^transaction.erl_id
 
     erl = Repo.one(query)
     gab_account = Repo.preload(erl, :gab_account).gab_account
-    GabAccounts.minus_t1_balance(gab_account, %{amount: transaction.t1_amount})
-    
+
+    # ? ssu
+    query =
+      from s in Entity,
+        where: s.id == ^transaction.ssu_id
+
+    ssu = Repo.one(query)
+
+    amount =
+      case erl.default_currency == ssu.default_currency do
+        true -> transaction.t1_amount
+        false -> Gabs.get_ex_rate(erl.default_currency, ssu.default_currency, transaction.t1_amount)
+      end
+
+    GabAccounts.minus_t1_balance(gab_account, %{amount: amount})
+
     case erl.type do
       "default" ->
         query = from f in Family, where: f.id == ^transaction.erl_family_id, select: f
@@ -523,11 +539,6 @@ defmodule Demo.Supuls.ProcessTransaction do
     end
 
     # ? Seller's t1_balance
-    query =
-      from s in Entity,
-        where: s.id == ^transaction.ssu_id
-
-    ssu = Repo.one(query)
     gab_account = Repo.preload(ssu, :gab_account).gab_account
     GabAccounts.plus_t1_balance(gab_account, %{amount: transaction.t1_amount})
 
@@ -587,8 +598,8 @@ defmodule Demo.Supuls.ProcessTransaction do
     ssu = Repo.one(query)
 
     # ? ts of both
-    IO.inspect "transaction.t1_amount"
+    IO.inspect("transaction.t1_amount")
 
     GabAccounts.renew_t1s(%{amount: transaction.t1_amount}, erl, ssu, openhash)
   end
-end 
+end

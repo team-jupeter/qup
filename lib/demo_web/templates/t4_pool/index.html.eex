@@ -1,0 +1,24 @@
+<h1>Listing T4 pools</h1>
+
+<table>
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for t4_pool <- @t4_pools do %>
+    <tr>
+
+      <td>
+        <span><%= link "Show", to: Routes.t4_pool_path(@conn, :show, t4_pool) %></span>
+        <span><%= link "Edit", to: Routes.t4_pool_path(@conn, :edit, t4_pool) %></span>
+        <span><%= link "Delete", to: Routes.t4_pool_path(@conn, :delete, t4_pool), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New T4 pool", to: Routes.t4_pool_path(@conn, :new) %></span>

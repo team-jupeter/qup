@@ -8,6 +8,9 @@ defmodule Demo.GabAccounts.GabAccount do
   schema "gab_accounts" do
     field :entity_name, :string
     field :credit_limit, :decimal, precision: 12, scale: 4, default: 0.0
+
+    field :total_balance, :decimal, precision: 12, scale: 4, default: 0.0
+
     field :t1_balance, :decimal, precision: 12, scale: 4, default: 0.0
     field :t2_balance, :decimal, precision: 12, scale: 4, default: 0.0
     field :t3_balance, :decimal, precision: 12, scale: 4, default: 0.0
@@ -32,6 +35,8 @@ defmodule Demo.GabAccounts.GabAccount do
 
     has_many :t3s, Demo.T3s.T3, on_replace: :delete
 
+    belongs_to :gab, Demo.Gabs.Gab, type: :binary_id
+
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
     belongs_to :family, Demo.Families.Family, type: :binary_id
     belongs_to :group, Demo.Groups.Group, type: :binary_id
@@ -44,6 +49,8 @@ defmodule Demo.GabAccounts.GabAccount do
   @fields [
      :credit_limit,
      :entity_name,
+     :total_balance, 
+     
      :t1_balance,
      :t2_balance,
      :t3_balance,

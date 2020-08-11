@@ -40,6 +40,7 @@ defmodule Demo.Repo.Migrations.CreateEntities do
       add :default_currency, :string, default: "KRW"
 
       # add :user_id, references(:users, type: :uuid)
+      add :gab_id, references(:gabs, type: :uuid)
       add :nation_id, references(:nations, type: :uuid)
       add :family_id, references(:families, type: :uuid)
       add :group_id, references(:groups, type: :uuid)

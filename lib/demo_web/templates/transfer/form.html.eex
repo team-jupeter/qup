@@ -1,0 +1,29 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <p>Enter email or tel only, as other fields filled automatically.</p>
+  <%= label f, :Receiver_email %>
+  <%= text_input f, :ssu_email %>
+  <%= error_tag f, :ssu_email %>
+
+  <%= label f, :Receiver_name %>
+  <%= text_input f, :ssu_name %>
+  <%= error_tag f, :ssu_name %>
+
+  <%= label f, :Receiver_mobile_phone %>
+  <%= text_input f, :ssu_tel %>
+  <%= error_tag f, :ssu_tel %>
+
+  <%= label f, :Amount_to_send %>
+  <%= text_input f, :t1_amount %>
+  <%= error_tag f, :t1_amount %>
+
+
+  <div>
+    <%= submit "Send" %>
+  </div>
+<% end %>

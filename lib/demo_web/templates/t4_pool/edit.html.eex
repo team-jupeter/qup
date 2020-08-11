@@ -1,0 +1,5 @@
+<h1>Edit T4 pool</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.t4_pool_path(@conn, :update, @t4_pool)) %>
+
+<span><%= link "Back", to: Routes.t4_pool_path(@conn, :index) %></span>

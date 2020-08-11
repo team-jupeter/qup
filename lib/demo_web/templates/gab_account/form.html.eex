@@ -5,25 +5,27 @@
     </div>
   <% end %>
 
-  <%= label f, :owner %>
-  <%= text_input f, :owner %>
-  <%= error_tag f, :owner %>
+  <p>increase in t2, t3 or t4 matches decrease in t1.</p>
+  <%= label f, :total_balance %>
+  <%= number_input f, :total_balance %>
+  <%= error_tag f, :total_balance %>
 
-  <%= label f, :t1 %>
-  <%= text_input f, :t1 %>
-  <%= error_tag f, :t1 %>
+  <%= label f, :t1_balance %>
+  <%= number_input f, :t1_balance %>
+  <%= error_tag f, :t1_balance %>
 
-  <%= label f, :t2 %>
-  <%= text_input f, :t2 %>
-  <%= error_tag f, :t2 %>
+  <%= label f, :t2_balance %>
+  <%= number_input f, :t2_balance %>
+  <%= error_tag f, :t2_balance %>
 
-  <%= label f, :t3 %>
-  <%= text_input f, :t3 %>
-  <%= error_tag f, :t3 %>
+  <%= label f, :t3_balance %>
+  <%= number_input f, :t3_balance %>
+  <%= error_tag f, :t3_balance %>
 
-  <%= label f, :credit_limit %>
-  <%= text_input f, :credit_limit %>
-  <%= error_tag f, :credit_limit %>
+  <%= label f, :t4_balance %>
+  <%= number_input f, :t4_balance %>
+  <%= error_tag f, :t4_balance %>
+
 
   <div>
     <%= submit "Save" %>

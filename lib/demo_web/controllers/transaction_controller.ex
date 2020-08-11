@@ -22,14 +22,13 @@ defmodule DemoWeb.TransactionController do
     render(conn, "index.html", transactions: transactions)
   end
 
-  def new(conn, _params, current_entity) do
+  def new(conn, _params, current_entity) do 
     invoice = Repo.preload(current_entity, :invoice).invoice
     bs = Repo.preload(current_entity, :balance_sheet).balance_sheet
 
     if bs.t1_balance < invoice.total, do: "error"
 
     # ? For the erl
-    IO.puts("transaction_controller, erl_supul")
     erl = current_entity
     erl_supul = Repo.preload(erl, :supul).supul
     erl_state_supul = Repo.preload(erl_supul, :state_supul).state_supul
@@ -67,7 +66,7 @@ defmodule DemoWeb.TransactionController do
       ssu_supul_id: ssu_supul.id,
       ssu_state_supul_id: ssu_state_supul.id,
       ssu_nation_supul_id: ssu_nation_supul.id,
-      t1_amount: invoice.total
+      t1_amount: invoice.total,
     }
 
     # ? Determine whether the erl is default_entity, private_entity, or public entity.
@@ -157,36 +156,6 @@ defmodule DemoWeb.TransactionController do
     tomi_rsa_priv_key = ExPublicKey.load!("./keys/tomi_private_key.pem")
 
     IO.puts("hi, I am here in transaction controller")
-    # erl_supul = Supuls.get_supul!(transaction.erl_supul_id)
-    # seller_supul = Supuls.get_supul!(transaction.seller_supul_id)
-
     Events.create_event(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key)
-
-    # case Events.make_payload(transaction, hong_entity_rsa_priv_key, tomi_rsa_priv_key) do
-    #   {:ok, payload} ->
-    #     IO.puts "Events.make_payload"
-
-    #     #? Store transaction data into the related supuls. 
-    #     CheckArchiveEvent.check_archive_event(transaction, payload) #? if pass the check, return transaction
-
-    #     conn
-    #       |> put_flash(:info, "Transaction data was sent to your supul.")
-    #       |> redirect(to: Routes.item_path(conn, :index))
-
-    #   {:error, %Ecto.Changeset{} = changeset} ->
-    #     render(conn, "edit.html", transaction: transaction, changeset: changeset)
-    # end
-
-    # Transactions.update_transaction(transaction, %{archived?: true})
-    # |> Repo.update!
   end
-
-  # def delete(conn, %{"id" => id}, current_entity) do
-  #   transaction = Transactions.get_transaction!(current_entity, id)
-  #   {:ok, _transaction} = Transactions.delete_transaction(transaction)
-
-  #   conn
-  #   |> put_flash(:info, "Transaction deleted successfully.")
-  #   |> redirect(to: Routes.transaction_path(conn, :index))
-  # end
 end

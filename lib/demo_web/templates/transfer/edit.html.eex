@@ -1,0 +1,5 @@
+<h1>Edit Transfer</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.transfer_path(@conn, :update, @transfer)) %>
+
+<span><%= link "Back", to: Routes.transfer_path(@conn, :index) %></span>

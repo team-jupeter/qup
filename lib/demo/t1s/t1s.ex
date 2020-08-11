@@ -4,7 +4,7 @@ defmodule Demo.T1s do
   alias Demo.Repo
 
   alias Demo.T1s.T1
-  alias Demo.GabAccounts
+  # alias Demo.GabAccounts
 
 
   def list_t1s do

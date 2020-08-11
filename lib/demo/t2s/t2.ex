@@ -35,6 +35,6 @@ defmodule Demo.T2s.T2 do
   def changeset(t2, attrs) do
     t2
     |> cast(attrs, @fields)
-    |> validate_required([:USD, :EUR, :JPY, :GBP, :AUD, :CAD, :CHF, :CNY, :SEK, :MXN, :NZD, :SGD, :HKD, :NOK, :KRW])
+    |> validate_required([])
   end
 end

@@ -53,8 +53,9 @@ defmodule Demo.Transactions.Transaction do
 
     field :locked?, :boolean, default: false
     field :archived?, :boolean, default: false
-    field :payload, :string
-    field :payload_hash, :string
+
+    field :erl_currency, :string
+    field :ssu_currency, :string
 
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
     has_one :openhash, Demo.Openhashes.Openhash
@@ -120,7 +121,6 @@ defmodule Demo.Transactions.Transaction do
     :archived?, 
     :payload, 
     :payload_hash,       
-
   ]
 
 

@@ -1,0 +1,32 @@
+<h1>Listing Transfers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Input</th>
+      <th>Output</th>
+      <th>Amount</th>
+      <th>Currency</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for transfer <- @transfers do %>
+    <tr>
+      <td><%= transfer.input %></td>
+      <td><%= transfer.output %></td>
+      <td><%= transfer.amount %></td>
+      <td><%= transfer.currency %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.transfer_path(@conn, :show, transfer) %></span>
+        <span><%= link "Edit", to: Routes.transfer_path(@conn, :edit, transfer) %></span>
+        <span><%= link "Delete", to: Routes.transfer_path(@conn, :delete, transfer), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Transfer", to: Routes.transfer_path(@conn, :new) %></span>

@@ -1,0 +1,8 @@
+<h1>Show T2 pool</h1>
+
+<ul>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.t2_pool_path(@conn, :edit, @t2_pool) %></span>
+<span><%= link "Back", to: Routes.t2_pool_path(@conn, :index) %></span>

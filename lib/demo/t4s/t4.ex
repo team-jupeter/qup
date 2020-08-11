@@ -3,6 +3,7 @@ defmodule Demo.T4s.T4 do
   import Ecto.Changeset
 
   schema "t4s" do
+    field :denoting_currency, :string #? denoting currency
     field :bse, :decimal, precision: 12, scale: 4, default: 0.0 #? Bombay Stock Exchange
     field :db, :decimal, precision: 12, scale: 4, default: 0.0 #? Deutsche Börse
     field :ens, :decimal, precision: 12, scale: 4, default: 0.0 #? Euronext
@@ -25,6 +26,7 @@ defmodule Demo.T4s.T4 do
   end
 
   @fields [
+     :denoting_currency,
      :bse, 
      :db, 
      :ens, 

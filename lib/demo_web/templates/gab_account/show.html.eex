@@ -1,5 +1,6 @@
-<table>
+<span><%= link "Money Transfer", to: Routes.transfer_path(@conn, :new) %></span>
 
+<table>
   <tbody>
    <tr> 
   <td><b> Balance </b></td>

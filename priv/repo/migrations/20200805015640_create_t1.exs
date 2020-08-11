@@ -10,7 +10,7 @@ defmodule Demo.Repo.Migrations.CreateT1s do
       add :output_name, :string
       add :output_id, :string
       add :amount, :decimal, precision: 12, scale: 2
-      add :currency_type, :string
+      add :currency, :string
 
       add :entity_id, references(:entities, type: :uuid)
 

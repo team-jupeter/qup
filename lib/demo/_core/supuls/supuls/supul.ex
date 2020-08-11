@@ -34,6 +34,7 @@ defmodule Demo.Supuls.Supul do
     has_many :openhashes, Demo.Openhashes.Openhash, on_replace: :nilify
     has_many :families, Demo.Families.Family, on_replace: :nilify
 
+    has_one :gab, Demo.Gabs.Gab
     has_one :account_book, Demo.AccountBooks.AccountBook
     has_one :financial_report, Demo.Reports.FinancialReport, on_replace: :nilify
     has_one :income_statement, Demo.Reports.IncomeStatement, on_replace: :nilify

@@ -74,6 +74,7 @@ defmodule Demo.Entities.Entity do
 
     has_one :t2_item, Demo.ABC.T2Item
 
+    belongs_to :gab, Demo.Gabs.Gab, type: :binary_id, on_replace: :delete
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id, on_replace: :delete
 
     belongs_to :family, Demo.Families.Family, type: :binary_id, on_replace: :delete
