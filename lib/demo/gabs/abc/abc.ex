@@ -4,8 +4,8 @@ defmodule Demo.ABC do
   alias Demo.Repo
 
   alias Demo.ABC.T1
-  alias Demo.ABC.T2
-  alias Demo.ABC.T4
+  alias Demo.T2s.T2
+  alias Demo.T4s.T4
   
   alias Demo.GabAccounts
 

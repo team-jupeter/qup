@@ -4,6 +4,9 @@ defmodule Demo.GabAccounts do
   alias Demo.GabAccounts.GabAccount
   alias Demo.ABC
   alias Demo.ABC.T1
+  alias Demo.ABC.T2
+  alias Demo.ABC.T3
+  alias Demo.ABC.T4
   alias Demo.T3s
   alias Demo.Entities.Entity
   alias Demo.Gabs.Gab
@@ -31,20 +34,21 @@ defmodule Demo.GabAccounts do
   end
 
   def update_gab_account(%GabAccount{} = gab_account, attrs) do
-    IO.inspect("attrs")
-    IO.inspect(attrs)
-
     attrs =
       case Map.has_key?(attrs, "t2_balance") do
         false ->
           t1_change = Decimal.sub(attrs.t1_balance, gab_account.t1_balance)
+
+          # ? we need to add t1_change to total_book_value, as gab_account not yet reflect the updated t1 status.
           new_bv =
             Decimal.add(gab_account.t1_balance, gab_account.t2_balance)
             |> Decimal.add(gab_account.t3_balance)
             |> Decimal.add(gab_account.t4_balance)
             |> Decimal.add(t1_change)
 
-          Map.merge(%{total_book_value: new_bv}, attrs)  
+          Map.merge(%{total_book_value: new_bv}, attrs)
+
+        # ? this is the case when user manually adjust T1 ~ T5 shares.
         true ->
           previous_bv = gab_account.total_book_value
 
@@ -53,59 +57,57 @@ defmodule Demo.GabAccounts do
             |> Decimal.add(attrs["t3_balance"])
             |> Decimal.add(attrs["t4_balance"])
 
-          # attrs = Map.merge(%{"total_book_value" => new_bv}, attrs)
+          attrs =
+            case previous_bv == new_bv do
+              true ->
+                prev_t1_balance = gab_account.t1_balance
+                prev_t2_balance = gab_account.t2_balance
+                prev_t3_balance = gab_account.t3_balance
+                prev_t4_balance = gab_account.t4_balance
 
-          # ? confirm the sum of new adjustment same to before
-          # attrs=
-          #   case previous_bv == new_bv do
-          #     true ->
-          #       Map.merge(%{"total_book_value" => new_bv}, attrs)
-          #     false ->
-          #       "error"
-          #   end
+                new_t1_balance = attrs["t1_balance"]
+                new_t2_balance = attrs["t2_balance"]
+                new_t3_balance = attrs["t3_balance"]
+                new_t4_balance = attrs["t4_balance"]
 
-          prev_t1_balance = gab_account.t1_balance
-          prev_t2_balance = gab_account.t2_balance
-          prev_t3_balance = gab_account.t3_balance
-          prev_t4_balance = gab_account.t4_balance
+                t1_change = Decimal.sub(new_t1_balance, prev_t1_balance)
+                t2_change = Decimal.sub(new_t2_balance, prev_t2_balance)
+                t3_change = Decimal.sub(new_t3_balance, prev_t3_balance)
+                t4_change = Decimal.sub(new_t4_balance, prev_t4_balance)
 
-          new_t1_balance = attrs["t1_balance"]
-          new_t2_balance = attrs["t2_balance"]
-          new_t3_balance = attrs["t3_balance"]
-          new_t4_balance = attrs["t4_balance"]
+                new_mv =
+                  update_market_values(gab_account, t1_change, t2_change, t3_change, t4_change)
 
-          t1_change = Decimal.sub(new_t1_balance, prev_t1_balance)
-          t2_change = Decimal.sub(new_t2_balance, prev_t2_balance)
-          t3_change = Decimal.sub(new_t3_balance, prev_t3_balance)
-          t4_change = Decimal.sub(new_t4_balance, prev_t4_balance)
+                Map.merge(new_mv, attrs)
 
-          new_mv = update_market_values(gab_account, t1_change, t2_change, t3_change, t4_change)
-
-          attrs = Map.merge(new_mv, attrs)
+              false ->
+                "error"
+            end
       end
 
-    {:ok, gab_account} =
-      gab_account
-      |> GabAccount.changeset(attrs)
-      |> Repo.update()
+    gab_account
+    |> GabAccount.changeset(attrs)
+    |> Repo.update()
   end
 
-  # defp update_book_value(gab_account) do
-  #   IO.puts "update_book_value"
-
-  #   new_bv =
-  #     Decimal.add(gab_account.t1_balance, gab_account.t2_balance)
-  #     |> Decimal.add(gab_account.t3_balance)
-  #     |> Decimal.add(gab_account.t4_balance)
-
-  #     attrs = %{total_book_value: new_bv}
-  #     gab_account
-  #     |> GabAccount.changeset(attrs)
-  #     |> Repo.update()
-
-  # end
-
   defp update_market_values(gab_account, t1_change, t2_change, t3_change, t4_change) do
+    # ? invest onto t2~t4, and record their openhashes.
+    case t2_change >= 0 do
+      true -> t1_to_t2(gab_account, t2_change)
+      false -> t2_to_t1(gab_account, t2_change)
+    end
+
+    case t3_change >= 0 do
+      true -> t1_to_t3(gab_account, t3_change)
+      false -> t3_to_t1(gab_account, t3_change)
+    end
+
+    case t4_change >= 0 do
+      true -> t1_to_t4(gab_account, t4_change)
+      false -> t4_to_t1(gab_account, t4_change)
+    end
+
+    # ? update user screen
     new_t1_mv = Decimal.add(gab_account.t1_market_value, t1_change)
     new_t2_mv = Decimal.add(gab_account.t2_market_value, t2_change)
     new_t3_mv = Decimal.add(gab_account.t3_market_value, t3_change)
@@ -133,7 +135,6 @@ defmodule Demo.GabAccounts do
     GabAccount.changeset(gab_account, %{})
   end
 
-  alias Demo.ABC.T1
 
   def process_transfer(event, erl, ssu, openhash) do
     erl_GA = Repo.preload(erl, :gab_account).gab_account
@@ -141,13 +142,9 @@ defmodule Demo.GabAccounts do
     # update_gab_account(erl_GA, %{t1_balance: new_t1_balance})
     attrs = %{t1_balance: new_t1_balance}
 
-    IO.puts "erl_GA"
-    
     erl_GA
     |> GabAccount.changeset(attrs)
     |> Repo.update()
-
-    IO.puts "erl_GA"
 
     renew_t1s(event, erl, ssu, openhash)
   end
@@ -180,7 +177,7 @@ defmodule Demo.GabAccounts do
 
     # ? renew Seller's GA
     # ? prepare t struct to pay.
-    t_payment = %{
+    attrs = %{
       t1: %T1{
         openhash_id: openhash.id,
         input_name: erl.name,
@@ -198,7 +195,7 @@ defmodule Demo.GabAccounts do
 
     ssu_GA = Repo.one(query)
 
-    add_t1s(ssu_GA, t_payment)
+    add_t1s(ssu_GA, attrs)
   end
 
   def add_t1s(%GabAccount{} = gab_account, attrs) do
@@ -221,7 +218,9 @@ defmodule Demo.GabAccounts do
 
     # ? Update t1_pool of the gab
     t1_pool = Repo.preload(gab, :t1_pool).t1_pool
-    Map.update!(t1_pool, currency, &Decimal.add(&1, t1.amount))
+
+    t1_pool = Map.update!(t1_pool, currency, &Decimal.add(&1, t1.amount))
+    # T1Pools.update_t1_pool(t1_pool, t1_pool.krw)
 
     # ? update gab_account of ssu.
     gab_account = Repo.preload(ssu, :gab_account).gab_account
@@ -232,15 +231,8 @@ defmodule Demo.GabAccounts do
   # alias Demo.GabAccounts
 
   def update_t1_balance(gab_account) do
-    IO.puts("update_t1_balance")
-    IO.puts("gab_account")
-    IO.inspect(gab_account)
-
     amount_list = Enum.map(gab_account.t1s, fn item -> item.amount end)
     t1_balance = Enum.reduce(amount_list, 0, fn amount, sum -> Decimal.add(amount, sum) end)
-
-    IO.inspect("t1_balance")
-    IO.inspect(t1_balance)
 
     update_gab_account(gab_account, %{t1_balance: t1_balance})
   end
@@ -272,52 +264,20 @@ defmodule Demo.GabAccounts do
     update_gab_account(gab_account, %{t1: added_t1, t1_balance: new_t1_balance})
   end
 
-  # ? Send T1 to another entity
-  def send_t1(sender, receiver_email, t1_currency, amount) do
-    amount = Decimal.from_float(amount)
+  '''
 
-    sender_gab_account = Repo.preload(sender, :gab_account).gab_account
+    Below are for openhash archive
 
-    receiver = Repo.one(from e in Entity, where: e.email == ^receiver_email, select: e)
-    receiver_gab_account = Repo.preload(receiver, :gab_account).gab_account
+  '''
 
-    sender_new_t1_balance = Decimal.sub(sender_gab_account.t1_balance, amount)
-    receiver_new_t1_balance = Decimal.add(receiver_gab_account.t1_balance, amount)
+  def withdraw_t1(gab_account, t1_currency, amount) do
+    t1_currency = gab_account.default_currency
+    gab = Repo.preload(gab_account, :gab).gab
+    entity = Repo.preload(gab_account, :entity).entity
 
-    receiver_added_t1 = %T1{
-      input_name: sender.name,
-      input_id: sender.id,
-      output_name: receiver.name,
-      output_id: receiver.id,
-      amount: amount,
-      currency: t1_currency
-    }
-
-    sender_t1 = %T1{
-      input_name: sender.name,
-      input_id: sender.id,
-      output_name: sender.name,
-      output_id: sender.id,
-      amount: sender_new_t1_balance,
-      currency: t1_currency
-    }
-
-    update_gab_account(sender_gab_account, %{
-      t1: sender_t1,
-      t1_balance: sender_new_t1_balance
-    })
-
-    update_gab_account(receiver_gab_account, %{
-      t1: receiver_added_t1,
-      t1_balance: receiver_new_t1_balance
-    })
-  end
-
-  def withdraw_t1(entity, t1_currency, amount) do
-    gab_account = Repo.preload(entity, :gab_account).gab_account
     new_t1_balance = Decimal.sub(gab_account.t1_balance, amount)
 
-    new_t1 = %T1{
+    t1 = %T1{
       input_name: entity.name,
       input_id: entity.id,
       output_name: entity.name,
@@ -326,108 +286,112 @@ defmodule Demo.GabAccounts do
       currency: t1_currency
     }
 
-    update_gab_account(gab_account, %{t1: new_t1, t1_balance: new_t1_balance})
-  end
-
-  # ? exchange one fiat currency with another.
-  def t1_to_t1(entity, from_fiat, to_fiat) do
-    gab_account = Repo.preload(entity, :gab_account).gab_account
-    new_t1_balance = ABC.exchange_t1(entity, from_fiat, to_fiat)
-
-    new_t1 = %T1{
-      input_name: entity.name,
-      input_id: entity.id,
-      output_name: entity.name,
-      output_id: entity.id,
-      amount: new_t1_balance,
-      currency: to_fiat
-    }
-
-    update_gab_account(gab_account, %{t1: new_t1, default_currency: to_fiat})
+    new_t1s = [t1]
+    update_gab_account(gab_account, %{t1s: new_t1s, t1_balance: new_t1_balance})
   end
 
   # ? exchange a fiat currency with FX-risk free currency.
   # ? default is all
-  def t1_to_t2(entity, amount_to_exchange) do
-    gab_account = Repo.preload(entity, :gab_account).gab_account
+  def t1_to_t2(gab_account, amount_to_exchange) do
     t1_currency = gab_account.default_currency
+    gab = Repo.preload(gab_account, :gab).gab
+    entity = Repo.preload(gab_account, :entity).entity
 
-    bought_t2 = ABC.buy_t2(gab_account, t1_currency, amount_to_exchange)
-    new_t2 = Map.merge(gab_account.t2, bought_t2, fn _key, a, b -> Decimal.add(a, b) end)
+    bought_t2_amount = ABC.buy_t2(gab_account, t1_currency, amount_to_exchange)
+    # new_t2_amount = Map.merge(gab_account.t2, bought_t2, fn _key, a, b -> Decimal.add(a, b) end)
+
+    t2 = %T2{
+      input_name: gab.name,
+      input_id: gab.id,
+      output_name: entity.name,
+      output_id: entity.id,
+      amount: bought_t2_amount,
+      currency: t1_currency
+    }
+
+    t2 = %T2{
+      input_name: gab.name,
+      input_id: gab.id,
+      output_name: entity.name,
+      output_id: entity.id,
+      amount: bought_t2_amount
+    }
+
+    new_t2s = [t2 | gab_account.t2s]
 
     new_t1_amount = Decimal.sub(gab_account.t1, amount_to_exchange)
 
-    new_t1 = %T1{
+    t1 = %T1{
       input_name: entity.name,
       input_id: entity.id,
       output_name: entity.name,
       output_id: entity.id,
       amount: new_t1_amount,
-      currency: gab_account.default_currency
+      currency: t1_currency
     }
 
-    # ? new T1, T2 balance
-    new_t1_balance = Decimal.sub(gab_account.t1_balance, amount_to_exchange)
-    new_t2_balance = Decimal.add(gab_account.t2_balance, amount_to_exchange)
+    new_t1s = [t1]
 
-    update_gab_account(gab_account, %{
-      t1: new_t1,
-      t2: new_t2,
-      t1_balance: new_t1_balance,
-      t2_balance: new_t2_balance
+    openhash_t1_to_t2(gab_account, %{
+      t1s: new_t1s,
+      t2s: new_t2s
     })
+  end
+
+  defp openhash_t1_to_t2(gab_account, attrs) do
+    gab_account
+    |> GabAccount.changeset_t1_to_t2(attrs)
+    |> Repo.update()
   end
 
   # ? exchange FX-risk free currency with a fiat currency.
-  # ? default is all
-  def t2_to_t1(entity, amount_to_exchange) do
-    gab_account = Repo.preload(entity, :gab_account).gab_account
+  def t2_to_t1(gab_account, amount_to_exchange) do
+    t1_currency = gab_account.default_currency
+    gab = Repo.preload(gab_account, :gab).gab
+    entity = Repo.preload(gab_account, :entity).entity
 
-    # ? Sell all T2
-    all_t2_in_t1 = ABC.sell_t2(gab_account)
+    # ? Sell all T2s of the gab_account
+    sold_t2_amount = ABC.sell_t2(gab_account)
 
-    # ? Re buy some T2, all_t2_in_t1 - amount_to_exchange
-    amount_to_rebuy = Decimal.sub(all_t2_in_t1, amount_to_exchange)
-    new_t2 = t1_to_t2(entity, amount_to_rebuy)
-
-    # ? new T1, T2 balance
-    new_t1_balance = Decimal.add(gab_account.t1_balance, amount_to_exchange)
-    new_t2_balance = Decimal.sub(gab_account.t2_balance, amount_to_exchange)
-
-    new_t1 = %T1{
-      input_name: "GAB",
+    t1 = %T1{
+      input_name: gab.name,
+      input_id: gab.id,
       output_name: entity.name,
       output_id: entity.id,
-      amount: new_t1_balance,
-      currency: gab_account.default_currency
+      amount: sold_t2_amount,
+      currency: t1_currency
     }
 
-    # ? add new_t1 to the t1 list of ssu.
-    updated_t1 = [new_t1 | gab_account.t1]
+    # ? add new_t1 to the t1 list of the seller.
+    new_t1s = [t1 | gab_account.t1s]
 
-    update_gab_account(gab_account, %{
-      t1: updated_t1,
-      t2: new_t2,
-      t1_balance: new_t1_balance,
-      t2_balance: new_t2_balance
+    openhash_tx_to_t1(gab_account, %{
+      t1s: new_t1s
     })
+
+    # ? Re buy some T2, sold_t2_amount - amount_to_exchange
+    amount_to_rebuy = Decimal.sub(sold_t2_amount, amount_to_exchange)
+    t1_to_t2(gab_account, amount_to_rebuy)
   end
 
-  # ? quantity is the units of ABC.
-  def t1_to_t3(entity, quantity_to_buy) do
-    gab_account = Repo.preload(entity, :gab_account).gab_account
-    t1_currency = gab_account.default_currency
-    # ? number of ABCs to buy
-    bought_t3 = T3s.buy_t3(gab_account, gab_account.default_currency, quantity_to_buy)
+  defp openhash_tx_to_t1(gab_account, attrs) do
+    gab_account
+    |> GabAccount.changeset_tx_to_t1(attrs)
+    |> Repo.update()
+  end
 
-    # ? add new t3s to existing t3 list.
-    new_t3 = Enum.concat(entity.t3, bought_t3)
-    t3_price = T3s.get_t3_price(t1_currency)
+  # ? amount_to_buy is designated in T1
+  def t1_to_t3(gab_account, amount_to_buy) do
+    t1_currency = gab_account.default_currency
+    gab = Repo.preload(gab_account, :gab).gab
+    entity = Repo.preload(gab_account, :entity).entity
 
     # ? renew t1 balance.
-    new_t1_amount = Decimal.sub(gab_account.t1_balance, Decimal.mult(t3_price, quantity_to_buy))
+    t3_price = get_t3_price(t1_currency)
 
-    new_t1 = %T1{
+    new_t1_amount = Decimal.sub(gab_account.t1_balance, Decimal.mult(t3_price, amount_to_buy))
+
+    t1 = %T1{
       input_name: entity.name,
       input_id: entity.id,
       output_name: entity.name,
@@ -436,93 +400,136 @@ defmodule Demo.GabAccounts do
       currency: t1_currency
     }
 
-    new_t1_balance = new_t1_amount
-    new_t3_balance = Decimal.add(gab_account.t3_balance, Decimal.mult(t3_price, quantity_to_buy))
+    new_t1s = [t1]
 
-    update_gab_account(gab_account, %{
-      t1: new_t1,
-      t3: new_t3,
-      t1_balance: new_t1_balance,
-      t3_balance: new_t3_balance
+    # ? amount of ABC shares
+    bought_t3_amount = T3s.buy_t3(gab_account, gab_account.default_currency, amount_to_buy)
+
+    t3 = %T3{
+      input_name: gab.name,
+      input_id: gab.id,
+      output_name: entity.name,
+      output_id: entity.id,
+      amount: bought_t3_amount
+    }
+
+    new_t3s = [t3 | gab_account.t3s]
+
+    openhash_tx_to_t1(gab_account, %{
+      t1s: new_t1s,
+      t3s: new_t3s
     })
   end
 
-  # ? quantity is the units of ABC.
-  def t3_to_t1(entity, quantity_to_sell) do
-    gab_account = Repo.preload(entity, :gab_account).gab_account
-    t1_currency = gab_account.default_currency
-
-    # ? sell all T3s of the gab_account
-    t3_in_t1 = T3s.sell_t3(gab_account, t1_currency)
-
-    # ? add the total t3_in_t1 revenue to gab_account
-    newly_added_t1 = %T1{
-      input_name: "GAB",
-      output_name: entity.name,
-      output_id: entity.id,
-      amount: t3_in_t1,
-      currency: gab_account.default_currency
-    }
-
-    new_t1 = [newly_added_t1 | gab_account.t1]
-
-    update_gab_account(gab_account, %{t1: new_t1})
-
-    # ? rebuy (gab_account.t3_balance - quantity_to_sell)
-    t3_to_rebuy = gab_account.t3_balance - quantity_to_sell
-    t1_to_t3(entity, t3_to_rebuy)
+  defp openhash_t1_to_t3(gab_account, attrs) do
+    gab_account
+    |> GabAccount.changeset_t1_to_t3(attrs)
+    |> Repo.update()
   end
 
-  def t1_to_t4(entity, amount_to_exchange) do
-    gab_account = Repo.preload(entity, :gab_account).gab_account
+  defp get_t3_price(t1_currency) do
+    30000
+  end
+
+  def t3_to_t1(gab_account, amount_to_sell) do
     t1_currency = gab_account.default_currency
-    bought_t4 = ABC.buy_t4(t1_currency, amount_to_exchange)
+    gab = Repo.preload(gab_account, :gab).gab
+    entity = Repo.preload(gab_account, :entity).entity
+
+    # ? sell all T3s of the gab_account
+    sold_t3_amount = T3s.sell_t3(gab_account, t1_currency)
+
+    # ? add the total t3_in_t1 revenue to gab_account
+    t1 = %T1{
+      input_name: gab.name,
+      input_id: gab.id,
+      output_name: entity.name,
+      output_id: entity.id,
+      amount: sold_t3_amount,
+      currency: t1_currency
+    }
+
+    new_t1s = [t1 | gab_account.t1s]
+
+    openhash_tx_to_t1(gab_account, %{
+      t1s: new_t1s
+    })
+
+    # ? rebuy (gab_account.t3_balance - amount_to_sell)
+    t3_to_rebuy = gab_account.t3_balance - amount_to_sell
+    t1_to_t3(gab_account, t3_to_rebuy)
+  end
+
+  def t1_to_t4(gab_account, amount_to_exchange) do
+    t1_currency = gab_account.default_currency
+    gab = Repo.preload(gab_account, :gab).gab
+    entity = Repo.preload(gab_account, :entity).entity
+
+    bought_t4_amount = ABC.buy_t4(t1_currency, amount_to_exchange)
+
+    t4 = %T4{
+      input_name: gab.name,
+      input_id: gab.id,
+      output_name: entity.name,
+      output_id: entity.id,
+      amount: bought_t4_amount,
+      currency: t1_currency
+    }
 
     # ? add the bought T4 to the existing T4 of the gab_account.
-    new_t4 = Map.merge(bought_t4, gab_account.t4, fn _key, a, b -> Decimal.add(a, b) end)
+    new_t4s = [t4 | gab_account.t4s]
+
+    # ? adjust t1s
     new_t1_amount = Decimal.sub(gab_account.t1_balance, amount_to_exchange)
 
-    new_t1 = %T1{
+    t1 = %T1{
+      input_name: entity.name,
+      output_name: entity.name,
       input_name: entity.name,
       output_name: entity.name,
       amount: new_t1_amount,
       currency: t1_currency
     }
 
-    new_t1_balance = Decimal.sub(gab_account.t1_balance, amount_to_exchange)
-    new_t4_balance = Decimal.add(gab_account.t4_balance, amount_to_exchange)
+    new_t1s = [t1]
 
-    update_gab_account(gab_account, %{
-      t1: new_t1,
-      t4: new_t4,
-      t1_balance: new_t1_balance,
-      t4_balance: new_t4_balance
+    openhash_t1_to_t4(gab_account, %{
+      t1s: new_t1s,
+      t4s: new_t4s
     })
   end
 
-  def t4_to_t1(entity, amount_to_sell) do
-    gab_account = Repo.preload(entity, :gab_account).gab_account
+  defp openhash_t1_to_t4(gab_account, attrs) do
+    gab_account
+    |> GabAccount.changeset_t1_to_t4(attrs)
+    |> Repo.update()
+  end
+
+  def t4_to_t1(gab_account, amount_to_sell) do
+    t1_currency = gab_account.default_currency
+    gab = Repo.preload(gab_account, :gab).gab
+    entity = Repo.preload(gab_account, :entity).entity
 
     # ? First, sell all T4 of the gab_account. 
-    total_t1_revenue = ABC.sell_t4(gab_account.default_currency, amount_to_sell)
+    sold_t4_amount = ABC.sell_t4(t1_currency, amount_to_sell)
 
-    new_t1 = %T1{
-      input_name: "GAB",
+    t1 = %T1{
+      input_name: gab.name,
+      input_id: gab.id,
       output_name: entity.name,
-      amount: total_t1_revenue,
-      currency: gab_account.default_currency
+      output_id: entity.id,
+      amount: sold_t4_amount
     }
 
-    new_t1_balance = Decimal.add(gab_account.t1_balance, total_t1_revenue)
+    new_t1s = [t1 | gab_account.t1s]
 
-    update_gab_account(gab_account, %{
-      t1: new_t1,
-      t1_balance: new_t1_balance
+    openhash_tx_to_t1(gab_account, %{
+      t1s: new_t1s
     })
 
     # ? buy again T4 as much as (t4_balance - amount_to_sell)
     new_t4_balance = Decimal.sub(gab_account.t4_balance, amount_to_sell)
-    t1_to_t4(entity, new_t4_balance)
+    t1_to_t4(gab_account, new_t4_balance)
   end
 
   def get_fx_rate(_fiat_a, _fiat_b) do

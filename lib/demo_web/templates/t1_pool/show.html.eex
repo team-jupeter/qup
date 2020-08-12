@@ -1,8 +1,154 @@
-<h1>Show T1 pool</h1>
-
-<ul>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.t1_pool_path(@conn, :edit, @t1_pool) %></span>
-<span><%= link "Back", to: Routes.t1_pool_path(@conn, :index) %></span>
+<table>
+ <thead>
+  <tr>
+   <th>Currency</th>
+   <th>Amount</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr><td> AED </td> <td><%=  @t1_pool.aed %></td></tr> 
+  <tr><td> AFN </td> <td><%=  @t1_pool.afn %></td></tr> 
+  <tr><td> ALL </td> <td><%=  @t1_pool.all %></td></tr>
+  <tr><td> AMD </td> <td><%=  @t1_pool.amd %></td></tr> 
+  <tr><td> AOA </td> <td><%=  @t1_pool.aoa %></td></tr> 
+  <tr><td> ARS </td> <td><%=  @t1_pool.ars %></td></tr>
+  <tr><td> AUD </td> <td><%=  @t1_pool.aud %></td></tr> 
+  <tr><td> AZN </td> <td><%=  @t1_pool.azn %></td></tr> 
+  <tr><td> BAM </td> <td><%=  @t1_pool.bam %></td></tr> 
+  <tr><td> BBD </td> <td><%=  @t1_pool.bbd %></td></tr> 
+  <tr><td> BDT </td> <td><%=  @t1_pool.bdt %></td></tr> 
+  <tr><td> BGN </td> <td><%=  @t1_pool.bgn %></td></tr> 
+  <tr><td> BHD </td> <td><%=  @t1_pool.bhd %></td></tr> 
+  <tr><td> BIF </td> <td><%=  @t1_pool.bif %></td></tr> 
+  <tr><td> BND </td> <td><%=  @t1_pool.bnd %></td></tr>
+  <tr><td> BOB </td> <td><%=  @t1_pool.bob %></td></tr> 
+  <tr><td> BRL </td> <td><%=  @t1_pool.brl %></td></tr> 
+  <tr><td> BSD </td> <td><%=  @t1_pool.bsd %></td></tr> 
+  <tr><td> BTN </td> <td><%=  @t1_pool.btn %></td></tr> 
+  <tr><td> BWP </td> <td><%=  @t1_pool.bwp %></td></tr> 
+  <tr><td> BYN </td> <td><%=  @t1_pool.byn %></td></tr> 
+  <tr><td> BZD </td> <td><%=  @t1_pool.bzd %></td></tr> 
+  <tr><td> CAD </td> <td><%=  @t1_pool.cad %></td></tr> 
+  <tr><td> CDF </td> <td><%=  @t1_pool.cdf %></td></tr> 
+  <tr><td> CHF </td> <td><%=  @t1_pool.chf %></td></tr> 
+  <tr><td> CLP </td> <td><%=  @t1_pool.clp %></td></tr> 
+  <tr><td> CNY </td> <td><%=  @t1_pool.cny %></td></tr>
+  <tr><td> COP </td> <td><%=  @t1_pool.cop %></td></tr> 
+  <tr><td> CRC </td> <td><%=  @t1_pool.crc %></td></tr> 
+  <tr><td> CUP </td> <td><%=  @t1_pool.cup %></td></tr> 
+  <tr><td> CVE </td> <td><%=  @t1_pool.cve %></td></tr> 
+  <tr><td> CZK </td> <td><%=  @t1_pool.czk %></td></tr> 
+  <tr><td> DJF </td> <td><%=  @t1_pool.djf %></td></tr> 
+  <tr><td> DKK </td> <td><%=  @t1_pool.dkk %></td></tr> 
+  <tr><td> DOP </td> <td><%=  @t1_pool.dop %></td></tr> 
+  <tr><td> DZD </td> <td><%=  @t1_pool.dzd %></td></tr> 
+  <tr><td> EGP </td> <td><%=  @t1_pool.egp %></td></tr> 
+  <tr><td> ERN </td> <td><%=  @t1_pool.ern %></td></tr> 
+  <tr><td> ETB </td> <td><%=  @t1_pool.etb %></td></tr> 
+  <tr><td> EUR </td> <td><%=  @t1_pool.eur %></td></tr> 
+  <tr><td> FJD </td> <td><%=  @t1_pool.fjd %></td></tr> 
+  <tr><td> GBP </td> <td><%=  @t1_pool.gbp %></td></tr> 
+  <tr><td> GEL </td> <td><%=  @t1_pool.gel %></td></tr> 
+  <tr><td> GHS </td> <td><%=  @t1_pool.ghs %></td></tr> 
+  <tr><td> GMD </td> <td><%=  @t1_pool.gmd %></td></tr> 
+  <tr><td> GNF </td> <td><%=  @t1_pool.gnf %></td></tr> 
+  <tr><td> GTQ </td> <td><%=  @t1_pool.gtq %></td></tr> 
+  <tr><td> GYD </td> <td><%=  @t1_pool.gyd %></td></tr> 
+  <tr><td> HNL </td> <td><%=  @t1_pool.hnl %></td></tr> 
+  <tr><td> HRK </td> <td><%=  @t1_pool.hrk %></td></tr> 
+  <tr><td> HTG </td> <td><%=  @t1_pool.htg %></td></tr> 
+  <tr><td> HUF </td> <td><%=  @t1_pool.huf %></td></tr> 
+  <tr><td> IDR </td> <td><%=  @t1_pool.idr %></td></tr> 
+  <tr><td> ILS </td> <td><%=  @t1_pool.ils %></td></tr> 
+  <tr><td> INR </td> <td><%=  @t1_pool.inr %></td></tr> 
+  <tr><td> IQD </td> <td><%=  @t1_pool.iqd %></td></tr> 
+  <tr><td> IRR </td> <td><%=  @t1_pool.irr %></td></tr> 
+  <tr><td> ISK </td> <td><%=  @t1_pool.isk %></td></tr> 
+  <tr><td> JMD </td> <td><%=  @t1_pool.jmd %></td></tr> 
+  <tr><td> JOD </td> <td><%=  @t1_pool.jod %></td></tr> 
+  <tr><td> JPY </td> <td><%=  @t1_pool.jpy %></td></tr> 
+  <tr><td> KES </td> <td><%=  @t1_pool.kes %></td></tr> 
+  <tr><td> KGS </td> <td><%=  @t1_pool.kgs %></td></tr> 
+  <tr><td> KHR </td> <td><%=  @t1_pool.khr %></td></tr> 
+  <tr><td> KMF </td> <td><%=  @t1_pool.kmf %></td></tr> 
+  <tr><td> KPW </td> <td><%=  @t1_pool.kpw %></td></tr> 
+  <tr><td> KRW </td> <td><%=  @t1_pool.krw %></td></tr> 
+  <tr><td> KWD </td> <td><%=  @t1_pool.kwd %></td></tr> 
+  <tr><td> KZT </td> <td><%=  @t1_pool.kzt %></td></tr> 
+  <tr><td> LAK </td> <td><%=  @t1_pool.lak %></td></tr> 
+  <tr><td> LBP </td> <td><%=  @t1_pool.lbp %></td></tr> 
+  <tr><td> LKR </td> <td><%=  @t1_pool.lkr %></td></tr> 
+  <tr><td> LRD </td> <td><%=  @t1_pool.lrd %></td></tr> 
+  <tr><td> LSL </td> <td><%=  @t1_pool.lsl %></td></tr> 
+  <tr><td> LYD </td> <td><%=  @t1_pool.lyd %></td></tr> 
+  <tr><td> MAD </td> <td><%=  @t1_pool.mad %></td></tr> 
+  <tr><td> MDL </td> <td><%=  @t1_pool.mdl %></td></tr> 
+  <tr><td> MGA </td> <td><%=  @t1_pool.mga %></td></tr> 
+  <tr><td> MKD </td> <td><%=  @t1_pool.mkd %></td></tr> 
+  <tr><td> MMK </td> <td><%=  @t1_pool.mmk %></td></tr> 
+  <tr><td> MNT </td> <td><%=  @t1_pool.mnt %></td></tr> 
+  <tr><td> MRO </td> <td><%=  @t1_pool.mro %></td></tr> 
+  <tr><td> MUR </td> <td><%=  @t1_pool.mur %></td></tr> 
+  <tr><td> MVR </td> <td><%=  @t1_pool.mvr %></td></tr> 
+  <tr><td> MWK </td> <td><%=  @t1_pool.mwk %></td></tr> 
+  <tr><td> MXN </td> <td><%=  @t1_pool.mxn %></td></tr> 
+  <tr><td> MYR </td> <td><%=  @t1_pool.myr %></td></tr> 
+  <tr><td> MZN </td> <td><%=  @t1_pool.mzn %></td></tr> 
+  <tr><td> NAD </td> <td><%=  @t1_pool.nad %></td></tr> 
+  <tr><td> NGN </td> <td><%=  @t1_pool.ngn %></td></tr> 
+  <tr><td> NIO </td> <td><%=  @t1_pool.nio %></td></tr> 
+  <tr><td> NOK </td> <td><%=  @t1_pool.nok %></td></tr> 
+  <tr><td> NPR </td> <td><%=  @t1_pool.npr %></td></tr> 
+  <tr><td> NZD </td> <td><%=  @t1_pool.nzd %></td></tr> 
+  <tr><td> OMR </td> <td><%=  @t1_pool.omr %></td></tr> 
+  <tr><td> PAB </td> <td><%=  @t1_pool.pab %></td></tr> 
+  <tr><td> PEN </td> <td><%=  @t1_pool.pen %></td></tr> 
+  <tr><td> PGK </td> <td><%=  @t1_pool.pgk %></td></tr> 
+  <tr><td> PHP </td> <td><%=  @t1_pool.php %></td></tr> 
+  <tr><td> PKR </td> <td><%=  @t1_pool.pkr %></td></tr> 
+  <tr><td> PLN </td> <td><%=  @t1_pool.pln %></td></tr> 
+  <tr><td> PYG </td> <td><%=  @t1_pool.pyg %></td></tr> 
+  <tr><td> QAR </td> <td><%=  @t1_pool.qar %></td></tr> 
+  <tr><td> RON </td> <td><%=  @t1_pool.ron %></td></tr> 
+  <tr><td> RSD </td> <td><%=  @t1_pool.rsd %></td></tr> 
+  <tr><td> RUB </td> <td><%=  @t1_pool.rub %></td></tr> 
+  <tr><td> RWF </td> <td><%=  @t1_pool.rwf %></td></tr> 
+  <tr><td> SAR </td> <td><%=  @t1_pool.sar %></td></tr> 
+  <tr><td> SBD </td> <td><%=  @t1_pool.sbd %></td></tr> 
+  <tr><td> SCR </td> <td><%=  @t1_pool.scr %></td></tr> 
+  <tr><td> SDG </td> <td><%=  @t1_pool.sdg %></td></tr> 
+  <tr><td> SEK </td> <td><%=  @t1_pool.sek %></td></tr> 
+  <tr><td> SGD </td> <td><%=  @t1_pool.sgd %></td></tr> 
+  <tr><td> SLL </td> <td><%=  @t1_pool.sll %></td></tr> 
+  <tr><td> SOS </td> <td><%=  @t1_pool.sos %></td></tr> 
+  <tr><td> SRD </td> <td><%=  @t1_pool.srd %></td></tr> 
+  <tr><td> SSP </td> <td><%=  @t1_pool.ssp %></td></tr> 
+  <tr><td> STD </td> <td><%=  @t1_pool.std %></td></tr> 
+  <tr><td> SYP </td> <td><%=  @t1_pool.syp %></td></tr> 
+  <tr><td> SZL </td> <td><%=  @t1_pool.szl %></td></tr> 
+  <tr><td> THB </td> <td><%=  @t1_pool.thb %></td></tr> 
+  <tr><td> TJS </td> <td><%=  @t1_pool.tjs %></td></tr> 
+  <tr><td> TMT </td> <td><%=  @t1_pool.tmt %></td></tr> 
+  <tr><td> TND </td> <td><%=  @t1_pool.tnd %></td></tr> 
+  <tr><td> TOP </td> <td><%=  @t1_pool.top %></td></tr> 
+  <tr><td> TRY </td> <td><%=  @t1_pool.try %></td></tr> 
+  <tr><td> TTD </td> <td><%=  @t1_pool.ttd %></td></tr> 
+  <tr><td> TWD </td> <td><%=  @t1_pool.twd %></td></tr> 
+  <tr><td> TZS </td> <td><%=  @t1_pool.tzs %></td></tr> 
+  <tr><td> UAH </td> <td><%=  @t1_pool.uah %></td></tr> 
+  <tr><td> UGX </td> <td><%=  @t1_pool.ugx %></td></tr> 
+  <tr><td> USD </td> <td><%=  @t1_pool.usd %></td></tr> 
+  <tr><td> UYU </td> <td><%=  @t1_pool.uyu %></td></tr> 
+  <tr><td> UZS </td> <td><%=  @t1_pool.uzs %></td></tr> 
+  <tr><td> VEF </td> <td><%=  @t1_pool.vef %></td></tr> 
+  <tr><td> VND </td> <td><%=  @t1_pool.vnd %></td></tr> 
+  <tr><td> VUV </td> <td><%=  @t1_pool.vuv %></td></tr> 
+  <tr><td> WST </td> <td><%=  @t1_pool.wst %></td></tr> 
+  <tr><td> XAF </td> <td><%=  @t1_pool.xaf %></td></tr> 
+  <tr><td> XCD </td> <td><%=  @t1_pool.xcd %></td></tr> 
+  <tr><td> XOF </td> <td><%=  @t1_pool.xof %></td></tr> 
+  <tr><td> YER </td> <td><%=  @t1_pool.yer %></td></tr> 
+  <tr><td> ZAR </td> <td><%=  @t1_pool.zar %></td></tr> 
+  <tr><td> ZMW </td> <td><%=  @t1_pool.zmw %></td></tr> 
+ </tbody>
+</table>

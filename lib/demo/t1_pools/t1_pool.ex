@@ -5,6 +5,7 @@ defmodule Demo.T1Pools.T1Pool do
   @foreign_key_type :binary_id
 
   schema "t1_pools" do
+    field :name, :string
     #?List of countries by currency
     field :aed, :decimal, precision: 20, scale: 4, default: 0.0 
     field :afn, :decimal, precision: 20, scale: 4, default: 0.0 
@@ -158,6 +159,7 @@ defmodule Demo.T1Pools.T1Pool do
 end
 
 @fields [
+  :name,
   :aed, :afn, :all, :amd, :aoa, :ars, :aud, :azn, :bam, :bbd, :bdt, :bgn, :bhd, 
   :bif, :bnd, :bob, :brl, :bsd, :btn, :bwp, :byn, :bzd, :cad, :cdf, :chf, :chf, 
   :clp, :cny, :cop, :crc, :cup, :cve, :czk, :djf, :dkk, :dop, :dzd, :egp, :ern, 

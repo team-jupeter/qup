@@ -6,14 +6,15 @@ defmodule Demo.T3Pools.T3Pool do
 
   schema "t3_pools" do
     field :num_of_issues, :integer
- 
+    field :name, :string
+
     belongs_to :gab, Demo.Gabs.Gab, type: :binary_id
 
     timestamps() 
   end
 
   @fields [
-    :num_of_issues
+    :name, :num_of_issues
   ]
   @doc false
   def changeset(t3_pool, attrs) do

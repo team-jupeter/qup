@@ -1,7 +1,7 @@
 defmodule Demo.GabAccounts.GabAccount do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Demo.Repo
+  # alias Demo.Repo
   
   @primary_key {:id, :binary_id, autogenerate: true}
 
@@ -77,6 +77,37 @@ defmodule Demo.GabAccounts.GabAccount do
   def changeset(gab_account, attrs \\ %{}) do
     gab_account
     |> cast(attrs, @fields)
+    |> validate_required([])
+  end
+
+  def changeset_t1_to_t2(gab_account, attrs) do
+    gab_account
+    |> cast(attrs, @fields)
+    |> put_embed(:t1s, attrs.t1s)
+    |> put_embed(:t2s, attrs.t2s)
+    |> validate_required([])
+  end
+
+  def changeset_t1_to_t3(gab_account, attrs) do
+    gab_account
+    |> cast(attrs, @fields)
+    |> put_embed(:t1s, attrs.t1s)
+    |> put_embed(:t3s, attrs.t3s)
+    |> validate_required([])
+  end
+
+  def changeset_t1_to_t4(gab_account, attrs) do
+    gab_account
+    |> cast(attrs, @fields)
+    |> put_embed(:t1s, attrs.t1s)
+    |> put_embed(:t4s, attrs.t4s)
+    |> validate_required([])
+  end
+
+  def changeset_tx_to_t1(gab_account, attrs) do
+    gab_account
+    |> cast(attrs, @fields)
+    |> put_embed(:t1s, attrs.t1s)
     |> validate_required([])
   end
 

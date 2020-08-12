@@ -148,7 +148,7 @@ defmodule DemoWeb.Router do
 
   scope "/gab", DemoWeb do
     pipe_through [:browser]
-
+ 
     resources "/", GabController
     resources "/money_pools", MoneyPoolController
     resources "/fiat_pools", FiatPoolController
@@ -162,6 +162,14 @@ defmodule DemoWeb.Router do
     resources "/t4_pools", T4PoolController
     resources "/transfers", TransferController
     # resources "/t3s", T3Controller
+  end
+  scope "/pools", DemoWeb do
+    pipe_through [:browser]
+
+    resources "/t1_pools", T1PoolController
+    resources "/t2_pools", T2PoolController
+    resources "/t3_pools", T3PoolController
+    resources "/t4_pools", T4PoolController
   end
 
 

@@ -4,6 +4,7 @@ defmodule Demo.Repo.Migrations.CreateT4Pools do
   def change do
     create table(:t4_pools, primary_key: false) do
       add :id, :uuid, primary_key: true
+      add :name, :string
       add :denoting_currency, :string
       add :bse, :decimal, precision: 20, scale: 4, default: 0.0 
       add :db, :decimal, precision: 20, scale: 4, default: 0.0 

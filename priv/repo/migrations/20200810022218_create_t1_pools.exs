@@ -4,7 +4,8 @@ defmodule Demo.Repo.Migrations.CreateT1Pools do
   def change do
     create table(:t1_pools, primary_key: false) do
       add :id, :uuid, primary_key: true
-
+      add :name, :string
+      
       add(:aed, :decimal, precision: 12, scale: 4, default: 0.0)
       add(:afn, :decimal, precision: 12, scale: 4, default: 0.0)
       add(:all, :decimal, precision: 12, scale: 4, default: 0.0)

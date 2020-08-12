@@ -6,6 +6,7 @@ defmodule Demo.T2Pools.T2Pool do
   @foreign_key_type :binary_id
 
   schema "t2_pools" do  
+    field :name, :string
     field :usd, :decimal, precision: 20, scale: 4, default: 0.0
     field :eur, :decimal, precision: 20, scale: 4, default: 0.0
     field :jpy, :decimal, precision: 20, scale: 4, default: 0.0
@@ -28,7 +29,7 @@ defmodule Demo.T2Pools.T2Pool do
   end
 
   @fields [
-    [:usd, :eur, :jpy, :gbp, :aud, :cad, :chf, :cny, :sek, :mxn, :nzd, :sgd, :hkd, :nok, :krw]
+    :name, :usd, :eur, :jpy, :gbp, :aud, :cad, :chf, :cny, :sek, :mxn, :nzd, :sgd, :hkd, :nok, :krw
   ]
   @doc false
   def changeset(t2_pool, attrs) do

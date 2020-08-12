@@ -21,18 +21,19 @@ defmodule Demo.Gabs do
 
 
   def create_gab(attrs \\ %{}) do
-    attrs = Map.merge(pools(), attrs)
+    pools = pools(attrs.name)
+    attrs = Map.merge(pools, attrs)
     %Gab{}
     |> Gab.changeset(attrs)
     |> Repo.insert()
   end
 
 
-  defp pools() do
-    t1_pool = %T1Pool{}
-    t2_pool = %T2Pool{}
-    t3_pool = %T3Pool{}
-    t4_pool = %T4Pool{}
+  defp pools(name) do
+    t1_pool = T1Pool.changeset(%T1Pool{}, %{name: name})
+    t2_pool = T2Pool.changeset(%T2Pool{}, %{name: name})
+    t3_pool = T3Pool.changeset(%T3Pool{}, %{name: name})
+    t4_pool = T4Pool.changeset(%T4Pool{}, %{name: name})
     %{t1_pool: t1_pool, t2_pool: t2_pool, t3_pool: t3_pool, t4_pool: t4_pool}
   end
 

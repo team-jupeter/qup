@@ -1,14 +1,14 @@
 defmodule DemoWeb.GabAccountController do
   use DemoWeb, :controller
-  alias Demo.Repo
+  # alias Demo.Repo
 
   alias Demo.GabAccounts
   alias Demo.GabAccounts.GabAccount
-  alias Demo.Families
-  alias Demo.Groups
-  alias Demo.Supuls
-  alias Demo.StateSupuls
-  alias Demo.NationSupuls
+  # alias Demo.Families
+  # alias Demo.Groups
+  # alias Demo.Supuls
+  # alias Demo.StateSupuls
+  # alias Demo.NationSupuls
 
   plug DemoWeb.EntityAuth when action in [:index, :new, :edit, :create, :show, :update]
   
@@ -39,7 +39,7 @@ defmodule DemoWeb.GabAccountController do
     end
   end
 
-  def show(conn, %{"id" => id}, current_entity) do
+  def show(conn, %{"id" => _id}, current_entity) do
       gab_account = GabAccounts.get_entity_gab_account!(current_entity.id)
       render(conn, "show.html", gab_account: gab_account)
   end 
@@ -74,8 +74,8 @@ defmodule DemoWeb.GabAccountController do
     |> redirect(to: Routes.gab_account_path(conn, :index))
   end
 
-  def send_money(receiver_email, currency, amount, current_entity) do
-    amount = Decimal.from_float(amount)
-    GabAccounts.send_t1(current_entity, receiver_email, currency, amount)
-  end
+  # def send_money(receiver_email, currency, amount, current_entity) do
+  #   amount = Decimal.from_float(amount)
+  #   GabAccounts.send_t1(current_entity, receiver_email, currency, amount)
+  # end
 end

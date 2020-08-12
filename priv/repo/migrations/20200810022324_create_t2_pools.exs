@@ -4,7 +4,8 @@ defmodule Demo.Repo.Migrations.CreateT2Pools do
   def change do
     create table(:t2_pools, primary_key: false) do
       add :id, :uuid, primary_key: true
-      
+      add :name, :string
+
       add :usd, :decimal, precision: 20, scale: 4, default: 0.0
       add :eur, :decimal, precision: 20, scale: 4, default: 0.0
       add :jpy, :decimal, precision: 20, scale: 4, default: 0.0

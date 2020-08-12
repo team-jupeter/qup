@@ -12,7 +12,7 @@ defmodule DemoWeb.T1PoolController do
   def new(conn, _params) do
     changeset = T1Pools.change_t1_pool(%T1Pool{})
     render(conn, "new.html", changeset: changeset)
-  end
+  end 
 
   def create(conn, %{"t1_pool" => t1_pool_params}) do
     case T1Pools.create_t1_pool(t1_pool_params) do

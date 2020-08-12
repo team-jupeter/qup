@@ -6,6 +6,8 @@ defmodule Demo.T4Pools.T4Pool do
   @foreign_key_type :binary_id
 
   schema "t4_pools" do
+    field :name, :string
+
     field :bse, :decimal, precision: 12, scale: 4, default: 0.0 #? Bombay Stock Exchange
     field :db, :decimal, precision: 12, scale: 4, default: 0.0 #? Deutsche Börse
     field :ens, :decimal, precision: 12, scale: 4, default: 0.0 #? Euronext
@@ -28,6 +30,7 @@ defmodule Demo.T4Pools.T4Pool do
   end
 
   @fields [
+     :name,
      :bse, 
      :db, 
      :ens, 
