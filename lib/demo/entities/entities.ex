@@ -172,7 +172,8 @@ defmodule Demo.Entities do
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
-    ga = %GabAccount{}
+    ga = GabAccount.changeset(%GabAccount{}, %{
+      default_currency: attrs.default_currency})
 
     Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end
@@ -183,7 +184,8 @@ defmodule Demo.Entities do
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
-    ga = %GabAccount{}
+    ga = GabAccount.changeset(%GabAccount{}, %{
+      default_currency: attrs.default_currency})
 
     Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end

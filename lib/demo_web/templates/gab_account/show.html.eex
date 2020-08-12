@@ -5,7 +5,7 @@
 <table>
   <tbody>
    <tr> 
-  <td><b> Balance </b></td>
+  <td><b> T1-denoted Balance</b></td>
     <td><%= @gab_account.total_book_value %></td>
   </tr>
    <tr> 
@@ -36,7 +36,7 @@
     <td><%= @gab_account.default_currency %></td>
   </tr>
   <tr>
-    <td><b> Market Value </b></td>
+    <td><b> Change in Market Value </b></td>
     <td><%= @gab_account.total_market_value %></td>
   </tr>
   </tr>

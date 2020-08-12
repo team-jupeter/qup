@@ -376,6 +376,7 @@ alias Demo.Entities
   group: korea_group,
   unique_digits: "82111110",
   tels: ["82111110"],
+  default_currency: "KRW"
   }) 
   
   
@@ -403,6 +404,7 @@ alias Demo.Entities
   t1_balance: Decimal.from_float(100000.0),
   unique_digits: "82111100",
   tels: ["82111100"],
+  default_currency: "KRW"
   })
 
 msg_serialized = Poison.encode!(gab_korea)
@@ -428,6 +430,7 @@ alias Demo.Entities
   t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111111",
   telephones: ["8211111111"],
+  default_currency: "KRW"
   }) 
 
 msg_serialized = Poison.encode!(gopang_korea)
@@ -451,6 +454,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111112",
   tels: ["8211111112"],
+  default_currency: "KRW"
   }) 
 
 {:ok, mr_hong} =  Demo.Accounts.update_user(mr_hong, %{default_entity_id: hong_entity.id})  
@@ -475,6 +479,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111113",
   tels: ["8211111113"],
+  default_currency: "KRW"
   }) 
 
   {:ok, ms_sung} =  Demo.Accounts.update_user(ms_sung, %{default_entity_id: sung_entity.id})  
@@ -500,6 +505,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111114",
   tels: ["8211111114"],
+  default_currency: "KRW"
   }) 
   {:ok, mr_lim} =  Demo.Accounts.update_user(mr_lim, %{default_entity_id: lim_entity.id})  
 
@@ -524,6 +530,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   default_entity: true,
   unique_digits: "8211111115",
   tels: ["8211111115"],
+  default_currency: "KRW"
   }) 
 
 {:ok, mr_lee} =  Demo.Accounts.update_user(mr_lee, %{default_entity_id: lee_entity.id})  
@@ -555,6 +562,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   group_type: "Private Group",
   unique_digits: "8211111116",
   tels: ["8211111116"],
+  default_currency: "KRW"
   }) 
 
 msg_serialized = Poison.encode!(tomi_entity)
@@ -584,6 +592,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   group_type: "Private Group",
   unique_digits: "8211111117",
   tels: ["8211111117"],
+  default_currency: "KRW"
   }) 
 
 msg_serialized = Poison.encode!(sanche_entity)
@@ -613,6 +622,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   group_type: "Private Group",
   unique_digits: "8211111118",
   tels: ["8211111118"],
+  default_currency: "KRW"
   }) 
 
 msg_serialized = Poison.encode!(sato_entity)
@@ -642,6 +652,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   group_type: "Private Group",
   unique_digits: "8211111119",
   tels: ["8211111119"],
+  default_currency: "KRW"
   }) 
 
 msg_serialized = Poison.encode!(ebang_entity)
@@ -747,6 +758,10 @@ alias Demo.Gabs
 {:ok, seoul_gab} = Gabs.create_gab(%{name: "seoul_gab"})
 {:ok, gab_korea} = Gabs.create_gab(%{name: "gab_korea"})
 
+
+
+
+
 # ? prepare financial statements for entities.
 #? Balance Sheet
 alias Demo.GabAccounts
@@ -834,7 +849,7 @@ t1 =  %T1{
   currency: "eur"
   }
 
-GabAccounts.new_deposit(t1, type)  
+GabAccounts.new_deposit(t1)  
 
 #? 이방 학원 
 t1 =  %T1{

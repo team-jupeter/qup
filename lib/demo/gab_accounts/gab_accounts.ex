@@ -30,15 +30,21 @@ defmodule Demo.GabAccounts do
     |> Repo.insert()
   end
 
-
   def update_gab_account(%GabAccount{} = gab_account, attrs) do
-    IO.inspect attrs
+    IO.inspect("attrs")
+    IO.inspect(attrs)
+
     attrs =
       case Map.has_key?(attrs, "t2_balance") do
         false ->
-          total_bv = Decimal.add(gab_account.total_book_value, attrs.t1_balance)
-          Map.merge(%{total_book_value: total_bv}, attrs)
+          t1_change = Decimal.sub(attrs.t1_balance, gab_account.t1_balance)
+          new_bv =
+            Decimal.add(gab_account.t1_balance, gab_account.t2_balance)
+            |> Decimal.add(gab_account.t3_balance)
+            |> Decimal.add(gab_account.t4_balance)
+            |> Decimal.add(t1_change)
 
+          Map.merge(%{total_book_value: new_bv}, attrs)  
         true ->
           previous_bv = gab_account.total_book_value
 
@@ -46,18 +52,17 @@ defmodule Demo.GabAccounts do
             Decimal.add(attrs["t1_balance"], attrs["t2_balance"])
             |> Decimal.add(attrs["t3_balance"])
             |> Decimal.add(attrs["t4_balance"])
-          
+
           # attrs = Map.merge(%{"total_book_value" => new_bv}, attrs)
 
-          #? confirm the sum of new adjustment same to before
-          attrs=
-            case previous_bv == new_bv do
-              true ->
-                Map.merge(%{"total_book_value" => new_bv}, attrs)
-              false ->
-                "error"
-            end
-          
+          # ? confirm the sum of new adjustment same to before
+          # attrs=
+          #   case previous_bv == new_bv do
+          #     true ->
+          #       Map.merge(%{"total_book_value" => new_bv}, attrs)
+          #     false ->
+          #       "error"
+          #   end
 
           prev_t1_balance = gab_account.t1_balance
           prev_t2_balance = gab_account.t2_balance
@@ -79,10 +84,26 @@ defmodule Demo.GabAccounts do
           attrs = Map.merge(new_mv, attrs)
       end
 
-    gab_account
-    |> GabAccount.changeset(attrs)
-    |> Repo.update()
+    {:ok, gab_account} =
+      gab_account
+      |> GabAccount.changeset(attrs)
+      |> Repo.update()
   end
+
+  # defp update_book_value(gab_account) do
+  #   IO.puts "update_book_value"
+
+  #   new_bv =
+  #     Decimal.add(gab_account.t1_balance, gab_account.t2_balance)
+  #     |> Decimal.add(gab_account.t3_balance)
+  #     |> Decimal.add(gab_account.t4_balance)
+
+  #     attrs = %{total_book_value: new_bv}
+  #     gab_account
+  #     |> GabAccount.changeset(attrs)
+  #     |> Repo.update()
+
+  # end
 
   defp update_market_values(gab_account, t1_change, t2_change, t3_change, t4_change) do
     new_t1_mv = Decimal.add(gab_account.t1_market_value, t1_change)
@@ -117,7 +138,16 @@ defmodule Demo.GabAccounts do
   def process_transfer(event, erl, ssu, openhash) do
     erl_GA = Repo.preload(erl, :gab_account).gab_account
     new_t1_balance = Decimal.sub(erl_GA.t1_balance, event.t1_amount)
-    update_gab_account(erl_GA, %{t1_balance: new_t1_balance})
+    # update_gab_account(erl_GA, %{t1_balance: new_t1_balance})
+    attrs = %{t1_balance: new_t1_balance}
+
+    IO.puts "erl_GA"
+    
+    erl_GA
+    |> GabAccount.changeset(attrs)
+    |> Repo.update()
+
+    IO.puts "erl_GA"
 
     renew_t1s(event, erl, ssu, openhash)
   end
@@ -202,8 +232,15 @@ defmodule Demo.GabAccounts do
   # alias Demo.GabAccounts
 
   def update_t1_balance(gab_account) do
+    IO.puts("update_t1_balance")
+    IO.puts("gab_account")
+    IO.inspect(gab_account)
+
     amount_list = Enum.map(gab_account.t1s, fn item -> item.amount end)
     t1_balance = Enum.reduce(amount_list, 0, fn amount, sum -> Decimal.add(amount, sum) end)
+
+    IO.inspect("t1_balance")
+    IO.inspect(t1_balance)
 
     update_gab_account(gab_account, %{t1_balance: t1_balance})
   end

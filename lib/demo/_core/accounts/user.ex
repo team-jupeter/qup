@@ -31,6 +31,7 @@ defmodule Demo.Accounts.User do
     field :default_family, :boolean, default: false
     field :default_entity_id, :binary_id
     field :default_entity_name, :string
+    field :default_currency, :string
 
     
 
@@ -69,7 +70,7 @@ defmodule Demo.Accounts.User do
     :name, :type, :nationality, :email, :birth_date, :ssn, :default_entity_name, 
     :password, :nation_id, :auth_code, :supul_name, :address, :family_code, 
     :constitution_id, :supul_code, :username, :default_entity_id, :supul_id,
-    :married, :default_family, 
+    :married, :default_family, :default_currency
   ]
 
   def changeset(%User{} = user, attrs = %{wedding: wedding, married: true}) do
