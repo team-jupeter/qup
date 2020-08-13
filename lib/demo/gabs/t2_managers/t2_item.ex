@@ -1,4 +1,4 @@
-defmodule Demo.ABC.T2Item do
+defmodule Demo.ABC.OpenT2Item do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,7 +11,7 @@ defmodule Demo.ABC.T2Item do
     field :intrinsic_price_gab, :decimal, precision: 7, scale: 2 #? difference between market price and re_fmv.
 
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id 
-    belongs_to :t2, Demo.ABC.T2, type: :binary_id 
+    belongs_to :t2, Demo.ABC.OpenT2, type: :binary_id 
 
     timestamps()
   end

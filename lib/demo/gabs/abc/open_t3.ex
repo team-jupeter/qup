@@ -1,7 +1,7 @@
-defmodule Demo.ABC.T3 do
+defmodule Demo.ABC.OpenT3 do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Demo.ABC.T3
+  alias Demo.ABC.OpenT3
    
   embedded_schema do 
     field :openhash_id, :binary_id
@@ -27,7 +27,7 @@ defmodule Demo.ABC.T3 do
     |> validate_required([])
   end
 
-  def merge_changeset(%T3{} = t3, params) do
+  def merge_changeset(%OpenT3{} = t3, params) do
     t3
     |> cast(Map.keys(params), @fields)
     |> validate_required([])

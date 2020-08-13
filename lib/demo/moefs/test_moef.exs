@@ -229,7 +229,7 @@ Adjust balance_sheet of both.
 ''' 
 
 #? moef
-alias Demo.ABC.T1
+alias Demo.ABC.OpenT1
 
 #? Adjust balance_sheet of both.
 #? moef
@@ -243,7 +243,7 @@ moef_BS = change(moef_BS) |> \
     |> Repo.update!
 
 #? Tesla Korea
-t1s = [%T1{
+t1s = [%OpenT1{
     input: "moef_public_address", 
     amount: transaction.t1_amount, 
     output: "moef_public_address",

@@ -21,6 +21,9 @@ defmodule Demo.Entities do
   alias Demo.Reports.EquityStatement
   alias Demo.AccountBooks.AccountBook
   alias Demo.GabAccounts.GabAccount
+  alias Demo.T2s.T2
+  alias Demo.T3s.T3
+  alias Demo.T4s.T4
 
   def create_biz_category!(%{standard: standard, name: name, code: code}) do
     Repo.insert!(%BizCategory{standard: standard, name: name, code: code}, on_conflict: :nothing)
@@ -172,8 +175,9 @@ defmodule Demo.Entities do
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
-    ga = GabAccount.changeset(%GabAccount{}, %{
-      default_currency: attrs.default_currency})
+
+    ga = GabAccount.changeset_gab(%GabAccount{}, %{
+      default_currency: attrs.default_currency, gab: attrs.gab, t2: %T2{}, t3: %T3{},t4: %T4{}})
 
     Map.merge(attrs, %{ab: ab, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end
@@ -184,8 +188,8 @@ defmodule Demo.Entities do
     cf = %CFStatement{}
     fr = %FinancialReport{}
     es = %EquityStatement{}
-    ga = GabAccount.changeset(%GabAccount{}, %{
-      default_currency: attrs.default_currency})
+    ga = GabAccount.changeset_gab(%GabAccount{}, %{
+      default_currency: attrs.default_currency, gab: attrs.gab, t2: %T2{}, t3: %T3{}, t4: %T4{}})
 
     Map.merge(attrs, %{is: is, bs: bs, cf: cf, es: es, fr: fr, ga: ga})
   end

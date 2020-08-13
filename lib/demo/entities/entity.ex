@@ -72,7 +72,7 @@ defmodule Demo.Entities.Entity do
 
     has_many :licenses, Demo.Licenses.License
 
-    has_one :t2_item, Demo.ABC.T2Item
+    has_one :t2_item, Demo.ABC.OpenT2Item
 
     belongs_to :gab, Demo.Gabs.Gab, type: :binary_id, on_replace: :delete
     belongs_to :nation, Demo.Nations.Nation, type: :binary_id, on_replace: :delete
@@ -170,6 +170,7 @@ defmodule Demo.Entities.Entity do
     |> put_assoc(:cf_statement, attrs.cf)
     |> put_assoc(:equity_statement, attrs.es)
     |> put_assoc(:financial_report, attrs.fr)
+    |> put_assoc(:gab, attrs.gab)
   end
 
   def create_default_entity(entity, current_user, attrs) do

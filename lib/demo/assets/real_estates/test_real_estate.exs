@@ -194,7 +194,7 @@ hankyung_gab_BS = change(hankyung_gab_BS) |> \
  
         
 #? Hong Gil_Dong
-alias Demo.ABC.T1
+alias Demo.ABC.OpenT1
 # hong_entity_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financial_report
 # hong_entity_BS = hong_entity_FR.balance_sheet
 
@@ -202,7 +202,7 @@ hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_change(
         :cash, Decimal.sub(hong_entity_BS.cash, transaction_1.fiat_currency)) |> Repo.update!
 
-t1s = [%T1{input: "hankyung_gab_public_address", amount: transaction_1.t1_amount, output: "hong_public_address"}]
+t1s = [%OpenT1{input: "hankyung_gab_public_address", amount: transaction_1.t1_amount, output: "hong_public_address"}]
 hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 
@@ -284,7 +284,7 @@ Adjust balance_sheet of both.
 
 ''' 
 #? Tesla
-t1s = [%T1{input: hankyung_gab.id, output: tesla_entity.id, amount: Decimal.from_float(10000.0)}]
+t1s = [%OpenT1{input: hankyung_gab.id, output: tesla_entity.id, amount: Decimal.from_float(10000.0)}]
 tesla_entity_BS = change(tesla_entity_BS) |> Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 tesla_t1s = tesla_entity_BS.t1s
 
@@ -294,9 +294,9 @@ tesla_t1s = tesla_entity_BS.t1s
 #? do:
 residual_amount = Decimal.sub(Enum.at(tesla_t1s, 0).amount, invoice.total)
 # [head | tesla_t1s] = tesla_t1s
-alias Demo.ABC.T2
+alias Demo.ABC.OpenT2
 fixed_assets = tesla_entity_BS.fixed_assets
-t1s = [%T1{input: hankyung_gab.id, output: tesla_entity.id, amount: Decimal.from_float(10000.0)}]
+t1s = [%OpenT1{input: hankyung_gab.id, output: tesla_entity.id, amount: Decimal.from_float(10000.0)}]
 
 tesla_entity_BS = change(tesla_entity_BS) \
     |> Ecto.Changeset.put_embed(:t1s, t1s) \
@@ -308,7 +308,7 @@ tesla_entity_BS = change(tesla_entity_BS) \
 # tomi_entity_FR = Repo.preload(tomi_entity, [financial_report: :balance_sheet]).financial_report
 # tomi_entity_BS = tomi_entity_FR.balance_sheet
 
-t1s = [%T1{input: tesla_entity.id, output: tomi_entity.id, amount: invoice.total}]
+t1s = [%OpenT1{input: tesla_entity.id, output: tomi_entity.id, amount: invoice.total}]
 item_quantity = Decimal.to_integer(item_quantity)
 [head | updated_fixed_assets] = tomi_entity_BS.fixed_assets
 

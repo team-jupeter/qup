@@ -3,7 +3,7 @@ defmodule Demo.T2s do
   alias Demo.Repo
 
   alias Demo.T2s.T2
-  alias Demo.ABC.T1
+  alias Demo.ABC.OpenT1
 
   def list_t2s do
     Repo.all(T2)

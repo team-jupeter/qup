@@ -5,7 +5,7 @@ defmodule Demo.Invoices.Payment do
     embedded_schema do
       field :prev_transaction, :string
       
-      embeds_many :t1, Demo.ABC.T1
+      embeds_many :t1, Demo.ABC.OpenT1
     end
   
     @fields [:prev_transaction]

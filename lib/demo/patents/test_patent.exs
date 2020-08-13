@@ -198,7 +198,7 @@ Adjust balance_sheet of both.
 ''' 
 
 #? kipo
-alias Demo.ABC.T1
+alias Demo.ABC.OpenT1
 
 #? Adjust balance_sheet of both.
 #? kipo
@@ -212,7 +212,7 @@ hong_entity_BS = change(hong_entity_BS) |> \
     |> Repo.update!
 
 #? kipo Korea
-alias Demo.ABC.T1
+alias Demo.ABC.OpenT1
 new_ts = Enum.map(kipo_BS.t1s, fn elem ->
     Map.update!(elem, :amount, fn curr_value -> Decimal.add(curr_value, transaction.t1_amount) end)
 end)

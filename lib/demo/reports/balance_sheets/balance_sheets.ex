@@ -56,7 +56,7 @@ defmodule Demo.BalanceSheets do
     |> Repo.insert()
   end
 
-  alias Demo.ABC.T1
+  alias Demo.ABC.OpenT1
 
   def renew_t1s(attrs, buyer, seller, openhash) do
     # ? Find buyer's BS
@@ -68,7 +68,7 @@ defmodule Demo.BalanceSheets do
 
     # ? renew Buyer's BS T1
     t1s = [
-      %T1{
+      %OpenT1{
         openhash_id: openhash.id,
         input_id: buyer.id,
         input_name: buyer.name,
@@ -87,7 +87,7 @@ defmodule Demo.BalanceSheets do
     # ? renew Seller's BS
     # ? prepare t struct to pay.
     t_payment = %{
-      t1: %T1{
+      t1: %OpenT1{
         openhash_id: openhash.id,
         input_name: buyer.name,
         input_id: buyer.id,

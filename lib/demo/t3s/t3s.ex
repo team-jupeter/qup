@@ -2,8 +2,8 @@ defmodule Demo.T3s do
   import Ecto.Query, warn: false
   alias Demo.Repo
 
-  alias Demo.T3s
   alias Demo.T3s.T3
+  # alias Demo.T1s.T1
 
   def list_t3s do
     Repo.all(T3)
@@ -31,31 +31,45 @@ defmodule Demo.T3s do
     T3.changeset(t3, %{})
   end
 
-  def get_t3_price(_t1_currency) do
-    # ? dummy
+  def buy_t3(t1_currency, amount_to_buy) do
+    # entity = Repo.preload(gab_account, :entity).entity
+
+    t3_list = [
+
+    ]
+
+    buying_amount = Decimal.div(amount_to_buy, 13)
+
+    for {key, _value} <- t3_list,
+        into: %{},
+        do: {key, fx(:buy, key, t1_currency, buying_amount)}
+  end
+
+  def sell_t3(t1_currency, gab_account) do
+    # t1_revenue_list = Enum.map(gab_account.t3, fn {key, value} -> fx(:sell, key, value, default_currency) end)
+    t3_in_t1 =
+      for {key, value} <- gab_account.t3,
+          into: %{},
+          do: {key, fx(:sell, key, value, t1_currency)}
+
+    # Enum.reduce([1, 2, 3], 0, fn x, acc -> x + acc end)
+    Enum.reduce(t3_in_t1, 0, fn {_key, value}, acc -> Decimal.add(value, acc) end)
+  end
+
+  defp fx(:buy, _key, _t1_currency, buying_amount) do
+    # ? buy index of each t3 as much as buying amount at the t3
+    # ? dummy value
+    buying_amount
+  end
+
+  defp fx(:sell, key, value, t1_currency) do
+    # ? get the price of each index in t3 list, denoted by default_currency.
+    index_price = get_index_price(key, t1_currency)
+    Decimal.mult(index_price, value)
+  end
+
+  defp get_index_price(_index, _t1_currency) do
+    # ? dummy data
     1
-  end
-
-  def buy_t3(gab_account, t1_currency, quantity_to_buy) do
-    entity = Repo.preload(gab_account, :entity).entity
-
-    # ? return a list of bought t3s.
-    t3_price = get_t3_price(t1_currency)
-    t1_cost = Decimal.mult(t3_price, quantity_to_buy)
-
-    case gab_account.t1_balance >= t1_cost do
-      true ->
-        for _i <- 1..quantity_to_buy, do: create_t3(%{current_owner: entity})
-
-      false ->
-        "short of T1 balance"
-    end
-  end
-
-  def sell_t3(gab_account, t1_currency) do
-    # ? select the first t3 from the gab_account's t3 list, and change the current owner of t3s to sell to gab name.
-    Enum.map(gab_account.t3, fn t3 -> T3s.update_t3(t3, %{current_owner: "GAB"}) end)
-    t3_price = get_t3_price(t1_currency)
-    Decimal.mult(t3_price, gab_account.t3_balance)
   end
 end

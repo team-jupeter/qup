@@ -28,9 +28,10 @@ defmodule Demo.Repo.Migrations.CreateGabAccounts do
       add :unique_digits, :string
       add :default_currency, :string
 
-      add(:t1s, {:array, :map}, default: [])
-      add(:t2s, {:array, :map}, default: [])
-      add(:t4s, {:array, :map}, default: [])
+      add(:open_t1s, {:array, :map}, default: [])
+      add(:open_t2s, {:array, :map}, default: [])
+      add(:open_t3s, {:array, :map}, default: [])
+      add(:open_t4s, {:array, :map}, default: [])
       
       add :gab_id, references(:gabs, type: :uuid, null: false)
       

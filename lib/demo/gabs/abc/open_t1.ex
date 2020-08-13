@@ -1,7 +1,7 @@
-defmodule Demo.ABC.T4 do
+defmodule Demo.ABC.OpenT1 do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Demo.ABC.T4
+  alias Demo.ABC.OpenT1
    
   embedded_schema do 
     field :openhash_id, :binary_id
@@ -21,14 +21,14 @@ defmodule Demo.ABC.T4 do
   @fields [
       :openhash_id, :input_name, :output_name, :input_id, :output_id, :amount, :currency
   ]
-  def changeset(t4, params) do
-    t4
+  def changeset(open_t1, params) do
+    open_t1
     |> cast(params, @fields)
     |> validate_required([])
   end
 
-  def merge_changeset(%T4{} = t4, params) do
-    t4
+  def merge_changeset(%OpenT1{} = open_t1, params) do
+    open_t1
     |> cast(Map.keys(params), @fields)
     |> validate_required([])
   end

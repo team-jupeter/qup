@@ -264,8 +264,8 @@ item =
 
 
 # ? init T2 Manager for Korean capital market.
-alias Demo.ABC.T2
-alias Demo.ABC.T2Item
+alias Demo.ABC.OpenT2
+alias Demo.ABC.OpenT2Item
 
 t2_korea = T2.changeset(%T2{}) |> Repo.insert!
 

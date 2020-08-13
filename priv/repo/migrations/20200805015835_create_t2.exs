@@ -20,6 +20,7 @@ defmodule Demo.Repo.Migrations.CreateT2s do
       add :nok, :decimal, precision: 12, scale: 4, default: 0.0
       add :krw, :decimal, precision: 12, scale: 4, default: 0.0
 
+      add :gab_account_id, references(:gab_accounts, type: :uuid)
       add :gab_id, references(:gabs, type: :uuid)
       add :entity_id, references(:entities, type: :uuid)
 

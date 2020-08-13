@@ -30,7 +30,7 @@ defmodule Demo.T1sTest do
     end
 
     test "create_t1/1 with valid data creates a t1" do
-      assert {:ok, %T1{} = t1} = T1s.create_t1(@valid_attrs)
+      assert {:ok, %OpenT1{} = t1} = T1s.create_t1(@valid_attrs)
       assert t1.AUD == "some AUD"
       assert t1.CAD == "some CAD"
       assert t1.CHF == "some CHF"
@@ -54,7 +54,7 @@ defmodule Demo.T1sTest do
 
     test "update_t1/2 with valid data updates the t1" do
       t1 = t1_fixture()
-      assert {:ok, %T1{} = t1} = T1s.update_t1(t1, @update_attrs)
+      assert {:ok, %OpenT1{} = t1} = T1s.update_t1(t1, @update_attrs)
       assert t1.AUD == "some updated AUD"
       assert t1.CAD == "some updated CAD"
       assert t1.CHF == "some updated CHF"
@@ -80,7 +80,7 @@ defmodule Demo.T1sTest do
 
     test "delete_t1/1 deletes the t1" do
       t1 = t1_fixture()
-      assert {:ok, %T1{}} = T1s.delete_t1(t1)
+      assert {:ok, %OpenT1{}} = T1s.delete_t1(t1)
       assert_raise Ecto.NoResultsError, fn -> T1s.get_t1!(t1.id) end
     end
 
@@ -117,7 +117,7 @@ defmodule Demo.T1sTest do
     end
 
     test "create_t1_pool/1 with valid data creates a t1_pool" do
-      assert {:ok, %T1Pool{} = t1_pool} = T1Pools.create_t1_pool(@valid_attrs)
+      assert {:ok, %OpenT1Pool{} = t1_pool} = T1Pools.create_t1_pool(@valid_attrs)
     end
 
     test "create_t1_pool/1 with invalid data returns error changeset" do
@@ -126,7 +126,7 @@ defmodule Demo.T1sTest do
 
     test "update_t1_pool/2 with valid data updates the t1_pool" do
       t1_pool = t1_pool_fixture()
-      assert {:ok, %T1Pool{} = t1_pool} = T1Pools.update_t1_pool(t1_pool, @update_attrs)
+      assert {:ok, %OpenT1Pool{} = t1_pool} = T1Pools.update_t1_pool(t1_pool, @update_attrs)
     end
 
     test "update_t1_pool/2 with invalid data returns error changeset" do
@@ -137,7 +137,7 @@ defmodule Demo.T1sTest do
 
     test "delete_t1_pool/1 deletes the t1_pool" do
       t1_pool = t1_pool_fixture()
-      assert {:ok, %T1Pool{}} = T1Pools.delete_t1_pool(t1_pool)
+      assert {:ok, %OpenT1Pool{}} = T1Pools.delete_t1_pool(t1_pool)
       assert_raise Ecto.NoResultsError, fn -> T1Pools.get_t1_pool!(t1_pool.id) end
     end
 

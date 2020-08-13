@@ -83,13 +83,13 @@
 </table>
 
 
-<%= for t <- @gab_account.t1s do %>
+<%= for t <- @gab_account.open_t1s do %>
 <b>T1</b>
     <table >
       <thead>
         <tr>
         <th></th>
-        <th></th>
+        <th></th> 
         </tr>
       </thead>
       <tbody>
@@ -123,7 +123,7 @@
 </table>
 
 
-<%= for t <- @gab_account.t2s do %>
+<%= for t <- @gab_account.open_t2s do %>
 <b>T2</b>
     <table >
       <thead>
@@ -163,7 +163,7 @@
 </table>
 
 
-<%= for t <- @gab_account.t3s do %>
+<%= for t <- @gab_account.open_t3s do %>
 <b>t3_balance</b>
     <table >
       <thead>
@@ -203,7 +203,7 @@
 </table>
 
 
-<%= for t <- @gab_account.t4s do %>
+<%= for t <- @gab_account.open_t4s do %>
 <b>return_on_t4</b>
     <table >
       <thead>

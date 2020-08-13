@@ -1,8 +1,8 @@
 defmodule Demo.GabAccounts.GabAccount do
   use Ecto.Schema
   import Ecto.Changeset
-  # alias Demo.Repo
-  
+  alias Demo.Repo
+
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "gab_accounts" do
@@ -31,11 +31,14 @@ defmodule Demo.GabAccounts.GabAccount do
     field :unique_digits, :string
     field :default_currency, :string
 
-    embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
-    embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
-    embeds_many :t4s, Demo.ABC.T4, on_replace: :delete
+    embeds_many :open_t1s, Demo.ABC.OpenT1, on_replace: :delete
+    embeds_many :open_t2s, Demo.ABC.OpenT2, on_replace: :delete
+    embeds_many :open_t3s, Demo.ABC.OpenT3, on_replace: :delete
+    embeds_many :open_t4s, Demo.ABC.OpenT4, on_replace: :delete
 
-    has_many :t3s, Demo.T3s.T3, on_replace: :delete
+    has_one :t2, Demo.T2s.T2, on_replace: :delete
+    has_one :t3, Demo.T3s.T3, on_replace: :delete
+    has_one :t4, Demo.T4s.T4, on_replace: :delete
 
     belongs_to :gab, Demo.Gabs.Gab, type: :binary_id
 
@@ -80,37 +83,69 @@ defmodule Demo.GabAccounts.GabAccount do
     |> validate_required([])
   end
 
-  def changeset_t1_to_t2(gab_account, attrs) do
+  def changeset_gab(gab_account, attrs \\ %{}) do
     gab_account
     |> cast(attrs, @fields)
-    |> put_embed(:t1s, attrs.t1s)
-    |> put_embed(:t2s, attrs.t2s)
+    |> put_assoc(:gab, attrs.gab)
+    |> put_assoc(:t2, attrs.t2)
+    |> put_assoc(:t3, attrs.t3)
+    |> put_assoc(:t4, attrs.t4)
+    |> validate_required([])
+  end
+
+  def changeset_open(gab_account, attrs) do
+    gab_account
+    |> cast(attrs, @fields)
+    |> put_embed(:open_t1s, attrs.open_t1s)
+  end
+
+  def changeset_t1_to_t2(gab_account, attrs) do
+    gab_account
+    |> cast(attrs, @fields) 
+    |> put_embed(:open_t1s, attrs.open_t1s)
+    |> put_embed(:open_t2s, attrs.open_t2s)
     |> validate_required([])
   end
 
   def changeset_t1_to_t3(gab_account, attrs) do
+    IO.puts "hey"
     gab_account
     |> cast(attrs, @fields)
-    |> put_embed(:t1s, attrs.t1s)
-    |> put_embed(:t3s, attrs.t3s)
+    |> put_embed(:open_t1s, attrs.open_t1s)
+    |> put_embed(:open_t3s, attrs.open_t3s)
     |> validate_required([])
   end
 
   def changeset_t1_to_t4(gab_account, attrs) do
     gab_account
     |> cast(attrs, @fields)
-    |> put_embed(:t1s, attrs.t1s)
-    |> put_embed(:t4s, attrs.t4s)
+    |> put_embed(:open_t1s, attrs.open_t1s)
+    |> put_embed(:open_t4s, attrs.open_t4s)
     |> validate_required([])
   end
 
   def changeset_tx_to_t1(gab_account, attrs) do
     gab_account
     |> cast(attrs, @fields)
-    |> put_embed(:t1s, attrs.t1s)
+    |> put_embed(:open_t1s, attrs.open_t1s)
     |> validate_required([])
   end
-
-
   
+  def changeset_update_t2(gab_account, attrs) do
+    gab_account
+    |> cast(attrs, @fields)
+    |> put_assoc(:t2, attrs.t2)
+  end
+  
+  def changeset_update_t3(gab_account, attrs) do
+    gab_account
+    |> cast(attrs, @fields)
+    |> put_assoc(:t3, attrs.t3)
+  end
+  
+  def changeset_update_t4(gab_account, attrs) do
+    gab_account
+    |> cast(attrs, @fields)
+    |> put_assoc(:t4, attrs.t4)
+  end
 end

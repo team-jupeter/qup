@@ -23,6 +23,7 @@ defmodule Demo.T2s.T2 do
     field :krw, :decimal, precision: 12, scale: 4, default: 0.0
 
     belongs_to :gab, Demo.Gabs.Gab, type: :binary_id
+    belongs_to :gab_account, Demo.GabAccounts.GabAccount, type: :binary_id
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
 
     timestamps()

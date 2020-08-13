@@ -36,11 +36,11 @@ defmodule Demo.Reports.BalanceSheet do
     field :t4_balance, :decimal, precision: 12, scale: 2, default: 0.0
     field :t5_balance, :decimal, precision: 12, scale: 2, default: 0.0
 
-    embeds_many :t1s, Demo.ABC.T1, on_replace: :delete
-    embeds_many :t2s, Demo.ABC.T2, on_replace: :delete
-    # embeds_many :t3s, Demo.ABC.T3, on_replace: :delete
-    embeds_many :t4s, Demo.ABC.T4, on_replace: :delete
-    # embeds_many :t5s, Demo.ABC.T5, on_replace: :delete
+    embeds_many :t1s, Demo.ABC.OpenT1, on_replace: :delete
+    embeds_many :t2s, Demo.ABC.OpenT2, on_replace: :delete
+    # embeds_many :t3s, Demo.ABC.OpenT3, on_replace: :delete
+    embeds_many :t4s, Demo.ABC.OpenT4, on_replace: :delete
+    # embeds_many :t5s, Demo.ABC.OpenT5, on_replace: :delete
  
     belongs_to :financial_report, Demo.Reports.FinancialReport, type: :binary_id
     belongs_to :group, Demo.Groups.Group, type: :binary_id

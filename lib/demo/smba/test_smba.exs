@@ -228,7 +228,7 @@ Adjust balance_sheet of both.
 ''' 
 
 #? SMBA
-alias Demo.ABC.T1
+alias Demo.ABC.OpenT1
 
 #? Adjust balance_sheet of both.
 #? SMBA
@@ -243,7 +243,7 @@ smba_BS = change(smba_BS) |> \
 
         
 #? Tesla Korea
-ts = [%T1{input: "smba_public_address", amount: transaction.t1_amount, output: "smba_public_address"}]
+ts = [%OpenT1{input: "smba_public_address", amount: transaction.t1_amount, output: "smba_public_address"}]
 tesla_entity_BS = change(tesla_entity_BS) |> \
     Ecto.Changeset.put_embed(:ts, ts) |> Repo.update!
 

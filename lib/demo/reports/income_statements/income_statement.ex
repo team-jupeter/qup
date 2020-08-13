@@ -25,8 +25,8 @@ defmodule Demo.Reports.IncomeStatement do
     field :travel_and_entertainment, :decimal, precision: 12, scale: 2, default: 0.0
     field :utilities, :decimal, precision: 12, scale: 2, default: 0.0
 
-    embeds_many :t1, Demo.ABC.T1
-    embeds_many :t2, Demo.ABC.T2
+    embeds_many :t1, Demo.ABC.OpenT1
+    embeds_many :t2, Demo.ABC.OpenT2
     embeds_many :t4, Demo.T4s.T4
 
     has_many :t3s, Demo.T3s.T3

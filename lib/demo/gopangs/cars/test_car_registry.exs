@@ -135,7 +135,7 @@ hankyung_gab_BS = change(hankyung_gab_BS) |> \
         
 
 #? Hong Gil_Dong
-alias Demo.ABC.T1
+alias Demo.ABC.OpenT1
 
 hong_entity_FR = Repo.preload(hong_entity, [financial_report: :balance_sheet]).financial_report
 
@@ -144,7 +144,7 @@ hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_change(
         :cash, Decimal.sub(hong_entity_BS.cash,  Enum.at(transaction_1.items, 0)["KRW"])) |> Repo.update!
 
-t1s = [%T1{input: "gab dummy address", amount: transaction_1.t1_amount, output: "hong dummy address"}]
+t1s = [%OpenT1{input: "gab dummy address", amount: transaction_1.t1_amount, output: "hong dummy address"}]
 hong_entity_BS = change(hong_entity_BS) |> \
     Ecto.Changeset.put_embed(:t1s, t1s) |> Repo.update!
 
@@ -238,7 +238,7 @@ hong_t1s = hong_entity_BS.t1s
 residual_amount = Decimal.sub(Enum.at(hong_t1s, 0).amount, invoice.total)
 [head | hong_t1s] = hong_t1s
 
-t1s = [%T1{input: hong_entity.id, output: hong_entity.id, amount: residual_amount}]
+t1s = [%OpenT1{input: hong_entity.id, output: hong_entity.id, amount: residual_amount}]
 fixed_assets = hong_entity_BS.fixed_assets
 
 hong_entity_BS = change(hong_entity_BS) \
@@ -251,7 +251,7 @@ hong_entity_BS = change(hong_entity_BS) \
 tesla_entity_FR = Repo.preload(tesla_entity, [financial_report: :balance_sheet]).financial_report
 tesla_entity_BS = tesla_entity_FR.balance_sheet
 
-t1s = [%T1{input: hong_entity.id, output: tesla_entity.id, amount: invoice.total}]
+t1s = [%OpenT1{input: hong_entity.id, output: tesla_entity.id, amount: invoice.total}]
 item_quantity = Decimal.to_integer(item_quantity)
 updated_inventory = [Map.update(Enum.at(tesla_entity_BS.inventory, 0), :model_y, 0, &(&1 - item_quantity))]
 
