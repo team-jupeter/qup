@@ -7,20 +7,20 @@
 
   <p>Enter email or tel only, as other fields filled automatically.</p>
   <%= label f, :Receiver_email %>
-  <%= text_input f, :ssu_email %>
-  <%= error_tag f, :ssu_email %>
+  <%= text_input f, :output_email %>
+  <%= error_tag f, :output_email %>
 
   <%= label f, :Receiver_name %>
-  <%= text_input f, :ssu_name %>
-  <%= error_tag f, :ssu_name %>
+  <%= text_input f, :output_name %>
+  <%= error_tag f, :output_name %>
 
   <%= label f, :Receiver_mobile_phone %>
-  <%= text_input f, :ssu_tel %>
-  <%= error_tag f, :ssu_tel %>
+  <%= text_input f, :output_tel %>
+  <%= error_tag f, :output_tel %>
 
   <%= label f, :Amount_to_send %>
-  <%= text_input f, :t1_amount %>
-  <%= error_tag f, :t1_amount %>
+  <%= text_input f, :input_amount %>
+  <%= error_tag f, :input_amount %>
 
 
   <div>

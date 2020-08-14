@@ -6,16 +6,16 @@ defmodule Demo.Weddings.Wedding do
 
   schema "weddings" do
     field :type, :string
-    field :erl_id, :binary_id
-    field :erl_name, :string
-    field :erl_email, :string
-    field :ssu_id, :binary_id 
-    field :ssu_name, :string
-    field :ssu_email, :string
-    field :erl_supul_id, :binary_id
-    field :erl_supul_name, :string
-    field :ssu_supul_id, :binary_id
-    field :ssu_supul_name, :string
+    field :input_id, :binary_id
+    field :input_name, :string
+    field :input_email, :string
+    field :output_id, :binary_id 
+    field :output_name, :string
+    field :output_email, :string
+    field :input_supul_id, :binary_id
+    field :input_supul_name, :string
+    field :output_supul_id, :binary_id
+    field :output_supul_name, :string
     field :event_hash, :string 
 
     field :openhash_id, :binary_id
@@ -30,16 +30,16 @@ defmodule Demo.Weddings.Wedding do
 
   @fields [
     :type, 
-    :erl_id, 
-    :erl_name, 
-    :erl_email, 
-    :ssu_id,  
-    :ssu_name,  
-    :ssu_email, 
-    :erl_supul_id,  
-    :erl_supul_name, 
-    :ssu_supul_id, 
-    :ssu_supul_name, 
+    :input_id, 
+    :input_name, 
+    :input_email, 
+    :output_id,  
+    :output_name,  
+    :output_email, 
+    :input_supul_id,  
+    :input_supul_name, 
+    :output_supul_id, 
+    :output_supul_name, 
     :event_hash, 
     :openhash_id,
     :payload, 

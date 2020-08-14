@@ -8,18 +8,18 @@ defmodule Demo.Transactions.Transaction do
     #? previous transaction_id and digital signature of invoice
     field :hash_of_invoice, :string
 
-    field :erl_type, :string
+    field :input_type, :string
     field :ssu_type, :string
 
     #? who pays ABC? which ts in his/her/its wallet?
-    field :erl_id, :binary_id
-    field :erl_name, :string 
-    field :erl_email, :string 
-    field :erl_family_id, :binary_id
-    field :erl_group_id, :binary_id
-    field :erl_supul_id, :binary_id 
-    field :erl_state_supul_id, :binary_id
-    field :erl_nation_supul_id, :binary_id 
+    field :input_id, :binary_id
+    field :input_name, :string 
+    field :input_email, :string 
+    field :input_family_id, :binary_id
+    field :input_group_id, :binary_id
+    field :input_supul_id, :binary_id 
+    field :input_state_supul_id, :binary_id
+    field :input_nation_supul_id, :binary_id 
     
     field :ssu_id, :binary_id
     field :ssu_name, :string 
@@ -54,7 +54,7 @@ defmodule Demo.Transactions.Transaction do
     field :locked?, :boolean, default: false
     field :archived?, :boolean, default: false
 
-    field :erl_currency, :string
+    field :input_currency, :string
     field :ssu_currency, :string
 
     belongs_to :invoice, Demo.Invoices.Invoice, type: :binary_id
@@ -76,18 +76,18 @@ defmodule Demo.Transactions.Transaction do
     #? previous transaction_id and digital signature of invoice
     :hash_of_invoice, 
     
-    :erl_type, 
+    :input_type, 
     :ssu_type, 
 
     #? who pays ABC? which ts in his/her/its wallet?
-    :erl_id, 
-    :erl_name,  
-    :erl_email,  
-    :erl_family_id, 
-    :erl_group_id, 
-    :erl_supul_id,  
-    :erl_state_supul_id, 
-    :erl_nation_supul_id,  
+    :input_id, 
+    :input_name,  
+    :input_email,  
+    :input_family_id, 
+    :input_group_id, 
+    :input_supul_id,  
+    :input_state_supul_id, 
+    :input_nation_supul_id,  
     
     :ssu_id, 
     :ssu_name,  

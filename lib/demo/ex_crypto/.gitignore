@@ -1,4 +1,4 @@
-erl_crash.dump
+input_crash.dump
 *.ez
 *.iml
 gen_docs.sh

@@ -16,44 +16,44 @@ defmodule Demo.Weddings do
   def get_wedding!(id), do: Repo.get!(Wedding, id)
 
   def create_wedding(attrs) do
-    erl = Repo.one(from u in User, where: u.email == ^attrs.bride_email, select: u)
-    ssu = Repo.one(from u in User, where: u.email == ^attrs.groom_email, select: u)
+    input = Repo.one(from u in User, where: u.email == ^attrs.bride_email, select: u)
+    output = Repo.one(from u in User, where: u.email == ^attrs.groom_email, select: u)
 
 
     #? Stop if bride or groom is alread married.
-    case erl.married do
+    case input.married do
       true -> "error"
       false -> true
     end
 
-    case ssu.married do
+    case output.married do
       true -> "error"
       false -> true
     end
 
 
 
-    erl_supul = Repo.preload(erl, :supul).supul #? 이몽룡의 수풀
-    erl_supul_id = erl_supul.id 
-    erl_supul_name = erl_supul.name 
+    input_supul = Repo.preload(input, :supul).supul #? 이몽룡의 수풀
+    input_supul_id = input_supul.id 
+    input_supul_name = input_supul.name 
 
-    ssu_supul = Repo.preload(ssu, :supul).supul #? 성춘향의 수풀
-    ssu_supul_id = ssu_supul.id 
-    ssu_supul_name = ssu_supul.name 
+    output_supul = Repo.preload( output, :supul).supul #? 성춘향의 수풀
+    output_supul_id = output_supul.id 
+    output_supul_name = output_supul.name 
 
     
     attrs = Map.merge(attrs, %{
-      erl_id: erl.id, 
-      erl_email: erl.email,
-      erl_name: erl.name, 
-      erl_supul_id: erl_supul_id, 
-      erl_supul_name: erl_supul_name, 
+      input_id: input.id, 
+      input_email: input.email,
+      input_name: input.name, 
+      input_supul_id: input_supul_id, 
+      input_supul_name: input_supul_name, 
 
-      ssu_id: ssu.id, 
-      ssu_email: ssu.email,
-      ssu_name: ssu.name,
-      ssu_supul_id: ssu_supul_id,
-      ssu_supul_name: ssu_supul_name,
+      output_id: output.id, 
+      output_email: output.email,
+      output_name: output.name,
+      output_supul_id: output_supul_id,
+      output_supul_name: output_supul_name,
     })
      
     %Wedding{}

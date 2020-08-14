@@ -15,6 +15,8 @@ defmodule Demo.Repo.Migrations.CreateGabs do
       add :t5_balance, :decimal, precision: 20, scale: 4, default: 0.0
 
       add :supul_id, references(:supuls, type: :uuid)
+      add :state_supul_id, references(:state_supuls, type: :uuid)
+      add :nation_supul_id, references(:nation_supuls, type: :uuid)
       add :nation_id, references(:nations, type: :uuid)
 
       timestamps()

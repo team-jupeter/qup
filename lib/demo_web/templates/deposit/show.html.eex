@@ -1,0 +1,8 @@
+<h1>Show Deposit</h1>
+
+<ul>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.deposit_path(@conn, :edit, @deposit) %></span>
+<span><%= link "Back", to: Routes.deposit_path(@conn, :index) %></span>

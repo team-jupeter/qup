@@ -7,8 +7,8 @@ defmodule Demo.Openhashes.Openhash do
 
   schema "openhashes" do
     field :event_id, :binary_id
-    field :erl_email, :string
-    field :ssu_email, :string
+    field :input_email, :string
+    field :output_email, :string
     field :supul_name, :string
     field :incoming_hash, :string
     field :previous_hash, :string
@@ -29,8 +29,8 @@ defmodule Demo.Openhashes.Openhash do
 
   @fields [
     :event_id, 
-    :erl_email, 
-    :ssu_email, 
+    :input_email, 
+    :output_email, 
     :supul_name, 
     :previous_hash,
     :incoming_hash,

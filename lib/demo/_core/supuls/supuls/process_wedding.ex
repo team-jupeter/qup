@@ -23,8 +23,8 @@ defmodule Demo.Supuls.ProcessWedding do
   alias Demo.EquityStatements
 
   def process_wedding(wedding) do
-    bride = Repo.one(from u in User, where: u.id == ^wedding.erl_id, select: u)
-    groom = Repo.one(from u in User, where: u.id == ^wedding.ssu_id, select: u)
+    bride = Repo.one(from u in User, where: u.id == ^wedding.input_id, select: u)
+    groom = Repo.one(from u in User, where: u.id == ^wedding.output_id, select: u)
 
     #? If any of groom and bride already married, stop the process.
     # any_family_1 = Repo.one(from f in Family, where: f.husband_id == ^groom.id or f.husband_id == ^groom.id, select: f)  

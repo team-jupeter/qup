@@ -8,27 +8,27 @@
   </tr>
    <tr> 
     <td>Buyer Type:</td>
-    <td><%= @transaction.erl_type %></td>
+    <td><%= @transaction.input_type %></td>
   </tr>
    <tr> 
     <td>Buyer Name:</td>
-    <td><%= @transaction.erl_name %></td>
+    <td><%= @transaction.input_name %></td>
   </tr>
    <tr> 
     <td>Buyer Email:</td>
-    <td><%= @transaction.erl_email %></td>
+    <td><%= @transaction.input_email %></td>
   </tr>
    <tr> 
     <td>Seller Type:</td>
-    <td><%= @transaction.ssu_type %></td>
+    <td><%= @transaction.output_type %></td>
   </tr>
    <tr> 
     <td>Seller Name:</td>
-    <td><%= @transaction.ssu_name %></td>
+    <td><%= @transaction.output_name %></td>
   </tr>
    <tr> 
     <td>Seller Email:</td>
-    <td><%= @transaction.ssu_email%></td>
+    <td><%= @transaction.output_email%></td>
   </tr>
    <tr> 
     <td>Current Location:</td>

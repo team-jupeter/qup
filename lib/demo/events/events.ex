@@ -37,10 +37,10 @@ defmodule Demo.Events do
   #   |> Repo.insert()
   # end 
 
-  def create_event(event, erl_private_key, ssu_private_key) do
-    {:ok, payload} = make_payload(event, erl_private_key, ssu_private_key)
+  def create_event(event, input_private_key, output_private_key) do
+    {:ok, payload} = make_payload(event, input_private_key, output_private_key)
     Supuls.CheckArchiveEvent.check_archive_event(event, payload)
-  end      
+  end       
    
 
   def update_event(event, attrs) do
@@ -50,9 +50,7 @@ defmodule Demo.Events do
   end
 
   #? 혼인신고서, 거래계약서, ....
-  defp make_payload(event, erl_private_key, ssu_private_key) do
-
-    
+  defp make_payload(event, input_private_key, output_private_key) do
     ts = DateTime.utc_now() |> DateTime.to_unix()
     event_id = event.id  
 
@@ -62,10 +60,10 @@ defmodule Demo.Events do
 
     event_msg = "#{ts}|#{event_id}|#{event_hash}"
 
-    {:ok, erl_signature} = ExPublicKey.sign(event_msg, erl_private_key)
-    {:ok, ssu_signature} = ExPublicKey.sign(event_msg, ssu_private_key)
+    {:ok, input_signature} = ExPublicKey.sign(event_msg, input_private_key)
+    {:ok, output_signature} = ExPublicKey.sign(event_msg, output_private_key)
 
-    payload = "#{ts}|#{event_id}|#{event_hash}|#{Base.url_encode64(erl_signature)}|#{Base.url_encode64(ssu_signature)}"
+    payload = "#{ts}|#{event_id}|#{event_hash}|#{Base.url_encode64(input_signature)}|#{Base.url_encode64(output_signature)}"
     
     #? Attach payload to wedding for verification by anybody. 
     # case event.type do

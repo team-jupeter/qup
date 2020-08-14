@@ -10,8 +10,10 @@ defmodule Demo.ABC.OpenT1 do
     field :input_id, :string
     field :output_name, :string
     field :output_id, :string
-    field :amount, :decimal, precision: 12, scale: 2
-    field :currency, :string
+    field :input_amount, :decimal, precision: 12, scale: 2
+    field :input_currency, :string
+    field :output_amount, :decimal, precision: 12, scale: 2
+    field :output_currency, :string
     
     #? locking script and conditions of spending moneny by recipient.
     embeds_one :abc_locker, Demo.ABC.ABCLockerEmbed
@@ -19,7 +21,8 @@ defmodule Demo.ABC.OpenT1 do
   end
 
   @fields [
-      :openhash_id, :input_name, :output_name, :input_id, :output_id, :amount, :currency
+      :openhash_id, :input_name, :output_name, :input_id, :output_id, 
+      :input_amount, :input_currency, :output_amount, :output_currency, 
   ]
   def changeset(open_t1, params) do
     open_t1

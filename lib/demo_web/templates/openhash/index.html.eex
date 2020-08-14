@@ -14,7 +14,7 @@
   <tbody>
 <%= for openhash <- @openhashes do %>
     <tr>
-      <td><%= openhash.erl_email %></td>
+      <td><%= openhash.input_email %></td>
       <td><%= openhash.ssu_email %></td>
       <td>
         <span><%= link "Show", to: Routes.openhash_path(@conn, :show, openhash) %></span>

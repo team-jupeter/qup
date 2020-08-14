@@ -9,7 +9,7 @@
   <tbody>
 <%= for transaction <- @transactions do %>
     <tr> 
-      <td><%= transaction.ssu_name %></td>
+      <td><%= transaction.output_name %></td>
       <td><%= transaction.t1_amount %></td>
       <td><%= transaction.archived? %></td>
     </tr>

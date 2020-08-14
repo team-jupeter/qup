@@ -1,0 +1,8 @@
+<h1>Show Withdrawal</h1>
+
+<ul>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.withdrawal_path(@conn, :edit, @withdrawal) %></span>
+<span><%= link "Back", to: Routes.withdrawal_path(@conn, :index) %></span>

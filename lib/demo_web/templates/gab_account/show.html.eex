@@ -1,6 +1,10 @@
 <span><%= link "Send money to other", to: Routes.transfer_path(@conn, :new) %></span>
 </br>
 <span><%= link "Manage Portpolio", to: Routes.gab_account_path(@conn, :edit, @gab_account) %></span>
+</br>
+<span><%= link "Withdrawal", to: Routes.withdrawal_path(@conn, :new) %></span>
+</br>
+<span><%= link "Deposit", to: Routes.deposit_path(@conn, :new) %></span>
 
 <table>
   <tbody>
@@ -25,18 +29,14 @@
     <td><%= @gab_account.t4_balance %></td>
   </tr>
      <tr> 
-  <td><b> Credit & Currency </b></td>
+  <td><b> Credit </b></td>
    </tr> 
      <tr> 
     <td>Credit Limit:</td>
     <td><%= @gab_account.credit_limit %></td>
   </tr>
-   <tr> 
-    <td>Currency(통화):</td>
-    <td><%= @gab_account.default_currency %></td>
-  </tr>
   <tr>
-    <td><b> Change in Market Value </b></td>
+    <td><b>Market Value Change</b></td>
     <td><%= @gab_account.total_market_value %></td>
   </tr>
   </tr>
@@ -112,8 +112,20 @@
         <td><%= t.output_id %></td>
         </tr>
         </tr>
-        <td>amount</td>
-        <td><%= t.amount %></td>
+        <td>input_currency</td>
+        <td><%= t.input_currency %></td>
+        </tr>
+        </tr>
+        <td>input_amount</td>
+        <td><%= t.input_amount %></td>
+        </tr>
+        </tr>
+        <td>output_currency</td>
+        <td><%= t.output_currency %></td>
+        </tr>
+        </tr>
+        <td>output_amount</td>
+        <td><%= t.output_amount %></td>
         </tr>
       </tbody>
     </table>
@@ -164,7 +176,7 @@
 
 
 <%= for t <- @gab_account.open_t3s do %>
-<b>t3_balance</b>
+<b>T3</b>
     <table >
       <thead>
         <tr>
@@ -204,7 +216,7 @@
 
 
 <%= for t <- @gab_account.open_t4s do %>
-<b>return_on_t4</b>
+<b>T4</b>
     <table >
       <thead>
         <tr>

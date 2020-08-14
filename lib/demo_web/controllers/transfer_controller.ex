@@ -23,7 +23,7 @@ defmodule DemoWeb.TransferController do
   end
 
   def create(conn, %{"transfer" => transfer_params}, current_entity) do
-    # case transfer_params.ssu_email != nil do
+    # case transfer_params.output_email != nil do
 
     case Transfers.create_transfer(transfer_params, current_entity) do 
       {:ok, transfer} ->

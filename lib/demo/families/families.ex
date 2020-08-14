@@ -77,7 +77,7 @@ defmodule Demo.Families do
       wife_id: groom.id,
       wife_name: groom.name,
       wife_email: groom.email, 
-      house_holder_supul_id: wedding.erl_supul_id,
+      house_holder_supul_id: wedding.input_supul_id,
       }
 
     #? Return family

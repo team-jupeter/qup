@@ -161,6 +161,8 @@ defmodule DemoWeb.Router do
     resources "/t3_pools", T3PoolController
     resources "/t4_pools", T4PoolController
     resources "/transfers", TransferController
+    resources "/deposits", DepositController
+    resources "/withdrawals", WithdrawalController
     # resources "/t3s", T3Controller
   end
   scope "/pools", DemoWeb do

@@ -1,0 +1,5 @@
+<h1>Edit Deposit</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.deposit_path(@conn, :update, @deposit)) %>
+
+<span><%= link "Back", to: Routes.deposit_path(@conn, :index) %></span>

@@ -8,33 +8,32 @@ defmodule Demo.Transfers.Transfer do
   schema "transfers" do
     field :type, :string
 
-    field :erl_id, :binary_id
-    field :erl_name, :string 
-    field :erl_email, :string 
-    field :erl_tel, :string 
-    field :erl_supul_id, :binary_id 
-    field :erl_state_supul_id, :binary_id
-    field :erl_nation_supul_id, :binary_id 
-    
-    field :ssu_id, :binary_id
-    field :ssu_name, :string 
-    field :ssu_email, :string 
-    field :ssu_tel, :string 
-    field :ssu_supul_id, :binary_id 
-    field :ssu_state_supul_id, :binary_id
-    field :ssu_nation_supul_id, :binary_id 
+    field :input_id, :binary_id
+    field :input_name, :string 
+    field :input_email, :string 
+    field :input_tel, :string 
+    field :input_gab, :string 
+    field :input_supul_id, :binary_id 
+    field :input_state_supul_id, :binary_id
+    field :input_nation_supul_id, :binary_id 
 
-    field :t1_input_email, :string  
-    field :t1_input_name, :string 
-    field :t1_output_email, :string  
-    field :t1_output_name, :string  
-    field :t1_input_t1s, {:array, :map}, default: []
-    field :t1_amount, :decimal, precision: 15, scale: 4
+    field :input_currency, :string
+    field :input_amount, :decimal, precision: 15, scale: 4
+
+    field :output_id, :binary_id
+    field :output_name, :string 
+    field :output_email, :string 
+    field :output_tel, :string 
+    field :output_gab, :string 
+    field :output_supul_id, :binary_id 
+    field :output_state_supul_id, :binary_id
+    field :output_nation_supul_id, :binary_id 
+
+    field :output_currency, :string
+    field :output_amount, :decimal, precision: 15, scale: 4
 
     field :fair?, :boolean, default: false
 
-    field :erl_currency, :string
-    field :ssu_currency, :string
 
     belongs_to :entity, Demo.Entities.Entity, type: :binary_id
 
@@ -44,33 +43,33 @@ defmodule Demo.Transfers.Transfer do
   end
 
   @fields [
-   :type,
+    :type, 
 
-   :erl_id,
-   :erl_name, 
-   :erl_email, 
-   :erl_supul_id, 
-   :erl_state_supul_id,
-   :erl_nation_supul_id, 
-    
-   :ssu_id,
-   :ssu_name, 
-   :ssu_email, 
-   :ssu_supul_id, 
-   :ssu_state_supul_id,
-   :ssu_nation_supul_id, 
+    :input_id, 
+    :input_name,  
+    :input_email,  
+    :input_tel,  
+    :input_gab,  
+    :input_supul_id,  
+    :input_state_supul_id, 
+    :input_nation_supul_id,  
 
-   :t1_input_email,  
-   :t1_input_name, 
-   :t1_output_email,  
-   :t1_output_name,  
-   :t1_input_t1s, 
-   :t1_amount, 
+    :input_currency, 
+    :input_amount, 
 
-   :fair?, 
+    :output_id, 
+    :output_name,  
+    :output_email,  
+    :output_tel,  
+    :output_gab,  
+    :output_supul_id,  
+    :output_state_supul_id, 
+    :output_nation_supul_id,  
 
-   :erl_currency,
-   :ssu_currency,
+    :output_currency, 
+    :output_amount, 
+
+    :fair?, 
   ]
   @doc false
   def changeset(transfer, attrs) do

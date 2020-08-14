@@ -6,15 +6,15 @@
    </tr> 
    <tr> 
     <td>Receiver Email:</td>
-    <td><%= @transfer.ssu_email %></td>
+    <td><%= @transfer.output_email %></td>
   </tr>
    <tr> 
     <td>Receiver Name:</td>
-    <td><%= @transfer.ssu_name %></td>
+    <td><%= @transfer.output_name %></td>
   </tr>
    <tr> 
     <td>Amount:</td>
-    <td><%= @transfer.t1_amount %></td>
+    <td><%= @transfer.output_amount %></td>
   </tr>
 </tbody>
 </table>

@@ -29,7 +29,6 @@ defmodule Demo.BalanceSheets do
   end
 
   defp entity_balance_sheets_query(query, entity_id) do
-    IO.inspect "entity_balance_sheets_query"
     from(b in query, where: b.entity_id == ^entity_id)
   end
 
@@ -74,7 +73,7 @@ defmodule Demo.BalanceSheets do
         input_name: buyer.name,
         output_id: buyer.id,
         output_name: buyer.name,
-        amount: buyer_BS.t1_balance
+        input_amount: buyer_BS.t1_balance
       }
     ]
 
@@ -93,7 +92,7 @@ defmodule Demo.BalanceSheets do
         input_id: buyer.id,
         output_name: seller.name,
         output_id: seller.id,
-        amount: attrs.amount
+        input_amount: attrs.amount
       }
     }
 
@@ -129,9 +128,6 @@ defmodule Demo.BalanceSheets do
 
     gab_account = Repo.preload(entity, :gab_account).gab_account
 
-    IO.inspect " GabAccounts.update_gab_account"
-    IO.inspect t1_balance
-    
     GabAccounts.update_gab_account(gab_account, %{t1_balance: t1_balance})
   end
 

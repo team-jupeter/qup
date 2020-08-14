@@ -47,8 +47,8 @@ defmodule Demo.Openhashes do
       Openhash.changeset(%Openhash{}, %{
         event_id: event.id,
 
-        erl_email: event.erl_email, 
-        ssu_email: event.ssu_email, 
+        input_email: event.input_email, 
+        output_email: event.output_email, 
 
         supul_id: supul.id,
         supul_name: supul.name,

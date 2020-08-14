@@ -11,11 +11,11 @@
   </li>
   <li>
     <strong>Erl</strong>
-    <td><%= @openhash.erl_email %></td>
+    <td><%= @openhash.input_email %></td>
   </li>
   <li>
     <strong>Ssu</strong>
-    <td><%= @openhash.ssu_email %></td>
+    <td><%= @openhash.output_email %></td>
   </li>
   <li>
     <strong>incoming_hash</strong>

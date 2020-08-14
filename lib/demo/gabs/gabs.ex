@@ -20,11 +20,27 @@ defmodule Demo.Gabs do
   def get_gab!(id), do: Repo.get!(Gab, id)
 
 
-  def create_gab(attrs \\ %{}) do
+  def create_supul_gab(attrs \\ %{}) do
     pools = pools(attrs.name)
     attrs = Map.merge(pools, attrs)
     %Gab{}
-    |> Gab.changeset(attrs)
+    |> Gab.changeset_supul(attrs)
+    |> Repo.insert()
+  end
+
+  def create_state_supul_gab(attrs \\ %{}) do
+    pools = pools(attrs.name)
+    attrs = Map.merge(pools, attrs)
+    %Gab{}
+    |> Gab.changeset_state_supul(attrs)
+    |> Repo.insert()
+  end
+
+  def create_nation_supul_gab(attrs \\ %{}) do
+    pools = pools(attrs.name)
+    attrs = Map.merge(pools, attrs)
+    %Gab{}
+    |> Gab.changeset_nation_supul(attrs)
     |> Repo.insert()
   end
 

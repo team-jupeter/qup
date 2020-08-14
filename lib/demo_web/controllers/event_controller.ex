@@ -14,8 +14,8 @@ defmodule DemoWeb.EventController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"event" => event_params}, erl_private_key, ssu_private_key) do
-    case Events.create_event(event_params, erl_private_key, ssu_private_key) do
+  def create(conn, %{"event" => event_params}, input_private_key, output_private_key) do
+    case Events.create_event(event_params, input_private_key, output_private_key) do
       {:ok, event} -> 
         conn
         |> put_flash(:info, "Event created successfully.")

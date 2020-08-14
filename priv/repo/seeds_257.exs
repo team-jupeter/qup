@@ -358,12 +358,12 @@ sung_pub_key = ExPublicKey.load!("./keys/sung_public_key.pem")
 
 alias Demo.Gabs
 
-{:ok, hankyung_gab} = Gabs.create_gab(%{name: "hankyung_gab"})
-{:ok, hanlim_gab} = Gabs.create_gab(%{name: "hanlim_gab"})
-{:ok, seoguipo_gab} = Gabs.create_gab(%{name: "seoguipo_gab"})
-{:ok, jejudo_gab} = Gabs.create_gab(%{name: "jejudo_gab"})
-{:ok, seoul_gab} = Gabs.create_gab(%{name: "seoul_gab"})
-{:ok, korea_gab} = Gabs.create_gab(%{name: "korea_gab"})
+{:ok, hankyung_gab} = Gabs.create_supul_gab(%{name: "hankyung_gab", supul: hankyung_supul})
+{:ok, hanlim_gab} = Gabs.create_supul_gab(%{name: "hanlim_gab", supul: hanlim_supul})
+{:ok, seoguipo_gab} = Gabs.create_supul_gab(%{name: "seoguipo_gab", supul: seoguipo_supul})
+{:ok, jejudo_gab} = Gabs.create_state_supul_gab(%{name: "jejudo_gab", state_supul: jejudo_supul})
+{:ok, seoul_gab} = Gabs.create_state_supul_gab(%{name: "seoul_gab", state_supul: seoul_supul})
+{:ok, korea_gab} = Gabs.create_nation_supul_gab(%{name: "korea_gab", nation_supul: korea_supul})
 
 
 '''
@@ -386,8 +386,8 @@ alias Demo.Entities
   group: korea_group,
   unique_digits: "82111110",
   tels: ["82111110"],
-  default_currency: "KRW", 
-  gab: korea_gab,
+  default_currency: "krw", 
+  gab: hankyung_gab,
   }) 
   
   
@@ -415,8 +415,8 @@ alias Demo.Entities
   t1_balance: Decimal.from_float(100000.0),
   unique_digits: "82111100",
   tels: ["82111100"],
-  default_currency: "KRW",
-  gab: korea_gab,
+  default_currency: "krw",
+  gab: hankyung_gab,
   })
 
 msg_serialized = Poison.encode!(korea_gab)
@@ -427,7 +427,6 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
 # korea_gab = change(korea_gab) |> Ecto.Changeset.put_change(:auth_code, signature) |> Repo.update!
 {:ok, gab_korea} = Entities.update_entity(gab_korea, %{auth_code: signature}) 
 
-alias Demo.Entities
 
 #? 국가 교통물류 인프라 Korea's Entity == a governmental organization  
 {:ok, gopang_korea} = Entities.create_public_entity(%{
@@ -442,8 +441,8 @@ alias Demo.Entities
   t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111111",
   telephones: ["8211111111"],
-  default_currency: "KRW",
-  gab: korea_gab,
+  default_currency: "krw",
+  gab: hankyung_gab,
   }) 
 
 msg_serialized = Poison.encode!(gopang_korea)
@@ -467,7 +466,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111112",
   tels: ["8211111112"],
-  default_currency: "KRW",
+  default_currency: "krw",
   gab: hankyung_gab,
   }) 
 
@@ -493,7 +492,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111113",
   tels: ["8211111113"],
-  default_currency: "KRW",
+  default_currency: "krw",
   gab: hanlim_gab,
   }) 
 
@@ -520,7 +519,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   t1_balance: Decimal.from_float(0.0),
   unique_digits: "8211111114",
   tels: ["8211111114"],
-  default_currency: "KRW",
+  default_currency: "krw",
   gab: hankyung_gab,
   }) 
   {:ok, mr_lim} =  Demo.Accounts.update_user(mr_lim, %{default_entity_id: lim_entity.id})  
@@ -546,7 +545,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   default_entity: true,
   unique_digits: "8211111115",
   tels: ["8211111115"],
-  default_currency: "KRW",
+  default_currency: "krw",
   gab: seoguipo_gab,
   }) 
 
@@ -579,7 +578,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   group_type: "Private Group",
   unique_digits: "8211111116",
   tels: ["8211111116"],
-  default_currency: "KRW",
+  default_currency: "krw",
   gab: hanlim_gab,
   }) 
 
@@ -610,7 +609,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   group_type: "Private Group",
   unique_digits: "8211111117",
   tels: ["8211111117"],
-  default_currency: "KRW",
+  default_currency: "krw",
   gab: hankyung_gab,
   }) 
 
@@ -641,7 +640,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   group_type: "Private Group",
   unique_digits: "8211111118",
   tels: ["8211111118"],
-  default_currency: "KRW",
+  default_currency: "krw",
   gab: seoguipo_gab,
   }) 
 
@@ -672,7 +671,7 @@ signature = :crypto.hash(:sha256, signature) |> Base.encode16() |> String.downca
   group_type: "Private Group",
   unique_digits: "8211111119",
   tels: ["8211111119"],
-  default_currency: "KRW",
+  default_currency: "krw",
   gab: seoguipo_gab,
   }) 
 
@@ -781,24 +780,24 @@ alias Demo.GabAccounts
 alias Demo.ABC.OpenT1
 #? 국세청 
 open_t1 =  %OpenT1{
-  input_name: korea_gab.name, 
-  input_id: korea_gab.id, 
+  input_name: hankyung_gab.name, 
+  input_id: hankyung_gab.id, 
   output_name: kts.name,  
   output_id: kts.id, 
-  amount: Decimal.from_float(100.0),
-  currency: "krw"
+  input_amount: Decimal.from_float(100.0),
+  input_currency: "krw"
   }
 
 GabAccounts.new_deposit(open_t1)  
 
 #? 국가 물류 인프라  
 open_t1 = %OpenT1{
-  input_name: korea_gab.name, 
-  input_id: korea_gab.id, 
+  input_name: hankyung_gab.name, 
+  input_id: hankyung_gab.id, 
   output_name: gopang_korea.name, 
   output_id: gopang_korea.id, 
-  amount: Decimal.from_float(100.0),
-  currency: "krw",
+  input_amount: Decimal.from_float(100.0),
+  input_currency: "krw",
 }
 
 GabAccounts.new_deposit(open_t1)  
@@ -810,20 +809,21 @@ open_t1 =  %OpenT1{
   input_id: hankyung_gab.id, 
   output_name: hong_entity.name, 
   output_id: hong_entity.id, 
-  amount: Decimal.from_float(100.0),
-  currency: "krw",
+  input_amount: Decimal.from_float(100.0),
+  input_currency: "krw",
 }
 
 GabAccounts.new_deposit(open_t1)  
 
 #? 임꺽정 1인 법인
+#? some sent EUR to lim.
 open_t1 =  %OpenT1{
   input_name: hankyung_gab.name, 
   input_id: hankyung_gab.id, 
   output_name: lim_entity.name, 
   output_id: lim_entity.id, 
-  amount: Decimal.from_float(100.0),
-  currency: "aud",
+  input_amount: Decimal.from_float(100.0),
+  input_currency: "aud",
 }
 
 GabAccounts.new_deposit(open_t1)  
@@ -834,8 +834,8 @@ open_t1 =  %OpenT1{
   input_id: hanlim_gab.id, 
   output_name: sung_entity.name, 
   output_id: sung_entity.id, 
-  amount: Decimal.from_float(100.0),
-  currency: "krw",
+  input_amount: Decimal.from_float(100.0),
+  input_currency: "krw",
 }
 
 GabAccounts.new_deposit(open_t1)  
@@ -846,8 +846,8 @@ open_t1 =  %OpenT1{
   input_id: seoguipo_gab.id, 
   output_name: lee_entity.name, 
   output_id: lee_entity.id, 
-  amount: Decimal.from_float(100.0),
-  currency: "jpy",
+  input_amount: Decimal.from_float(100.0),
+  input_currency: "jpy",
 }
 
 GabAccounts.new_deposit(open_t1)  
@@ -858,32 +858,34 @@ open_t1 =  %OpenT1{
   input_id: hanlim_gab.id, 
   output_name: tomi_entity.name, 
   output_id: tomi_entity.id, 
-  amount: Decimal.from_float(100.0),
-  currency: "eur",
+  input_amount: Decimal.from_float(100.0),
+  input_currency: "eur",
 }
 
 GabAccounts.new_deposit(open_t1)  
 
 #? 이방 학원 
+#? some sent EUR to ebang acdademy.
 open_t1 =  %OpenT1{
   input_name: seoguipo_gab.name, 
   input_id: seoguipo_gab.id, 
   output_name: ebang_entity.name, 
   output_id: ebang_entity.id, 
-  amount: Decimal.from_float(100.0),
-  currency: "cny",
+  input_amount: Decimal.from_float(100.0),
+  input_currency: "cny",
 }
 
 GabAccounts.new_deposit(open_t1)  
 
 #? 사또 학원 
+#? some sent USD to ebang acdademy.
 open_t1 =  %OpenT1{
   input_name: seoguipo_gab.name, 
   input_id: seoguipo_gab.id, 
   output_name: sato_entity.name, 
   output_id: sato_entity.id, 
-  amount: Decimal.from_float(100.0),
-  currency: "usd",
+  input_amount: Decimal.from_float(100.0),
+  input_currency: "usd",
 }
 
 GabAccounts.new_deposit(open_t1)  

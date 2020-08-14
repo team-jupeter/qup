@@ -1,0 +1,24 @@
+<h1>Listing Withdrawals</h1>
+
+<table>
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for withdrawal <- @withdrawals do %>
+    <tr>
+
+      <td>
+        <span><%= link "Show", to: Routes.withdrawal_path(@conn, :show, withdrawal) %></span>
+        <span><%= link "Edit", to: Routes.withdrawal_path(@conn, :edit, withdrawal) %></span>
+        <span><%= link "Delete", to: Routes.withdrawal_path(@conn, :delete, withdrawal), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Withdrawal", to: Routes.withdrawal_path(@conn, :new) %></span>

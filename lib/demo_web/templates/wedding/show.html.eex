@@ -37,19 +37,19 @@
     </tr>
     <tr>
       <td>bride_supul_id</td>
-      <td><%= @wedding.erl_supul_id %></td>
+      <td><%= @wedding.input_supul_id %></td>
     </tr>
     <tr>
       <td>bride_supul_name</td>
-      <td><%= @wedding.erl_supul_name %></td>
+      <td><%= @wedding.input_supul_name %></td>
     </tr>
     <tr>
       <td>groom_supul_id</td>
-      <td><%= @wedding.ssu_supul_id %></td>
+      <td><%= @wedding.output_supul_id %></td>
     </tr>
     <tr>
       <td>groom_supul_name</td>
-      <td><%= @wedding.ssu_supul_name %></td>
+      <td><%= @wedding.output_supul_name %></td>
     </tr>
 
   </tbody>

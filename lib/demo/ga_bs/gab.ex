@@ -21,9 +21,11 @@ defmodule Demo.Gabs.Gab do
     has_one :t1_pool, Demo.T1Pools.T1Pool
     has_one :t2_pool, Demo.T2Pools.T2Pool
     has_one :t3_pool, Demo.T3Pools.T3Pool
-    has_one :t4_pool, Demo.T4Pools.T4Pool
+    has_one :t4_pool, Demo.T4Pools.T4Pool 
 
-    belongs_to :supul, Demo.Supuls.Supul
+    belongs_to :supul, Demo.Supuls.Supul, type: :binary_id
+    belongs_to :state_supul, Demo.StateSupuls.StateSupul, type: :binary_id
+    belongs_to :nation_supul, Demo.NationSupuls.NationSupul, type: :binary_id
 
     timestamps()
   end
@@ -47,5 +49,23 @@ defmodule Demo.Gabs.Gab do
     |> put_assoc(:t3_pool, attrs.t3_pool)
     |> put_assoc(:t4_pool, attrs.t4_pool)
     |> validate_required([])
+  end
+  
+  def changeset_supul(gab, attrs) do
+    gab
+    |> changeset(attrs)
+    |> put_assoc(:supul, attrs.supul)
+  end
+
+  def changeset_state_supul(gab, attrs) do
+    gab
+    |> changeset(attrs)
+    |> put_assoc(:state_supul, attrs.state_supul)
+  end
+
+  def changeset_nation_supul(gab, attrs) do
+    gab
+    |> changeset(attrs)
+    |> put_assoc(:nation_supul, attrs.nation_supul)
   end
 end

@@ -4,9 +4,7 @@ defmodule Demo.ABC do
   alias Demo.Repo
 
   alias Demo.T2s.T2
-  # alias Demo.T3s.T3
   alias Demo.T4s.T4
-  
   alias Demo.GabAccounts
 
 
@@ -78,18 +76,12 @@ defmodule Demo.ABC do
 
 
   def buy_t4(t1_currency, amount_to_buy) do
-    # entity = Repo.preload(gab_account, :entity).entity
-
     index_list = %{
       nyse: 0.0, nasdaq: 0.0, jpx: 0.0, lse: 0.0, sse: 0.0, sehk: 0.0, ens: 0.0, 
       szse: 0.0, tsx: 0.0, bse: 0.0, nse: 0.0, db: 0.0, six: 0.0, krx: 0.0
     }
 
     buying_amount = Decimal.div(amount_to_buy, 14) |> Decimal.round(4)
-
-    IO.inspect "buying_amount"
-    IO.inspect buying_amount
-
 
     for {key, _value} <- index_list,
         into: %{},

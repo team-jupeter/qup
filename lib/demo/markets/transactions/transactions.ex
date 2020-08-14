@@ -17,8 +17,6 @@ defmodule Demo.Transactions do
   end
 
   def get_entity_transaction!(id) do
-    IO.puts("get_entity_transaction")
-
     Transaction
     # |> entity_transactions_query(entity)
     |> Repo.get!(id)
@@ -26,7 +24,7 @@ defmodule Demo.Transactions do
 
   defp entity_transactions_query(query, entity) do
     from(t in query,
-      where: t.erl_id == ^entity.id or t.ssu_id == ^entity.id,
+      where: t.input_id == ^entity.id or t.ssu_id == ^entity.id,
       select: t
     )
   end
