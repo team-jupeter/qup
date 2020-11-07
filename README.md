@@ -1,6 +1,7 @@
 **Deprecated**
 
 이 프로젝트는 Phoenix 기반이며, 더 이상 업데이트하지 않습니다. 2020년 11월 1일부터, Phoenix LiveView를 이용한 프로젝트를 새로 시작합니다. 
+This coding exercise is moved to https://github.com/team-jupeter/corea 
 
 # COREAn PASS
 
